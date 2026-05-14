@@ -24,6 +24,9 @@
   --text:         #F0F0F5;
   --text-muted:   #6B7280;
   --text-dim:     #3D4048;
+  --manual:        #6C7A9C;
+  --manual-dim:    rgba(108,122,156,0.12);
+  --manual-border: rgba(108,122,156,0.28);
   --header-h:     60px;
   --radius:       16px;
   --radius-sm:    10px;
@@ -1039,4 +1042,80 @@ header {
 @media (max-width: 380px) {
   #mapaLeaflet          { height: 220px; }
   .mapa-info-bar        { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+
+/* ═══════════════════════════════════════════
+   MODO PÁNICO — borde rojo + parpadeo total
+   ═══════════════════════════════════════════ */
+
+.vehicle-card.panico {
+  border: 1.5px solid var(--red);
+  box-shadow:
+    0 0 0 1.5px var(--red),
+    0 0 18px rgba(255,77,106,0.25);
+  animation: panicoBlink 0.7s ease-in-out infinite;
+}
+
+.vehicle-card.panico::before {
+  background: var(--red);
+}
+
+@keyframes panicoBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+/* ═══════════════════════════════════════════
+   MODO MANUAL — banner gris azulado
+   ═══════════════════════════════════════════ */
+
+.vehicle-card.manual {
+  border: 1px solid var(--manual-border);
+  box-shadow: 0 0 12px rgba(108,122,156,0.08);
+}
+
+.vehicle-card.manual::before {
+  background: var(--manual);
+}
+
+.status-badge.manual-badge {
+  background: var(--manual-dim);
+  color: var(--manual);
+}
+
+.metric-value.manual {
+  color: var(--manual);
+}
+
+/* Barra de alerta modo manual */
+.alert-bar.manual-bar {
+  background: var(--manual-dim);
+  border: 1px solid var(--manual-border);
+  color: var(--manual);
+}
+
+/* ═══════════════════════════════════════════
+   GRÁFICA — color modo manual
+   ═══════════════════════════════════════════ */
+
+/* Se aplica via JS pasando el color #6C7A9C
+   al dataset de Chart.js en renderGraficaHistorial */
+
+/* ─── Chip GPS ───────────────────────────── */
+.gps-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
+}
+
+.gps-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
 }

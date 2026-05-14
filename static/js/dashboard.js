@@ -282,7 +282,9 @@ function renderGraficaHistorial(rangos) {
     const ctx = canvas.getContext("2d");
 
     function color(r) {
-        if (r.estado === "sin señal") return "#FFB020";
+        if (r.estado === "sin señal")  return "#FFB020";
+        if (r.estado === "panico")     return "#FF4D6A";  // rojo intenso
+        if (r.estado === "manual")     return "#6C7A9C";  // gris azulado
         if (r.alerta===1 || r.puerta==="abierta" || r.vibracion===1) return "#FF4D6A";
         return "#00E096";
     }
@@ -514,22 +516,49 @@ function renderDatos(data) {
 function crearTarjetaHTML(key, v, index, tipo) {
     const esAlerta   = v.alerta === 1;
     const esSinSenal = v.estado === 'sin señal';
-    let claseCard    = "vehicle-card normal";
-    if (esAlerta)   claseCard = "vehicle-card alerta";
+
+    const esPanico = v.estado === "panico";
+    const esManual = v.estado === "manual";
+
+    let claseCard = "vehicle-card normal";
+    if (esPanico)        claseCard = "vehicle-card panico";
+    else if (esAlerta)   claseCard = "vehicle-card alerta";
+    else if (esManual)   claseCard = "vehicle-card manual";
     else if (esSinSenal) claseCard = "vehicle-card sin-senal";
 
     const ts = v.timestamp
         ? new Date(v.timestamp * 1000).toLocaleTimeString("es-MX", { hour12: false })
         : "--:--";
 
-    const alertaBar = esAlerta ? `
-        <div class="alert-bar">
-            <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
-                <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
-                <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-            </svg>
-            Alerta activa — revisar unidad
-        </div>` : "";
+    let alertaBar = "";
+    if (esPanico) {
+        alertaBar = `
+            <div class="alert-bar">
+                <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                    <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                BOTÓN DE PÁNICO ACTIVADO — atender de inmediato
+            </div>`;
+    } else if (esManual) {
+        alertaBar = `
+            <div class="alert-bar manual-bar">
+                <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                    <rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/>
+                    <path d="M5 7h4M7 5v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                Modo manual activo — sensores pausados
+            </div>`;
+    } else if (esAlerta) {
+        alertaBar = `
+            <div class="alert-bar">
+                <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                    <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                Alerta activa — revisar unidad
+            </div>`;
+    }
 
     const choferInfo = v.chofer_nombre
         ? `<div class="chofer-chip"><div class="chip-dot"></div>${v.chofer_nombre}</div>`
@@ -590,7 +619,7 @@ function crearTarjetaHTML(key, v, index, tipo) {
                     <div class="card-name">${v.vehiculo}</div>
                     <div class="card-plate">ESP32 · UART 115200</div>
                 </div>
-                <div class="status-badge ${esAlerta?'warn':esSinSenal?'mid':'ok'}">
+                <div class="status-badge ${esPanico?'warn':esManual?'manual-badge':esAlerta?'warn':esSinSenal?'mid':'ok'}">
                     <div class="badge-dot"></div>
                     ${v.estado}
                 </div>
@@ -633,19 +662,77 @@ function actualizarTarjeta(key, v) {
         ? new Date(v.timestamp * 1000).toLocaleTimeString("es-MX", { hour12: false })
         : "--:--";
 
-    card.className = `vehicle-card ${esAlerta?'alerta':esSinSenal?'sin-senal':'normal'}`;
+    const esPanico = v.estado === "panico";
+    const esManual = v.estado === "manual";
+    card.className = `vehicle-card ${
+        esPanico   ? "panico"    :
+        esAlerta   ? "alerta"    :
+        esManual   ? "manual"    :
+        esSinSenal ? "sin-senal" : "normal"
+    }`;
 
     let alertBar = card.querySelector('.alert-bar');
-    if (esAlerta && !alertBar) {
-        card.querySelector('.card-header').insertAdjacentHTML('beforebegin', `
-            <div class="alert-bar">
+
+    if (esPanico) {
+        if (!alertBar) {
+            card.querySelector('.card-header').insertAdjacentHTML('beforebegin', `
+                <div class="alert-bar">
+                    <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                        <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                        <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    </svg>
+                    BOTÓN DE PÁNICO ACTIVADO — atender de inmediato
+                </div>`);
+        } else {
+            alertBar.className = "alert-bar";
+            alertBar.innerHTML = `
                 <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
                     <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
                     <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
                 </svg>
-                Alerta activa — revisar unidad
-            </div>`);
-    } else if (!esAlerta && alertBar) { alertBar.remove(); }
+                BOTÓN DE PÁNICO ACTIVADO — atender de inmediato`;
+        }
+    } else if (esManual) {
+        if (!alertBar) {
+            card.querySelector('.card-header').insertAdjacentHTML('beforebegin', `
+                <div class="alert-bar manual-bar">
+                    <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                        <rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/>
+                        <path d="M5 7h4M7 5v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    </svg>
+                    Modo manual activo — sensores pausados
+                </div>`);
+        } else {
+            alertBar.className = "alert-bar manual-bar";
+            alertBar.innerHTML = `
+                <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                    <rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/>
+                    <path d="M5 7h4M7 5v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                Modo manual activo — sensores pausados`;
+        }
+    } else if (esAlerta) {
+        if (!alertBar) {
+            card.querySelector('.card-header').insertAdjacentHTML('beforebegin', `
+                <div class="alert-bar">
+                    <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                        <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                        <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    </svg>
+                    Alerta activa — revisar unidad
+                </div>`);
+        } else {
+            alertBar.className = "alert-bar";
+            alertBar.innerHTML = `
+                <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                    <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                Alerta activa — revisar unidad`;
+        }
+    } else if (alertBar) {
+        alertBar.remove();
+    }
 
     const badge = card.querySelector('.status-badge');
     badge.className = `status-badge ${esAlerta?'warn':esSinSenal?'mid':'ok'}`;
