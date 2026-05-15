@@ -419,7 +419,7 @@ def obtener_estado():
     ).order_by(Historial.id.desc()).limit(app.config['MAX_RECORDS_LIMIT']).all()
 
     resultado     = {}
-    TIEMPO_LIMITE = 3
+    TIEMPO_LIMITE = 8
     tiempo_actual = int(time.time())
 
     for v in vehiculos_usuario:
