@@ -3,9 +3,12 @@ from flask_cors import CORS
 import time
 import bcrypt
 import re
+import json
+import os
 
 from config import db, Config
-from models import Usuario, Vehiculo, Historial
+from models import Usuario, Vehiculo, Historial, PushSubscripcion
+from pywebpush import webpush, WebPushException
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 app.config.from_object(Config)
@@ -15,6 +18,12 @@ CORS(app)
 
 with app.app_context():
     db.create_all()
+
+
+# ================= VAPID KEYS =================
+VAPID_PUBLIC_KEY  = os.getenv("VAPID_PUBLIC_KEY")
+VAPID_PRIVATE_KEY = os.getenv("VAPID_PRIVATE_KEY")
+VAPID_EMAIL       = os.getenv("VAPID_EMAIL")
 
 # ================= FUNCIONES DE VALIDACIÓN =================
 def validar_email(correo):
@@ -36,8 +45,118 @@ def validar_tipo(tipo):
 def _nombre_chofer(vehiculo_obj):
     if not vehiculo_obj.chofer_id:
         return None
-    chofer = Usuario.query.get(vehiculo_obj.chofer_id)
+    chofer = db.session.get(Usuario, vehiculo_obj.chofer_id)
     return chofer.nombre if chofer else None
+
+# ================= PUSH: TEXTO DE ALERTA =================
+def _texto_alerta(data):
+    """Genera el texto descriptivo según los sensores activos."""
+    puerta    = data.get("puerta", "cerrada") == "abierta"
+    vibracion = int(data.get("vibracion", 0)) == 1
+    estado    = data.get("estado", "")
+
+    if estado == "panico":
+        return "El chofer activó el botón de pánico — atender de inmediato"
+    if puerta and vibracion:
+        return "Puerta abierta y vibración detectada simultáneamente"
+    if puerta:
+        return "Apertura no autorizada de la puerta del contenedor"
+    if vibracion:
+        return "Vibración sospechosa detectada en el vehículo"
+    return "Alerta activa — revisar unidad"
+
+# ================= PUSH: ENVIAR NOTIFICACIÓN =================
+def _enviar_push(usuario_id, titulo, cuerpo, tag="ts-alerta"):
+    """Envía notificación push a todas las suscripciones del usuario."""
+    subs     = PushSubscripcion.query.filter_by(usuario_id=usuario_id).all()
+    caducadas = []
+
+    for sub in subs:
+        try:
+            webpush(
+                subscription_info={
+                    "endpoint": sub.endpoint,
+                    "keys": {"p256dh": sub.p256dh, "auth": sub.auth}
+                },
+                data=json.dumps({
+                    "title": titulo,
+                    "body":  cuerpo,
+                    "tag":   tag,
+                    "url":   "/panel"
+                }),
+                vapid_private_key=VAPID_PRIVATE_KEY,
+                vapid_claims={"sub": VAPID_EMAIL}
+            )
+        except WebPushException as e:
+            if e.response and e.response.status_code in (404, 410):
+                caducadas.append(sub.id)
+            else:
+                print(f"[Push] Error al enviar: {e}")
+
+    if caducadas:
+        PushSubscripcion.query.filter(
+            PushSubscripcion.id.in_(caducadas)
+        ).delete(synchronize_session=False)
+        db.session.commit()
+
+# ================= API: VAPID PUBLIC KEY =================
+@app.route('/api/push/vapid-public-key')
+def vapid_public_key():
+    return jsonify({"publicKey": VAPID_PUBLIC_KEY})
+
+# ================= API: GUARDAR SUSCRIPCIÓN PUSH =================
+@app.route('/api/push/subscribe', methods=['POST'])
+def push_subscribe():
+    if 'id' not in session:
+        return jsonify({"error": "no autenticado"}), 401
+
+    data = request.json
+    if not data or not all(k in data for k in ["endpoint", "p256dh", "auth"]):
+        return jsonify({"error": "datos de suscripción incompletos"}), 400
+
+    sub = PushSubscripcion.query.filter_by(endpoint=data["endpoint"]).first()
+    if sub:
+        sub.p256dh     = data["p256dh"]
+        sub.auth       = data["auth"]
+        sub.usuario_id = session['id']
+    else:
+        sub = PushSubscripcion(
+            usuario_id = session['id'],
+            endpoint   = data["endpoint"],
+            p256dh     = data["p256dh"],
+            auth       = data["auth"]
+        )
+        db.session.add(sub)
+
+    try:
+        db.session.commit()
+        return jsonify({"ok": True}), 201
+    except Exception as e:
+        db.session.rollback()
+        print(f"[Push] Error al guardar suscripción: {e}")
+        return jsonify({"error": "error al guardar suscripción"}), 500
+
+# ================= API: ELIMINAR SUSCRIPCIÓN PUSH =================
+@app.route('/api/push/unsubscribe', methods=['POST'])
+def push_unsubscribe():
+    if 'id' not in session:
+        return jsonify({"error": "no autenticado"}), 401
+
+    data = request.json
+    if not data or "endpoint" not in data:
+        return jsonify({"error": "endpoint requerido"}), 400
+
+    PushSubscripcion.query.filter_by(
+        endpoint   = data["endpoint"],
+        usuario_id = session['id']
+    ).delete()
+
+    try:
+        db.session.commit()
+        return jsonify({"ok": True}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "error al eliminar suscripción"}), 500
 
 # ================= API LISTAR CHOFERES =================
 @app.route('/api/choferes', methods=['GET'])
@@ -113,7 +232,6 @@ def obtener_historial(vehiculo_id):
 # ================= API MAPA / RUTA GPS =================
 @app.route('/api/mapa/<int:vehiculo_id>', methods=['GET'])
 def obtener_mapa(vehiculo_id):
-    """Devuelve puntos GPS para dibujar la ruta del vehículo."""
     if 'id' not in session:
         return jsonify({"error": "no autenticado"}), 401
 
@@ -130,7 +248,6 @@ def obtener_mapa(vehiculo_id):
     if not vehiculo:
         return jsonify({"error": "vehículo no encontrado"}), 404
 
-    # Solo registros con GPS válido, últimas 24h
     tiempo_limite = int(time.time()) - (24 * 60 * 60)
     registros = Historial.query.filter(
         Historial.id_vehiculo == vehiculo_id,
@@ -139,7 +256,6 @@ def obtener_mapa(vehiculo_id):
         Historial.timestamp >= tiempo_limite
     ).order_by(Historial.timestamp.asc()).all()
 
-    # Reducir a máximo 200 puntos para no saturar el mapa
     MAX_PUNTOS = 200
     if len(registros) > MAX_PUNTOS:
         paso      = len(registros) // MAX_PUNTOS
@@ -180,7 +296,11 @@ def vista_registro():
 def vista_panel():
     if 'usuario' not in session:
         return redirect('/')
-    return render_template('index.html', tipo=session['tipo'], nombre=session['usuario'], id_usuario=session['id'])
+    return render_template('index.html',
+        tipo       = session['tipo'],
+        nombre     = session['usuario'],
+        id_usuario = session['id']
+    )
 
 @app.route('/logout')
 def logout():
@@ -276,7 +396,12 @@ def crear_vehiculo():
         vehiculo = Vehiculo(nombre=nombre, identificador=identificador, usuario_id=session['id'])
         db.session.add(vehiculo)
         db.session.commit()
-        return jsonify({"ok": True, "vehiculo_id": vehiculo.id, "nombre": vehiculo.nombre, "identificador": vehiculo.identificador}), 201
+        return jsonify({
+            "ok": True,
+            "vehiculo_id":   vehiculo.id,
+            "nombre":        vehiculo.nombre,
+            "identificador": vehiculo.identificador
+        }), 201
     except Exception as e:
         db.session.rollback()
         print(f"Error al crear vehículo: {e}")
@@ -362,7 +487,7 @@ def recibir_datos():
             else:
                 db.session.rollback()
 
-        # ── GPS: leer coordenadas si vienen (campo opcional) ─────
+        # ── GPS: leer coordenadas si vienen ─────────────────────
         lat = data.get("lat", None)
         lng = data.get("lng", None)
         if lat is not None and lng is not None:
@@ -387,6 +512,19 @@ def recibir_datos():
         )
         db.session.add(registro)
         db.session.commit()
+
+        # ── PUSH: enviar notificación si hay alerta real ─────────
+        if data.get("alerta") == 1 and vehiculo_obj:
+            dueno = db.session.get(Usuario, vehiculo_obj.usuario_id)
+            if dueno:
+                nombre_v = data.get("vehiculo", "vehículo")
+                _enviar_push(
+                    usuario_id = dueno.id,
+                    titulo     = f"Alerta — {nombre_v}",
+                    cuerpo     = _texto_alerta(data),
+                    tag        = f"ts-alerta-{vehiculo_obj.id}"
+                )
+
         return jsonify({"ok": True})
 
     except Exception as e:
@@ -466,7 +604,6 @@ def obtener_estado():
 
 # ================= MAIN =================
 if __name__ == '__main__':
-    import os
     port  = int(os.getenv('PORT', 5000))
     debug = os.getenv('FLASK_ENV', 'production') == 'development'
     app.run(host='0.0.0.0', port=port, debug=debug)

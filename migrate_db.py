@@ -97,7 +97,33 @@ def ejecutar_migracion():
             print("  ✓ Columna 'chofer_id' agregada")
         else:
             print("  ✓ Ya existe")
-
+            
+        # ── MIGRACIÓN 4: tabla push_subscripciones ───────────────
+        print("\n[4] Verificando tabla 'push_subscripciones'...")
+        cursor.execute("""
+            SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES
+            WHERE TABLE_SCHEMA = DATABASE()
+            AND TABLE_NAME = 'push_subscripciones'
+        """)
+        if not cursor.fetchone():
+            cursor.execute("""
+                CREATE TABLE push_subscripciones (
+                    id         INT AUTO_INCREMENT PRIMARY KEY,
+                    usuario_id INT NOT NULL,
+                    endpoint   TEXT NOT NULL,
+                    p256dh     TEXT NOT NULL,
+                    auth       TEXT NOT NULL,
+                    created_at INT,
+                    CONSTRAINT uq_endpoint UNIQUE (endpoint(500)),
+                    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+                )
+            """)
+            conn.commit()
+            print("  ✓ Tabla 'push_subscripciones' creada")
+        else:
+            print("  ✓ Ya existe")
+            
+            
         print("\n[✓] Migración completada exitosamente")
         cursor.close()
         conn.close()

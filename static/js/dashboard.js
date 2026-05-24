@@ -45,6 +45,19 @@ function tickClock() {
     document.getElementById("pillSync").textContent = "SYNC " + t;
 }
 
+function obtenerMensajeAlerta(v) {
+    if (v.puerta === "abierta" && v.vibracion === 1) {
+        return "Puerta abierta y vibración detectada — revisar unidad";
+    }
+    if (v.puerta === "abierta") {
+        return "Puerta abierta — revisar acceso";
+    }
+    if (v.vibracion === 1) {
+        return "Vibración detectada — revisar vehículo";
+    }
+    return "Alerta activa — revisar unidad";
+}
+
 // ═══════════════════════════════════════════
 // MODAL — AGREGAR VEHÍCULO
 // ═══════════════════════════════════════════
@@ -471,7 +484,7 @@ function actualizarEstado() {
         });
 }
 
-function renderDatos(data) {
+function renderDatosOriginal(data) {
     const contenedor = document.getElementById("contenedor");
     const tipo       = localStorage.getItem("tipo") || "usuario";
     const keys       = Object.keys(data).filter(k => data[k] && data[k].vehiculo);
@@ -556,7 +569,7 @@ function crearTarjetaHTML(key, v, index, tipo) {
                     <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
                     <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
                 </svg>
-                Alerta activa — revisar unidad
+                ${obtenerMensajeAlerta(v)}
             </div>`;
     }
 
@@ -570,21 +583,21 @@ function crearTarjetaHTML(key, v, index, tipo) {
         : `<div class="gps-chip" style="color:var(--text-dim);">Sin GPS</div>`;
 
     const btnAcciones = tipo === "dueno" ? `
-        <button class="btn-historial" onclick="abrirModalHistorial(${v.vehiculo_id}, '${v.vehiculo}')">
+        <button class="btn-action btn-historial" onclick="abrirModalHistorial(${v.vehiculo_id}, '${v.vehiculo}')">
             <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
                 <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/>
                 <path d="M7 4v3.5l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
             </svg>
             Historial
         </button>
-        <button class="btn-mapa" onclick="abrirModalMapa(${v.vehiculo_id}, '${v.vehiculo}')">
+        <button class="btn-action btn-mapa" onclick="abrirModalMapa(${v.vehiculo_id}, '${v.vehiculo}')">
             <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
                 <circle cx="7" cy="5.5" r="3" stroke="currentColor" stroke-width="1.3"/>
                 <path d="M7 14s5-4.5 5-8.5a5 5 0 00-10 0C2 9.5 7 14 7 14z" stroke="currentColor" stroke-width="1.3"/>
             </svg>
             Ver mapa
         </button>
-        <button class="btn-asignar" onclick="abrirModalChofer(${v.vehiculo_id}, '${v.vehiculo}')">
+        <button class="btn-action btn-asignar" onclick="abrirModalChofer(${v.vehiculo_id}, '${v.vehiculo}')">
             <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
                 <circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/>
                 <path d="M1 13c0-3 2.5-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
@@ -596,14 +609,14 @@ function crearTarjetaHTML(key, v, index, tipo) {
                 <path d="M2 4h10M5 4V2h4v2M6 7v4M8 7v4M3 4l1 8h6l1-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         </button>` : `
-        <button class="btn-historial" onclick="abrirModalHistorial(${v.vehiculo_id}, '${v.vehiculo}')">
+        <button class="btn-action btn-historial" onclick="abrirModalHistorial(${v.vehiculo_id}, '${v.vehiculo}')">
             <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
                 <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/>
                 <path d="M7 4v3.5l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
             </svg>
             Historial
         </button>
-        <button class="btn-mapa" onclick="abrirModalMapa(${v.vehiculo_id}, '${v.vehiculo}')">
+        <button class="btn-action btn-mapa" onclick="abrirModalMapa(${v.vehiculo_id}, '${v.vehiculo}')">
             <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
                 <circle cx="7" cy="5.5" r="3" stroke="currentColor" stroke-width="1.3"/>
                 <path d="M7 14s5-4.5 5-8.5a5 5 0 00-10 0C2 9.5 7 14 7 14z" stroke="currentColor" stroke-width="1.3"/>
@@ -712,6 +725,7 @@ function actualizarTarjeta(key, v) {
                 Modo manual activo — sensores pausados`;
         }
     } else if (esAlerta) {
+        const mensajeAlerta = obtenerMensajeAlerta(v);
         if (!alertBar) {
             card.querySelector('.card-header').insertAdjacentHTML('beforebegin', `
                 <div class="alert-bar">
@@ -719,7 +733,7 @@ function actualizarTarjeta(key, v) {
                         <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
                         <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
                     </svg>
-                    Alerta activa — revisar unidad
+                    ${mensajeAlerta}
                 </div>`);
         } else {
             alertBar.className = "alert-bar";
@@ -728,7 +742,7 @@ function actualizarTarjeta(key, v) {
                     <path d="M7 2L1 12h12L7 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
                     <path d="M7 6v3M7 10.5v.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
                 </svg>
-                Alerta activa — revisar unidad`;
+                ${mensajeAlerta}`;
         }
     } else if (alertBar) {
         alertBar.remove();
@@ -770,4 +784,298 @@ function actualizarTarjeta(key, v) {
             gpsChip.innerHTML   = "Sin GPS";
         }
     }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NOTIFICACIONES
+// ═══════════════════════════════════════════════════════════
+
+const _alertasActivas = new Set();
+
+function _cargarAlertasInicio() {
+    try {
+        const guardadas = sessionStorage.getItem("ts_alertas_inicio");
+        const data = guardadas ? JSON.parse(guardadas) : {};
+        return new Map(Object.entries(data));
+    } catch {
+        return new Map();
+    }
+}
+
+function _guardarAlertasInicio() {
+    try {
+        sessionStorage.setItem("ts_alertas_inicio",
+            JSON.stringify(Object.fromEntries(_alertasInicio)));
+    } catch {}
+}
+
+const _alertasInicio = _cargarAlertasInicio();
+
+function _obtenerTsNotif(v, clave) {
+    const tsGuardado = _alertasInicio.get(clave);
+    if (tsGuardado) return Number(tsGuardado) * 1000;
+
+    const ts = Number(v.timestamp || Math.floor(Date.now() / 1000));
+    _alertasInicio.set(clave, ts);
+    _guardarAlertasInicio();
+    return ts * 1000;
+}
+
+function _procesarAlertas(data) {
+    const keys = Object.keys(data).filter(k => data[k] && data[k].vehiculo);
+
+    for (const key of keys) {
+        const v  = data[key];
+        const id = String(v.vehiculo_id);
+
+        const esAlerta = v.alerta === 1;
+        const esPanico = v.estado === "panico";
+        const alertaActiva = esAlerta || esPanico;
+
+        // ── Clave incluye el tipo para detectar cambio alerta → pánico ──
+        const claveActual = esPanico ? `${id}_panico` : `${id}_alerta`;
+
+        if (alertaActiva) {
+            if (!_alertasActivas.has(claveActual)) {
+                // Si cambia de alerta normal a pánico, limpiar la anterior
+                const claveAnterior = esPanico ? `${id}_alerta` : `${id}_panico`;
+                if (_alertasActivas.has(claveAnterior)) {
+                    _alertasActivas.delete(claveAnterior);
+                    // Cerrar notificación anterior si existe
+                    const notifAnterior = document.getElementById(
+                        `notif-${id}-${_alertasInicio.get(claveAnterior) || ""}`
+                    );
+                    if (notifAnterior) _cerrarNotif(notifAnterior.id);
+                    _alertasInicio.delete(claveAnterior);
+                }
+
+                _alertasActivas.add(claveActual);
+
+                if (!_alertasInicio.has(claveActual)) {
+                    _alertasInicio.set(claveActual,
+                        Number(v.timestamp || Math.floor(Date.now() / 1000)));
+                    _guardarAlertasInicio();
+                }
+
+                _mostrarNotifFlotante(v, _obtenerTsNotif(v, claveActual));
+                _enviarPushLocal(v.vehiculo, _mensajeAlertaNotif(v));
+            }
+        } else {
+            // Limpiar ambas claves al resolverse la alerta
+            [`${id}_alerta`, `${id}_panico`].forEach(clave => {
+                if (_alertasActivas.has(clave)) {
+                    _alertasActivas.delete(clave);
+                    _alertasInicio.delete(clave);
+                }
+            });
+            _guardarAlertasInicio();
+        }
+    }
+}
+
+function renderDatos(data) {
+    renderDatosOriginal(data);
+    _procesarAlertas(data);
+}
+
+function _mensajeAlertaNotif(v) {
+    if (v.estado === "panico")
+        return "El chofer activó el botón de pánico — atender de inmediato";
+    if (v.puerta === "abierta" && v.vibracion === 1)
+        return "Puerta abierta y vibración detectada simultáneamente";
+    if (v.puerta === "abierta")
+        return "Apertura no autorizada de la puerta del contenedor";
+    if (v.vibracion === 1)
+        return "Vibración sospechosa detectada en el vehículo";
+    return "Alerta activa — revisar unidad";
+}
+
+const MAX_NOTIFS = 2;
+
+function _prioridadNotif(el) {
+    // pánico = prioridad 2, alerta normal = prioridad 1
+    return el.classList.contains("ts-notif--panico") ? 2 : 1;
+}
+
+function _mostrarNotifFlotante(v, tsCreacion = Date.now()) {
+    const container = document.getElementById("ts-notif-container");
+    if (!container) return;
+
+    const esPanico   = v.estado === "panico";
+    const mensaje    = _mensajeAlertaNotif(v);
+    const tag        = esPanico ? "🚨 pánico activado" : "⚡ alerta activa";
+    const id         = `notif-${v.vehiculo_id}-${Math.floor(tsCreacion / 1000)}`;
+
+    // ── Tiempo inicial calculado ANTES de crear el HTML ─────
+    const tiempoInicial = _formatTiempoRelativo(tsCreacion);
+
+    const el = document.createElement("div");
+    el.className = `ts-notif${esPanico ? " ts-notif--panico" : ""}`;
+    el.id = id;
+    el.innerHTML = `
+        <div class="ts-notif-dot"></div>
+        <div class="ts-notif-body">
+            <div class="ts-notif-tag">${tag}</div>
+            <div class="ts-notif-vehiculo">${v.vehiculo}</div>
+            <div class="ts-notif-msg">${mensaje}</div>
+            <div class="ts-notif-time">${tiempoInicial}</div>
+            <div class="ts-notif-actions">
+                <button class="ts-notif-btn primary" onclick="window.location.href='/panel'">Ver dashboard</button>
+                <button class="ts-notif-btn secondary" onclick="_cerrarNotif('${id}')">Ignorar</button>
+            </div>
+        </div>
+        <button class="ts-notif-close" onclick="_cerrarNotif('${id}')">✕</button>`;
+
+    container.insertBefore(el, container.firstChild);
+
+    // ── Intervalo que actualiza el tiempo cada 10s ───────────
+    const timeEl   = el.querySelector(".ts-notif-time");
+    const intervalo = setInterval(() => {
+        if (!document.getElementById(id)) { clearInterval(intervalo); return; }
+        timeEl.textContent = _formatTiempoRelativo(tsCreacion);
+    }, 10000);
+    el._intervalo = intervalo;
+
+    if (!esPanico) setTimeout(() => _cerrarNotif(id), 8000);
+
+    _limpiarNotifExceso(container);
+}
+
+function _limpiarNotifExceso(container) {
+    const notifs = Array.from(container.querySelectorAll(".ts-notif:not(.ts-notif--salida)"));
+    if (notifs.length <= MAX_NOTIFS) return;
+
+    // Ordenar por prioridad: mantener las de mayor prioridad
+    // Las de pánico tienen prioridad 2, las normales 1
+    // Si hay más de MAX_NOTIFS, eliminar la de menor prioridad más antigua
+    // (que está al final del array porque insertamos al principio)
+    const porPrioridad = [...notifs].sort((a, b) => {
+        const pa = _prioridadNotif(a);
+        const pb = _prioridadNotif(b);
+        if (pa !== pb) return pa - pb; // menor prioridad primero → se elimina
+        // misma prioridad → la más antigua (último en el DOM) se elimina
+        return notifs.indexOf(b) - notifs.indexOf(a);
+    });
+
+    // Eliminar las que sobran (las de menor prioridad/más antiguas)
+    const sobran = porPrioridad.slice(0, notifs.length - MAX_NOTIFS);
+    sobran.forEach(el => _cerrarNotif(el.id));
+}
+
+function _cerrarNotif(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el._intervalo) clearInterval(el._intervalo); // ← agregar esta línea
+    el.classList.add("ts-notif--salida");
+    setTimeout(() => el.remove(), 260);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  WEB PUSH — Service Worker + suscripción
+// ═══════════════════════════════════════════════════════════
+
+let _swRegistration  = null;
+let _pushSuscripcion = null;
+
+async function inicializarPush() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+    try {
+        _swRegistration = await navigator.serviceWorker.register('/static/js/sw.js');
+
+        const perm = Notification.permission;
+        if (perm === "granted") {
+            await _suscribirPush();
+        } else if (perm === "default") {
+            _mostrarBotonNotif();
+        }
+    } catch (err) {
+        console.error("[Push] Error al registrar SW:", err);
+    }
+}
+
+async function solicitarPermisoNotificaciones() {
+    const permiso = await Notification.requestPermission();
+    if (permiso === "granted") {
+        await _suscribirPush();
+        _ocultarBotonNotif();
+        _mostrarToast("✅ Notificaciones activadas");
+    } else {
+        _mostrarToast("⚠ Notificaciones denegadas");
+    }
+}
+
+async function _suscribirPush() {
+    try {
+        const res = await fetch("/api/push/vapid-public-key");
+        const { publicKey } = await res.json();
+
+        _pushSuscripcion = await _swRegistration.pushManager.subscribe({
+            userVisibleOnly:      true,
+            applicationServerKey: _urlBase64ToUint8Array(publicKey)
+        });
+
+        const subJson = _pushSuscripcion.toJSON();
+        await fetch("/api/push/subscribe", {
+            method:  "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                endpoint: subJson.endpoint,
+                p256dh:   subJson.keys.p256dh,
+                auth:     subJson.keys.auth
+            })
+        });
+        console.log("[Push] Suscripción activa");
+    } catch (err) {
+        console.error("[Push] Error al suscribir:", err);
+    }
+}
+
+function _enviarPushLocal(vehiculo, mensaje) {
+    if (Notification.permission !== "granted") return;
+    if (document.visibilityState === "visible") return;
+    new Notification(`🚨 TrackSecurity — ${vehiculo}`, {
+        body:     mensaje,
+        tag:      `ts-${vehiculo}`,
+        renotify: true
+    });
+}
+
+function _urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64  = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const raw     = window.atob(base64);
+    return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+}
+
+function _mostrarBotonNotif() {
+    const btn = document.getElementById("ts-btn-notif");
+    if (btn) btn.style.display = "flex";
+}
+
+function _ocultarBotonNotif() {
+    const btn = document.getElementById("ts-btn-notif");
+    if (btn) btn.style.display = "none";
+}
+
+function _mostrarToast(msg) {
+    const t = document.getElementById("ts-toast");
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add("ts-toast--visible");
+    setTimeout(() => t.classList.remove("ts-toast--visible"), 3500);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    inicializarPush();
+});
+
+function _formatTiempoRelativo(ts) {
+    const seg = Math.floor((Date.now() - ts) / 1000);
+    if (seg < 10)  return "ahora mismo";
+    if (seg < 60)  return `hace ${seg} segundos`;
+    const min = Math.floor(seg / 60);
+    if (min < 60)  return `hace ${min} minuto${min > 1 ? "s" : ""}`;
+    const h = Math.floor(min / 60);
+    return `hace ${h} hora${h > 1 ? "s" : ""}`;
 }

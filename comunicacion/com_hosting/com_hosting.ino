@@ -5,7 +5,8 @@
 /* ================= CONFIGURACIÓN ================= */
 const char* ssid     = "erick_2.4G";
 const char* password = "secom100";
-const char* server   = "http://192.168.0.103:5000/datos";
+const char* server   = "http://192.168.0.102:5000/datos";
+
 
 /* ================= UART FPGA ================= */
 HardwareSerial SerialFPGA(2);
@@ -15,6 +16,8 @@ TinyGPSPlus gps;
 /* ================= PINES ================= */
 const int PIN_PANICO = 13;
 const int PIN_MANUAL = 14;
+const int LED_PANICO = 12;   
+const int LED_MANUAL = 27;
 
 /* ================= VARIABLES FPGA ================= */
 String vehiculo  = "camion_1";
@@ -26,9 +29,6 @@ int    vibracion = 0;
 /* ================= VARIABLES BOTONES ================= */
 bool modoManual             = false;
 bool modoPanico             = false;
-bool botonPanicoPresionado  = false;
-unsigned long tiempoBotonPanico   = 0;
-const unsigned long TIEMPO_PANICO = 1000;
 
 /* ================= GPS ================= */
 float lat       = 0.0;
@@ -48,7 +48,7 @@ const unsigned long INTERVALO_MAXIMO = 1500;
 
 /* ================= WIFI ================= */
 unsigned long ultimoIntentoWiFi = 0;
-
+bool botonPanicoPresionado  = false;
 /* ================= LOG LIMPIO ================= */
 // Solo imprime si el mensaje cambió — evita spam repetido
 String _ultimoLog = "";
@@ -83,6 +83,10 @@ void setup() {
 
     pinMode(PIN_PANICO, INPUT_PULLUP);
     pinMode(PIN_MANUAL, INPUT_PULLUP);
+    pinMode(LED_PANICO, OUTPUT);    // ← agregar
+    pinMode(LED_MANUAL, OUTPUT);    // ← agregar
+    digitalWrite(LED_PANICO, LOW);  // ← apagado al inicio
+    digitalWrite(LED_MANUAL, LOW);  // ← apagado al inicio
 
     Serial.println("\n=== TrackSecurity ESP32 ===");
     Serial.print("Conectando WiFi");
@@ -156,31 +160,22 @@ void leerBotones() {
             ? "🔧 MODO MANUAL activado"
             : "✅ MODO MANUAL desactivado");
         if (!modoManual) estado = "activo";
+        digitalWrite(LED_MANUAL, modoManual ? HIGH : LOW);  // ← agregar
     }
 
-    /* Botón pánico con pulsación larga */
-    bool presionado = (digitalRead(PIN_PANICO) == LOW);
+    /* Botón pánico — lectura directa (botón de enclave) */
+    bool panicoActivo = (digitalRead(PIN_PANICO) == LOW);
 
-    if (presionado && !botonPanicoPresionado) {
-        tiempoBotonPanico     = millis();
-        botonPanicoPresionado = true;
-    }
-
-    if (!presionado && botonPanicoPresionado) {
-        unsigned long duracion = millis() - tiempoBotonPanico;
-        botonPanicoPresionado  = false;
-
-        if (duracion >= TIEMPO_PANICO) {
-            modoPanico = !modoPanico;
-            logSiempre(modoPanico
-                ? "🚨 PÁNICO ACTIVADO"
-                : "✅ PÁNICO desactivado");
-            if (!modoPanico) {
-                estado = "activo";
-                alerta = 0;
-            }
+    if (panicoActivo != modoPanico) {
+        modoPanico = panicoActivo;
+        logSiempre(modoPanico
+            ? "🚨 PÁNICO ACTIVADO"
+            : "✅ PÁNICO desactivado");
+        if (!modoPanico) {
+            estado = "activo";
+            alerta = 0;
         }
-        // pulsación corta → silencio total, no imprime nada
+        digitalWrite(LED_PANICO, modoPanico ? HIGH : LOW);
     }
 }
 
@@ -190,6 +185,7 @@ void leerGPS() {
         gps.encode(SerialGPS.read());
     }
 
+    /*
     if (!gps.location.isValid() || !gps.location.isUpdated()) {
         // Solo avisa una vez, no cada segundo
         if (millis() > 15000 && gps.charsProcessed() < 10) {
@@ -198,6 +194,16 @@ void leerGPS() {
             log("GPS buscando satélites...");
         }
         return;
+    }
+    */
+    if (!gps.location.isValid() || !gps.location.isUpdated()) {
+
+    // ================= GPS SIMULADO TEMPORAL =================
+    lat = 16.756360;     // Tuxtla Gutiérrez ejemplo
+    lng = -93.171529;
+    gpsValido = true;
+
+    return;
     }
 
     /* Filtro HDOP — calidad de señal */
@@ -292,7 +298,7 @@ void enviarDatos() {
     HTTPClient http;
     http.begin(server);
     http.addHeader("Content-Type", "application/json");
-    http.setTimeout(800);
+    http.setTimeout(1500);
 
     String latStr = gpsValido ? String(lat, 6) : "null";
     String lngStr = gpsValido ? String(lng, 6) : "null";

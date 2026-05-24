@@ -35,3 +35,15 @@ class Historial(db.Model):
     # ── GPS ──────────────────────────────────────────────────────
     lat         = db.Column(db.Float, nullable=True)  # latitud
     lng         = db.Column(db.Float, nullable=True)  # longitud
+    
+# ================= PUSH SUBSCRIPCIONES =================
+class PushSubscripcion(db.Model):
+    """Guarda las suscripciones Web Push de cada usuario."""
+    __tablename__ = 'push_subscripciones'
+
+    id         = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    endpoint   = db.Column(db.Text, nullable=False, unique=True)
+    p256dh     = db.Column(db.Text, nullable=False)
+    auth       = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.Integer, default=lambda: int(__import__('time').time()))
