@@ -70,5 +70,18 @@
     btn.querySelector(".eye-closed").style.display = isHidden ? ""       : "none";
   }
 </script>
+
+{% if demo %}
+<script>
+  // Rellenar campos automáticamente si viene del QR
+  window.addEventListener('DOMContentLoaded', () => {
+    const correoInput = document.getElementById('correo');
+    const passInput   = document.getElementById('password');
+    if (correoInput) correoInput.value = 'juan@gmail.com';
+    if (passInput)   passInput.value   = 'juan123';
+  });
+</script>
+{% endif %}
+
 </body>
 </html>

@@ -532,11 +532,18 @@ def recibir_datos():
         db.session.rollback()
         print(f"Error al guardar datos: {e}")
         return jsonify({"error": "Error interno del servidor"}), 500
-
+    
+# ================= SERVIR SERVICE WORKER =================
 @app.route('/sw.js')
 def service_worker():
     return send_from_directory('static/js', 'sw.js',
                                mimetype='application/javascript')
+    
+#para la presentación, ruta que carga el login con demo=True para autocompletar el correo y contraseña    
+@app.route('/demo')
+def demo():
+    """Ruta especial para la presentación — rellena el login automáticamente"""
+    return render_template('login.html', demo=True)
 
 # ================= OBTENER ESTADO =================
 @app.route('/estado', methods=['GET'])
