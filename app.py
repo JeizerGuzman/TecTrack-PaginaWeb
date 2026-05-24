@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template, session, redirect
+from flask import send_from_directory
 from flask_cors import CORS
 import time
 import bcrypt
@@ -531,6 +532,11 @@ def recibir_datos():
         db.session.rollback()
         print(f"Error al guardar datos: {e}")
         return jsonify({"error": "Error interno del servidor"}), 500
+
+@app.route('/sw.js')
+def service_worker():
+    return send_from_directory('static/js', 'sw.js',
+                               mimetype='application/javascript')
 
 # ================= OBTENER ESTADO =================
 @app.route('/estado', methods=['GET'])

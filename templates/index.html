@@ -17,19 +17,25 @@
 <!-- Contenedor de notificaciones flotantes -->
 <div id="ts-notif-container"></div>
 
-<!-- Botón flotante para activar notificaciones push -->
-<button id="ts-btn-notif" onclick="solicitarPermisoNotificaciones()">
-  <div class="ts-btn-notif-icon">
-    <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
-      <path d="M7 1a4 4 0 014 4v3l1 1.5H2L3 8V5a4 4 0 014-4z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M5.5 11.5a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-    </svg>
+<!-- Contenedor flotante para activar notificaciones push -->
+<div id="ts-btn-notif">
+  <div class="ts-btn-notif-header">
+    <div class="ts-btn-notif-icon">
+      <svg width="15" height="15" viewBox="0 0 14 14" fill="none">
+        <path d="M7 1a4 4 0 014 4v3l1 1.5H2L3 8V5a4 4 0 014-4z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5.5 11.5a1.5 1.5 0 003 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="ts-btn-notif-texto">
+      <span class="ts-btn-notif-titulo">¿Quieres activar las notificaciones?</span>
+      <span class="ts-btn-notif-sub">Recibe alertas y avisos importantes</span>
+    </div>
   </div>
-  <div class="ts-btn-notif-texto">
-    <span class="ts-btn-notif-titulo">Activar notificaciones</span>
-    <span class="ts-btn-notif-sub">Recibe alertas aunque no estés aquí</span>
+  <div class="ts-btn-notif-actions">
+    <button type="button" class="ts-btn-notif-accept" onclick="aceptarNotificaciones()">Aceptar</button>
+    <button type="button" class="ts-btn-notif-reject" onclick="rechazarNotificaciones()">Rechazar</button>
   </div>
-</button>
+</div>
 
 <!-- Toast de confirmación -->
 <div id="ts-toast"></div>

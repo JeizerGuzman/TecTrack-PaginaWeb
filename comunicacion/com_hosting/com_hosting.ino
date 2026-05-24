@@ -160,12 +160,20 @@ void leerBotones() {
             ? "🔧 MODO MANUAL activado"
             : "✅ MODO MANUAL desactivado");
         if (!modoManual) estado = "activo";
-        digitalWrite(LED_MANUAL, modoManual ? HIGH : LOW);  // ← agregar
+        digitalWrite(LED_MANUAL, modoManual ? HIGH : LOW);
+
+        // ── Notificar a la FPGA del cambio de modo ──────────
+        if (modoManual) {
+            SerialFPGA.write('M');   // M = Manual ON  → FPGA silencia buzzer
+            logSiempre("→ FPGA: enviado 'M' (silenciar buzzer)");
+        } else {
+            SerialFPGA.write('R');   // R = Resume → FPGA reactiva buzzer
+            logSiempre("→ FPGA: enviado 'R' (reactivar buzzer)");
+        }
     }
 
-    /* Botón pánico — lectura directa (botón de enclave) */
+    /* Botón pánico */
     bool panicoActivo = (digitalRead(PIN_PANICO) == LOW);
-
     if (panicoActivo != modoPanico) {
         modoPanico = panicoActivo;
         logSiempre(modoPanico

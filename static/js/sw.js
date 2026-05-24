@@ -17,8 +17,8 @@ self.addEventListener('push', function(event) {
         body:      payload.body,
         tag:       payload.tag,
         renotify:  true,
-        icon:      '/static/img/icono.png',   // opcional: agrega un ícono
-        badge:     '/static/img/badge.png',   // opcional
+        icon:      '/static/img/badge.png',   // opcional: agrega un ícono
+        badge:     '/static/img/logo.ico',   // opcional
         vibrate:   [200, 100, 200],
         data:      { url: payload.url || '/panel' },
         actions: [

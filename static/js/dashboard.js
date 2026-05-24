@@ -994,8 +994,9 @@ async function inicializarPush() {
     }
 }
 
-async function solicitarPermisoNotificaciones() {
+async function aceptarNotificaciones() {
     const permiso = await Notification.requestPermission();
+
     if (permiso === "granted") {
         await _suscribirPush();
         _ocultarBotonNotif();
@@ -1003,6 +1004,10 @@ async function solicitarPermisoNotificaciones() {
     } else {
         _mostrarToast("⚠ Notificaciones denegadas");
     }
+}
+
+function rechazarNotificaciones() {
+    _mostrarToast("⚠ Notificaciones denegadas");
 }
 
 async function _suscribirPush() {
