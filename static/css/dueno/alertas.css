@@ -1,0 +1,586 @@
+/* ============================================================
+   ALERTAS - TrackSecurity
+   Diseño tipo tarjetas modernas para módulo de alertas del dueño.
+   ============================================================ */
+
+.alertas-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+
+.alertas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.alertas-header h2 {
+    margin: 0 0 6px;
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: var(--color-texto);
+    letter-spacing: -0.03em;
+}
+
+.alertas-header p {
+    margin: 0;
+    color: var(--color-texto-secundario);
+    line-height: 1.5;
+    max-width: 560px;
+}
+
+.alertas-refresh-info {
+    flex-shrink: 0;
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde-suave);
+    border-radius: var(--radius-md);
+    padding: 10px 18px;
+    text-align: right;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 170px;
+}
+
+.alertas-refresh-info span:first-child {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--color-texto);
+}
+
+#estadoCargaAlertas {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--color-primario);
+}
+
+/* ── Stats ─────────────────────────────────────────────── */
+
+.alertas-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.alerta-stat-card {
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px !important;
+}
+
+.alerta-stat-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+}
+
+.alerta-stat-card:nth-child(1)::before { background: var(--color-primario); }
+.alerta-stat-card:nth-child(2)::before { background: #f59e0b; }
+.alerta-stat-card:nth-child(3)::before { background: #16a34a; }
+.alerta-stat-card:nth-child(4)::before { background: #dc2626; }
+
+.alerta-stat-card p {
+    margin: 0 0 8px;
+    font-size: 0.72rem;
+    color: var(--color-texto-secundario);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+}
+
+.alerta-stat-card strong {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--color-texto);
+}
+
+/* ── Filtros ───────────────────────────────────────────── */
+
+.filtros-alertas-card {
+    padding: 18px;
+    border-radius: 18px !important;
+}
+
+.filtros-alertas-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 14px;
+}
+
+/* ── Lista ─────────────────────────────────────────────── */
+
+.alertas-list-card {
+    border-radius: 22px !important;
+}
+
+.alertas-listado {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ── Tarjeta de alerta ─────────────────────────────────── */
+
+.alerta-card {
+    position: relative;
+    display: grid;
+    grid-template-columns:72px minmax(0,1fr) 210px;
+    align-items: center;
+    gap: 16px;
+    min-height: 118px;
+    padding: 16px 20px;
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.055);
+    overflow: hidden;
+    transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.alerta-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+}
+
+/* Barra lateral de severidad */
+.alerta-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: #f59e0b;
+}
+
+.alerta-card.nivel-critico::before,
+.alerta-card.nivel-alto::before {
+    background: #ef4444;
+}
+
+.alerta-card.nivel-medio::before {
+    background: #f59e0b;
+}
+
+.alerta-card.nivel-bajo::before {
+    background: #22c55e;
+}
+
+/* Icono circular */
+.alerta-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    font-weight: 900;
+    background: #f8fafc;
+    color: var(--color-texto-secundario);
+}
+
+.alerta-card.nivel-critico .alerta-icon,
+.alerta-card.nivel-alto .alerta-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.alerta-card.nivel-medio .alerta-icon {
+    background: #ffedd5;
+    color: #ea580c;
+}
+
+.alerta-card.nivel-bajo .alerta-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+/* Contenido principal */
+.alerta-main {
+    min-width: 0;
+}
+
+.alerta-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 4px;
+}
+
+.alerta-title-row h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: var(--color-texto);
+    letter-spacing: -0.035em;
+}
+
+.alerta-title-row p {
+    margin: 0;
+    color: var(--color-texto-secundario);
+    font-size: 0.84rem;
+    line-height: 1.35;
+}
+
+/* Metadata chips */
+.alerta-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+    font-size: 0.78rem;
+    color: var(--color-texto-secundario);
+}
+
+.alerta-meta span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    background: #f8fafc;
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 999px;
+    padding: 0 10px;
+    font-weight: 700;
+    font-size:.72rem;
+}
+
+/* Info de atención */
+.alerta-atencion-info {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.78rem;
+}
+
+.alerta-atencion-info span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+    border-radius: 999px;
+    padding: 0 12px;
+    font-weight: 800;
+}
+
+/* Acciones */
+.alerta-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+    border-left: 1px solid var(--color-borde-suave);
+    padding-left: 26px;
+}
+
+.alerta-actions .btn,
+.alerta-actions a,
+.alerta-actions button,
+.estado-atendida {
+    width: 100%;
+    min-height: 38px;
+    border-radius: 14px;
+    font-size: 0.82rem;
+    font-weight: 900;
+}
+
+.alerta-actions .btn-outline {
+    border: 1.5px solid var(--color-primario);
+    color: var(--color-primario);
+    background: #ffffff;
+}
+
+.alerta-actions .btn-outline:hover {
+    background: rgba(37, 99, 235, 0.08);
+}
+
+.alerta-actions .btn-primary {
+    background: var(--color-primario);
+    color: #ffffff;
+    box-shadow: 0 12px 28px rgba(37, 99, 235, 0.22);
+}
+
+/* Atendida */
+.alerta-atendida {
+    opacity: 0.88;
+}
+
+.estado-atendida {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #dcfce7;
+    color: #16a34a;
+    border: 0;
+}
+
+/* Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 16px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.badge-critico,
+.badge-alto {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.badge-medio {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.badge-bajo {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+/* ── Modal atender alerta ───────────────────────────────── */
+
+.modal-alerta-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.modal-alerta-overlay.visible {
+    display: flex;
+}
+
+.modal-alerta {
+    width: 100%;
+    max-width: 480px;
+    background: var(--color-superficie);
+    border-radius: 22px;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+    border: 1px solid var(--color-borde-suave);
+    overflow: hidden;
+}
+
+.modal-alerta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--color-borde-suave);
+}
+
+.modal-alerta-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: var(--color-texto);
+}
+
+.modal-alerta-close {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: var(--color-texto-secundario);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.modal-alerta-body {
+    padding: 20px;
+}
+
+.modal-alerta-body p {
+    margin: 0 0 14px;
+    color: var(--color-texto-secundario);
+    line-height: 1.5;
+}
+
+.modal-alerta-info {
+    border: 1px solid var(--color-borde-suave);
+    background: #fafbfd;
+    border-radius: var(--radius-md);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.modal-alerta-info strong {
+    color: var(--color-texto);
+    font-size: 0.96rem;
+}
+
+.modal-alerta-info span,
+.modal-alerta-info small {
+    color: var(--color-texto-secundario);
+}
+
+.modal-alerta-note {
+    margin-top: 14px !important;
+    font-size: 0.82rem;
+}
+
+.modal-alerta-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 20px;
+    border-top: 1px solid var(--color-borde-suave);
+    background: #fafbfd;
+}
+
+/* ── Toast ─────────────────────────────────────────────── */
+
+.alertas-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 10000;
+    max-width: 360px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 0.92rem;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.alertas-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.alertas-toast.success {
+    background: #16a34a;
+}
+
+.alertas-toast.error {
+    background: #dc2626;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+
+@media (max-width: 1150px) {
+    .alertas-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filtros-alertas-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .alerta-card {
+        grid-template-columns: 90px minmax(0, 1fr);
+    }
+
+    .alerta-actions {
+        grid-column: 1 / -1;
+        border-left: 0;
+        border-top: 1px solid var(--color-borde-suave);
+        padding-left: 0;
+        padding-top: 18px;
+        flex-direction: row;
+    }
+}
+
+@media (max-width: 700px) {
+    .alertas-header {
+        flex-direction: column;
+    }
+
+    .alertas-refresh-info {
+        width: 100%;
+        text-align: left;
+    }
+
+    .alertas-stats-grid,
+    .filtros-alertas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .alerta-card {
+        grid-template-columns: 1fr;
+        padding: 22px;
+        text-align: left;
+    }
+
+    .alerta-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .alerta-title-row {
+        flex-direction: column;
+    }
+
+    .alerta-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 520px) {
+    .modal-alerta-actions {
+        flex-direction: column;
+    }
+
+    .modal-alerta-actions .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 800px) {
+    .alertas-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .alertas-stats-grid .stat-card {
+        min-height: 106px;
+        padding: 16px 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .alertas-stats-grid .stat-card p {
+        min-height: 34px;
+        margin: 0;
+        font-size: 0.70rem;
+        line-height: 1.25;
+    }
+
+    .alertas-stats-grid .stat-card strong {
+        margin-top: auto;
+        font-size: 1.75rem;
+        line-height: 1;
+    }
+}

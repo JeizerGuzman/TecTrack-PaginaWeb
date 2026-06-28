@@ -1,0 +1,202 @@
+{% extends "base/base.html" %}
+
+{% block title %}Usuarios - TrackSecurity{% endblock %}
+{% block page_title %}Usuarios{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/usuarios.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="usuarios-page">
+
+    <section class="usuarios-header">
+        <div>
+            <p class="section-kicker">Gestión de accesos</p>
+            <h2>Usuarios de la empresa</h2>
+            <p>Administra choferes y supervisores vinculados a tu empresa.</p>
+        </div>
+
+        <div class="usuarios-header-actions">
+            <a href="/dueno/usuarios/nuevo" class="btn btn-primary">
+                + Crear usuario
+            </a>
+        </div>
+    </section>
+
+    <section class="usuarios-stats-grid">
+        <article class="card usuario-stat-card">
+            <p>Total usuarios</p>
+            <strong id="statUsuariosTotal">0</strong>
+        </article>
+
+        <article class="card usuario-stat-card">
+            <p>Choferes</p>
+            <strong id="statUsuariosChoferes">0</strong>
+        </article>
+
+        <article class="card usuario-stat-card">
+            <p>Supervisores</p>
+            <strong id="statUsuariosSupervisores">0</strong>
+        </article>
+
+        <article class="card usuario-stat-card">
+            <p>Activos</p>
+            <strong id="statUsuariosActivos">0</strong>
+        </article>
+    </section>
+
+    <section class="card usuarios-filtros-card">
+        <div class="usuarios-filtros-grid">
+            <div class="form-group">
+                <label for="buscarUsuario">Buscar usuario</label>
+                <input type="text" id="buscarUsuario" placeholder="Buscar por nombre o correo">
+            </div>
+
+            <div class="form-group">
+                <label for="filtroTipoUsuario">Tipo</label>
+                <select id="filtroTipoUsuario">
+                    <option value="todos">Todos</option>
+                    <option value="chofer">Choferes</option>
+                    <option value="supervisor">Supervisores</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="filtroEstadoUsuario">Estado</label>
+                <select id="filtroEstadoUsuario">
+                    <option value="todos">Todos</option>
+                    <option value="activo">Activos</option>
+                    <option value="inactivo">Inactivos</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="card usuarios-list-card">
+        <div class="card-header card-header-row">
+            <div>
+                <h3>Listado de usuarios</h3>
+                <p>Usuarios registrados para operar o supervisar la flota.</p>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div id="usuariosListado" class="usuarios-listado">
+                <div class="empty-state">
+                    <strong>Cargando usuarios...</strong>
+                    <p>Espera mientras se consulta la información.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</section>
+<div id="modalDesactivarUsuario" class="modal-usuario-overlay">
+    <div class="modal-usuario">
+        <div class="modal-usuario-header">
+            <h3>Desactivar usuario</h3>
+            <button type="button" id="btnCerrarModalUsuario" class="modal-usuario-close">×</button>
+        </div>
+
+        <div class="modal-usuario-body">
+            <p>
+                Vas a desactivar a:
+            </p>
+
+            <div class="modal-usuario-info">
+                <strong id="modalUsuarioNombre">Usuario</strong>
+                <span id="modalUsuarioCorreo">correo@ejemplo.com</span>
+            </div>
+
+            <p class="modal-usuario-note">
+                Mientras esté inactivo, no podrá iniciar sesión ni acceder al sistema.
+                Su historial y datos se conservarán.
+            </p>
+        </div>
+
+        <div class="modal-usuario-actions">
+            <button type="button" id="btnCancelarDesactivarUsuario" class="btn btn-outline">
+                Cancelar
+            </button>
+
+            <button type="button" id="btnConfirmarDesactivarUsuario" class="btn btn-danger">
+                Desactivar usuario
+            </button>
+        </div>
+    </div>
+</div>
+<div id="modalReactivarUsuario" class="modal-usuario-overlay">
+    <div class="modal-usuario">
+        <div class="modal-usuario-header">
+            <h3>Reactivar usuario</h3>
+            <button type="button" id="btnCerrarModalReactivarUsuario" class="modal-usuario-close">×</button>
+        </div>
+
+        <div class="modal-usuario-body">
+            <p>Vas a reactivar a:</p>
+
+            <div class="modal-usuario-info">
+                <strong id="modalReactivarUsuarioNombre">Usuario</strong>
+                <span id="modalReactivarUsuarioCorreo">correo@ejemplo.com</span>
+            </div>
+
+            <p class="modal-usuario-note">
+                Al reactivarlo, podrá volver a iniciar sesión y acceder al sistema según su rol.
+            </p>
+        </div>
+
+        <div class="modal-usuario-actions">
+            <button type="button" id="btnCancelarReactivarUsuario" class="btn btn-outline">
+                Cancelar
+            </button>
+
+            <button type="button" id="btnConfirmarReactivarUsuario" class="btn btn-primary">
+                Reactivar usuario
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="modalResetPassword" class="modal-usuario-overlay">
+    <div class="modal-usuario">
+        <div class="modal-usuario-header">
+            <h3>Restablecer contraseña</h3>
+            <button type="button" id="btnCerrarModalResetPassword" class="modal-usuario-close">×</button>
+        </div>
+
+        <div class="modal-usuario-body">
+            <p>Genera una nueva contraseña temporal para:</p>
+
+            <div class="modal-usuario-info">
+                <strong id="modalResetUsuarioNombre">Usuario</strong>
+                <span id="modalResetUsuarioCorreo">correo@ejemplo.com</span>
+            </div>
+
+            <div class="form-group" style="margin-top: 16px;">
+                <label for="nuevaPasswordUsuario">Nueva contraseña temporal</label>
+                <input type="text" id="nuevaPasswordUsuario" placeholder="Mínimo 6 caracteres">
+            </div>
+        </div>
+
+        <div class="modal-usuario-actions">
+            <button type="button" id="btnCopiarNuevaPassword" class="btn btn-outline">
+                Copiar
+            </button>
+
+            <button type="button" id="btnCancelarResetPassword" class="btn btn-outline">
+                Cancelar
+            </button>
+
+            <button type="button" id="btnConfirmarResetPassword" class="btn btn-primary">
+                Guardar contraseña
+            </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dueno/usuarios/index.js') }}"></script>
+{% endblock %}

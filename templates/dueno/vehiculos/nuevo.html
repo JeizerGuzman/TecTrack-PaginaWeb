@@ -1,0 +1,96 @@
+{% extends "base/base.html" %}
+
+{% block title %}Nuevo vehículo - TrackSecurity{% endblock %}
+{% block page_title %}Agregar vehículo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/vehiculos.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="vehiculo-form-page">
+
+    <section class="vehiculos-header">
+        <div>
+            <p class="section-kicker">Registro de unidad</p>
+            <h2>Agregar nuevo vehículo</h2>
+            <p>
+                Registra una nueva unidad para la empresa. El dispositivo y la instalación
+                se vincularán más adelante desde el flujo del técnico.
+            </p>
+        </div>
+
+        <div class="vehiculos-header-actions">
+            <a href="{{ url_for('dueno_vehiculos') }}" class="btn btn-outline">
+                Volver a vehículos
+            </a>
+        </div>
+    </section>
+
+    <section class="card form-card">
+        <div class="card-header">
+            <h3>Datos del vehículo</h3>
+            <p>Captura la información administrativa de la unidad.</p>
+        </div>
+
+        <div class="card-body">
+            <form id="formNuevoVehiculo" class="vehiculo-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nombre">Nombre del vehículo</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej. Camión Norte" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="identificador">Identificador interno</label>
+                        <input type="text" id="identificador" name="identificador" placeholder="Ej. CAMION_01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="placa">Placa</label>
+                        <input type="text" id="placa" name="placa" placeholder="Ej. 12-AB-9C">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marca">Marca</label>
+                        <input type="text" id="marca" name="marca" placeholder="Ej. Freightliner">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modelo">Modelo</label>
+                        <input type="text" id="modelo" name="modelo" placeholder="Ej. Cascadia">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="anio">Año</label>
+                        <input type="number" id="anio" name="anio" min="1990" max="2100" placeholder="Ej. 2023">
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label for="chofer_id">Chofer asignado (opcional)</label>
+                        <select id="chofer_id" name="chofer_id">
+                            <option value="">Sin asignar por ahora</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <div id="mensajeVehiculoNuevo" class="form-message"></div>
+
+                    <div class="form-actions">
+                        <a href="{{ url_for('dueno_vehiculos') }}" class="btn btn-outline">Cancelar</a>
+                        <button type="submit" class="btn btn-primary" id="btnGuardarVehiculo">
+                            Guardar vehículo
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dueno/vehiculos/nuevo.js') }}"></script>
+{% endblock %}

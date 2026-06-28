@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TrackSecurity{% endblock %}</title>
+
+    <!-- CSS global único. -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="auth-body">
+    {% block content %}{% endblock %}
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/auth/login.js') }}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

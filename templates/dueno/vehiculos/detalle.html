@@ -1,0 +1,185 @@
+{% extends "base/base.html" %}
+
+{% block title %}Detalle del vehículo - TrackSecurity{% endblock %}
+{% block page_title %}Detalle del vehículo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/vehiculos.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="vehiculo-detalle-page" data-vehiculo-id="{{ vehiculo_id }}">
+
+    <section class="vehiculos-header">
+        <div>
+            <p class="section-kicker">Detalle operativo</p>
+            <h2 id="detalleVehiculoTitulo">Vehículo</h2>
+            <p id="detalleVehiculoSubtitulo">
+                Consulta información completa de la unidad, su estado, ubicación y alertas.
+            </p>
+        </div>
+
+        <div class="vehiculos-header-actions">
+            <button type="button" class="btn btn-outline" onclick="volverPaginaAnterior()">
+                Volver
+            </button>
+            <a href="/dueno/vehiculos/{{ vehiculo_id }}/editar" class="btn btn-primary">Editar vehículo</a>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- RESUMEN DEL VEHÍCULO                                       -->
+    <!-- ========================================================= -->
+    <section class="vehiculos-stats-grid">
+        <article class="card stat-card vehiculo-info">
+            <p>Estado actual</p>
+            <strong id="detalleEstadoVehiculo">--</strong>
+        </article>
+
+        <article class="card stat-card vehiculo-info">
+            <p>Velocidad</p>
+            <strong id="detalleVelocidadVehiculo">--</strong>
+        </article>
+
+        <article class="card stat-card vehiculo-info">
+            <p>Última actualización</p>
+            <strong id="detalleUltimaActualizacion">--</strong>
+        </article>
+
+        <article class="card stat-card vehiculo-info">
+            <p>Dispositivo</p>
+            <strong id="detalleDispositivo">--</strong>
+        </article>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- GRID PRINCIPAL DEL DETALLE                                 -->
+    <!-- ========================================================= -->
+    <section class="vehiculo-detalle-grid">
+
+        <!-- DATOS GENERALES -->
+        <article class="card">
+            <div class="card-header">
+                <h3>Información general</h3>
+                <p>Datos administrativos del vehículo.</p>
+            </div>
+
+            <div class="card-body">
+                <div class="detalle-grid vehiculo-card-body" id="detalleInfoGeneral">
+                    <div class="empty-state">
+                        <strong>Cargando información...</strong>
+                        <p>Espera mientras se consulta el vehículo.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+
+        <!-- UBICACIÓN / MAPA PLACEHOLDER -->
+        <article class="card">
+            <div class="card-header">
+                <h3>Ubicación actual</h3>
+                <!-- <p>Ubicación en tiempo real del vehículo.</p> -->
+            </div>
+
+            <div class="card-body">
+                <div class="vehiculo-map-card">
+                    <div id="mapaVehiculo" class="mapa-vehiculo"></div>
+
+                    <div class="mapa-info">
+                        <strong id="detalleDireccionVehiculo">Buscando dirección cercana...</strong>
+                        <p id="detalleUbicacionTexto">Sin ubicación disponible por el momento.</p>
+                        <a id="btnAbrirGoogleMaps" href="#" target="_blank" class="btn btn-outline btn-sm">
+                            Abrir en Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </section>
+
+    <section class="vehiculo-detalle-grid">
+        <article class="card">
+            <div class="card-header">
+                <h3>Estado de sensores</h3>
+                <p>Última lectura recibida desde el ESP32.</p>
+            </div>
+
+            <div class="card-body">
+                <div id="detalleSensores" class="sensores-grid">
+                    <div class="empty-state">
+                        <strong>Cargando sensores...</strong>
+                        <p>Espera mientras se consulta el último estado.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="card">
+            <div class="card-header">
+                <h3>Evidencia fotográfica</h3>
+                <p>Capturas asociadas a eventos críticos.</p>
+            </div>
+
+            <div class="card-body">
+                <div id="detalleEvidencias" class="evidencias-grid">
+                    <div class="empty-state">
+                        <strong>Cargando evidencias...</strong>
+                        <p>Espera mientras se consulta la información.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <!-- ========================================================= -->
+    <!-- ALERTAS RECIENTES DEL VEHÍCULO                             -->
+    <!-- ========================================================= -->
+    <section class="card">
+        <div class="card-header">
+            <h3>Alertas recientes del vehículo</h3>
+            <p>Eventos y alertas asociados a esta unidad.</p>
+        </div>
+
+        <div class="card-body">
+            <div id="detalleAlertasVehiculo" class="alertas-vehiculo-listado vehiculos-listado">
+                <div class="empty-state">
+                    <strong>Cargando alertas...</strong>
+                    <p>Espera mientras se consultan las alertas del vehículo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+    <div class="card-header">
+        <h3>Bitácora del vehículo</h3>
+        <p>Eventos importantes registrados para esta unidad.</p>
+    </div>
+
+    <div class="card-body">
+        <div id="detalleEventosVehiculo" class="eventos-vehiculo-listado">
+            <div class="empty-state">
+                <strong>Cargando eventos...</strong>
+                <p>Espera mientras se consulta la bitácora.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+</section>
+
+<!-- aquí todo tu contenido del detalle -->
+ 
+<script>
+    window.VEHICULO_ID = Number(document.querySelector(".vehiculo-detalle-page")?.dataset.vehiculoId || 0);
+</script>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/dueno/vehiculos/detalle.js') }}"></script>
+{% endblock %}

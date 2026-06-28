@@ -1,34 +1,81 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 
+# Carga variables del archivo .env cuando trabajas en local
+load_dotenv()
+
+# Instancia global de SQLAlchemy
 db = SQLAlchemy()
 
+
 class Config:
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:davidlaid@localhost:3306/monitoreo'
+    """
+    Configuración general de TrackSecurity.
+
+    Prioridad de conexión a base de datos:
+    1. DATABASE_URL: Railway / producción.
+    2. LOCAL_DATABASE_URL: entorno local.
+    3. Valor local por defecto.
+    """
+
+    # =========================
+    # ENTORNO
+    # =========================
+    FLASK_ENV = os.getenv("FLASK_ENV", "development")
+    DEBUG = FLASK_ENV == "development"
+
+    # =========================
+    # SEGURIDAD
+    # =========================
+    SECRET_KEY = os.getenv("SECRET_KEY", "TrackSecurity2026")
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "TrackSecurityJWT2026")
+
+    # =========================
+    # BASE DE DATOS
+    # =========================
+    _db_url = os.getenv("DATABASE_URL")
+
+    if not _db_url:
+        _db_url = os.getenv(
+            "LOCAL_DATABASE_URL",
+            "mysql+pymysql://root:davidlaid@localhost:3306/tracksecurity"
+        )
+
+    # Railway suele entregar mysql:// y SQLAlchemy necesita mysql+pymysql://
+    if _db_url.startswith("mysql://"):
+        _db_url = _db_url.replace("mysql://", "mysql+pymysql://", 1)
+
+    SQLALCHEMY_DATABASE_URI = _db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = "innovatecsecurity2026"
 
-    # ================= CONFIGURACIONES DE TIEMPO =================
+    # =========================
+    # LIMITES DEL SISTEMA
+    # =========================
+    MAX_RECORDS_LIMIT = int(os.getenv("MAX_RECORDS_LIMIT", 50))
 
-    # WEB_UPDATE_INTERVAL: Intervalo de actualización de la página web (milisegundos)
-    # Controla cada cuánto tiempo se refresca automáticamente el dashboard
-    # Valor recomendado: 1000ms (1 segundo) - No muy rápido para evitar sobrecarga
-    # Ejemplo: 500 = medio segundo, 2000 = 2 segundos
-    WEB_UPDATE_INTERVAL = 1000  # 1 segundo
+    # =========================
+    # EVIDENCIAS / IMÁGENES
+    # =========================
+    BASE_DIR = Path(__file__).resolve().parent
 
-    # ESP32_SEND_INTERVAL: Intervalo para envío de datos del ESP32 (milisegundos)
-    # 💡 PROPÓSITO: Tiempo mínimo entre envíos de datos al servidor
-    # 📊 IMPACTO: Evita sobrecargar el servidor y optimiza batería del ESP32
-    # 💡 VALOR RECOMENDADO: 5000ms (5 segundos) para historial de 24 horas
-    # 📈 CÁLCULO: 24h * 60min * 60s / 5s = 17,280 registros/día (muy manejable)
-    # 📈 EJEMPLOS:
-    #   - 2000 = 2 segundos (muy frecuente, puede saturar)
-    #   - 5000 = 5 segundos (recomendado para balance)
-    #   - 10000 = 10 segundos (conservador, menos datos)
-    ESP32_SEND_INTERVAL = 1500  # 5 segundos (antes 1500)
+    UPLOAD_FOLDER = os.getenv(
+        "UPLOAD_FOLDER",
+        str(BASE_DIR / "static" / "uploads" / "evidencias")
+    )
 
-    # MAX_RECORDS_LIMIT: Límite máximo de registros a consultar en /estado
-    # Número máximo de registros históricos que se consultan para mostrar el estado actual
-    # Un valor alto puede hacer lentas las consultas, un valor bajo puede perder datos antiguos
-    # Valor recomendado: 50 - Suficiente para mostrar estado actual sin sobrecargar
-    # Ejemplo: 20 = pocos registros, 100 = muchos registros
-    MAX_RECORDS_LIMIT = 50
+    MAX_CONTENT_LENGTH = 8 * 1024 * 1024  # 8 MB por imagen
+
+    # =========================
+    # WEB PUSH / NOTIFICACIONES
+    # =========================
+    VAPID_PUBLIC_KEY = os.getenv("VAPID_PUBLIC_KEY")
+    VAPID_PRIVATE_KEY = os.getenv("VAPID_PRIVATE_KEY")
+    VAPID_EMAIL = os.getenv("VAPID_EMAIL", "mailto:admin@tracksecurity.com")
+
+    # =========================
+    # CORS
+    # =========================
+    CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
