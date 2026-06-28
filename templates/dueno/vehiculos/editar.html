@@ -1,0 +1,96 @@
+{% extends "base/base.html" %}
+
+{% block title %}Editar vehículo - TrackSecurity{% endblock %}
+{% block page_title %}Editar vehículo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/vehiculos.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="vehiculo-form-page" data-vehiculo-id="{{ vehiculo_id }}">
+
+    <section class="vehiculos-header">
+        <div>
+            <p class="section-kicker">Edición de unidad</p>
+            <h2>Editar vehículo</h2>
+            <p>
+                Modifica los datos administrativos del vehículo. Aquí no se cambia el dispositivo ni la instalación técnica.
+            </p>
+        </div>
+
+        <div class="vehiculos-header-actions">
+            <a href="{{ url_for('dueno_vehiculos') }}" class="btn btn-outline">Volver</a>
+            <a href="/dueno/vehiculos/{{ vehiculo_id }}" class="btn btn-primary">
+                Ver detalles  
+            </a>
+        </div>
+    </section>
+
+    <section class="card form-card">
+        <div class="card-header">
+            <h3>Datos editables del vehículo</h3>
+            <p>Actualiza nombre, identificador, placa, marca, modelo, año y chofer.</p>
+        </div>
+
+        <div class="card-body">
+            <form id="formEditarVehiculo" class="vehiculo-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nombre">Nombre del vehículo</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="identificador">Identificador interno</label>
+                        <input type="text" id="identificador" name="identificador" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="placa">Placa</label>
+                        <input type="text" id="placa" name="placa">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marca">Marca</label>
+                        <input type="text" id="marca" name="marca">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modelo">Modelo</label>
+                        <input type="text" id="modelo" name="modelo">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="anio">Año</label>
+                        <input type="number" id="anio" name="anio" min="1990" max="2100">
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label for="chofer_id">Chofer asignado</label>
+                        <select id="chofer_id" name="chofer_id">
+                            <option value="">Sin asignar</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <div id="mensajeVehiculoEditar" class="form-message"></div>
+
+                    <div class="form-actions">
+                        <a href="/dueno/vehiculos" class="btn btn-outline">Cancelar</a>
+                        <button type="submit" class="btn btn-primary" id="btnGuardarCambiosVehiculo">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dueno/vehiculos/editar.js') }}"></script>
+{% endblock %}

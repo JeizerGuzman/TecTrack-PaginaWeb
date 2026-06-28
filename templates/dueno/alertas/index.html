@@ -1,0 +1,147 @@
+{% extends "base/base.html" %}
+
+{% block title %}Alertas - TrackSecurity{% endblock %}
+{% block page_title %}Alertas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/alertas.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="alertas-page">
+
+    <section class="alertas-header">
+        <div>
+            <p class="section-kicker">Centro de alertas</p>
+            <h2>Alertas de la flota</h2>
+            <p>
+                Consulta eventos críticos reportados por sensores, botón de pánico o actividad sospechosa.
+            </p>
+        </div>
+
+        <div class="alertas-refresh-info">
+            <span id="ultimaActualizacionAlertas">Actualizando...</span>
+            <span id="estadoCargaAlertas">Sincronizando...</span>
+        </div>
+    </section>
+
+    <section class="alertas-stats-grid">
+        <article class="card alerta-stat-card">
+            <p>Total</p>
+            <strong id="statAlertasTotal">0</strong>
+        </article>
+
+        <article class="card alerta-stat-card">
+            <p>Pendientes</p>
+            <strong id="statAlertasPendientes">0</strong>
+        </article>
+
+        <article class="card alerta-stat-card">
+            <p>Atendidas</p>
+            <strong id="statAlertasAtendidas">0</strong>
+        </article>
+
+        <article class="card alerta-stat-card">
+            <p>Críticas / altas</p>
+            <strong id="statAlertasCriticas">0</strong>
+        </article>
+    </section>
+
+    <section class="card filtros-alertas-card">
+        <div class="filtros-alertas-grid">
+            <div class="form-group">
+                <label for="buscarAlerta">Buscar</label>
+                <input type="text" id="buscarAlerta" placeholder="Buscar por vehículo o descripción">
+            </div>
+
+            <div class="form-group">
+                <label for="filtroEstadoAlerta">Estado</label>
+                <select id="filtroEstadoAlerta">
+                    <option value="todas">Todas</option>
+                    <option value="pendiente">Pendientes</option>
+                    <option value="atendida">Atendidas</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="filtroTipoAlerta">Tipo</label>
+                <select id="filtroTipoAlerta">
+                    <option value="todos">Todos</option>
+                    <option value="panico">Pánico</option>
+                    <option value="puerta_abierta">Puerta abierta</option>
+                    <option value="vibracion">Vibración</option>
+                    <option value="alerta_general">General</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="filtroNivelAlerta">Nivel</label>
+                <select id="filtroNivelAlerta">
+                    <option value="todos">Todos</option>
+                    <option value="critico">Crítico</option>
+                    <option value="alto">Alto</option>
+                    <option value="medio">Medio</option>
+                    <option value="bajo">Bajo</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="card alertas-list-card">
+        <div class="card-header card-header-row">
+            <div>
+                <h3>Listado de alertas</h3>
+                <p>Eventos recientes y pendientes de atención.</p>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div id="alertasListado" class="alertas-listado">
+                <div class="empty-state">
+                    <strong>Cargando alertas...</strong>
+                    <p>Espera mientras se consulta la información.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</section>
+<div id="modalAtenderAlerta" class="modal-alerta-overlay">
+    <div class="modal-alerta">
+        <div class="modal-alerta-header">
+            <h3>Atender alerta</h3>
+            <button type="button" id="btnCerrarModalAlerta" class="modal-alerta-close">×</button>
+        </div>
+
+        <div class="modal-alerta-body">
+            <p>
+                ¿Deseas marcar esta alerta como atendida?
+            </p>
+
+            <div class="modal-alerta-info">
+                <strong id="modalAlertaTipo">Alerta</strong>
+                <span id="modalAlertaVehiculo">Vehículo</span>
+                <small id="modalAlertaDescripcion">Descripción</small>
+            </div>
+
+            <p class="modal-alerta-note">
+                Se registrará el usuario que atendió la alerta y la fecha de atención.
+            </p>
+        </div>
+
+        <div class="modal-alerta-actions">
+            <button type="button" id="btnCancelarAtencion" class="btn btn-outline">
+                Cancelar
+            </button>
+
+            <button type="button" id="btnConfirmarAtencion" class="btn btn-primary">
+                Sí, atender alerta
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dueno/alertas/index.js') }}"></script>
+{% endblock %}

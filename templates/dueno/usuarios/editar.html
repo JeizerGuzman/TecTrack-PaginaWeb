@@ -1,0 +1,79 @@
+{% extends "base/base.html" %}
+
+{% block title %}Editar usuario - TrackSecurity{% endblock %}
+{% block page_title %}Editar usuario{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/usuarios.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="usuario-form-page" data-usuario-id="{{ usuario_id }}">
+
+    <section class="usuarios-header">
+        <div>
+            <p class="section-kicker">Gestión de accesos</p>
+            <h2>Editar usuario</h2>
+            <p>Actualiza los datos del chofer o supervisor seleccionado.</p>
+        </div>
+
+        <div class="usuarios-header-actions">
+            <a href="/dueno/usuarios" class="btn btn-outline">
+                Volver a usuarios
+            </a>
+        </div>
+    </section>
+
+    <section class="card usuario-form-card">
+        <div class="card-header">
+            <h3>Datos del usuario</h3>
+            <p>Modifica la información general y el rol del usuario.</p>
+        </div>
+
+        <div class="card-body">
+            <form id="formEditarUsuario" class="usuario-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo electrónico</label>
+                        <input type="email" id="correo" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" placeholder="Opcional">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo">Tipo de usuario</label>
+                        <select id="tipo" required>
+                            <option value="chofer">Chofer</option>
+                            <option value="supervisor">Supervisor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <div id="mensajeEditarUsuario" class="form-message"></div>
+
+                    <div class="form-actions">
+                        <a href="/dueno/usuarios" class="btn btn-outline">Cancelar</a>
+                        <button type="submit" class="btn btn-primary" id="btnGuardarCambios">
+                            Guardar cambios
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dueno/usuarios/editar.js') }}"></script>
+{% endblock %}

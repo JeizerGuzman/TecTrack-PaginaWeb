@@ -3,8 +3,8 @@
 #include <TinyGPSPlus.h>
 
 /* ================= CONFIGURACIÓN ================= */
-const char* ssid     = "erick_2.4G";
-const char* password = "secom100";
+const char* ssid     = "Redmi 13 Pro 5G";
+const char* password = "Jeizer123";
 const char* server   = "https://tracksecurity.up.railway.app/datos";
 
 /* ================= UART FPGA ================= */

@@ -1,0 +1,119 @@
+{% extends "base/base.html" %}
+
+{% block title %}Nuevo usuario - TrackSecurity{% endblock %}
+{% block page_title %}Crear usuario{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/usuarios.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="usuario-form-page">
+
+    <section class="usuarios-header">
+        <div>
+            <p class="section-kicker">Nuevo acceso</p>
+            <h2>Crear usuario</h2>
+            <p>Crea cuentas para choferes o supervisores de tu empresa.</p>
+        </div>
+
+        <div class="usuarios-header-actions">
+            <a href="/dueno/usuarios" class="btn btn-outline">
+                Volver a usuarios
+            </a>
+        </div>
+    </section>
+
+    <section class="card usuario-form-card">
+        <div class="card-header">
+            <h3>Datos del usuario</h3>
+            <p>El usuario podrá iniciar sesión con el correo y contraseña registrados.</p>
+        </div>
+
+        <div class="card-body">
+            <form id="formNuevoUsuario" class="usuario-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo electrónico</label>
+                        <input type="email" id="correo" name="correo" placeholder="usuario@correo.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo">Tipo de usuario</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="">Selecciona un tipo</option>
+                            <option value="chofer">Chofer</option>
+                            <option value="supervisor">Supervisor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Contraseña temporal</label>
+                        <div class="password-field">
+                            <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required>
+                            <button type="button" id="btnTogglePassword" class="btn-password-toggle">
+                                Ver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usuario-help-box">
+                    <strong>Recomendación</strong>
+                    <p>
+                        Usa una contraseña temporal y pide al usuario cambiarla después.
+                        Más adelante podemos agregar recuperación y cambio de contraseña.
+                    </p>
+                </div>
+
+                <div class="form-footer">
+                    <div id="mensajeUsuarioNuevo" class="form-message"></div>
+
+                    <div class="form-actions">
+                        <a href="/dueno/usuarios" class="btn btn-outline">Cancelar</a>
+                        <button type="submit" class="btn btn-primary" id="btnGuardarUsuario">
+                            Crear usuario
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</section>
+    <div id="modalCredenciales" class="modal-credenciales-overlay">
+        <div class="modal-credenciales">
+            <h3>Usuario creado correctamente</h3>
+            <p>Guarda estas credenciales y compártelas con el usuario.</p>
+
+            <div class="credenciales-box">
+                <span>Correo</span>
+                <strong id="credencialCorreo">--</strong>
+
+                <span>Contraseña temporal</span>
+                <strong id="credencialPassword">--</strong>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" id="btnCopiarCredenciales" class="btn btn-outline">
+                    Copiar credenciales
+                </button>
+
+                <button type="button" id="btnCerrarCredenciales" class="btn btn-primary">
+                    Finalizar
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dueno/usuarios/nuevo.js') }}"></script>
+{% endblock %}

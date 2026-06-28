@@ -1,0 +1,102 @@
+{% extends "base/base.html" %}
+
+{% block title %}Editar configuración - TrackSecurity{% endblock %}
+{% block page_title %}Editar configuración{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/configuracion.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="configuracion-page">
+
+    <section class="configuracion-header">
+        <div>
+            <p class="section-kicker">Editar información</p>
+            <h2>Datos de cuenta y empresa</h2>
+            <p>Actualiza tu información personal y los datos básicos de la empresa.</p>
+        </div>
+
+        <div class="config-actions">
+            <a href="/dueno/configuracion" class="btn btn-outline">
+                Volver
+            </a>
+        </div>
+    </section>
+
+    <section class="configuracion-grid">
+        <article class="card config-card">
+            <div class="card-header">
+                <h3>Perfil del dueño</h3>
+                <p>Datos visibles de la cuenta principal.</p>
+            </div>
+
+            <div class="card-body">
+                <form id="formPerfilDueno" class="config-form">
+                    <div class="form-group">
+                        <label for="perfilNombre">Nombre</label>
+                        <input type="text" id="perfilNombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="perfilTelefono">Teléfono</label>
+                        <input type="text" id="perfilTelefono" placeholder="Opcional">
+                    </div>
+
+                    <div id="mensajePerfil" class="form-message"></div>
+
+                    <div class="form-actions-right">
+                        <button type="submit" class="btn btn-primary" id="btnGuardarPerfil">
+                            Guardar perfil
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </article>
+
+        <article class="card config-card">
+            <div class="card-header">
+                <h3>Empresa</h3>
+                <p>Información general de la empresa.</p>
+            </div>
+
+            <div class="card-body">
+                <form id="formEmpresaDueno" class="config-form">
+                    <div class="form-group">
+                        <label for="empresaNombre">Nombre de empresa</label>
+                        <input type="text" id="empresaNombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="empresaCorreo">Correo de empresa</label>
+                        <input type="email" id="empresaCorreo" placeholder="Opcional">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="empresaTelefono">Teléfono</label>
+                        <input type="text" id="empresaTelefono" placeholder="Opcional">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="empresaDireccion">Dirección</label>
+                        <input type="text" id="empresaDireccion" placeholder="Opcional">
+                    </div>
+
+                    <div id="mensajeEmpresa" class="form-message"></div>
+
+                    <div class="form-actions-right">
+                        <button type="submit" class="btn btn-primary" id="btnGuardarEmpresa">
+                            Guardar empresa
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </section>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dueno/configuracion/editar.js') }}"></script>
+{% endblock %}
