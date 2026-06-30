@@ -15,25 +15,45 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let vehiculosOriginales = [];
     let vehiculoSeleccionadoDesactivar = null;
+    let intervaloActualizacionVehiculos = null;
+    let cargandoVehiculos = false;
 
-    await cargarVehiculos();
+    await cargarVehiculos(false);
     configurarModalDesactivarVehiculo();
+    iniciarActualizacionAutomatica();
 
     buscarInput?.addEventListener("input", aplicarFiltros);
     filtroEstado?.addEventListener("change", aplicarFiltros);
-    
 
-    async function cargarVehiculos() {
+    // ============================================================
+    // Carga vehículos desde el backend.
+    //
+    // Se usa actualmente en:
+    // - Al entrar a /dueno/vehiculos
+    // - Al desactivar un vehículo
+    // - Actualización automática cada 3 segundos
+    //
+    // esActualizacionAutomatica evita mostrar errores o parpadeos
+    // molestos durante el refresco silencioso.
+    // ============================================================
+    async function cargarVehiculos(esActualizacionAutomatica = false) {
+        if (cargandoVehiculos) return;
+
+        cargandoVehiculos = true;
+
         try {
             const response = await TrackAPI.obtenerVehiculos();
             vehiculosOriginales = response.vehiculos || [];
 
             renderStats(vehiculosOriginales);
-            renderVehiculos(vehiculosOriginales);
+            aplicarFiltros();
 
         } catch (error) {
             console.error("Error cargando vehículos:", error);
-            if (listado) {
+
+            // En actualización automática no reemplazamos la pantalla,
+            // para no borrar la lista si solo falló una consulta temporal.
+            if (!esActualizacionAutomatica && listado) {
                 listado.innerHTML = `
                     <div class="empty-state">
                         <strong>No se pudieron cargar los vehículos</strong>
@@ -41,9 +61,35 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                 `;
             }
+        } finally {
+            cargandoVehiculos = false;
         }
     }
 
+    // ============================================================
+    // Inicia actualización automática del listado.
+    //
+    // Se usa para que el index de vehículos muestre cambios de:
+    // - alerta
+    // - sin señal
+    // - activo
+    // - dispositivo
+    // sin recargar manualmente la página.
+    // ============================================================
+    function iniciarActualizacionAutomatica() {
+        intervaloActualizacionVehiculos = setInterval(async () => {
+            await cargarVehiculos(true);
+        }, 1000);
+    }
+
+    // ============================================================
+    // Aplica búsqueda y filtro por estado usando la lista actual.
+    //
+    // Se usa actualmente en:
+    // - input buscarVehiculo
+    // - select filtroEstadoVehiculo
+    // - después de cada actualización automática
+    // ============================================================
     function aplicarFiltros() {
         const texto = (buscarInput?.value || "").trim().toLowerCase();
         const estado = filtroEstado?.value || "todos";
@@ -57,7 +103,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     v.identificador,
                     v.placa,
                     v.marca,
-                    v.modelo
+                    v.modelo,
+                    v.chofer_nombre
                 ].some(valor => String(valor || "").toLowerCase().includes(texto));
             });
         }
@@ -69,6 +116,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderVehiculos(filtrados);
     }
 
+    // ============================================================
+    // Actualiza las tarjetas estadísticas superiores.
+    //
+    // Se usa actualmente en:
+    // - index de vehículos
+    // ============================================================
     function renderStats(vehiculos) {
         const total = vehiculos.length;
         const activos = vehiculos.filter(v => normalizarEstadoVehiculo(v) === "activo").length;
@@ -84,6 +137,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (statVehiculosPendientes) statVehiculosPendientes.textContent = pendientes;
     }
 
+    // ============================================================
+    // Renderiza las tarjetas de vehículos.
+    //
+    // Se usa actualmente en:
+    // - listado principal de vehículos
+    //
+    // Cada tarjeta muestra:
+    // - nombre
+    // - identificador
+    // - chofer
+    // - marca/modelo/año
+    // - estado
+    // - botones detalle/editar/desactivar
+    // ============================================================
     function renderVehiculos(vehiculos) {
         if (!listado) return;
 
@@ -106,7 +173,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div class="vehiculo-card-header">
                         <div>
                             <h3>${escapeHtml(v.nombre || "Vehículo sin nombre")}</h3>
-                            <p>${escapeHtml(v.identificador || "Sin identificador")} · ${escapeHtml(v.placa || "Sin placa")}</p>
+                            <p>
+                                ${escapeHtml(v.identificador || "Sin identificador")} ·
+                                Chofer: ${escapeHtml(v.chofer_nombre || "Sin asignar")}
+                            </p>
                         </div>
 
                         <span class="badge badge-${estado}">
@@ -131,8 +201,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                         </div>
 
                         <div class="vehiculo-info">
-                            <span>Chofer</span>
-                            <strong>${escapeHtml(v.chofer_nombre || "Sin asignar")}</strong>
+                            <span>Placa</span>
+                            <strong>${escapeHtml(v.placa || "Sin placa")}</strong>
                         </div>
                     </div>
 
@@ -156,6 +226,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         bindEventosTarjetas();
     }
 
+    // ============================================================
+    // Conecta los botones de cada tarjeta.
+    //
+    // Se usa actualmente en:
+    // - botón Editar
+    // - botón Desactivar
+    // ============================================================
     function bindEventosTarjetas() {
         document.querySelectorAll(".btn-editar").forEach(btn => {
             btn.addEventListener("click", () => {
@@ -169,8 +246,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const vehiculoId = Number(btn.dataset.id);
                 const vehiculo = vehiculosOriginales.find(v => Number(v.id) === vehiculoId);
 
-                console.log("Click desactivar:", vehiculoId, vehiculo);
-
                 if (!vehiculo) {
                     mostrarToastVehiculo("No se encontró el vehículo seleccionado.", "error");
                     return;
@@ -181,6 +256,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // ============================================================
+    // Configura eventos del modal de desactivar vehículo.
+    //
+    // Se usa actualmente en:
+    // - modalDesactivarVehiculo del HTML
+    // ============================================================
     function configurarModalDesactivarVehiculo() {
         document.getElementById("btnCerrarModalVehiculo")?.addEventListener("click", cerrarModalDesactivarVehiculo);
         document.getElementById("btnCancelarDesactivarVehiculo")?.addEventListener("click", cerrarModalDesactivarVehiculo);
@@ -193,6 +274,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    // ============================================================
+    // Abre el modal para confirmar desactivación.
+    //
+    // Se usa cuando el usuario presiona:
+    // - Desactivar
+    // ============================================================
     function abrirModalDesactivarVehiculo(vehiculo) {
         vehiculoSeleccionadoDesactivar = vehiculo;
 
@@ -205,6 +292,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (modal) modal.classList.add("visible");
     }
 
+    // ============================================================
+    // Cierra y limpia el modal de desactivar vehículo.
+    //
+    // Se usa en:
+    // - cancelar
+    // - cerrar
+    // - después de desactivar correctamente
+    // ============================================================
     function cerrarModalDesactivarVehiculo() {
         vehiculoSeleccionadoDesactivar = null;
 
@@ -219,6 +314,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // ============================================================
+    // Desactiva el vehículo seleccionado.
+    //
+    // Se usa actualmente en:
+    // - botón confirmar del modal
+    //
+    // Después de desactivar, vuelve a cargar la lista.
+    // ============================================================
     async function confirmarDesactivarVehiculo() {
         if (!vehiculoSeleccionadoDesactivar) return;
 
@@ -233,7 +336,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             await TrackAPI.desactivarVehiculo(vehiculoSeleccionadoDesactivar.id);
 
             cerrarModalDesactivarVehiculo();
-            await cargarVehiculos();
+            await cargarVehiculos(false);
 
             mostrarToastVehiculo("Vehículo desactivado correctamente.", "success");
 
@@ -248,10 +351,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // ============================================================
+    // Normaliza el estado recibido del backend.
+    //
+    // Se usa para:
+    // - badges
+    // - estadísticas
+    // - filtros
+    //
+    // Devuelve:
+    // - activo
+    // - alerta
+    // - sin_senal
+    // - sin_dispositivo
+    // ============================================================
     function normalizarEstadoVehiculo(v) {
-        if (!v.dispositivo_id) return "sin_dispositivo";
+        if (!v.dispositivo_id && !v.dispositivo_serie) return "sin_dispositivo";
 
         const estado = String(v.estado || "").toLowerCase();
+        const alerta = Number(v.alerta || 0);
+        const vibracion = Number(v.vibracion || 0);
+        const puerta = String(v.puerta || "").toLowerCase();
+
+        if (alerta === 1) return "alerta";
+        if (vibracion === 1) return "alerta";
+        if (puerta === "abierta") return "alerta";
 
         if (estado.includes("alert")) return "alerta";
         if (estado.includes("panic")) return "alerta";
@@ -262,6 +386,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return "activo";
     }
 
+    // ============================================================
+    // Convierte estado interno en texto visible.
+    // ============================================================
     function formatearEstado(estado) {
         const mapa = {
             activo: "Activo",
@@ -273,6 +400,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         return mapa[estado] || "Activo";
     }
 
+    // ============================================================
+    // Muestra un mensaje flotante.
+    //
+    // Se usa actualmente en:
+    // - errores
+    // - confirmaciones
+    // ============================================================
     function mostrarToastVehiculo(mensaje, tipo = "info") {
         let toast = document.getElementById("vehiculosToast");
 
@@ -291,6 +425,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         }, 3000);
     }
 
+    // ============================================================
+    // Limpia texto antes de insertarlo en HTML.
+    //
+    // Ayuda a evitar que texto raro rompa la interfaz.
+    // ============================================================
     function escapeHtml(value) {
         return String(value ?? "")
             .replaceAll("&", "&amp;")
@@ -299,4 +438,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             .replaceAll('"', "&quot;")
             .replaceAll("'", "&#039;");
     }
+
+    // ============================================================
+    // Limpia el intervalo si el usuario sale de la página.
+    // ============================================================
+    window.addEventListener("beforeunload", () => {
+        if (intervaloActualizacionVehiculos) {
+            clearInterval(intervaloActualizacionVehiculos);
+        }
+    });
 });

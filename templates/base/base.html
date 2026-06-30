@@ -216,17 +216,39 @@
                 );
             });
 
-            btnMobile?.addEventListener('click', function () {
+            function abrirMenuMovil() {
                 layout.classList.add('sidebar-mobile-open');
+            }
+
+            function cerrarMenuMovil() {
+                layout.classList.remove('sidebar-mobile-open');
+            }
+
+            btnMobile?.addEventListener('click', function (event) {
+                event.stopPropagation();
+                abrirMenuMovil();
             });
 
             overlay?.addEventListener('click', function () {
-                layout.classList.remove('sidebar-mobile-open');
+                cerrarMenuMovil();
+            });
+
+            document.addEventListener('click', function (event) {
+                const menuAbierto = layout.classList.contains('sidebar-mobile-open');
+
+                if (!menuAbierto) return;
+
+                const clickDentroSidebar = sidebar?.contains(event.target);
+                const clickEnBotonMovil = btnMobile?.contains(event.target);
+
+                if (!clickDentroSidebar && !clickEnBotonMovil) {
+                    cerrarMenuMovil();
+                }
             });
 
             document.querySelectorAll('.sidebar .nav-link').forEach(link => {
                 link.addEventListener('click', function () {
-                    layout.classList.remove('sidebar-mobile-open');
+                    cerrarMenuMovil();
                 });
             });
 
