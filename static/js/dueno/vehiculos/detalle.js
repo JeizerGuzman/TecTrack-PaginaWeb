@@ -190,10 +190,24 @@ function renderSensores(v, sensoresBox) {
             <small>${tiempoRelativo(v.ultima_actualizacion)}</small>
         </div>
 
-        <div class="sensor-card ${vibracion === 1 ? "sensor-alerta" : "sensor-ok"}">
+        <div class="sensor-card ${
+            v.sin_senal || v.online === false || vibracion === null || vibracion === undefined
+                ? "sensor-desconectado"
+                : vibracion === 1
+                    ? "sensor-alerta"
+                    : "sensor-ok"
+        }">
             <span>Sensor de vibración</span>
-            <strong>${vibracion === 1 ? "Vibración detectada" : "Normal"}</strong>
-            <small>${tiempoRelativo(v.ultima_actualizacion)}</small>
+            <strong>${
+                v.sin_senal || v.online === false || vibracion === null || vibracion === undefined
+                    ? "Desconocido"
+                    : vibracion === 1
+                        ? "Vibración detectada"
+                        : "Normal"
+            }</strong>
+            <small>${
+                tiempoRelativo(v.ultima_actualizacion)
+            }</small>
         </div>
 
         <div class="sensor-card ${alerta === 1 ? "sensor-alerta" : "sensor-ok"}">

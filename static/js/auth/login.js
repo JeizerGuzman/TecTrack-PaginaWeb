@@ -8,9 +8,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const message = document.getElementById("loginMessage");
     const togglePassword = document.getElementById("togglePassword");
 
-    console.log("form:", form);
-    console.log("passwordInput:", passwordInput);
-    console.log("togglePassword:", togglePassword);
+    // ============================================================
+    // CONFIGURACIÓN DE ROLES EN WEB
+    // ============================================================
+    // Aquí defines qué roles NO pueden entrar al panel web.
+    //
+    // Por ahora bloqueamos técnico porque su uso será solo desde app móvil.
+    //
+    // Si después quieres bloquear también al chofer en la web,
+    // solo descomenta "chofer".
+    // ============================================================
+
+    const ROLES_NO_PERMITIDOS_WEB = [
+        "tecnico",
+
+        // Descomenta esta línea si quieres que el chofer tampoco pueda entrar a la web:
+        // "chofer",
+    ];
+
+    // Mensaje personalizado por rol bloqueado.
+    const MENSAJES_ROLES_BLOQUEADOS = {
+        tecnico: "El rol técnico solo está disponible desde la aplicación móvil.",
+        chofer: "El rol chofer solo está disponible desde la aplicación móvil.",
+    };
 
     // =========================
     // OJITO MOSTRAR / OCULTAR
@@ -47,6 +67,33 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 const data = await TrackAPI.login(correo, password);
 
+                const usuario = data?.usuario;
+                const rol = usuario?.tipo;
+
+                // ====================================================
+                // BLOQUEO DE ROLES NO PERMITIDOS EN WEB
+                // ====================================================
+                // Importante:
+                // El backend sí permite login de técnico porque la app móvil
+                // lo necesita. El bloqueo se hace solo en la web.
+                //
+                // Aquí todavía NO guardamos la sesión.
+                // Si el rol está bloqueado, mostramos mensaje y salimos.
+                // ====================================================
+                if (ROLES_NO_PERMITIDOS_WEB.includes(rol)) {
+                    const mensaje = MENSAJES_ROLES_BLOQUEADOS[rol]
+                        || "Este rol no está disponible desde el panel web.";
+
+                    limpiarSesionWeb();
+                    setMessage(mensaje, "error");
+                    return;
+                }
+
+                // ====================================================
+                // GUARDAR SESIÓN
+                // ====================================================
+                // Solo se guarda si el rol sí está permitido en la web.
+                // ====================================================
                 const guardado = TrackAuth.saveSession(data);
 
                 if (!guardado) {
@@ -71,6 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // ============================================================
+    // MUESTRA MENSAJES EN EL LOGIN
+    // ============================================================
     function setMessage(text, type) {
         if (!message) return;
 
@@ -80,5 +130,18 @@ document.addEventListener("DOMContentLoaded", () => {
         if (type) {
             message.classList.add(type);
         }
+    }
+
+    // ============================================================
+    // LIMPIA SESIÓN DEL NAVEGADOR
+    // ============================================================
+    // Sirve por si antes había quedado guardado un token de técnico
+    // o chofer en localStorage.
+    // ============================================================
+    function limpiarSesionWeb() {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("usuario");
+        localStorage.removeItem("tracksecurity_token");
+        localStorage.removeItem("tracksecurity_user");
     }
 });

@@ -12,8 +12,9 @@
 from flask import request, jsonify
 from flask_jwt_extended import create_access_token
 
-from models import Usuario
+from models import Usuario, Empresa
 from helpers import verificar_password
+from config import db
 
 
 # ------------------------------------------------------------
@@ -64,6 +65,11 @@ def registrar_auth_routes(app):
             }
         )
 
+        empresa = None
+
+        if usuario.empresa_id:
+            empresa = db.session.get(Empresa, usuario.empresa_id)
+                
         return jsonify({
             "ok": True,
             "access_token": access_token,
@@ -73,5 +79,6 @@ def registrar_auth_routes(app):
                 "correo": usuario.correo,
                 "tipo": usuario.tipo,
                 "empresa_id": usuario.empresa_id,
+                "empresa_nombre": empresa.nombre if empresa else None,
             }
         }), 200

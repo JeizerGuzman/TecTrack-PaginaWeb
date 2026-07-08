@@ -21,6 +21,7 @@ from .usuarios import registrar_usuarios_routes
 from .configuracion import registrar_configuracion_routes
 from .planes import registrar_planes_routes
 from .push import registrar_push_routes
+from .tecnico import registrar_tecnico_routes
 
 
 # ------------------------------------------------------------
@@ -42,3 +43,4 @@ def registrar_rutas(app):
     registrar_configuracion_routes(app)
     registrar_planes_routes(app)
     registrar_push_routes(app)
+    registrar_tecnico_routes(app)

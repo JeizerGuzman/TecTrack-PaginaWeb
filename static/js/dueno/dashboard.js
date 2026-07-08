@@ -2,6 +2,19 @@ let dashboardCargando = false;
 let dashboardTimer = null;
 const DASHBOARD_REFRESH_MS = 1000;
 
+// ============================================================
+// CONTROL DE SIN SEÑAL EN DASHBOARD
+// ============================================================
+//
+// El ESP32 manda datos cada 1.5 segundos aproximadamente.
+// Si pasan más de 60 segundos sin recibir actualización,
+// el dashboard mostrará "Sin señal" aunque no se recargue la página.
+//
+// Si quieres que lo detecte más rápido, puedes cambiar 60 por 30 o 15.
+// ============================================================
+const TIEMPO_SIN_SENAL_SEGUNDOS = 5;
+
+
 document.addEventListener("DOMContentLoaded", async () => {
     if (window.TrackGuards?.requireAuth) {
         const autorizado = await TrackGuards.requireAuth("dueno");
@@ -58,18 +71,66 @@ async function cargarDashboardDueno({ silencioso = false } = {}) {
     }
 }
 
+// ============================================================
+// DETERMINA SI UN VEHÍCULO ESTÁ SIN SEÑAL
+// ============================================================
+//
+// Se usa en el dashboard para que, aunque el backend todavía mande
+// el último estado como "activo", la web pueda detectar que ya pasó
+// demasiado tiempo desde el último reporte del ESP32.
+// ============================================================
+function estaSinSenal(v) {
+    if (!v) return true;
+
+    // Si el backend ya manda sin_senal u online false, se respeta.
+    if (v.sin_senal === true || v.online === false) {
+        return true;
+    }
+
+    // Si no hay última actualización, no hay forma de confirmar conexión.
+    if (!v.ultima_actualizacion) {
+        return true;
+    }
+
+    const ahora = Math.floor(Date.now() / 1000);
+    const diff = ahora - Number(v.ultima_actualizacion);
+
+    return diff > TIEMPO_SIN_SENAL_SEGUNDOS;
+}
+
+
+// ============================================================
+// ESTADO VISUAL DEL VEHÍCULO
+// ============================================================
+//
+// Devuelve "sin_senal" si ya pasó el tiempo permitido sin datos.
+// Si no, devuelve el estado real que venga del backend.
+// ============================================================
+function obtenerEstadoVisual(v) {
+    if (estaSinSenal(v)) {
+        return "sin_senal";
+    }
+
+    return normalizarTexto(v.estado || "sin_senal");
+}
+
 function renderCards(vehiculos, alertas) {
     const totalVehiculos = vehiculos.length;
 
     const vehiculosActivos = vehiculos.filter(v => {
-        const estado = normalizarTexto(v.estado);
+        const estado = obtenerEstadoVisual(v);
         return estado === "activo" || estado === "manual";
     }).length;
 
     const alertasPendientes = alertas.filter(a => !a.atendida).length;
 
     const vehiculosEnAlerta = vehiculos.filter(v => {
-        const estado = normalizarTexto(v.estado);
+        const estado = obtenerEstadoVisual(v);
+
+        // Si está sin señal, no lo contamos como alerta activa,
+        // porque es un estado de conexión.
+        if (estado === "sin_senal") return false;
+
         return estado === "alerta" || estado === "panico" || Number(v.alerta) === 1;
     }).length;
 
@@ -94,7 +155,8 @@ function renderVehiculosResumen(vehiculos) {
     }
 
     contenedor.innerHTML = vehiculos.slice(0, 6).map(v => {
-        const estado = normalizarTexto(v.estado || "sin_senal");
+        const sinSenal = estaSinSenal(v);
+        const estado = obtenerEstadoVisual(v);
         const estadoClase = claseEstado(estado);
 
         return `
@@ -117,9 +179,25 @@ function renderVehiculosResumen(vehiculos) {
                     </div>
 
                     <div class="dashboard-vehicle-meta">
-                        <span>Velocidad: ${v.velocidad ?? 0} km/h</span>
-                        <span>Último reporte: ${tiempoRelativo(v.ultima_actualizacion)}</span>
-                        <span>Dispositivo: ${escapeHtml(v.dispositivo_serie || "Sin vincular")}</span>
+                        <span>
+                            Velocidad: ${
+                                sinSenal
+                                    ? "Sin conexión"
+                                    : `${v.velocidad ?? 0} km/h`
+                            }
+                        </span>
+
+                        <span>
+                            Último reporte: ${
+                                sinSenal
+                                    ? `Sin señal · ${tiempoRelativo(v.ultima_actualizacion)}`
+                                    : tiempoRelativo(v.ultima_actualizacion)
+                            }
+                        </span>
+
+                        <span>
+                            Dispositivo: ${escapeHtml(v.dispositivo_serie || "Sin vincular")}
+                        </span>
                     </div>
                 </div>
 

@@ -11,7 +11,8 @@ from flask_jwt_extended import jwt_required
 from config import db
 from models import Dispositivo, Vehiculo, Servicio
 from decorators import rol_requerido
-from helpers import timestamp_actual, registrar_evento
+from helpers import obtener_usuario_actual, timestamp_actual, registrar_evento
+from serializers import serializar_dispositivo, serializar_vehiculo_tecnico
 
 
 # ------------------------------------------------------------
@@ -49,47 +50,83 @@ def registrar_dispositivos_routes(app):
             ]
         }), 200
 
-    # Vincula un dispositivo físico a un vehículo.
+    # --------------------------------------------------------
+    # Vincula un dispositivo disponible a un vehículo.
     #
-    # Se usa actualmente en:
-    # - modo técnico de instalación
+    # Se usa en:
+    # - app móvil técnico
+    # - instalación nueva de dispositivo
     #
-    # También puede usarse después en:
-    # - app móvil modo técnico por Bluetooth/BLE
+    # No permite vincular si el vehículo ya tiene dispositivo.
+    # Para eso se usa /api/dispositivos/reemplazar.
+    # --------------------------------------------------------
     @app.route("/api/dispositivos/vincular", methods=["POST"])
     @jwt_required()
     @rol_requerido("tecnico", "admin")
     def vincular_dispositivo():
+        usuario = obtener_usuario_actual()
         data = request.get_json(silent=True) or {}
 
-        if not all(k in data for k in ("serie", "pin_activacion", "vehiculo_id")):
+        serie = data.get("serie", "").strip()
+        pin_activacion = str(data.get("pin_activacion", "")).strip()
+        vehiculo_id = data.get("vehiculo_id")
+
+        if not serie or not pin_activacion or not vehiculo_id:
             return jsonify({
                 "error": "serie, pin_activacion y vehiculo_id son requeridos"
             }), 400
 
-        print(
-            f"🔧 Iniciando vinculación -> serie: {data['serie']} | "
-            f"vehiculo_id: {data['vehiculo_id']}"
-        )
-
-        dispositivo = Dispositivo.query.filter_by(serie=data["serie"]).first()
+        dispositivo = Dispositivo.query.filter_by(serie=serie).first()
 
         if not dispositivo:
-            print("❌ Vinculación fallida: dispositivo no encontrado")
             return jsonify({"error": "dispositivo no encontrado"}), 404
 
-        if dispositivo.pin_activacion != str(data["pin_activacion"]):
-            print("❌ Vinculación fallida: PIN incorrecto")
+        if str(dispositivo.pin_activacion).strip() != pin_activacion:
             return jsonify({"error": "PIN de activación incorrecto"}), 401
 
-        vehiculo = db.session.get(Vehiculo, data["vehiculo_id"])
+        vehiculo = db.session.get(Vehiculo, int(vehiculo_id))
 
         if not vehiculo:
-            print("❌ Vinculación fallida: vehículo no encontrado")
             return jsonify({"error": "vehículo no encontrado"}), 404
+
+        if not vehiculo.activo:
+            return jsonify({"error": "el vehículo no está activo"}), 400
+
+        if vehiculo.dispositivo_id:
+            dispositivo_actual = db.session.get(
+                Dispositivo,
+                vehiculo.dispositivo_id
+            )
+
+            return jsonify({
+                "error": "el vehículo ya tiene un dispositivo vinculado",
+                "requiere_cambio": True,
+                "dispositivo_actual": (
+                    {
+                        "id": dispositivo_actual.id,
+                        "serie": dispositivo_actual.serie
+                    }
+                    if dispositivo_actual else None
+                )
+            }), 409
+
+        if dispositivo.estado not in ["disponible"]:
+            return jsonify({
+                "error": "el dispositivo no está disponible para instalación"
+            }), 409
+            
+        vehiculo_con_dispositivo = Vehiculo.query.filter_by(
+            dispositivo_id=dispositivo.id
+        ).first()
+
+        if vehiculo_con_dispositivo:
+            return jsonify({
+                "error": "el dispositivo ya está vinculado a otro vehículo"
+            }), 409
 
         try:
             vehiculo.dispositivo_id = dispositivo.id
+
             dispositivo.empresa_id = vehiculo.empresa_id
             dispositivo.estado = "activo"
             dispositivo.fecha_instalacion = timestamp_actual()
@@ -104,34 +141,33 @@ def registrar_dispositivos_routes(app):
                     f"en {vehiculo.nombre}"
                 ),
                 estado="realizado",
-                timestamp=timestamp_actual(),
+                timestamp=timestamp_actual()
             )
+
             db.session.add(servicio)
 
             registrar_evento(
                 vehiculo_id=vehiculo.id,
                 tipo="dispositivo_vinculado",
                 descripcion=(
-                    f"Se vinculó el dispositivo {dispositivo.serie} "
-                    f"al vehículo {vehiculo.nombre}"
-                ),
+                    f"{usuario.nombre} vinculó el dispositivo "
+                    f"{dispositivo.serie} al vehículo {vehiculo.nombre}"
+                )
             )
 
             db.session.commit()
 
-            print(
-                f"✅ Dispositivo {dispositivo.serie} vinculado "
-                f"correctamente a {vehiculo.nombre}"
-            )
-
             return jsonify({
                 "ok": True,
                 "mensaje": "dispositivo vinculado correctamente",
-                "dispositivo_serie": dispositivo.serie,
-                "vehiculo": vehiculo.nombre,
+                "vehiculo": serializar_vehiculo_tecnico(vehiculo),
+                "dispositivo": serializar_dispositivo(dispositivo)
             }), 200
 
         except Exception as e:
             db.session.rollback()
             print(f"❌ Error al vincular dispositivo: {e}")
-            return jsonify({"error": "error interno del servidor"}), 500
+
+            return jsonify({
+                "error": "error interno al vincular dispositivo"
+            }), 500
