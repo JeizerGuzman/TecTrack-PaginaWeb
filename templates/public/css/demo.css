@@ -1,0 +1,178 @@
+:root {
+  --bg-page: #ffffff;
+  --card-bg: #ececec;
+  --text-main: #1a1a1a;
+  --text-muted: #9a9a9a;
+  --dark-btn: #1a1a1a;
+}
+
+.cta-wrapper {
+  width: 100%;
+  max-width: 1080px;
+}
+
+/* ==========================================
+   TARJETA PRINCIPAL
+========================================== */
+
+.cta-card {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 70px 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+/* Efecto de brillo diagonal en la esquina superior izquierda */
+.cta-card::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -30%;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 65%);
+  pointer-events: none;
+}
+
+/* ==========================================
+   CUADROS DECORATIVOS
+========================================== */
+
+.deco-square {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+.sq-1 {
+  width: 40px;
+  height: 40px;
+  top: 34%;
+  left: 14%;
+}
+
+.sq-2 {
+  width: 34px;
+  height: 34px;
+  top: 56%;
+  left: 8%;
+}
+
+.sq-3 {
+  width: 30px;
+  height: 30px;
+  bottom: 14%;
+  left: 20%;
+}
+
+/* ==========================================
+   CONTENIDO
+========================================== */
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 480px;
+}
+
+.cta-content h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 16px;
+}
+
+.cta-content p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0 0 32px;
+}
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+.cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 26px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #3a3a3a, var(--blue-dark));
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-dark:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 13px 26px;
+  border-radius: 30px;
+  background: #ffffff;
+  color: var(--text-main);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.btn-outline:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.btn-outline span {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 560px) {
+  .cta-card {
+    padding: 50px 24px;
+  }
+
+  .cta-content h2 {
+    font-size: 24px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-dark,
+  .btn-outline {
+    width: 100%;
+  }
+}

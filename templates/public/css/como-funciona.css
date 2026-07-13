@@ -1,0 +1,115 @@
+:root {
+  --bg-page: #ffffff;
+  --text-main: #2a2a2a;
+  --text-muted: #9a9a9a;
+  --text-label: #1a1a1a;
+  --divider: #e5e5e5;
+}
+
+.como-funciona {
+  width: 100%;
+  max-width: 1240px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin: auto;
+}
+
+/* ==========================================
+   COLUMNA IZQUIERDA: IMAGEN DESTACADA
+========================================== */
+
+.como-funciona-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.como-funciona-image {
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.como-funciona-image img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.como-funciona-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--blue-primary);
+  margin-bottom: 10px;
+}
+
+.como-funciona-title {
+  font-family: var(--serif-italic);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.35;
+  color: var(--text-main);
+  margin: 0 0 20px 0;
+}
+
+/* ==========================================
+   COLUMNA CENTRAL: LISTA NUMERADA
+========================================== */
+
+.list-cf-col {
+  display: flex;
+  flex-direction: column;
+  padding-left: 48px;
+  border-left: 1px solid var(--divider);
+}
+
+.list-cf-item {
+  display: grid;
+  grid-template-columns: 44px 32px 1fr;
+  align-items: start;
+  gap: 0;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--divider);
+}
+
+.list-cf-item:first-child {
+  padding-top: 0;
+}
+
+.item-cf-number {
+  font-family: var(--serif-font);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.item-cf-line {
+  height: 1px;
+  width: 20px;
+  background: var(--text-muted);
+  margin-top: 12px;
+}
+
+.item-cf-text h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--text-label);
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.item-cf-text p {
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 420px;
+}

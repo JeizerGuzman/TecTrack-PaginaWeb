@@ -1,0 +1,369 @@
+:root {
+  --blue-dark: #1e3a8a;
+  --blue-primary: #2563eb;
+  --blue-mid: #3b82f6;
+  --blue-light: #eef2ff;
+  --bg-page: #f8fafc;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-soft: #e2e8f0;
+
+  --radius-1: 95px;
+  --radius-2: 165px;
+  --radius-3: 235px;
+
+  --duration-1: 18s;
+  --duration-2: 26s;
+  --duration-3: 34s;
+}
+
+.tecnologias {
+  width: 100%;
+  max-width: 1180px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin: auto;
+}
+
+/* ==========================================
+   COLUMNA IZQUIERDA: TEXTO
+========================================== */
+
+.tech-left {
+  text-align: left;
+}
+
+.tech-eyebrow {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue-primary);
+  margin-bottom: 14px;
+}
+
+.tech-title {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-main);
+  margin: 0 0 20px;
+}
+
+.tech-desc {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 440px;
+  margin: 0 0 32px;
+}
+
+/* ==========================================
+   COLUMNA DERECHA: CONTENEDOR DE LA ÓRBITA
+========================================== */
+
+.tech-right {
+  display: flex;
+  justify-content: center;
+}
+
+.orbit-container {
+  position: relative;
+  width: 520px;
+  height: 520px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Anillos guía decorativos (solo visuales, no giran) */
+.orbit-ring {
+  position: absolute;
+  border: 1px dashed var(--border-soft);
+  border-radius: 50%;
+}
+
+.ring-1 {
+  width: calc(var(--radius-1) * 2);
+  height: calc(var(--radius-1) * 2);
+}
+
+.ring-2 {
+  width: calc(var(--radius-2) * 2);
+  height: calc(var(--radius-2) * 2);
+}
+
+.ring-3 {
+  width: calc(var(--radius-3) * 2);
+  height: calc(var(--radius-3) * 2);
+}
+
+/* Centro fijo */
+.orbit-center {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue-mid), var(--blue-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 3;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+}
+
+.orbit-center span {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 0 10px;
+}
+
+/* ==========================================
+   ANILLOS GIRATORIOS (contenedores)
+   Cada uno gira completo; los íconos van
+   posicionados en su circunferencia.
+========================================== */
+
+.orbit {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  z-index: 2;
+  transform-origin: center;
+}
+
+.orbit-1 {
+  animation: orbit-cw var(--duration-1) linear infinite;
+}
+
+.orbit-2 {
+  animation: orbit-ccw var(--duration-2) linear infinite;
+}
+
+.orbit-3 {
+  animation: orbit-cw var(--duration-3) linear infinite;
+}
+
+.orbit-container:hover .orbit,
+.orbit-container:hover .icon-inner {
+  animation-play-state: paused;
+}
+
+/* Posición fija de cada ícono sobre su circunferencia */
+.orbit-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.orbit-1 .orbit-icon {
+  transform: rotate(calc(360deg / var(--total) * var(--i))) translateX(var(--radius-1));
+}
+
+.orbit-2 .orbit-icon {
+  transform: rotate(calc(360deg / var(--total) * var(--i))) translateX(var(--radius-2));
+}
+
+.orbit-3 .orbit-icon {
+  transform: rotate(calc(360deg / var(--total) * var(--i))) translateX(var(--radius-3));
+}
+
+/* Contrarrota para que el ícono se mantenga siempre "de pie" mientras viaja */
+.icon-inner {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 84px;
+}
+
+.orbit-1 .icon-inner {
+  animation: icon-ccw var(--duration-1) linear infinite;
+}
+
+.orbit-2 .icon-inner {
+  animation: icon-cw var(--duration-2) linear infinite;
+}
+
+.orbit-3 .icon-inner {
+  animation: icon-ccw var(--duration-3) linear infinite;
+}
+
+.icon-inner img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  padding: 9px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.icon-inner:hover img {
+  transform: scale(1.15);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+}
+
+.icon-inner span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ==========================================
+   KEYFRAMES
+   orbit-cw / orbit-ccw se usan tanto para los
+   contenedores .orbit (rotación real) como para
+   .icon-inner (rotación inversa que cancela el giro).
+   El truco: si el anillo gira en un sentido, el ícono
+   debe girar en sentido contrario a la misma velocidad.
+========================================== */
+
+@keyframes orbit-cw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-ccw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Igual que orbit-cw/ccw pero conservando el translate(-50%,-50%)
+   que centra cada ícono sobre su punto en la circunferencia */
+@keyframes icon-cw {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes icon-ccw {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+/* ==========================================
+   LEYENDA
+========================================== */
+
+.orbit-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.orbit-legend span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-1 {
+  background: var(--blue-primary);
+}
+
+.dot-2 {
+  background: var(--blue-mid);
+}
+
+.dot-3 {
+  background: var(--blue-dark);
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 960px) {
+  .tech-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .tech-left {
+    text-align: center;
+  }
+
+  .tech-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .orbit-legend {
+    align-items: center;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --radius-1: 60px;
+    --radius-2: 100px;
+    --radius-3: 140px;
+  }
+
+  .orbit-container {
+    width: 340px;
+    height: 340px;
+  }
+
+  .orbit-center {
+    width: 90px;
+    height: 90px;
+  }
+
+  .orbit-center span {
+    font-size: 12px;
+  }
+
+  .icon-inner img {
+    width: 30px;
+    height: 30px;
+    padding: 7px;
+  }
+
+  .icon-inner span {
+    font-size: 9px;
+  }
+
+  .tech-title {
+    font-size: 24px;
+  }
+}
