@@ -3,17 +3,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const panels = document.querySelectorAll(".panel-content");
 
   tabButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+
+      // ---- Efecto ripple (se ejecuta siempre, incluso si ya está activo) ----
+      const rect = btn.getBoundingClientRect();
+      const ripple = document.createElement("span");
+      const size = Math.max(rect.width, rect.height);
+
+      ripple.classList.add("ripple");
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+      ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+
+      btn.appendChild(ripple);
+      ripple.addEventListener("animationend", () => ripple.remove());
+
+      // ---- Lógica de cambio de tab ----
       const targetId = btn.getAttribute("data-target");
 
-      // Si ya está activo, no hacer nada
       if (btn.classList.contains("active")) return;
 
-      // Actualizar estado de los botones
       tabButtons.forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
-      // Actualizar panel visible con transición
       panels.forEach((panel) => {
         if (panel.id === targetId) {
           panel.classList.add("active");

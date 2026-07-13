@@ -67,6 +67,8 @@
 }
 
 .tab-btn {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -77,18 +79,65 @@
   background: var(--card-bg);
   cursor: pointer;
   text-align: left;
-  transition: all 0.3s ease;
+  transition: transform 0.15s ease, border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .tab-btn:hover {
   border-color: var(--blue-mid);
 }
 
+/* Feedback inmediato al presionar: se "hunde" un poco */
+.tab-btn:active {
+  transform: scale(0.97);
+}
+
 .tab-btn.active {
   background: linear-gradient(135deg, var(--blue-mid), var(--blue-dark));
   border-color: transparent;
   box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+  animation: tab-activate 0.4s ease;
 }
+
+/* Pequeño "pop" al activarse */
+@keyframes tab-activate {
+  0% {
+    transform: scale(0.97);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ==========================================
+   EFECTO RIPPLE (ondas al hacer click)
+========================================== */
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.35);
+  transform: scale(0);
+  animation: ripple-expand 0.6s ease-out;
+  pointer-events: none;
+}
+
+.tab-btn.active .ripple {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+@keyframes ripple-expand {
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* ==========================================
+   ICONO
+========================================== */
 
 .tab-icon {
   width: 40px;
@@ -103,7 +152,21 @@
 }
 
 .tab-btn.active .tab-icon {
-  background: rgba(255, 255, 255, 0.2);
+  background: #FFF;
+  animation: icon-bounce 0.45s ease;
+}
+
+/* Rebote del ícono al activarse el tab */
+@keyframes icon-bounce {
+  0% {
+    transform: scale(0.7) rotate(-8deg);
+  }
+  60% {
+    transform: scale(1.15) rotate(4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 .tab-icon img {

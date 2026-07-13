@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TrackSecurity - Inicio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSecurity - Inicio</title>
 
-  <!-- CSS Links -->
-  <link rel="stylesheet" href="./css/global.css">
-  <link rel="stylesheet" href="./css/variables.css">
-  <link rel="stylesheet" href="./css/navbar.css">
-  <link rel="stylesheet" href="./css/problemas.css">
-  <link rel="stylesheet" href="./css/como-funciona.css">
-  <link rel="stylesheet" href="./css/caracteristicas.css">
-  <!-- <link rel="stylesheet" href="./css/dashboard.css"> -->
-  <link rel="stylesheet" href="./css/benefits.css">
-  <link rel="stylesheet" href="./css/tecnologias.css">
-  <link rel="stylesheet" href="./css/demo.css">
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/variables.css">
+    <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="./css/problemas.css">
+    <link rel="stylesheet" href="./css/como-funciona.css">
+    <link rel="stylesheet" href="./css/caracteristicas.css">
+    <!-- <link rel="stylesheet" href="./css/dashboard.css"> -->
+    <link rel="stylesheet" href="./css/benefits.css">
+    <link rel="stylesheet" href="./css/tecnologias.css">
+    <link rel="stylesheet" href="./css/demo.css">
+    <link rel="stylesheet" href="./css/casos-de-uso.css">
+    <link rel="stylesheet" href="./css/footer.css">
 
-  <!-- Fontawesome Kit -->
-  <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
+    <!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
 
-  <!-- Vista publica de la landing page del dominio. -->
-  <!-- Rol: publico. No requiere autenticacion. -->
-  <!-- Endpoints probables: GET /api/servicios, GET /api/planes, POST /login si se enlaza acceso. -->
+    <!-- Vista publica de la landing page del dominio. -->
+    <!-- Rol: publico. No requiere autenticacion. -->
+    <!-- Endpoints probables: GET /api/servicios, GET /api/planes, POST /login si se enlaza acceso. -->
 </head>
 
 <body>
@@ -38,28 +40,28 @@
 
                 <div class="nav-links">
 
-                    <a class="nav-item" href="#">
+                    <a class="nav-item" href="#caracteristicas">
                         <span class="icon">
                             <i class="fa-solid fa-layer-group"></i>
                         </span>
                         Características
                     </a>
 
-                    <a class="nav-item" href="#">
+                    <a class="nav-item" href="#dashboard">
                         <span class="icon">
                             <i class="fa-solid fa-chart-line"></i>
                         </span>
                         Dashboard
                     </a>
 
-                    <a class="nav-item" href="#">
+                    <a class="nav-item" href="#tecnologias">
                         <span class="icon">
                             <i class="fa-solid fa-microchip"></i>
                         </span>
                         Tecnologías
                     </a>
 
-                    <a class="nav-item" href="#">
+                    <a class="nav-item" href="#casos_de_uso">
                         <span class="icon">
                             <i class="fa-solid fa-truck-front"></i>
                         </span>
@@ -238,9 +240,96 @@
         </div>
     </section>
 
+    <!-- Características -->
+    <section class="caracteristicas" id="caracteristicas">
+      <span class="eyebrow">
+          Características
+      </span>
+
+      <h1 class="section-title">
+          Una plataforma completa para el monitoreo inteligente
+      </h1>
+
+      <div class="services-grid">
+          <div class="service-card">
+              <div class="icon-circle">
+                  <i class="fa-solid fa-globe"></i>
+              </div>
+
+              <h3>
+                  Monitoreo GPS en tiempo real
+              </h3>
+
+              <p>
+                  Visualiza la ubicación exacta y los recorridos de cada unidad.
+              </p>
+          </div>
+
+          <div class="service-card">
+              <div class="icon-circle">
+                  <i class="fa-solid fa-person-circle-exclamation"></i>
+              </div>
+
+              <h3>
+                  Alertas instantáneas
+              </h3>
+
+              <p>
+                  Recibe notificaciones por apertura de puertas, vibraciones sospechosas y botón de pánico.
+              </p>
+          </div>
+
+          <div class="service-card">
+              <div class="icon-circle">
+                  <i class="fa-solid fa-calendar"></i>
+              </div>
+
+              <h3>
+                  Historial de eventos
+              </h3>
+
+              <p>
+                  Consulta eventos anteriores con fecha, hora, duración y ubicación.
+              </p>
+          </div>
+
+          <div class="service-card">
+              <div class="icon-circle">
+                  <i class="fa-solid fa-truck-fast"></i>
+              </div>
+
+              <h3>
+                  Gestión de flotas
+              </h3>
+
+              <p>
+                  Administra múltiples vehículos desde un único dashboard.
+              </p>
+          </div>
+
+          <div class="service-card">
+              <div class="icon-circle">
+                  <i class="fa-brands fa-bluetooth-b"></i>
+              </div>
+
+              <h3>
+                  Configuración mediante bluetooth
+              </h3>
+
+              <p>
+                  Configura rápidamente los dispositivos desde la aplicación móvil sin necesidad de herramientas adicionales.
+              </p>
+          </div>
+
+          <div class="service-card-img">
+            <a href="#como_funciona"><img src="./assets/como-funciona/pexels-tima-miroshnichenko-6169129.jpg" alt=""></a>
+          </div>
+      </div>
+    </section>
+
     <!-- ¿Cómo funciona? -->
 
-    <section class="como-funciona">
+    <section class="como-funciona" id="como_funciona">
       <!-- COLUMNA IZQUIERDA -->
       <div class="como-funciona-col">
         <span class="como-funciona-label">
@@ -339,98 +428,13 @@
               </div>
           </div>
       </div>
-  </section>
-
-    <!-- Características -->
-    <section class="caracteristicas">
-      <span class="eyebrow">
-          Características
-      </span>
-
-      <h1 class="section-title">
-          Una plataforma completa para el monitoreo inteligente
-      </h1>
-
-      <div class="services-grid">
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-solid fa-globe"></i>
-              </div>
-
-              <h3>
-                  Monitoreo GPS en tiempo real
-              </h3>
-
-              <p>
-                  Visualiza la ubicación exacta y los recorridos de cada unidad.
-              </p>
-          </div>
-
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-solid fa-person-circle-exclamation"></i>
-              </div>
-
-              <h3>
-                  Alertas instantáneas
-              </h3>
-
-              <p>
-                  Recibe notificaciones por apertura de puertas, vibraciones sospechosas y botón de pánico.
-              </p>
-          </div>
-
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-solid fa-calendar"></i>
-              </div>
-
-              <h3>
-                  Historial de eventos
-              </h3>
-
-              <p>
-                  Consulta eventos anteriores con fecha, hora, duración y ubicación.
-              </p>
-          </div>
-
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-solid fa-truck-fast"></i>
-              </div>
-
-              <h3>
-                  Gestión de flotas
-              </h3>
-
-              <p>
-                  Administra múltiples vehículos desde un único dashboard.
-              </p>
-          </div>
-
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-brands fa-bluetooth-b"></i>
-              </div>
-
-              <h3>
-                  Configuración mediante bluetooth
-              </h3>
-
-              <p>
-                  Configura rápidamente los dispositivos desde la aplicación móvil sin necesidad de herramientas adicionales.
-              </p>
-          </div>
-
-          <div class="service-card-img">
-            <img src="./assets/como-funciona/pexels-tima-miroshnichenko-6169129.jpg" alt="">
-          </div>
-      </div>
     </section>
 
     <!-- Dashboard -->
 
-    <section class="dashboard"></section>
+    <section class="dashboard" id="dashboard">
+        <h2>Dashboard</h2>
+    </section>
 
     <!-- Beneficios -->
 
@@ -539,7 +543,7 @@
 
     <!-- Tecnologías -->
 
-    <section class="tecnologias">
+    <section class="tecnologias" id="tecnologias">
       <div class="tech-left">
         <span class="tech-eyebrow">Stack</span>
         <h2 class="tech-title">
@@ -559,158 +563,312 @@
         </div>
       </div>
     
-      <div class="tech-right">
-        <div class="orbit-container">
-    
-        <!-- CENTRO -->
-        <div class="orbit-center">
-          <span>TecTrack Security</span>
+        <div class="tech-right">
+            <div class="orbit-container">
+        
+            <!-- CENTRO -->
+            <div class="orbit-center">
+                <span>TecTrack Security</span>
+            </div>
+        
+            <!-- ANILLOS GUÍA (visuales) -->
+            <div class="orbit-ring ring-1"></div>
+            <div class="orbit-ring ring-2"></div>
+            <div class="orbit-ring ring-3"></div>
+        
+            <!-- ANILLO 1: HARDWARE (interno) -->
+            <div class="orbit orbit-1">
+                <div class="orbit-icon" style="--i:0; --total:3;">
+                    <div class="icon-inner">
+                    <img src="icon-esp32.png" alt="ESP32">
+                    <span>ESP32</span>
+                    </div>
+                </div>
+            
+                <div class="orbit-icon" style="--i:1; --total:3;">
+                    <div class="icon-inner">
+                    <img src="icon-gps.png" alt="GPS">
+                    <span>GPS</span>
+                    </div>
+                </div>
+            
+                <div class="orbit-icon" style="--i:2; --total:3;">
+                    <div class="icon-inner">
+                    <img src="icon-sim.png" alt="Módulo SIM">
+                    <span>Módulo SIM</span>
+                    </div>
+                </div>
+            </div>
+            
+                <!-- ANILLO 2: BACKEND (medio) -->
+                <div class="orbit orbit-2">
+                    <div class="orbit-icon" style="--i:0; --total:3;">
+                        <div class="icon-inner">
+                        <img src="icon-flask.png" alt="Flask">
+                        <span>Flask</span>
+                        </div>
+                    </div>
+                
+                    <div class="orbit-icon" style="--i:1; --total:3;">
+                        <div class="icon-inner">
+                        <img src="icon-mysql.png" alt="MySQL">
+                        <span>MySQL</span>
+                        </div>
+                    </div>
+                
+                    <div class="orbit-icon" style="--i:2; --total:3;">
+                        <div class="icon-inner">
+                        <img src="icon-railway.png" alt="Railway">
+                        <span>Railway</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- ANILLO 3: FRONTEND + CONECTIVIDAD (externo) -->
+                <div class="orbit orbit-3">
+                    <div class="orbit-icon" style="--i:0; --total:4;">
+                        <div class="icon-inner">
+                        <img src="icon-html.png" alt="HTML">
+                        <span>HTML</span>
+                        </div>
+                    </div>
+                
+                    <div class="orbit-icon" style="--i:1; --total:4;">
+                        <div class="icon-inner">
+                        <img src="icon-css.png" alt="CSS">
+                        <span>CSS</span>
+                        </div>
+                    </div>
+                
+                    <div class="orbit-icon" style="--i:2; --total:4;">
+                        <div class="icon-inner">
+                        <img src="icon-js.png" alt="JavaScript">
+                        <span>JavaScript</span>
+                        </div>
+                    </div>
+                
+                    <div class="orbit-icon" style="--i:3; --total:4;">
+                        <div class="icon-inner">
+                        <img src="icon-bluetooth.png" alt="Bluetooth">
+                        <span>Bluetooth</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    
-        <!-- ANILLOS GUÍA (visuales) -->
-        <div class="orbit-ring ring-1"></div>
-        <div class="orbit-ring ring-2"></div>
-        <div class="orbit-ring ring-3"></div>
-    
-        <!-- ANILLO 1: HARDWARE (interno) -->
-        <div class="orbit orbit-1">
-    
-          <div class="orbit-icon" style="--i:0; --total:3;">
-            <div class="icon-inner">
-              <img src="icon-esp32.png" alt="ESP32">
-              <span>ESP32</span>
-            </div>
-          </div>
-    
-          <div class="orbit-icon" style="--i:1; --total:3;">
-            <div class="icon-inner">
-              <img src="icon-gps.png" alt="GPS">
-              <span>GPS</span>
-            </div>
-          </div>
-    
-          <div class="orbit-icon" style="--i:2; --total:3;">
-            <div class="icon-inner">
-              <img src="icon-sim.png" alt="Módulo SIM">
-              <span>Módulo SIM</span>
-            </div>
-          </div>
-    
-        </div>
-    
-        <!-- ANILLO 2: BACKEND (medio) -->
-        <div class="orbit orbit-2">
-    
-          <div class="orbit-icon" style="--i:0; --total:3;">
-            <div class="icon-inner">
-              <img src="icon-flask.png" alt="Flask">
-              <span>Flask</span>
-            </div>
-          </div>
-    
-          <div class="orbit-icon" style="--i:1; --total:3;">
-            <div class="icon-inner">
-              <img src="icon-mysql.png" alt="MySQL">
-              <span>MySQL</span>
-            </div>
-          </div>
-    
-          <div class="orbit-icon" style="--i:2; --total:3;">
-            <div class="icon-inner">
-              <img src="icon-railway.png" alt="Railway">
-              <span>Railway</span>
-            </div>
-          </div>
-    
-        </div>
-    
-        <!-- ANILLO 3: FRONTEND + CONECTIVIDAD (externo) -->
-        <div class="orbit orbit-3">
-    
-          <div class="orbit-icon" style="--i:0; --total:4;">
-            <div class="icon-inner">
-              <img src="icon-html.png" alt="HTML">
-              <span>HTML</span>
-            </div>
-          </div>
-    
-          <div class="orbit-icon" style="--i:1; --total:4;">
-            <div class="icon-inner">
-              <img src="icon-css.png" alt="CSS">
-              <span>CSS</span>
-            </div>
-          </div>
-    
-          <div class="orbit-icon" style="--i:2; --total:4;">
-            <div class="icon-inner">
-              <img src="icon-js.png" alt="JavaScript">
-              <span>JavaScript</span>
-            </div>
-          </div>
-    
-          <div class="orbit-icon" style="--i:3; --total:4;">
-            <div class="icon-inner">
-              <img src="icon-bluetooth.png" alt="Bluetooth">
-              <span>Bluetooth</span>
-            </div>
-          </div>
-    
-        </div>
-    
-        </div>
-      </div>
     </section>
 
-    <section class="use-cases"></section>
+    <!-- Casos de uso -->
+    <section class="use-cases" id="casos_de_uso">
+        <span class="eyebrow">
+            Casos de uso
+        </span>
+        <div class="bento-header">
+            <h1 class="bento-title">
+            Una plataforma preparada para<br>
+            cualquier operación logística
+            </h1>
+            <p class="bento-desc">
+            Desde empresas de paquetería hasta transporte de carga de alto valor,
+            TecTrack se adapta a distintos escenarios para ofrecer seguridad. 
+            </p>
+        </div>
+        
+        <div class="bento-grid">
+        
+            <!-- CARD: COMMUNITY VOICE (alta, columna izquierda) -->
+            <div class="bento-card card-voice">
+            <div class="card-visual">
+                <img src="./assets/casos-de-uso/visual-parqueteria.svg" alt="">
+            </div>
+            <div class="card-text">
+                <h3>Empresas de paquetería</h3>
+                <p>
+                    Supervisa entregas, conoce la ubicación de cada unidad y responde
+                    rápidamente ante cualquier incidencia durante la ruta.
+                </p>
+            </div>
+            </div>
+        
+            <!-- CARD: FUEL YOUR HUSTLE (ancha, arriba derecha) -->
+            <div class="bento-card card-fuel">
+            <div class="card-text">
+                <h3>Transporte de mercancías</h3>
+                <p>
+                    Protege la carga con monitoreo GPS, alertas por apertura de puertas
+                    y detección de vibraciones sospechosas.
+                </p>
+            </div>
+            <div class="card-visual">
+                <img src="./assets/casos-de-uso/visual-mercancias.svg" alt="">
+            </div>
+            </div>
+        
+            <!-- CARD: SOUND OF THE STREETS -->
+            <div class="bento-card card-sound">
+            <div class="card-text">
+                <h3>Logística empresarial</h3>
+                <p>
+                    Administra toda la flota desde un único dashboard con información
+                    centralizada y actualizada.
+                </p>
+            </div>
+            <div class="card-visual">
+                <img src="./assets/casos-de-uso/visual-logistica.svg" alt="">
+            </div>
+            </div>
+        
+            <!-- CARD: WORK MEETS STREET -->
+            <div class="bento-card card-work">
+            <div class="card-text">
+                <h3>Distribución regional</h3>
+                <p>
+                    Da seguimiento a recorridos entre ciudades y optimiza tiempos
+                    de entrega.
+                </p>
+            </div>
+            <div class="card-visual">
+                <img src="./assets/casos-de-uso/visual-distribucion.svg" alt="">
+            </div>
+            </div>
+        
+            <!-- CARD: STEP UP YOUR GAME (ancha, abajo izquierda) -->
+            <div class="bento-card card-step">
+            <div class="card-text">
+                <h3>Flotillas empresariales</h3>
+                <p>
+                    Controla múltiples vehículos, consulta historiales y mantén
+                    toda la operación bajo una sola plataforma.
+                </p>
+            </div>
+            <div class="card-visual">
+                <img src="./assets/casos-de-uso/visual-flotillas.svg" alt="">
+            </div>
+            </div>
+        
+            <!-- CARD: READY FOR ANYWHERE (abajo derecha) -->
+            <div class="bento-card card-ready">
+            <div class="card-text">
+                <h3>Seguridad para operadores</h3>
+                <p>
+                    El botón de pánico y las alertas en tiempo real ayudan a
+                    proteger al conductor ante situaciones de riesgo.
+                </p>
+            </div>
+            <div class="card-visual">
+                <img src="./assets/casos-de-uso/visual-seguridad.svg" alt="">
+            </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Demo -->
     <section class="section-demo">
-      <div class="cta-card">
+        <div class="cta-card">
 
-          <!-- Decoración -->
-          <span class="deco-square sq-1"></span>
-          <span class="deco-square sq-2"></span>
-          <span class="deco-square sq-3"></span>
+            <!-- Decoración -->
+            <span class="deco-square sq-1"></span>
+            <span class="deco-square sq-2"></span>
+            <span class="deco-square sq-3"></span>
 
-          <div class="cta-content">
+            <div class="cta-content">
 
-              <span class="eyebrow">
-                  ¿Listo para comenzar?
-              </span>
+                <span class="eyebrow">
+                    ¿Listo para comenzar?
+                </span>
 
-              <h2>
-                  Protege tu flota con monitoreo inteligente
-              </h2>
+                <h2>
+                    Protege tu flota con monitoreo inteligente
+                </h2>
 
-              <p>
-                  Solicita una demostración y conoce cómo TecTrack puede ayudarte a
-                  monitorear tus unidades, recibir alertas en tiempo real y mantener
-                  tu mercancía siempre bajo control.
-              </p>
+                <p>
+                    Solicita una demostración y conoce cómo TecTrack puede ayudarte a
+                    monitorear tus unidades, recibir alertas en tiempo real y mantener
+                    tu mercancía siempre bajo control.
+                </p>
 
-              <div class="cta-buttons">
+                <div class="cta-buttons">
 
-                  <a href="#" class="btn-dark">
-                      Solicitar demostración
-                  </a>
+                    <a href="#" class="btn-dark">
+                        Solicitar demostración
+                    </a>
 
-                  <a href="#" class="btn-outline">
-                      Contactar con un asesor
-                  </a>
-              </div>
-          </div>
-      </div>
+                    <a href="#" class="btn-outline">
+                        Contactar con un asesor
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
-
-    <section class="contact"></section>
-
     </main>
 
     <!-- ================= FOOTER ================= -->
-    <footer>
-
-    </footer>
+    <footer class="site-footer">
+        <div class="footer-top">
+            <!-- COLUMNA 1: MARCA -->
+            <div class="footer-brand">
+                <div class="brand-logo">
+                    <img src="./assets/hero/logo-black.jpeg" alt="">
+                    <span>TecTrack Security</span>
+                </div>
+                <p>Monitorea vehículos en tiempo real, recibe alertas de seguridad y protege tu mercancía desde una plataforma centralizada.</p>
+            
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        
+            <!-- COLUMNA 2: COMPANY -->
+            <div class="footer-links">
+                <h4>Compañía</h4>
+                <a href="#">Inicio</a>
+                <a href="#">Sobre nosotros</a>
+                <a href="#">Pricing</a>
+            </div>
+        
+            <!-- COLUMNA 3: PRODUCT -->
+            <div class="footer-links">
+                <h4>Productos</h4>
+                <a href="#caracteristicas">Características</a>
+                <a href="#como_funciona">¿Cómo funciona?</a>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#casos_de_uso">Casos de uso</a>
+                <a href="#">Contact</a>
+            </div>
+        
+            <!-- COLUMNA 4: NEWSLETTER -->
+            <div class="footer-newsletter">
+                <h4>Buzón</h4>
+                <p>Recibe novedades, actualizaciones del sistema y consejos para mejorar la seguridad de tu flota.</p>
+            
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Correo electrónico" required>
+                    <button type="submit">
+                    Suscribirse
+                    </button>
+                </form>
+            </div>
+        
+        </div>
+        
+        <!-- BARRA INFERIOR -->
+        <div class="footer-bottom">
+            <span class="copyright">© 2026 Tectrack. Todos los derechos reservados.</span>
+        
+            <div class="footer-legal">
+            <a href="#">Politica de Privacidad</a>
+            <a href="#">Términos y Servicios</a>
+            <a href="#">Seguridad</a>
+            <a href="#">Cookies</a>
+            </div>
+        </div>
+        
+        </footer>
 
     <!-- JS -->
     <script src="./js/benefits.js"></script>
+    <script src="./js/caracteristicas.js"></script>
 </body>
 </html>

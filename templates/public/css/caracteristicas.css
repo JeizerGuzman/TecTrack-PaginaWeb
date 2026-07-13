@@ -2,6 +2,7 @@
   --bg-page: #ffffff;
   --card-bg: #f7f8f8;
   --green-accent: #4caf50;
+  --blue-primary: #2563eb;
   --text-main: #1a2b23;
   --text-muted: #8a938f;
   --icon-bg: #ffffff;
@@ -55,6 +56,29 @@
   align-items: center;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: default;
+
+  /* Estado inicial para la animación de scroll reveal */
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.service-card.in-view {
+  animation: card-reveal 0.6s ease forwards;
+}
+
+@keyframes card-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Elevación + sombra más marcada al hover */
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
 }
 
 /* ==========================================
@@ -71,6 +95,23 @@
   justify-content: center;
   margin-bottom: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: background 0.35s ease, transform 0.35s ease;
+}
+
+.icon-circle i {
+  font-size: 20px;
+  color: var(--blue-primary);
+  transition: color 0.35s ease;
+}
+
+/* Al hacer hover en la tarjeta, el círculo se llena de color y rota un poco */
+.service-card:hover .icon-circle {
+  background: linear-gradient(135deg, var(--blue-primary), #1e3a8a);
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.service-card:hover .icon-circle i {
+  color: #ffffff;
 }
 
 .icon-circle img {
@@ -100,17 +141,77 @@
   max-width: 220px;
 }
 
-.service-card-img{
-    background: var(--card-bg);
-    border-radius: 18px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+/* ==========================================
+   TARJETA DE IMAGEN (con zoom + overlay)
+========================================== */
+
+.service-card-img {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+
+  /* también entra con el scroll reveal */
+  opacity: 0;
+  transform: translateY(24px);
 }
 
-.service-card-img img{
-    width: 100%;
-    border-radius: 18px;
+.service-card-img.in-view {
+  animation: card-reveal 0.6s ease forwards;
+}
+
+.service-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.service-card-img:hover img {
+  transform: scale(1.08);
+}
+
+/* Overlay que aparece encima de la imagen al hover */
+.service-card-img::after {
+  content: "Conoce cómo funciona";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(0deg, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0));
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  padding-top: 40%;
+  pointer-events: none;
+}
+
+.service-card-img:hover::after {
+  opacity: 1;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 900px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
 }

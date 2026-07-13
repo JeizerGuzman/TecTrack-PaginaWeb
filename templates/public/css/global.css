@@ -10,6 +10,14 @@
     box-sizing:border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+section[id] {
+    scroll-margin-top: 90px; /* antes 90px, ahora deja más espacio arriba */
+}
+
 /* ==============================
     ESTILOS GENERALES PARA BODY
 ============================== */
@@ -24,5 +32,5 @@ a{
 }
 
 section{
-    margin-bottom: 100px !important;
+    margin-bottom: 85px !important;
 }
