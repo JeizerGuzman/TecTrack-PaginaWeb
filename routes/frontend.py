@@ -88,12 +88,12 @@ def registrar_frontend_routes(app):
     # Pantalla de historial.
     @app.get("/dueno/historial")
     def dueno_historial():
-        return render_template("dueno/historial.html")
+        return render_template("dueno/historial/index.html")
 
     # Pantalla de reportes. Puede seguir vacía si aún no se desarrolla.
     @app.get("/dueno/reportes")
     def dueno_reportes():
-        return render_template("dueno/reportes.html")
+        return render_template("dueno/reportes/index.html")
 
     # Listado de usuarios.
     @app.get("/dueno/usuarios")

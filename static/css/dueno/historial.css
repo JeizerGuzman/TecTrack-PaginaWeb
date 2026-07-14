@@ -1,2 +1,737 @@
-/* Estilos especificos de la pantalla dueno/historial. */
-/* Debe adaptar tablas, linea de tiempo y filtros de historiales. */
+/* ============================================================
+   HISTORIAL DEL DUEÑO - TrackSecurity
+   ============================================================ */
+
+
+.historial-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+
+.historial-header h2 {
+    margin: 0 0 6px;
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: var(--color-texto);
+    letter-spacing: -0.03em;
+}
+
+
+.historial-header p {
+    margin: 0;
+    color: var(--color-texto-secundario);
+    line-height: 1.55;
+    max-width: 650px;
+}
+
+
+.historial-refresh-info {
+    flex-shrink: 0;
+    min-width: 180px;
+    padding: 11px 17px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    text-align: right;
+
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde-suave);
+    border-radius: var(--radius-md);
+
+    box-shadow:
+        0 5px 15px
+        rgba(15, 23, 42, 0.05);
+}
+
+
+.historial-refresh-info span:first-child {
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--color-texto);
+}
+
+
+#estadoCargaHistorial {
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primario);
+    opacity: 0.65;
+}
+
+
+#estadoCargaHistorial.visible {
+    opacity: 1;
+}
+
+
+/* ============================================================
+   MÉTRICAS
+   ============================================================ */
+
+.historial-stats-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+
+.historial-stat-card {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 18px;
+
+    overflow: hidden;
+
+    border-radius: 18px !important;
+}
+
+
+.historial-stat-card::before {
+    content: "";
+
+    position: absolute;
+    inset: 0 auto 0 0;
+
+    width: 4px;
+}
+
+
+.historial-stat-card:nth-child(1)::before {
+    background: var(--color-primario);
+}
+
+
+.historial-stat-card:nth-child(2)::before {
+    background: #ef4444;
+}
+
+
+.historial-stat-card:nth-child(3)::before {
+    background: #8b5cf6;
+}
+
+
+.historial-stat-card:nth-child(4)::before {
+    background: #16a34a;
+}
+
+
+.historial-stat-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+}
+
+
+.historial-stat-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+
+.historial-stat-total {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+
+.historial-stat-alertas {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+.historial-stat-eventos {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+
+.historial-stat-servicios {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
+.historial-stat-card p {
+    margin: 0 0 5px;
+
+    font-size: 0.72rem;
+    color: var(--color-texto-secundario);
+
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 800;
+}
+
+
+.historial-stat-card strong {
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: var(--color-texto);
+}
+
+
+/* ============================================================
+   FILTROS
+   ============================================================ */
+
+.historial-filtros-card {
+    padding: 18px;
+    border-radius: 18px !important;
+}
+
+
+.historial-filtros-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 17px;
+}
+
+
+.historial-filtros-header h3 {
+    margin: 0 0 4px;
+
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--color-texto);
+}
+
+
+.historial-filtros-header p {
+    margin: 0;
+
+    color: var(--color-texto-secundario);
+    font-size: 0.82rem;
+}
+
+
+.historial-filtros-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 2fr)
+        minmax(180px, 1.25fr)
+        minmax(145px, 1fr)
+        minmax(145px, 1fr);
+
+    gap: 14px;
+}
+
+
+/* ============================================================
+   CATEGORÍAS
+   ============================================================ */
+
+.historial-categorias {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 6px;
+
+    width: fit-content;
+    max-width: 100%;
+
+    overflow-x: auto;
+
+    background: #f1f5f9;
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 14px;
+}
+
+
+.historial-categoria-btn {
+    min-height: 38px;
+    padding: 0 16px;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+    color: var(--color-texto-secundario);
+
+    font-size: 0.82rem;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        background 0.16s ease,
+        color 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+
+.historial-categoria-btn:hover {
+    color: var(--color-texto);
+}
+
+
+.historial-categoria-btn.active {
+    background: #ffffff;
+    color: var(--color-primario);
+
+    box-shadow:
+        0 4px 12px
+        rgba(15, 23, 42, 0.08);
+}
+
+
+/* ============================================================
+   LISTADO
+   ============================================================ */
+
+.historial-list-card {
+    border-radius: 22px !important;
+}
+
+
+.historial-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+
+.historial-list-header h3 {
+    margin: 0 0 4px;
+}
+
+
+.historial-list-header p {
+    margin: 0;
+    color: var(--color-texto-secundario);
+}
+
+
+.historial-list-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+#historialCantidadMostrada {
+    color: var(--color-texto-secundario);
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+
+.historial-listado {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* ============================================================
+   ITEM
+   ============================================================ */
+
+.historial-item {
+    position: relative;
+
+    display: grid;
+    grid-template-columns:
+        58px
+        minmax(0, 1fr);
+
+    gap: 16px;
+
+    padding: 17px 19px;
+
+    background: #ffffff;
+
+    border: 1px solid
+        var(--color-borde-suave);
+
+    border-radius: 17px;
+
+    box-shadow:
+        0 8px 24px
+        rgba(15, 23, 42, 0.045);
+
+    overflow: hidden;
+
+    transition:
+        transform 0.16s ease,
+        box-shadow 0.16s ease;
+}
+
+
+.historial-item:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 14px 32px
+        rgba(15, 23, 42, 0.075);
+}
+
+
+.historial-item::before {
+    content: "";
+
+    position: absolute;
+    inset: 0 auto 0 0;
+
+    width: 5px;
+}
+
+
+.historial-item-alerta::before {
+    background: #ef4444;
+}
+
+
+.historial-item-evento::before {
+    background: #8b5cf6;
+}
+
+
+.historial-item-gps::before {
+    background: #2563eb;
+}
+
+
+.historial-item-servicio::before {
+    background: #16a34a;
+}
+
+
+/* ============================================================
+   ICONO ITEM
+   ============================================================ */
+
+.historial-item-icon {
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #f8fafc;
+    color: var(--color-texto-secundario);
+}
+
+
+.historial-item-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+
+.historial-item-alerta
+.historial-item-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+.historial-item-evento
+.historial-item-icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+
+.historial-item-gps
+.historial-item-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+
+.historial-item-servicio
+.historial-item-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
+/* ============================================================
+   CONTENIDO ITEM
+   ============================================================ */
+
+.historial-item-main {
+    min-width: 0;
+}
+
+
+.historial-item-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+
+.historial-item-category {
+    margin-bottom: 5px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.68rem;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+
+.historial-item h3 {
+    margin: 0;
+
+    color: var(--color-texto);
+
+    font-size: 1rem;
+    font-weight: 900;
+
+    letter-spacing: -0.025em;
+}
+
+
+.historial-time-badge {
+    flex-shrink: 0;
+
+    padding: 5px 9px;
+
+    background: #f8fafc;
+
+    border: 1px solid
+        var(--color-borde-suave);
+
+    border-radius: 999px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+
+.historial-item-description {
+    margin: 8px 0 0;
+
+    max-width: 800px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   META
+   ============================================================ */
+
+.historial-item-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-top: 13px;
+}
+
+
+.historial-item-meta > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    min-height: 26px;
+    padding: 0 9px;
+
+    background: #f8fafc;
+
+    border: 1px solid
+        var(--color-borde-suave);
+
+    border-radius: 999px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+
+.historial-item-meta strong {
+    color: var(--color-texto);
+    font-weight: 800;
+}
+
+
+/* ============================================================
+   DETALLES EXTRA
+   ============================================================ */
+
+.historial-item-extra {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin-top: 10px;
+}
+
+
+.historial-extra-chip {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 27px;
+    padding: 0 10px;
+
+    background: #f1f5f9;
+
+    border-radius: 999px;
+
+    color: #475569;
+
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+
+.historial-extra-active {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+
+.historial-extra-location {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (
+    max-width: 1100px
+) {
+
+    .historial-stats-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .historial-filtros-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (
+    max-width: 700px
+) {
+
+    .historial-header {
+        flex-direction: column;
+    }
+
+
+    .historial-refresh-info {
+        width: 100%;
+        text-align: left;
+    }
+
+
+    .historial-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .historial-filtros-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+
+    .historial-filtros-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .historial-categorias {
+        width: 100%;
+    }
+
+
+    .historial-list-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+
+    .historial-list-meta {
+        justify-content: space-between;
+    }
+
+
+    .historial-item {
+        grid-template-columns: 1fr;
+    }
+
+
+    .historial-item-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+
+    .historial-item-title-row {
+        flex-direction: column;
+    }
+
+
+    .historial-time-badge {
+        align-self: flex-start;
+    }
+
+}

@@ -55,6 +55,84 @@ window.TrackAPI = {
         return this.request(`/api/historial/${vehiculoId}`);
     },
 
+    obtenerReportesDueno(parametros = {}) {
+
+        const query =
+            new URLSearchParams();
+
+
+        Object.entries(parametros)
+            .forEach(([clave, valor]) => {
+
+                if (
+                    valor === null ||
+                    valor === undefined ||
+                    valor === ""
+                ) {
+                    return;
+                }
+
+
+                query.set(
+                    clave,
+                    String(valor)
+                );
+
+            });
+
+
+        const cadena =
+            query.toString();
+
+
+        const endpoint = cadena
+            ? `/api/dueno/reportes?${cadena}`
+            : "/api/dueno/reportes";
+
+
+        return this.request(endpoint);
+
+    },
+
+    obtenerHistorialDueno(parametros = {}) {
+
+        const query =
+            new URLSearchParams();
+
+
+        Object.entries(parametros)
+            .forEach(([clave, valor]) => {
+
+                if (
+                    valor === null ||
+                    valor === undefined ||
+                    valor === ""
+                ) {
+                    return;
+                }
+
+
+                query.set(
+                    clave,
+                    String(valor)
+                );
+
+            });
+
+
+        const cadena =
+            query.toString();
+
+
+        const endpoint = cadena
+            ? `/api/dueno/historial?${cadena}`
+            : "/api/dueno/historial";
+
+
+        return this.request(endpoint);
+
+    },
+
     obtenerUsuarios() {
         return this.request("/api/usuarios");
     },

@@ -1,0 +1,402 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+Reportes - TrackSecurity
+{% endblock %}
+
+{% block page_title %}
+Reportes
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/dueno/reportes.css'
+    ) }}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="reportes-page">
+
+
+    <!-- ================================================= -->
+    <!-- ENCABEZADO                                        -->
+    <!-- ================================================= -->
+
+    <section class="reportes-header">
+
+        <div>
+
+            <p class="section-kicker">
+                Análisis de la flota
+            </p>
+
+            <h2>
+                Reportes
+            </h2>
+
+            <p>
+                Consulta información consolidada de vehículos,
+                alertas y servicios de tu empresa.
+            </p>
+
+        </div>
+
+
+        <div class="reportes-header-actions">
+
+            <span id="ultimaActualizacionReportes">
+                Sin actualizar
+            </span>
+
+
+            <button
+                type="button"
+                id="btnExportarReporte"
+                class="btn btn-outline"
+                disabled
+            >
+                Exportar CSV
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- TIPOS DE REPORTE                                  -->
+    <!-- ================================================= -->
+
+    <section class="reportes-tipos-grid">
+
+        <button
+            type="button"
+            class="reporte-tipo-card active"
+            data-reporte-tipo="resumen"
+        >
+
+            <span class="reporte-tipo-icon reporte-icon-resumen">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M3 3v18h18"></path>
+                    <path d="M7 15v-4"></path>
+                    <path d="M12 15V7"></path>
+                    <path d="M17 15v-6"></path>
+                </svg>
+
+            </span>
+
+
+            <span class="reporte-tipo-content">
+
+                <strong>
+                    Resumen general
+                </strong>
+
+                <small>
+                    Actividad consolidada por vehículo.
+                </small>
+
+            </span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="reporte-tipo-card"
+            data-reporte-tipo="alertas"
+        >
+
+            <span class="reporte-tipo-icon reporte-icon-alertas">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M10.3 2.9a2 2 0 0 1 3.4 0l8 14A2 2 0 0 1 20 20H4a2 2 0 0 1-1.7-3.1z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+
+            </span>
+
+
+            <span class="reporte-tipo-content">
+
+                <strong>
+                    Alertas
+                </strong>
+
+                <small>
+                    Incidentes y estados de atención.
+                </small>
+
+            </span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="reporte-tipo-card"
+            data-reporte-tipo="vehiculos"
+        >
+
+            <span class="reporte-tipo-icon reporte-icon-vehiculos">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M3 16V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path>
+                    <path d="M2 16h20"></path>
+                    <path d="M6 16v3"></path>
+                    <path d="M18 16v3"></path>
+                    <circle cx="7.5" cy="16.5" r="1.5"></circle>
+                    <circle cx="16.5" cy="16.5" r="1.5"></circle>
+                </svg>
+
+            </span>
+
+
+            <span class="reporte-tipo-content">
+
+                <strong>
+                    Vehículos
+                </strong>
+
+                <small>
+                    Inventario y asignaciones actuales.
+                </small>
+
+            </span>
+
+        </button>
+
+
+        <button
+            type="button"
+            class="reporte-tipo-card"
+            data-reporte-tipo="servicios"
+        >
+
+            <span class="reporte-tipo-icon reporte-icon-servicios">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M14.7 6.3a4 4 0 0 0-5-5L7 4l3 3 2.7-2.7"></path>
+                    <path d="m5 8-3 3 11 11 3-3"></path>
+                    <path d="m14 15 5-5"></path>
+                    <path d="m17 8 3-3 2 2-3 3"></path>
+                </svg>
+
+            </span>
+
+
+            <span class="reporte-tipo-content">
+
+                <strong>
+                    Servicios
+                </strong>
+
+                <small>
+                    Mantenimientos y trabajos técnicos.
+                </small>
+
+            </span>
+
+        </button>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- MÉTRICAS                                          -->
+    <!-- ================================================= -->
+
+    <section class="reportes-stats-grid">
+
+        <article class="card reporte-stat-card">
+
+            <div class="reporte-stat-icon stat-vehiculos">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M3 16V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path>
+                    <path d="M2 16h20"></path>
+                    <circle cx="7.5" cy="16.5" r="1.5"></circle>
+                    <circle cx="16.5" cy="16.5" r="1.5"></circle>
+                </svg>
+
+            </div>
+
+            <div>
+                <p>Vehículos</p>
+                <strong id="statReportesVehiculos">0</strong>
+            </div>
+
+        </article>
+
+
+        <article class="card reporte-stat-card">
+
+            <div class="reporte-stat-icon stat-alertas">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M10.3 2.9a2 2 0 0 1 3.4 0l8 14A2 2 0 0 1 20 20H4a2 2 0 0 1-1.7-3.1z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                </svg>
+
+            </div>
+
+            <div>
+                <p>Alertas</p>
+                <strong id="statReportesAlertas">0</strong>
+            </div>
+
+        </article>
+
+
+        <article class="card reporte-stat-card">
+
+            <div class="reporte-stat-icon stat-pendientes">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 7v5l3 2"></path>
+                </svg>
+
+            </div>
+
+            <div>
+                <p>Alertas pendientes</p>
+                <strong id="statReportesPendientes">0</strong>
+            </div>
+
+        </article>
+
+
+        <article class="card reporte-stat-card">
+
+            <div class="reporte-stat-icon stat-servicios">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M14.7 6.3a4 4 0 0 0-5-5L7 4l3 3 2.7-2.7"></path>
+                    <path d="m5 8-3 3 11 11 3-3"></path>
+                </svg>
+
+            </div>
+
+            <div>
+                <p>Servicios</p>
+                <strong id="statReportesServicios">0</strong>
+            </div>
+
+        </article>
+
+    </section>
+
+
+    {% include "dueno/reportes/filtros.html" %}
+
+
+    {% include "dueno/reportes/tabla.html" %}
+
+
+    {% include "dueno/reportes/modal_detalle.html" %}
+
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/dueno/reportes/filtros.js'
+    ) }}"
+></script>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/dueno/reportes/render.js'
+    ) }}"
+></script>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/dueno/reportes/exportacion.js'
+    ) }}"
+></script>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/dueno/reportes/index.js'
+    ) }}"
+></script>
+
+{% endblock %}

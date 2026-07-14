@@ -1,0 +1,75 @@
+<section class="card reportes-tabla-card">
+
+    <div class="card-header reportes-tabla-header">
+
+        <div>
+
+            <h3 id="tituloReporteActual">
+                Resumen general
+            </h3>
+
+            <p id="descripcionReporteActual">
+                Actividad consolidada por cada vehículo.
+            </p>
+
+        </div>
+
+
+        <div class="reportes-tabla-meta">
+
+            <span id="cantidadRegistrosReporte">
+                0 registros
+            </span>
+
+
+            <button
+                type="button"
+                id="btnActualizarReporte"
+                class="btn btn-primary"
+            >
+                Actualizar
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <div
+            id="estadoReporte"
+            class="reportes-estado"
+        >
+            <strong>
+                Cargando reporte...
+            </strong>
+
+            <p>
+                Espera mientras se consulta la información.
+            </p>
+        </div>
+
+
+        <div
+            id="contenedorTablaReporte"
+            class="table-responsive reportes-table-wrapper"
+            hidden
+        >
+
+            <table class="data-table reportes-table">
+
+                <thead id="tablaReporteHead">
+                </thead>
+
+
+                <tbody id="tablaReporteBody">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>

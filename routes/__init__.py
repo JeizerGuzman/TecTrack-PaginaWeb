@@ -16,6 +16,7 @@ from .esp32 import registrar_esp32_routes
 from .vehiculos import registrar_vehiculos_routes
 from .alertas import registrar_alertas_routes
 from .historial import registrar_historial_routes
+from .reportes import registrar_reportes_routes
 from .dispositivos import registrar_dispositivos_routes
 from .usuarios import registrar_usuarios_routes
 from .configuracion import registrar_configuracion_routes
@@ -43,6 +44,7 @@ def registrar_rutas(app):
     registrar_vehiculos_routes(app)
     registrar_alertas_routes(app)
     registrar_historial_routes(app)
+    registrar_reportes_routes(app)
     registrar_dispositivos_routes(app)
     registrar_usuarios_routes(app)
     registrar_configuracion_routes(app)
