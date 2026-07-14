@@ -1,2 +1,193 @@
-/* Estilos especificos de la pantalla admin/dashboard. */
-/* Debe cubrir widgets, resumen ejecutivo y distribucion del panel admin. */
+/* ============================================================
+   DASHBOARD ADMIN - TrackSecurity
+   ============================================================ */
+
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.admin-stat-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 116px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: var(--radius-lg) !important;
+}
+
+.admin-stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+}
+
+.admin-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.admin-stat-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+.admin-stat-card p {
+    margin: 0 0 6px;
+    font-size: 0.72rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-texto-secundario);
+}
+
+.admin-stat-card strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 2rem;
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: -0.045em;
+    color: var(--color-texto);
+}
+
+.admin-stat-card span {
+    font-size: 0.78rem;
+    color: var(--color-texto-secundario);
+    font-weight: 750;
+}
+
+.stat-blue::before { background: var(--color-primario); }
+.stat-blue .admin-stat-icon {
+    background: var(--color-primario-suave);
+    color: var(--color-primario);
+}
+
+.stat-green::before { background: var(--color-exito); }
+.stat-green .admin-stat-icon {
+    background: var(--color-exito-suave);
+    color: var(--color-exito);
+}
+
+.stat-orange::before { background: var(--color-alerta); }
+.stat-orange .admin-stat-icon {
+    background: var(--color-alerta-suave);
+    color: #b45309;
+}
+
+.stat-red::before { background: var(--color-peligro); }
+.stat-red .admin-stat-icon {
+    background: var(--color-peligro-suave);
+    color: var(--color-peligro);
+}
+
+.stat-purple::before { background: #7c3aed; }
+.stat-purple .admin-stat-icon {
+    background: rgba(124, 58, 237, 0.12);
+    color: #7c3aed;
+}
+
+.stat-gray::before { background: var(--color-texto-muted); }
+.stat-gray .admin-stat-icon {
+    background: #eef2f7;
+    color: var(--color-texto-secundario);
+}
+
+/* Gráficas */
+
+.admin-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.admin-chart-card {
+    min-height: 350px;
+}
+
+.admin-chart-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.admin-chart-header h3 {
+    font-size: 1rem;
+    font-weight: 850;
+}
+
+.admin-chart-header p {
+    font-size: 0.84rem;
+    line-height: 1.45;
+}
+
+.admin-chart-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 220px;
+}
+
+.admin-chart-card canvas {
+    display: block;
+    width: 100%;
+    height: 220px;
+    max-width: 100%;
+}
+
+.chart-legend {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chart-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 26px;
+    border: 1px solid var(--color-borde-suave);
+    background: #ffffff;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--color-texto-secundario);
+    font-weight: 800;
+}
+
+.chart-legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: var(--color-primario);
+}
+
+@media (max-width: 1100px) {
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-stat-card {
+        min-height: 104px;
+    }
+}

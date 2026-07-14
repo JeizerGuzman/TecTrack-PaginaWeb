@@ -1,0 +1,852 @@
+/* ============================================================
+   SUSCRIPCIONES - ADMIN
+   ============================================================ */
+
+.suscripciones-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.suscripciones-page-header h1 {
+    margin: 2px 0 8px;
+}
+
+.suscripciones-page-header p {
+    margin: 0;
+    color: var(--color-texto-secundario, #64748b);
+}
+
+.suscripciones-header-actions {
+    flex-shrink: 0;
+}
+
+
+/* ============================================================
+   MÉTRICAS
+   ============================================================ */
+
+.suscripciones-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.suscripcion-stat-card {
+    min-height: 126px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+}
+
+.suscripcion-stat-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+}
+
+.suscripcion-stat-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.suscripcion-stat-card p,
+.suscripcion-stat-card span {
+    margin: 0;
+    color: var(--color-texto-secundario, #64748b);
+}
+
+.suscripcion-stat-card strong {
+    display: block;
+    margin: 3px 0;
+    font-size: 1.55rem;
+    line-height: 1.1;
+}
+
+.suscripcion-stat-blue .suscripcion-stat-icon {
+    color: #2563eb;
+    background: #dbeafe;
+}
+
+.suscripcion-stat-green .suscripcion-stat-icon {
+    color: #15803d;
+    background: #dcfce7;
+}
+
+.suscripcion-stat-orange .suscripcion-stat-icon {
+    color: #b45309;
+    background: #fef3c7;
+}
+
+.suscripcion-stat-purple .suscripcion-stat-icon {
+    color: #7c3aed;
+    background: #ede9fe;
+}
+
+
+/* ============================================================
+   FILTROS
+   ============================================================ */
+
+.suscripciones-filtros-card {
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.suscripciones-filtros-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) 220px 220px;
+    gap: 16px;
+}
+
+
+/* ============================================================
+   TARJETAS DE SUSCRIPCIÓN
+   ============================================================ */
+
+.suscripciones-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.suscripcion-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px;
+}
+
+.suscripcion-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.suscripcion-card-header h2 {
+    margin: 8px 0 3px;
+    font-size: 1.18rem;
+}
+
+.suscripcion-card-header p {
+    margin: 0;
+    color: #64748b;
+}
+
+.suscripcion-card-vehiculos {
+    min-width: 82px;
+    text-align: right;
+}
+
+.suscripcion-card-vehiculos strong {
+    display: block;
+    font-size: 1.4rem;
+}
+
+.suscripcion-card-vehiculos span {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+.suscripcion-card-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.suscripcion-card-summary > div,
+.suscripcion-totales-resumen > div {
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.suscripcion-card-summary span,
+.suscripcion-card-summary strong,
+.suscripcion-totales-resumen span,
+.suscripcion-totales-resumen strong {
+    display: block;
+}
+
+.suscripcion-card-summary span,
+.suscripcion-totales-resumen span {
+    margin-bottom: 4px;
+    color: #64748b;
+    font-size: 0.78rem;
+}
+
+.suscripcion-card-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.suscripcion-card-section h3 {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.suscripcion-precios-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.suscripcion-precio {
+    padding: 10px;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.suscripcion-precio span,
+.suscripcion-precio strong,
+.suscripcion-precio small {
+    display: block;
+}
+
+.suscripcion-precio span,
+.suscripcion-precio small {
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.suscripcion-precio strong {
+    margin: 3px 0;
+    font-size: 0.92rem;
+}
+
+.suscripcion-totales-resumen {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.suscripcion-card-actions {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+
+/* ============================================================
+   ESTADOS
+   ============================================================ */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.status-active {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.status-warning {
+    color: #92400e;
+    background: #fef3c7;
+}
+
+.status-gray {
+    color: #475569;
+    background: #e2e8f0;
+}
+
+.status-danger {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+.btn-outline-primary {
+    color: var(--color-primario, #2563eb);
+    background: transparent;
+    border: 1px solid var(--color-primario, #2563eb);
+}
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.suscripciones-empty-state {
+    padding: 42px 20px;
+    text-align: center;
+}
+
+.suscripciones-empty-state svg {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 12px;
+    color: #94a3b8;
+}
+
+.suscripciones-empty-state h3 {
+    margin: 0 0 6px;
+}
+
+.suscripciones-empty-state p {
+    margin: 0;
+    color: #64748b;
+}
+
+
+/* ============================================================
+   MODALES
+   ============================================================ */
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.58);
+    backdrop-filter: blur(3px);
+}
+
+.modal-backdrop.show {
+    display: flex;
+}
+
+.modal-card {
+    width: min(760px, 100%);
+    max-height: calc(100vh - 48px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.24);
+}
+
+.modal-suscripcion-card {
+    width: min(980px, 100%);
+}
+
+.modal-estado-suscripcion-card {
+    width: min(560px, 100%);
+}
+
+.modal-card > form {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 22px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modal-header h2 {
+    margin: 2px 0 0;
+}
+
+.modal-kicker {
+    margin: 0;
+    color: var(--color-primario, #2563eb);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.modal-close {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    background: #f1f5f9;
+    color: #475569;
+    cursor: pointer;
+}
+
+.modal-close svg {
+    width: 20px;
+    height: 20px;
+}
+
+.modal-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 22px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 22px;
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* ============================================================
+   FORMULARIO
+   ============================================================ */
+
+.suscripcion-form-section {
+    padding: 18px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.suscripcion-form-section:first-child {
+    padding-top: 0;
+}
+
+.suscripcion-form-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.suscripcion-form-section-header {
+    margin-bottom: 14px;
+}
+
+.suscripcion-form-section-header h3,
+.suscripcion-form-section-header p {
+    margin: 0;
+}
+
+.suscripcion-form-section-header p {
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 0.88rem;
+}
+
+.suscripcion-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.input-prefix {
+    position: relative;
+}
+
+.input-prefix input {
+    padding-left: 34px;
+}
+
+.input-prefix span {
+    position: absolute;
+    top: 50%;
+    left: 13px;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+}
+
+
+/* ============================================================
+   COMBOBOX EMPRESAS
+   ============================================================ */
+
+.empresa-combobox {
+    position: relative;
+}
+
+.empresa-combobox-control {
+    display: flex;
+}
+
+.empresa-combobox-control input {
+    flex: 1;
+    min-width: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.empresa-combobox-toggle {
+    width: 44px;
+    flex: 0 0 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cbd5e1;
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    background: #f8fafc;
+    color: #475569;
+    cursor: pointer;
+}
+
+.empresa-combobox-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.empresa-combobox-menu {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    display: none;
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 6px;
+    border: 1px solid #dbe3ec;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16);
+}
+
+.empresa-combobox-menu.show {
+    display: block;
+}
+
+.empresa-combobox-option {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 10px 11px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+.empresa-combobox-option:hover {
+    background: #eff6ff;
+}
+
+.empresa-combobox-option span,
+.empresa-combobox-empty {
+    color: #64748b;
+    font-size: 0.82rem;
+}
+
+.empresa-combobox-empty {
+    padding: 12px;
+    text-align: center;
+}
+
+
+/* ============================================================
+   TARIFA DETECTADA
+   ============================================================ */
+
+.tarifa-detectada-card {
+    padding: 16px;
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    background: #eff6ff;
+}
+
+.tarifa-detectada-vacia {
+    color: #64748b;
+    text-align: center;
+}
+
+.tarifa-detectada-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.tarifa-detectada-label {
+    display: block;
+    margin-bottom: 3px;
+    color: #64748b;
+    font-size: 0.78rem;
+}
+
+.tarifa-detectada-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.tarifa-detectada-grid > div {
+    padding: 11px;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.tarifa-detectada-grid span,
+.tarifa-detectada-grid strong,
+.tarifa-detectada-grid small {
+    display: block;
+}
+
+.tarifa-detectada-grid span,
+.tarifa-detectada-grid small {
+    color: #64748b;
+    font-size: 0.76rem;
+}
+
+.tarifa-detectada-grid strong {
+    margin: 3px 0;
+}
+
+
+/* ============================================================
+   TOTALES DEL FORMULARIO
+   ============================================================ */
+
+.suscripcion-totales-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.suscripcion-totales-grid article {
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.suscripcion-totales-grid span,
+.suscripcion-totales-grid strong {
+    display: block;
+}
+
+.suscripcion-totales-grid span {
+    margin-bottom: 5px;
+    color: #64748b;
+    font-size: 0.78rem;
+}
+
+
+/* ============================================================
+   MODAL ESTADO
+   ============================================================ */
+
+#modalEstadoSuscripcion {
+    z-index: 1100;
+}
+
+.estado-suscripcion-confirmacion {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.estado-suscripcion-icon {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: #475569;
+    background: #e2e8f0;
+}
+
+.estado-suscripcion-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.estado-suscripcion-icon.is-success {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.estado-suscripcion-icon.is-warning {
+    color: #92400e;
+    background: #fef3c7;
+}
+
+.estado-suscripcion-icon.is-danger {
+    color: #b91c1c;
+    background: #fee2e2;
+}
+
+.estado-suscripcion-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.estado-suscripcion-mensaje {
+    margin: 2px 0 16px;
+    font-weight: 700;
+}
+
+.estado-suscripcion-selector {
+    margin-bottom: 12px;
+}
+
+.estado-suscripcion-detalle {
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: #475569;
+    background: #f8fafc;
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+
+/* ============================================================
+   TOASTS
+   ============================================================ */
+
+.suscripciones-toast-container {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.suscripciones-toast {
+    min-width: 280px;
+    max-width: 420px;
+    padding: 13px 15px;
+    border-radius: 12px;
+    color: #0f172a;
+    background: #fff;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.18);
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.suscripciones-toast.toast-success {
+    border-left: 4px solid #16a34a;
+}
+
+.suscripciones-toast.toast-error {
+    border-left: 4px solid #dc2626;
+}
+
+.suscripciones-toast.toast-info {
+    border-left: 4px solid #2563eb;
+}
+
+.suscripciones-toast.is-hiding {
+    opacity: 0;
+    transform: translateX(16px);
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1180px) {
+    .suscripciones-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .suscripciones-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .suscripcion-precios-grid,
+    .tarifa-detectada-grid,
+    .suscripcion-totales-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .suscripciones-page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .suscripciones-header-actions .btn {
+        width: 100%;
+    }
+
+    .suscripciones-filtros-grid,
+    .suscripcion-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .suscripcion-card-header,
+    .tarifa-detectada-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .suscripcion-card-vehiculos {
+        text-align: left;
+    }
+
+    .modal-backdrop {
+        padding: 10px;
+    }
+
+    .modal-card {
+        max-height: calc(100vh - 20px);
+        border-radius: 14px;
+    }
+}
+
+@media (max-width: 520px) {
+    .suscripciones-stats-grid,
+    .suscripcion-card-summary,
+    .suscripcion-precios-grid,
+    .suscripcion-totales-resumen,
+    .tarifa-detectada-grid,
+    .suscripcion-totales-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .suscripcion-card-actions,
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .suscripcion-card-actions .btn,
+    .modal-actions .btn {
+        width: 100%;
+    }
+
+    .estado-suscripcion-confirmacion {
+        flex-direction: column;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-actions {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}

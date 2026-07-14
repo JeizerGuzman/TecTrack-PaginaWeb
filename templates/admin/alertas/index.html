@@ -1,0 +1,162 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Alertas | TrackSecurity{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/alertas.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-page-header alertas-page-header">
+    <div>
+        <p class="admin-section-kicker">Administración global</p>
+        <h1>Alertas</h1>
+        <p>
+            Consulta y atiende alertas generadas por vehículos de todas las empresas.
+        </p>
+    </div>
+</section>
+
+
+<section class="alertas-stats-grid">
+
+    <article class="card alerta-stat-card alerta-stat-blue">
+        <div class="alerta-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3l-8.47-14.14a2 2 0 0 0-3.42 0Z"></path>
+                <path d="M12 9v4"></path>
+                <path d="M12 17h.01"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Total</p>
+            <strong id="statAlertasTotal">0</strong>
+            <span>Alertas registradas</span>
+        </div>
+    </article>
+
+    <article class="card alerta-stat-card alerta-stat-orange">
+        <div class="alerta-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 7v5l3 2"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Pendientes</p>
+            <strong id="statAlertasPendientes">0</strong>
+            <span>Requieren atención</span>
+        </div>
+    </article>
+
+    <article class="card alerta-stat-card alerta-stat-red">
+        <div class="alerta-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2 2 22h20L12 2Z"></path>
+                <path d="M12 9v4"></path>
+                <path d="M12 17h.01"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Críticas</p>
+            <strong id="statAlertasCriticas">0</strong>
+            <span>Nivel crítico</span>
+        </div>
+    </article>
+
+    <article class="card alerta-stat-card alerta-stat-green">
+        <div class="alerta-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Atendidas</p>
+            <strong id="statAlertasAtendidas">0</strong>
+            <span>Ya fueron gestionadas</span>
+        </div>
+    </article>
+
+</section>
+
+
+<section class="card alertas-filtros-card">
+    <div class="alertas-filtros-grid">
+
+        <div class="form-group">
+            <label for="filtroBusquedaAlerta">Buscar</label>
+            <input type="search"
+                   id="filtroBusquedaAlerta"
+                   placeholder="Empresa, vehículo, placa o dispositivo">
+        </div>
+
+        <div class="form-group">
+            <label for="filtroTipoAlerta">Tipo</label>
+            <select id="filtroTipoAlerta">
+                <option value="todos">Todos los tipos</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="filtroNivelAlerta">Nivel</label>
+            <select id="filtroNivelAlerta">
+                <option value="todos">Todos los niveles</option>
+                <option value="bajo">Bajo</option>
+                <option value="medio">Medio</option>
+                <option value="alto">Alto</option>
+                <option value="critico">Crítico</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="filtroEstadoAlerta">Estado</label>
+            <select id="filtroEstadoAlerta">
+                <option value="todos">Todos</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="atendida">Atendida</option>
+            </select>
+        </div>
+
+    </div>
+</section>
+
+
+<section id="alertasLista"
+         class="alertas-grid"
+         aria-live="polite">
+</section>
+
+<div id="alertasEstadoVacio"
+     class="card alertas-empty-state"
+     hidden>
+
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3l-8.47-14.14a2 2 0 0 0-3.42 0Z"></path>
+        <path d="M12 9v4"></path>
+        <path d="M12 17h.01"></path>
+    </svg>
+
+    <h3>No hay alertas para mostrar</h3>
+    <p>Prueba con otros filtros.</p>
+</div>
+
+
+{% include "admin/alertas/modal_detalle.html" %}
+{% include "admin/alertas/modal_atender.html" %}
+
+<div id="alertasToastContainer"
+     class="alertas-toast-container">
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/alertas/index.js') }}"></script>
+{% endblock %}

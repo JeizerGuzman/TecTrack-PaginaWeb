@@ -1,0 +1,70 @@
+<div class="modal-backdrop"
+     id="modalAtenderAlerta"
+     aria-hidden="true">
+
+    <section class="modal-card modal-atender-alerta-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalAtenderAlertaTitulo">
+
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker">Confirmación</p>
+                <h2 id="modalAtenderAlertaTitulo">Atender alerta</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="btnCerrarModalAtenderAlerta"
+                    aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </header>
+
+        <div class="modal-body">
+
+            <div class="atender-alerta-confirmacion">
+
+                <div class="atender-alerta-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6 9 17l-5-5"></path>
+                    </svg>
+                </div>
+
+                <div class="atender-alerta-content">
+                    <p class="atender-alerta-mensaje"
+                       id="modalAtenderAlertaMensaje">
+                    </p>
+
+                    <div class="atender-alerta-detalle"
+                         id="modalAtenderAlertaDetalle">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <footer class="modal-actions">
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    id="btnCancelarModalAtenderAlerta">
+                Cancelar
+            </button>
+
+            <button type="button"
+                    class="btn btn-primary"
+                    id="btnConfirmarAtenderAlerta">
+                Atender alerta
+            </button>
+
+        </footer>
+
+    </section>
+</div>

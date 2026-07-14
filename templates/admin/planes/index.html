@@ -1,0 +1,86 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Planes y tarifas | TrackSecurity{% endblock %}
+
+{% block content %}
+<section class="admin-page-header planes-page-header">
+    <div>
+        <p class="admin-section-kicker">Administración global</p>
+        <h1>Planes y tarifas</h1>
+        <p>Administra los paquetes del sistema, sus características, políticas de retención y tarifas unitarias por volumen.</p>
+    </div>
+    <div class="planes-header-actions">
+        <button type="button" class="btn btn-primary" id="btnAbrirModalPlan">Nuevo plan</button>
+    </div>
+</section>
+
+<section class="planes-stats-grid">
+    <article class="card plan-stat-card plan-stat-blue">
+        <div class="plan-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </div>
+        <div><p>Total de planes</p><strong id="statPlanesTotal">0</strong><span>Paquetes registrados</span></div>
+    </article>
+
+    <article class="card plan-stat-card plan-stat-green">
+        <div class="plan-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+        </div>
+        <div><p>Planes activos</p><strong id="statPlanesActivos">0</strong><span>Disponibles actualmente</span></div>
+    </article>
+
+    <article class="card plan-stat-card plan-stat-gray">
+        <div class="plan-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="m9 9 6 6"></path><path d="m15 9-6 6"></path></svg>
+        </div>
+        <div><p>Planes inactivos</p><strong id="statPlanesInactivos">0</strong><span>No disponibles para nuevas asignaciones</span></div>
+    </article>
+
+    <article class="card plan-stat-card plan-stat-purple">
+        <div class="plan-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h10"></path></svg>
+        </div>
+        <div><p>Tarifas activas</p><strong id="statTarifasActivas">0</strong><span>Rangos de precio vigentes</span></div>
+    </article>
+</section>
+
+<section class="card planes-filtros-card">
+    <div class="planes-filtros-grid">
+        <div class="form-group">
+            <label for="filtroBusquedaPlan">Buscar</label>
+            <input type="search" id="filtroBusquedaPlan" placeholder="Nombre o descripción">
+        </div>
+        <div class="form-group">
+            <label for="filtroEstadoPlan">Estado</label>
+            <select id="filtroEstadoPlan">
+                <option value="todos">Todos</option>
+                <option value="activo">Activos</option>
+                <option value="inactivo">Inactivos</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<section id="planesLista" class="planes-grid" aria-live="polite"></section>
+
+<div id="planesEstadoVacio" class="card planes-empty-state" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+    <h3>No hay planes para mostrar</h3>
+    <p>Prueba con otros filtros o crea un nuevo plan.</p>
+</div>
+
+{% include "admin/planes/modal_plan.html" %}
+{% include "admin/planes/modal_tarifas.html" %}
+{% include "admin/planes/modal_estado.html" %}
+
+<div id="planesToastContainer" class="planes-toast-container"></div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/planes.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/planes/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin/planes/tarifas.js') }}"></script>
+{% endblock %}

@@ -1,28 +1,84 @@
 let alertasCargando = false;
 let alertasTimer = null;
-const ALERTAS_REFRESH_MS = 5000;
 
 let alertasOriginales = [];
 let alertaSeleccionada = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+
     if (window.TrackGuards?.requireAuth) {
-        const ok = await TrackGuards.requireAuth("dueno");
-        if (!ok) return;
+
+        const ok =
+            await TrackGuards.requireAuth("dueno");
+
+        if (!ok) {
+            return;
+        }
+
     }
+
 
     configurarModalAtencion();
 
+
     await cargarAlertas();
 
-    alertasTimer = setInterval(() => {
-        cargarAlertas({ silencioso: true });
-    }, ALERTAS_REFRESH_MS);
 
-    document.getElementById("buscarAlerta")?.addEventListener("input", renderConFiltros);
-    document.getElementById("filtroEstadoAlerta")?.addEventListener("change", renderConFiltros);
-    document.getElementById("filtroTipoAlerta")?.addEventListener("change", renderConFiltros);
-    document.getElementById("filtroNivelAlerta")?.addEventListener("change", renderConFiltros);
+    const intervaloMs =
+        await TrackConfig.obtenerOperacionMs(
+            "alertas",
+            5
+        );
+
+
+    if (alertasTimer) {
+        clearInterval(alertasTimer);
+    }
+
+
+    alertasTimer = setInterval(
+        () => {
+
+            cargarAlertas({
+                silencioso: true
+            });
+
+        },
+        intervaloMs
+    );
+
+
+    document
+        .getElementById("buscarAlerta")
+        ?.addEventListener(
+            "input",
+            renderConFiltros
+        );
+
+
+    document
+        .getElementById("filtroEstadoAlerta")
+        ?.addEventListener(
+            "change",
+            renderConFiltros
+        );
+
+
+    document
+        .getElementById("filtroTipoAlerta")
+        ?.addEventListener(
+            "change",
+            renderConFiltros
+        );
+
+
+    document
+        .getElementById("filtroNivelAlerta")
+        ?.addEventListener(
+            "change",
+            renderConFiltros
+        );
+
 });
 
 async function cargarAlertas({ silencioso = false } = {}) {

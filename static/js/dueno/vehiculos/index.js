@@ -19,8 +19,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let cargandoVehiculos = false;
 
     await cargarVehiculos(false);
+
     configurarModalDesactivarVehiculo();
-    iniciarActualizacionAutomatica();
+
+    await iniciarActualizacionAutomatica();
 
     buscarInput?.addEventListener("input", aplicarFiltros);
     filtroEstado?.addEventListener("change", aplicarFiltros);
@@ -76,10 +78,34 @@ document.addEventListener("DOMContentLoaded", async () => {
     // - dispositivo
     // sin recargar manualmente la página.
     // ============================================================
-    function iniciarActualizacionAutomatica() {
-        intervaloActualizacionVehiculos = setInterval(async () => {
-            await cargarVehiculos(true);
-        }, 1000);
+    async function iniciarActualizacionAutomatica() {
+
+        const intervaloMs =
+            await TrackConfig.obtenerOperacionMs(
+                "vehiculos",
+                5
+            );
+
+
+        if (intervaloActualizacionVehiculos) {
+
+            clearInterval(
+                intervaloActualizacionVehiculos
+            );
+
+        }
+
+
+        intervaloActualizacionVehiculos =
+            setInterval(
+                async () => {
+
+                    await cargarVehiculos(true);
+
+                },
+                intervaloMs
+            );
+
     }
 
     // ============================================================

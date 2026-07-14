@@ -1,0 +1,166 @@
+<div class="modal-backdrop"
+     id="modalServicio"
+     aria-hidden="true">
+
+    <section class="modal-card modal-servicio-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalServicioTitulo">
+
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker">Planificación técnica</p>
+                <h2 id="modalServicioTitulo">Nuevo servicio</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="btnCerrarModalServicio"
+                    aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </header>
+
+
+        <form id="formServicio">
+
+            <div class="modal-body">
+
+                <section class="servicio-form-section">
+                    <div class="servicio-form-section-header">
+                        <h3>Datos principales</h3>
+                        <p>Define la empresa, tipo de servicio y técnico responsable.</p>
+                    </div>
+
+                    <div class="servicio-form-grid">
+
+                        <div class="form-group">
+                            <label for="servicioEmpresa">Empresa</label>
+                            <select id="servicioEmpresa" required>
+                                <option value="">Selecciona una empresa</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="servicioTipo">Tipo de servicio</label>
+                            <select id="servicioTipo" required>
+                                <option value="">Selecciona un tipo</option>
+                                <option value="instalacion">Instalación</option>
+                                <option value="mantenimiento">Mantenimiento</option>
+                                <option value="reparacion">Reparación</option>
+                                <option value="cambio_dispositivo">Cambio de dispositivo</option>
+                                <option value="retiro_dispositivo">Retiro de dispositivo</option>
+                                <option value="diagnostico">Diagnóstico</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="servicioTecnico">Técnico</label>
+                            <select id="servicioTecnico">
+                                <option value="">Sin técnico asignado</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="servicioFechaProgramada">Fecha programada</label>
+                            <input type="datetime-local"
+                                   id="servicioFechaProgramada"
+                                   required>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <section class="servicio-form-section">
+
+                    <div class="servicio-form-section-header">
+                        <h3>Vehículo y dispositivo</h3>
+                        <p>
+                            El vehículo es opcional. Si tiene un dispositivo instalado,
+                            se detectará automáticamente.
+                        </p>
+                    </div>
+
+                    <div class="servicio-form-grid">
+
+                        <div class="form-group">
+                            <label for="servicioVehiculo">Vehículo</label>
+                            <select id="servicioVehiculo" disabled>
+                                <option value="">Selecciona primero una empresa</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="servicioDispositivo">Dispositivo</label>
+                            <select id="servicioDispositivo" disabled>
+                                <option value="">Sin dispositivo seleccionado</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <section class="servicio-form-section">
+
+                    <div class="servicio-form-section-header">
+                        <h3>Detalles</h3>
+                        <p>Agrega una descripción y un costo estimado para el servicio.</p>
+                    </div>
+
+                    <div class="servicio-form-grid">
+
+                        <div class="form-group form-group-full">
+                            <label for="servicioDescripcion">Descripción</label>
+                            <textarea id="servicioDescripcion"
+                                      rows="4"
+                                      maxlength="255"
+                                      placeholder="Describe el trabajo a realizar"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="servicioCostoEstimado">Costo estimado</label>
+                            <div class="input-prefix">
+                                <span>$</span>
+                                <input type="number"
+                                       id="servicioCostoEstimado"
+                                       min="0"
+                                       step="0.01"
+                                       value="0">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <footer class="modal-actions">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        id="btnCancelarServicio">
+                    Cancelar
+                </button>
+
+                <button type="submit"
+                        class="btn btn-primary"
+                        id="btnGuardarServicio">
+                    Guardar servicio
+                </button>
+
+            </footer>
+
+        </form>
+
+    </section>
+</div>

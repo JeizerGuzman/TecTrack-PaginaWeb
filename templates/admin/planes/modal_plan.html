@@ -1,0 +1,71 @@
+<div class="modal-backdrop" id="modalPlan" aria-hidden="true">
+    <section class="modal-card modal-plan-card" role="dialog" aria-modal="true" aria-labelledby="modalPlanTitulo">
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker">Configuración del paquete</p>
+                <h2 id="modalPlanTitulo">Nuevo plan</h2>
+            </div>
+            <button type="button" class="modal-close" id="btnCerrarModalPlan" aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+            </button>
+        </header>
+
+        <form id="formPlan">
+            <div class="modal-body">
+                <section class="plan-form-section">
+                    <div class="plan-form-section-header"><h3>Información general</h3><p>Nombre y descripción comercial del paquete.</p></div>
+                    <div class="plan-form-grid">
+                        <div class="form-group">
+                            <label for="planNombre">Nombre</label>
+                            <input type="text" id="planNombre" maxlength="50" required placeholder="Ej. Profesional">
+                        </div>
+                        <div class="form-group plan-form-full">
+                            <label for="planDescripcion">Descripción</label>
+                            <textarea id="planDescripcion" maxlength="255" rows="3" placeholder="Describe qué ofrece este paquete"></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="plan-form-section">
+                    <div class="plan-form-section-header"><h3>Características incluidas</h3><p>Activa las funciones disponibles para este plan.</p></div>
+                    <div class="plan-features-grid">
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTieneGps"><span class="plan-feature-check"></span><span>GPS</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTieneVibracion"><span class="plan-feature-check"></span><span>Sensor de vibración</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTienePuerta"><span class="plan-feature-check"></span><span>Sensor de puerta</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTienePanico"><span class="plan-feature-check"></span><span>Botón de pánico</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTieneSirena"><span class="plan-feature-check"></span><span>Sirena</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTieneDashboard"><span class="plan-feature-check"></span><span>Dashboard web</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTieneApp"><span class="plan-feature-check"></span><span>Aplicación móvil</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTieneFpga"><span class="plan-feature-check"></span><span>FPGA</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTieneCamara"><span class="plan-feature-check"></span><span>Cámara</span></label>
+                        <label class="plan-feature-toggle"><input type="checkbox" id="planTieneEvidencia"><span class="plan-feature-check"></span><span>Captura automática de evidencia</span></label>
+                    </div>
+                </section>
+
+                <section class="plan-form-section">
+                    <div class="plan-form-section-header"><h3>Políticas de retención</h3><p>Indica cuántos días se conservará cada tipo de información.</p></div>
+                    <div class="plan-form-grid plan-retention-grid">
+                        <div class="form-group">
+                            <label for="planRetencionGps">Historial GPS</label>
+                            <div class="input-suffix"><input type="number" id="planRetencionGps" min="1" step="1" required><span>días</span></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="planRetencionAlertas">Alertas</label>
+                            <div class="input-suffix"><input type="number" id="planRetencionAlertas" min="1" step="1" required><span>días</span></div>
+                        </div>
+                        <div class="form-group" id="grupoRetencionEvidencias">
+                            <label for="planRetencionEvidencias">Evidencias</label>
+                            <div class="input-suffix"><input type="number" id="planRetencionEvidencias" min="1" step="1"><span>días</span></div>
+                            <small class="form-help">Solo aplica cuando la captura de evidencia está activada.</small>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <footer class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="btnCancelarPlan">Cancelar</button>
+                <button type="submit" class="btn btn-primary" id="btnGuardarPlan">Guardar plan</button>
+            </footer>
+        </form>
+    </section>
+</div>

@@ -12,6 +12,7 @@
 import time
 from config import db
 from models import Empresa, Usuario, Vehiculo, Dispositivo, UbicacionActual
+from helpers import obtener_segundos_sin_senal
 
 # ============================================================
 # CONFIGURACIÓN DE CONEXIÓN DEL DISPOSITIVO
@@ -23,8 +24,6 @@ from models import Empresa, Usuario, Vehiculo, Dispositivo, UbicacionActual
 #
 # Puedes cambiarlo a 30 si quieres que detecte más rápido.
 # ============================================================
-
-TIEMPO_SIN_SENAL_SEGUNDOS = 5
 
 
 def calcular_estado_conexion(ubicacion=None, dispositivo=None):
@@ -65,13 +64,97 @@ def calcular_estado_conexion(ubicacion=None, dispositivo=None):
         }
 
     segundos = ahora - referencia
-    sin_senal = segundos > TIEMPO_SIN_SENAL_SEGUNDOS
+
+    tiempo_sin_senal = obtener_segundos_sin_senal()
+
+    sin_senal = segundos > tiempo_sin_senal
 
     return {
         "online": not sin_senal,
         "sin_senal": sin_senal,
         "segundos_sin_senal": segundos,
         "ultima_referencia": referencia
+    }
+
+
+def calcular_estado_visible_vehiculo(ubicacion=None, dispositivo=None):
+    """
+    Calcula el estado que debe ver la web/app/gráficas.
+
+    Importante:
+    - NO modifica la base de datos.
+    - NO cambia UbicacionActual.estado.
+    - Solo decide qué mostrar al usuario.
+
+    Ejemplo:
+    Si el último estado guardado fue "manual", pero ya pasaron
+    más de 60 segundos sin conexión, se muestra "sin_senal".
+    """
+
+    conexion = calcular_estado_conexion(ubicacion, dispositivo)
+
+    estado_real = ubicacion.estado if ubicacion else None
+
+    # ========================================================
+    # PRIORIDAD 1: SIN SEÑAL
+    # ========================================================
+    # Si no hay conexión, esto manda sobre cualquier estado viejo.
+    # Aunque el último estado guardado sea manual, alerta o activo,
+    # visualmente debe mostrarse sin_senal.
+    # ========================================================
+    if conexion["sin_senal"]:
+        return {
+            "estado": "sin_senal",
+            "estado_real": estado_real,
+
+            "online": False,
+            "sin_senal": True,
+            "segundos_sin_senal": conexion["segundos_sin_senal"],
+
+            "lat": None,
+            "lng": None,
+            "velocidad": None,
+
+            "puerta": "sin_conexion",
+            "vibracion": None,
+            "alerta": 0,
+
+            "ultima_actualizacion": (
+                ubicacion.ultima_actualizacion
+                if ubicacion
+                else None
+            )
+        }
+
+    # ========================================================
+    # PRIORIDAD 2: CON SEÑAL
+    # ========================================================
+    # Si sí hay conexión, entonces mostramos el último dato real.
+    # Aquí sí puede mostrarse manual, panico, alerta o activo.
+    # ========================================================
+    estado = estado_real or "activo"
+
+    return {
+        "estado": estado,
+        "estado_real": estado_real,
+
+        "online": True,
+        "sin_senal": False,
+        "segundos_sin_senal": conexion["segundos_sin_senal"],
+
+        "lat": ubicacion.lat if ubicacion else None,
+        "lng": ubicacion.lng if ubicacion else None,
+        "velocidad": ubicacion.velocidad if ubicacion else 0,
+
+        "puerta": ubicacion.puerta if ubicacion else "desconocida",
+        "vibracion": ubicacion.vibracion if ubicacion else None,
+        "alerta": ubicacion.alerta if ubicacion else 0,
+
+        "ultima_actualizacion": (
+            ubicacion.ultima_actualizacion
+            if ubicacion
+            else None
+        )
     }
 
 # ------------------------------------------------------------
@@ -120,50 +203,7 @@ def serializar_vehiculo(vehiculo):
         else None
     )
 
-    conexion = calcular_estado_conexion(ubicacion, dispositivo)
-
-    # ========================================================
-    # CASO 1: VEHÍCULO SIN SEÑAL
-    # ========================================================
-    #
-    # Si el ESP32 dejó de enviar datos, NO conviene mostrar:
-    # - puerta cerrada
-    # - vibración normal
-    # - velocidad 0
-    #
-    # Porque eso hace parecer que todo está bien, cuando en realidad
-    # no hay conexión con el dispositivo.
-    # ========================================================
-    if conexion["sin_senal"]:
-        estado_actual = "sin_senal"
-        puerta_actual = "sin_conexion"
-        vibracion_actual = None
-        alerta_actual = 0
-        velocidad_actual = None
-        lat_actual = None
-        lng_actual = None
-
-    # ========================================================
-    # CASO 2: VEHÍCULO CON SEÑAL
-    # ========================================================
-    #
-    # Aquí sí se muestran los datos reales recibidos del ESP32.
-    #
-    # Importante:
-    # Si está en modo manual, se mantiene:
-    # - estado = manual
-    # - alerta = 0
-    # - puerta real
-    # - vibración real
-    # ========================================================
-    else:
-        estado_actual = ubicacion.estado if ubicacion else "sin_senal"
-        puerta_actual = ubicacion.puerta if ubicacion else "desconocida"
-        vibracion_actual = ubicacion.vibracion if ubicacion else None
-        alerta_actual = ubicacion.alerta if ubicacion else 0
-        velocidad_actual = ubicacion.velocidad if ubicacion else 0
-        lat_actual = ubicacion.lat if ubicacion else None
-        lng_actual = ubicacion.lng if ubicacion else None
+    estado_visible = calcular_estado_visible_vehiculo(ubicacion, dispositivo)
 
     return {
         "id": vehiculo.id,
@@ -184,25 +224,27 @@ def serializar_vehiculo(vehiculo):
         "dispositivo_serie": dispositivo.serie if dispositivo else None,
 
         # Estado de conexión.
-        "online": conexion["online"],
-        "sin_senal": conexion["sin_senal"],
-        "segundos_sin_senal": conexion["segundos_sin_senal"],
+        "online": estado_visible["online"],
+        "sin_senal": estado_visible["sin_senal"],
+        "segundos_sin_senal": estado_visible["segundos_sin_senal"],
 
-        # Ubicación actual.
-        "estado": estado_actual,
-        "lat": lat_actual,
-        "lng": lng_actual,
-        "velocidad": velocidad_actual,
-        "ultima_actualizacion": (
-            ubicacion.ultima_actualizacion
-            if ubicacion
-            else None
-        ),
+        # Estado visible para web/app.
+        "estado": estado_visible["estado"],
 
-        # Sensores actuales.
-        "puerta": puerta_actual,
-        "vibracion": vibracion_actual,
-        "alerta": alerta_actual,
+        # Último estado real recibido del ESP32.
+        # Puede servir para diagnóstico.
+        "estado_real": estado_visible["estado_real"],
+
+        # Ubicación actual visible.
+        "lat": estado_visible["lat"],
+        "lng": estado_visible["lng"],
+        "velocidad": estado_visible["velocidad"],
+        "ultima_actualizacion": estado_visible["ultima_actualizacion"],
+
+        # Sensores visibles.
+        "puerta": estado_visible["puerta"],
+        "vibracion": estado_visible["vibracion"],
+        "alerta": estado_visible["alerta"],
     }
 
 # ------------------------------------------------------------
@@ -476,8 +518,15 @@ def serializar_diagnostico(dispositivo):
     segundos_desde = ahora - referencia_tiempo if referencia_tiempo else None
 
     online = False
+
     if referencia_tiempo:
-        online = segundos_desde <= 60
+        tiempo_sin_senal = (
+            obtener_segundos_sin_senal()
+        )
+
+        online = (
+            segundos_desde <= tiempo_sin_senal
+        )
 
     gps_ok = bool(ubicacion and ubicacion.lat is not None and ubicacion.lng is not None)
 

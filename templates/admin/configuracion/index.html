@@ -1,0 +1,1191 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Configuración - TrackSecurity{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/admin/configuracion.css') }}"
+>
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-config-page">
+
+    <!-- ===================================================== -->
+    <!-- ENCABEZADO                                            -->
+    <!-- ===================================================== -->
+
+    <section class="admin-config-header">
+        <div>
+            <p class="admin-section-kicker">
+                Administración global
+            </p>
+
+            <h1>
+                Configuración
+            </h1>
+
+            <p>
+                Ajusta el comportamiento general, los tiempos de
+                actualización y la telemetría de TrackSecurity.
+            </p>
+        </div>
+
+        <div class="admin-config-header-actions">
+
+            <span
+                class="admin-config-save-status"
+                id="configSaveStatus"
+            >
+                Sin cambios pendientes
+            </span>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="btnGuardarConfiguracion"
+            >
+                Guardar cambios
+            </button>
+
+        </div>
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- NAVEGACIÓN INTERNA                                     -->
+    <!-- ===================================================== -->
+
+    <nav
+        class="config-tabs"
+        aria-label="Secciones de configuración"
+    >
+
+        <button
+            type="button"
+            class="config-tab active"
+            data-config-tab="general"
+        >
+            <span class="config-tab-icon">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06"></path>
+                    <path d="M4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06"></path>
+                    <path d="M15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06"></path>
+                    <path d="M9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06"></path>
+                    <path d="M19.4 9a1.65 1.65 0 0 1 .33-1.82l.06-.06"></path>
+                    <path d="M4.6 15a1.65 1.65 0 0 1-.33 1.82l-.06.06"></path>
+                    <path d="M9 4.6a1.65 1.65 0 0 1-1.82-.33l-.06-.06"></path>
+                    <path d="M15 19.4a1.65 1.65 0 0 1 1.82.33l.06.06"></path>
+                </svg>
+            </span>
+
+            <span>General</span>
+        </button>
+
+
+        <button
+            type="button"
+            class="config-tab"
+            data-config-tab="monitoreo"
+        >
+            <span class="config-tab-icon">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M3 12h4l2-6 4 12 2-6h6"></path>
+                </svg>
+            </span>
+
+            <span>Monitoreo</span>
+        </button>
+
+        <button 
+            type="button"
+            class="config-tab"
+            data-config-tab="alertas"
+        >
+            <span class="config-tab-icon">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path
+                        d="M10.3 2.9a2 2 0 0 1 3.4 0l8 14A2 2 0 0 1 20 20H4a2 2 0 0 1-1.7-3.1z"
+                    ></path>
+
+                    <line
+                        x1="12"
+                        y1="9"
+                        x2="12"
+                        y2="13"
+                    ></line>
+
+                    <line
+                        x1="12"
+                        y1="17"
+                        x2="12.01"
+                        y2="17"
+                    ></line>
+                </svg>
+            </span>
+
+            <span>Alertas</span>
+        </button>
+
+        <button
+            type="button"
+            class="config-tab"
+            data-config-tab="panel"
+        >
+            <span class="config-tab-icon">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                    <path d="M3 9h18"></path>
+                    <path d="M9 21V9"></path>
+                </svg>
+            </span>
+
+            <span>Actualización del panel</span>
+        </button>
+
+
+        <button
+            type="button"
+            class="config-tab"
+            data-config-tab="telemetria"
+        >
+            <span class="config-tab-icon">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M12 21a9 9 0 1 0-9-9"></path>
+                    <path d="M3.6 15h3.8"></path>
+                    <path d="M5.6 18.5 8.3 16"></path>
+                    <path d="M12 12 17 7"></path>
+                    <circle cx="12" cy="12" r="1"></circle>
+                </svg>
+            </span>
+
+            <span>Telemetría y GPS</span>
+        </button>
+
+
+        <button
+            type="button"
+            class="config-tab"
+            data-config-tab="sistema"
+        >
+            <span class="config-tab-icon">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <rect x="3" y="4" width="18" height="14" rx="2"></rect>
+                    <path d="M8 22h8"></path>
+                    <path d="M12 18v4"></path>
+                </svg>
+            </span>
+
+            <span>Sistema</span>
+        </button>
+
+    </nav>
+
+
+    <!-- ===================================================== -->
+    <!-- ESTADO DE CARGA                                        -->
+    <!-- ===================================================== -->
+
+    <section
+        class="config-loading"
+        id="configLoading"
+    >
+        <div class="config-loading-spinner"></div>
+
+        <div>
+            <strong>
+                Cargando configuración...
+            </strong>
+
+            <p>
+                Espera mientras se consultan los ajustes del sistema.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- CONTENIDO PRINCIPAL                                    -->
+    <!-- ===================================================== -->
+
+    <section
+        class="config-content"
+        id="configContent"
+        hidden
+    >
+
+
+        <!-- ================================================= -->
+        <!-- GENERAL                                           -->
+        <!-- ================================================= -->
+
+        <section
+            class="config-panel active"
+            data-config-panel="general"
+        >
+
+            <article class="card config-card">
+
+                <div class="config-card-header">
+
+                    <div class="config-card-icon config-icon-blue">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06"></path>
+                            <path d="M4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06"></path>
+                            <path d="M15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06"></path>
+                            <path d="M9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06"></path>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Configuración general
+                        </h2>
+
+                        <p>
+                            Datos generales visibles de la plataforma.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="config-card-body">
+
+                    <div class="config-form-grid">
+
+                        <div class="form-group config-field-full">
+                            <label for="configNombrePlataforma">
+                                Nombre de la plataforma
+                            </label>
+
+                            <input
+                                type="text"
+                                id="configNombrePlataforma"
+                                maxlength="100"
+                                placeholder="TrackSecurity"
+                            >
+
+                            <small>
+                                Máximo 100 caracteres.
+                            </small>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="configCorreoSoporte">
+                                Correo de soporte
+                            </label>
+
+                            <input
+                                type="email"
+                                id="configCorreoSoporte"
+                                maxlength="150"
+                                placeholder="soporte@tracksecurity.com"
+                            >
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="configTelefonoSoporte">
+                                Teléfono de soporte
+                            </label>
+
+                            <input
+                                type="text"
+                                id="configTelefonoSoporte"
+                                maxlength="30"
+                                placeholder="961 000 0000"
+                            >
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- MONITOREO                                         -->
+        <!-- ================================================= -->
+
+        <section
+            class="config-panel"
+            data-config-panel="monitoreo"
+        >
+
+            <article class="card config-card">
+
+                <div class="config-card-header">
+
+                    <div class="config-card-icon config-icon-orange">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M3 12h4l2-6 4 12 2-6h6"></path>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Monitoreo y conexión
+                        </h2>
+
+                        <p>
+                            Define cuándo un vehículo debe considerarse sin señal.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="config-card-body">
+
+                    <div class="config-settings-list">
+
+                        <div class="config-setting-row">
+
+                            <div class="config-setting-info">
+
+                                <strong>
+                                    Tiempo para considerar un vehículo sin señal
+                                </strong>
+
+                                <p>
+                                    Se aplica al cálculo global del estado de conexión.
+                                </p>
+
+                            </div>
+
+
+                            <div class="config-number-control">
+
+                                <input
+                                    type="number"
+                                    id="configSegundosSinSenal"
+                                    min="15"
+                                    max="600"
+                                    step="1"
+                                >
+
+                                <span>
+                                    segundos
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ===================================================== -->
+        <!-- ALERTAS                                               -->
+        <!-- ===================================================== -->
+
+        <!-- ================================================= -->
+        <!-- ALERTAS                                           -->
+        <!-- ================================================= -->
+
+        <section
+            class="config-panel"
+            data-config-panel="alertas"
+        >
+
+            <article class="card config-card">
+
+                <div class="config-card-header">
+
+                    <div class="config-card-icon config-icon-red">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M10.3 2.9a2 2 0 0 1 3.4 0l8 14A2 2 0 0 1 20 20H4a2 2 0 0 1-1.7-3.1z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Alertas
+                        </h2>
+
+                        <p>
+                            Configuración global para controlar la generación
+                            de alertas repetidas.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="config-card-body">
+
+                    <div class="config-settings-list">
+
+                        <div class="config-setting-row">
+
+                            <div class="config-setting-info">
+
+                                <strong>
+                                    Tiempo mínimo entre alertas del mismo tipo
+                                </strong>
+
+                                <p>
+                                    Aplica por vehículo y por tipo de alerta.
+                                    Si una condición reaparece dentro de este
+                                    tiempo, se reutiliza la alerta anterior.
+                                </p>
+
+                            </div>
+
+
+                            <div class="config-number-control">
+
+                                <input
+                                    type="number"
+                                    id="configSegundosSeparacionAlertas"
+                                    min="1"
+                                    max="300"
+                                    step="1"
+                                    value="10"
+                                >
+
+                                <span>
+                                    segundos
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- ACTUALIZACIÓN DEL PANEL                            -->
+        <!-- ================================================= -->
+
+        <section
+            class="config-panel"
+            data-config-panel="panel"
+        >
+
+            <!-- PANEL ADMIN -->
+
+            <article class="card config-card">
+
+                <div class="config-card-header">
+
+                    <div class="config-card-icon config-icon-purple">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                            <path d="M3 9h18"></path>
+                            <path d="M9 21V9"></path>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Panel administrador
+                        </h2>
+
+                        <p>
+                            Intervalos de actualización automática del panel general.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="config-card-body">
+
+                    <div class="config-interval-grid">
+
+                        <div class="config-interval-item">
+                            <label for="configAdminDashboard">
+                                Dashboard
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminDashboard"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminEmpresas">
+                                Empresas
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminEmpresas"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminSuscripciones">
+                                Suscripciones
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminSuscripciones"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminPlanes">
+                                Planes y tarifas
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminPlanes"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminUsuarios">
+                                Usuarios
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminUsuarios"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminVehiculos">
+                                Vehículos
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminVehiculos"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminDetalleVehiculo">
+                                Detalle de vehículo
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminDetalleVehiculo"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminDispositivos">
+                                Dispositivos
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminDispositivos"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminServicios">
+                                Servicios
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminServicios"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configAdminAlertas">
+                                Alertas
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configAdminAlertas"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- DUEÑO Y SUPERVISOR -->
+
+            <article class="card config-card">
+
+                <div class="config-card-header">
+
+                    <div class="config-card-icon config-icon-green">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Dueño y supervisor
+                        </h2>
+
+                        <p>
+                            Intervalos compartidos por los módulos operativos.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="config-card-body">
+
+                    <div class="config-interval-grid">
+
+                        <div class="config-interval-item">
+                            <label for="configOperacionDashboard">
+                                Dashboard
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configOperacionDashboard"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configOperacionVehiculos">
+                                Vehículos
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configOperacionVehiculos"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configOperacionDetalleVehiculo">
+                                Detalle de vehículo
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configOperacionDetalleVehiculo"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configOperacionAlertas">
+                                Alertas
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configOperacionAlertas"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+
+                        <div class="config-interval-item">
+                            <label for="configOperacionMonitoreo">
+                                Monitoreo
+                            </label>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configOperacionMonitoreo"
+                                    min="2"
+                                    max="300"
+                                >
+                                <span>s</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- TELEMETRÍA Y GPS                                  -->
+        <!-- ================================================= -->
+
+        <section
+            class="config-panel"
+            data-config-panel="telemetria"
+        >
+
+            <article class="card config-card">
+
+                <div class="config-card-header">
+
+                    <div class="config-card-icon config-icon-blue">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M12 12 17 7"></path>
+                            <circle cx="12" cy="12" r="1"></circle>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Telemetría y GPS
+                        </h2>
+
+                        <p>
+                            Intervalos de actualización y persistencia de ubicación.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="config-card-body">
+
+                    <div class="config-settings-list">
+
+                        <div class="config-setting-row">
+
+                            <div class="config-setting-info">
+                                <strong>
+                                    Actualizar ubicación actual
+                                </strong>
+
+                                <p>
+                                    Intervalo de actualización de la posición actual almacenada.
+                                </p>
+                            </div>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configUbicacionActual"
+                                    min="1"
+                                    max="300"
+                                >
+
+                                <span>
+                                    segundos
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="config-setting-row">
+
+                            <div class="config-setting-info">
+                                <strong>
+                                    Guardar historial GPS
+                                </strong>
+
+                                <p>
+                                    Intervalo entre nuevos puntos históricos guardados.
+                                </p>
+                            </div>
+
+                            <div class="config-number-control">
+                                <input
+                                    type="number"
+                                    id="configHistorialGps"
+                                    min="5"
+                                    max="3600"
+                                >
+
+                                <span>
+                                    segundos
+                                </span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="config-setting-row">
+
+                            <div class="config-setting-info">
+                                <strong>
+                                    Guardar GPS inmediatamente durante una alerta
+                                </strong>
+
+                                <p>
+                                    Registra la posición inmediatamente cuando ocurra un evento crítico.
+                                </p>
+                            </div>
+
+
+                            <label class="config-switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="configGuardarGpsAlerta"
+                                >
+
+                                <span class="config-switch-track">
+                                    <span class="config-switch-thumb"></span>
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- SISTEMA                                           -->
+        <!-- ================================================= -->
+
+        <section
+            class="config-panel"
+            data-config-panel="sistema"
+        >
+
+            <article class="card config-card">
+
+                <div class="config-card-header">
+
+                    <div class="config-card-icon config-icon-gray">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <rect x="3" y="4" width="18" height="14" rx="2"></rect>
+                            <path d="M8 22h8"></path>
+                            <path d="M12 18v4"></path>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h2>
+                            Información del sistema
+                        </h2>
+
+                        <p>
+                            Información técnica general de la plataforma.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="config-card-body">
+
+                    <div class="config-system-grid">
+
+                        <div class="config-system-item">
+                            <span>
+                                Versión
+                            </span>
+
+                            <strong>
+                                1.0.0
+                            </strong>
+                        </div>
+
+
+                        <div class="config-system-item">
+                            <span>
+                                Backend
+                            </span>
+
+                            <strong>
+                                Flask
+                            </strong>
+                        </div>
+
+
+                        <div class="config-system-item">
+                            <span>
+                                Base de datos
+                            </span>
+
+                            <strong>
+                                MySQL
+                            </strong>
+                        </div>
+
+
+                        <div class="config-system-item">
+                            <span>
+                                Aplicación móvil
+                            </span>
+
+                            <strong>
+                                Flutter
+                            </strong>
+                        </div>
+
+
+                        <div class="config-system-item">
+                            <span>
+                                Hardware principal
+                            </span>
+
+                            <strong>
+                                ESP32-S3 + Tang Nano 9K
+                            </strong>
+                        </div>
+
+
+                        <div class="config-system-item">
+                            <span>
+                                Estado
+                            </span>
+
+                            <strong class="config-system-online">
+                                Operativo
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="config-last-update">
+
+                        <span>
+                            Última actualización de configuración
+                        </span>
+
+                        <strong id="configUltimaActualizacion">
+                            --
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- TOAST                                                  -->
+    <!-- ===================================================== -->
+
+    <div
+        class="config-toast"
+        id="configToast"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script
+    src="{{ url_for('static', filename='js/admin/configuracion/index.js') }}"
+></script>
+{% endblock %}

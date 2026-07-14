@@ -403,6 +403,10 @@
     background: #dc2626;
 }
 
+.sensor-desconectado::before {
+    background: #94a3b8;
+}
+
 /* ───────────────────────── Alertas detalle ──────────────── */
 
 .alertas-vehiculo-listado {
@@ -1023,3 +1027,27 @@
         line-height: 1;
     }
 }
+
+/* ============================================================
+   SENSOR SIN CONEXIÓN
+   Todos los sensores aparecen en gris cuando el vehículo
+   no tiene señal.
+   ============================================================ */
+
+.sensor-desconectado {
+    border: 1px solid #cbd5e1;
+    background: #f1f5f9;
+}
+
+.sensor-desconectado span {
+    color: #64748b;
+}
+
+.sensor-desconectado strong {
+    color: #475569;
+}
+
+.sensor-desconectado small {
+    color: #94a3b8;
+}
+

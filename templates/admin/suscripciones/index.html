@@ -1,0 +1,161 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Suscripciones | TrackSecurity{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/suscripciones.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-page-header suscripciones-page-header">
+    <div>
+        <p class="admin-section-kicker">Administración global</p>
+        <h1>Suscripciones</h1>
+        <p>
+            Administra los planes contratados por empresa, sus tarifas de referencia,
+            precios acordados y estados comerciales.
+        </p>
+    </div>
+
+    <div class="suscripciones-header-actions">
+        <button type="button"
+                class="btn btn-primary"
+                id="btnAbrirModalSuscripcion">
+            Nueva suscripción
+        </button>
+    </div>
+</section>
+
+
+<section class="suscripciones-stats-grid">
+
+    <article class="card suscripcion-stat-card suscripcion-stat-blue">
+        <div class="suscripcion-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                <path d="M3 10h18"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Total</p>
+            <strong id="statSuscripcionesTotal">0</strong>
+            <span>Suscripciones registradas</span>
+        </div>
+    </article>
+
+    <article class="card suscripcion-stat-card suscripcion-stat-green">
+        <div class="suscripcion-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Activas</p>
+            <strong id="statSuscripcionesActivas">0</strong>
+            <span>Actualmente vigentes</span>
+        </div>
+    </article>
+
+    <article class="card suscripcion-stat-card suscripcion-stat-orange">
+        <div class="suscripcion-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+            </svg>
+        </div>
+        <div>
+            <p>No activas</p>
+            <strong id="statSuscripcionesNoActivas">0</strong>
+            <span>Suspendidas, vencidas o canceladas</span>
+        </div>
+    </article>
+
+    <article class="card suscripcion-stat-card suscripcion-stat-purple">
+        <div class="suscripcion-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20"></path>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Monto mensual</p>
+            <strong id="statMontoMensual">$0.00</strong>
+            <span>Total comprometido en suscripciones activas</span>
+        </div>
+    </article>
+
+</section>
+
+
+<section class="card suscripciones-filtros-card">
+    <div class="suscripciones-filtros-grid">
+
+        <div class="form-group">
+            <label for="filtroBusquedaSuscripcion">Buscar</label>
+            <input type="search"
+                   id="filtroBusquedaSuscripcion"
+                   placeholder="Empresa o plan">
+        </div>
+
+        <div class="form-group">
+            <label for="filtroPlanSuscripcion">Plan</label>
+            <select id="filtroPlanSuscripcion">
+                <option value="todos">Todos los planes</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="filtroEstadoSuscripcion">Estado</label>
+            <select id="filtroEstadoSuscripcion">
+                <option value="todos">Todos los estados</option>
+                <option value="activa">Activa</option>
+                <option value="suspendida">Suspendida</option>
+                <option value="vencida">Vencida</option>
+                <option value="cancelada">Cancelada</option>
+            </select>
+        </div>
+
+    </div>
+</section>
+
+
+<section id="suscripcionesLista"
+         class="suscripciones-grid"
+         aria-live="polite">
+</section>
+
+<div id="suscripcionesEstadoVacio"
+     class="card suscripciones-empty-state"
+     hidden>
+
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+        <path d="M3 10h18"></path>
+    </svg>
+
+    <h3>No hay suscripciones para mostrar</h3>
+    <p>Prueba con otros filtros o registra una nueva suscripción.</p>
+</div>
+
+
+{% include "admin/suscripciones/modal_suscripcion.html" %}
+{% include "admin/suscripciones/modal_estado.html" %}
+
+<div id="suscripcionesToastContainer"
+     class="suscripciones-toast-container">
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/suscripciones/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin/suscripciones/formulario.js') }}"></script>
+{% endblock %}

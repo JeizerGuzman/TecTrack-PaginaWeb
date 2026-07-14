@@ -1,0 +1,111 @@
+<div class="modal-backdrop"
+     id="modalDetalleAlerta"
+     aria-hidden="true">
+
+    <section class="modal-card modal-detalle-alerta-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalDetalleAlertaTitulo">
+
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker">Detalle de alerta</p>
+                <h2 id="modalDetalleAlertaTitulo">Información de la alerta</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="btnCerrarModalDetalleAlerta"
+                    aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </header>
+
+        <div class="modal-body">
+
+            <div class="detalle-alerta-header">
+                <div class="detalle-alerta-badges">
+                    <span class="status-badge"
+                          id="detalleAlertaEstado">
+                        Estado
+                    </span>
+
+                    <span class="status-badge"
+                          id="detalleAlertaNivel">
+                        Nivel
+                    </span>
+                </div>
+
+                <h3 id="detalleAlertaTipo">Tipo de alerta</h3>
+
+                <p id="detalleAlertaDescripcion">
+                    Sin descripción
+                </p>
+            </div>
+
+
+            <div class="detalle-alerta-grid">
+
+                <article>
+                    <span>Empresa</span>
+                    <strong id="detalleAlertaEmpresa">-</strong>
+                </article>
+
+                <article>
+                    <span>Vehículo</span>
+                    <strong id="detalleAlertaVehiculo">-</strong>
+                </article>
+
+                <article>
+                    <span>Placa</span>
+                    <strong id="detalleAlertaPlaca">-</strong>
+                </article>
+
+                <article>
+                    <span>Dispositivo</span>
+                    <strong id="detalleAlertaDispositivo">-</strong>
+                </article>
+
+                <article>
+                    <span>Generada</span>
+                    <strong id="detalleAlertaFecha">-</strong>
+                </article>
+
+                <article>
+                    <span>Última actualización</span>
+                    <strong id="detalleAlertaUltimaActualizacion">-</strong>
+                </article>
+
+                <article>
+                    <span>Atendida por</span>
+                    <strong id="detalleAlertaAtendidaPor">-</strong>
+                </article>
+
+                <article>
+                    <span>Fecha de atención</span>
+                    <strong id="detalleAlertaFechaAtencion">-</strong>
+                </article>
+
+                <article class="detalle-alerta-wide">
+                    <span>Ubicación</span>
+                    <strong id="detalleAlertaUbicacion">-</strong>
+                </article>
+
+            </div>
+
+        </div>
+
+        <footer class="modal-actions">
+            <button type="button"
+                    class="btn btn-secondary"
+                    id="btnCerrarDetalleAlertaFooter">
+                Cerrar
+            </button>
+        </footer>
+
+    </section>
+</div>

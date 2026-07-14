@@ -1,0 +1,107 @@
+<div class="modal-backdrop"
+     id="modalEstadoPlanTarifa"
+     aria-hidden="true">
+
+    <section class="modal-card modal-estado-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalEstadoTitulo">
+
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker"
+                   id="modalEstadoKicker">
+                    Confirmación
+                </p>
+
+                <h2 id="modalEstadoTitulo">
+                    Confirmar acción
+                </h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="btnCerrarModalEstado"
+                    aria-label="Cerrar">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+
+                </svg>
+
+            </button>
+        </header>
+
+
+        <div class="modal-body">
+
+            <div class="estado-confirmacion">
+
+                <div class="estado-confirmacion-icon"
+                     id="modalEstadoIcon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="12"
+                                cy="12"
+                                r="9">
+                        </circle>
+
+                        <path d="M12 8v4"></path>
+                        <path d="M12 16h.01"></path>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="estado-confirmacion-content">
+
+                    <p class="estado-confirmacion-mensaje"
+                       id="modalEstadoMensaje">
+                        ¿Estás seguro de realizar esta acción?
+                    </p>
+
+                    <div class="estado-confirmacion-detalle"
+                         id="modalEstadoDetalle"
+                         hidden>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <footer class="modal-actions">
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    id="btnCancelarModalEstado">
+                Cancelar
+            </button>
+
+            <button type="button"
+                    class="btn btn-primary"
+                    id="btnConfirmarModalEstado">
+                Confirmar
+            </button>
+
+        </footer>
+
+    </section>
+
+</div>

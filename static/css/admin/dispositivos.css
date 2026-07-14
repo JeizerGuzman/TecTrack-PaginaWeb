@@ -1,2 +1,456 @@
-/* Estilos especificos de la pantalla admin/dispositivos. */
-/* Debe reforzar listas, estados de vinculacion y paneles de equipo. */
+.dispositivos-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dispositivos-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.dispositivo-stat-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 108px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-radius: var(--radius-lg) !important;
+}
+
+.dispositivo-stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+}
+
+.dispositivo-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.dispositivo-stat-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+.dispositivo-stat-card p {
+    margin: 0 0 6px;
+    font-size: 0.72rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-texto-secundario);
+}
+
+.dispositivo-stat-card strong {
+    display: block;
+    font-size: 2rem;
+    line-height: 1;
+    font-weight: 850;
+    letter-spacing: -0.045em;
+    color: var(--color-texto);
+}
+
+.stat-blue::before { background: var(--color-primario); }
+.stat-blue .dispositivo-stat-icon {
+    background: var(--color-primario-suave);
+    color: var(--color-primario);
+}
+
+.stat-green::before { background: var(--color-exito); }
+.stat-green .dispositivo-stat-icon {
+    background: var(--color-exito-suave);
+    color: var(--color-exito);
+}
+
+.stat-orange::before { background: var(--color-alerta); }
+.stat-orange .dispositivo-stat-icon {
+    background: var(--color-alerta-suave);
+    color: #b45309;
+}
+
+.stat-gray::before { background: var(--color-texto-muted); }
+.stat-gray .dispositivo-stat-icon {
+    background: #eef2f7;
+    color: var(--color-texto-secundario);
+}
+
+.dispositivos-filtros-card {
+    margin-bottom: 18px;
+}
+
+.dispositivos-filtros-grid {
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 14px;
+    padding: 18px;
+}
+
+.dispositivos-listado {
+    display: grid;
+    gap: 12px;
+}
+
+.dispositivo-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--color-borde-suave);
+    border-radius: var(--radius-md);
+    background: #ffffff;
+}
+
+.dispositivo-card.desactivado {
+    opacity: 0.72;
+    background: #f8fafc;
+}
+
+.dispositivo-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.dispositivo-title-row h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 850;
+    color: var(--color-texto);
+}
+
+.dispositivo-title-row p {
+    margin: 4px 0 0;
+    color: var(--color-texto-secundario);
+    font-size: 0.86rem;
+}
+
+.dispositivo-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dispositivo-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--color-texto-secundario);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.dispositivo-meta span {
+    border: 1px solid var(--color-borde-suave);
+    background: #f8fafc;
+    border-radius: 999px;
+    padding: 5px 10px;
+}
+
+.dispositivo-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-sm {
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 0.82rem;
+}
+
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+/* Modal: mismo comportamiento que empresas.
+   No se cierra haciendo clic afuera, solo con cancelar o equis. */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(15, 23, 42, 0.46);
+}
+
+.modal-backdrop.visible {
+    display: flex;
+}
+
+.modal-card {
+    width: min(620px, 100%);
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+.modal-card-small {
+    width: min(460px, 100%);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 20px 20px 12px;
+    border-bottom: 1px solid var(--color-borde-suave);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 850;
+}
+
+.modal-header p {
+    margin: 5px 0 0;
+    color: var(--color-texto-secundario);
+    font-size: 0.86rem;
+}
+
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--color-borde);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--color-texto);
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.modal-body {
+    padding: 18px 20px 20px;
+}
+
+.form-group {
+    display: grid;
+    gap: 7px;
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    font-size: 0.82rem;
+    font-weight: 850;
+    color: var(--color-texto);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    border: 1px solid var(--color-borde);
+    border-radius: 12px;
+    background: #ffffff;
+    color: var(--color-texto);
+    padding: 11px 12px;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 3px var(--color-primario-suave);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.dispositivos-toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 120;
+    display: none;
+    max-width: 360px;
+    padding: 13px 16px;
+    border-radius: 14px;
+    font-weight: 800;
+    box-shadow: var(--shadow-card);
+    background: #ffffff;
+    border: 1px solid var(--color-borde);
+    color: var(--color-texto);
+}
+
+.dispositivos-toast.visible {
+    display: block;
+}
+
+.dispositivos-toast.success {
+    border-color: rgba(22, 163, 74, 0.35);
+    color: var(--color-exito);
+}
+
+.dispositivos-toast.error {
+    border-color: rgba(220, 38, 38, 0.35);
+    color: var(--color-peligro);
+}
+
+@media (max-width: 1100px) {
+    .dispositivos-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dispositivo-card {
+        grid-template-columns: 1fr;
+    }
+
+    .dispositivo-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 700px) {
+    .dispositivos-stats-grid,
+    .dispositivos-filtros-grid,
+    .form-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .dispositivo-title-row {
+        flex-direction: column;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+
+    .modal-actions .btn {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+   HEADER DISPOSITIVOS
+   Botón Nuevo dispositivo alineado arriba a la derecha
+   ============================================================ */
+
+.admin-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.admin-page-header > div:first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.dispositivos-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    padding-top: 4px;
+}
+
+/* ============================================================
+   BOTÓN NUEVO DISPOSITIVO
+   ============================================================ */
+
+.btn-nuevo-dispositivo {
+    min-height: 48px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 15px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    background: var(--color-primario, #2563eb);
+    color: #ffffff;
+
+    font-size: 0.88rem;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.20);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+.btn-nuevo-dispositivo:hover {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.28);
+}
+
+.btn-nuevo-dispositivo:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.btn-nuevo-dispositivo-icon {
+    width: 20px;
+    height: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-nuevo-dispositivo-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 800px) {
+    .admin-page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .dispositivos-header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        padding-top: 0;
+    }
+
+    .btn-nuevo-dispositivo {
+        width: auto;
+    }
+}
+
+@media (max-width: 520px) {
+    .btn-nuevo-dispositivo {
+        width: 100%;
+    }
+}

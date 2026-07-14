@@ -1,0 +1,713 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Usuarios - TrackSecurity{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/usuarios.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-page-header">
+    <div>
+        <p class="admin-section-kicker">Administración global</p>
+        <h1>Usuarios</h1>
+        <p>
+            Administra los usuarios registrados en TrackSecurity, sus roles,
+            empresas asignadas y estado dentro de la plataforma.
+        </p>
+    </div>
+
+    <div class="usuarios-header-actions">
+        <button type="button" class="btn btn-primary" id="btnAbrirModalUsuario">
+            Nuevo usuario
+        </button>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     TARJETAS DE RESUMEN
+     ============================================================ -->
+
+<section class="usuarios-stats-grid">
+
+    <!-- TOTAL -->
+    <article class="card usuario-stat-card usuario-stat-blue">
+        <div class="usuario-stat-icon">
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Total usuarios</p>
+            <strong id="statUsuariosTotal">0</strong>
+            <span>Registrados</span>
+        </div>
+    </article>
+
+    <!-- ADMINISTRADORES -->
+    <article class="card usuario-stat-card usuario-stat-admin">
+        <div class="usuario-stat-icon">
+            <svg viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M12 3 5 6v5c0 5 3.5 8.5 7 10 3.5-1.5 7-5 7-10V6l-7-3z"></path>
+                <path d="m9 12 2 2 4-4"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Administradores</p>
+            <strong id="statUsuariosAdmins">0</strong>
+            <span>Control global</span>
+        </div>
+    </article>
+
+
+    <!-- DUEÑOS -->
+    <article class="card usuario-stat-card usuario-stat-purple">
+        <div class="usuario-stat-icon">
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 21a8 8 0 0 1 16 0"></path>
+                <path d="M9 3h6"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Dueños</p>
+            <strong id="statUsuariosDuenos">0</strong>
+            <span>Responsables</span>
+        </div>
+    </article>
+
+
+    <!-- SUPERVISORES -->
+    <article class="card usuario-stat-card usuario-stat-orange">
+        <div class="usuario-stat-icon">
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                <path d="M8 2v4"></path>
+                <path d="M16 2v4"></path>
+                <path d="M8 11h8"></path>
+                <path d="M8 15h5"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Supervisores</p>
+            <strong id="statUsuariosSupervisores">0</strong>
+            <span>Monitoreo</span>
+        </div>
+    </article>
+
+
+    <!-- CHOFERES -->
+    <article class="card usuario-stat-card usuario-stat-green">
+        <div class="usuario-stat-icon">
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <path d="M3 16V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8"></path>
+                <path d="M2 16h20"></path>
+                <circle cx="7" cy="17" r="2"></circle>
+                <circle cx="17" cy="17" r="2"></circle>
+                <path d="M17 10h3l2 3v3"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Choferes</p>
+            <strong id="statUsuariosChoferes">0</strong>
+            <span>Conductores</span>
+        </div>
+    </article>
+
+
+    <!-- TÉCNICOS -->
+    <article class="card usuario-stat-card usuario-stat-gray">
+        <div class="usuario-stat-icon">
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <path d="M14.7 6.3a4 4 0 0 0-5-5L7 4l5 5 2.7-2.7z"></path>
+                <path d="M5 11 2 14l8 8 3-3"></path>
+                <path d="m13 19 6-6"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Técnicos</p>
+            <strong id="statUsuariosTecnicos">0</strong>
+            <span>Instalación</span>
+        </div>
+    </article>
+
+</section>
+
+
+<!-- ============================================================
+     FILTROS
+     ============================================================ -->
+
+<section class="card usuarios-filtros-card">
+
+    <div class="usuarios-filtros-grid">
+
+        <div class="form-group">
+            <label for="buscarUsuario">Buscar usuario</label>
+
+            <input
+                type="text"
+                id="buscarUsuario"
+                placeholder="Buscar por nombre, correo o teléfono">
+        </div>
+
+
+        <div class="form-group">
+            <label for="filtroEmpresaUsuario">Empresa</label>
+
+            <div class="empresa-combobox" id="comboboxFiltroEmpresaUsuario">
+
+                <div class="empresa-combobox-control">
+                    <input
+                        type="text"
+                        id="filtroEmpresaUsuario"
+                        placeholder="Todas las empresas"
+                        autocomplete="new-password">
+
+                    <button
+                        type="button"
+                        class="empresa-combobox-toggle"
+                        id="btnToggleFiltroEmpresaUsuario"
+                        aria-label="Mostrar empresas">
+
+                        <svg viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="m6 9 6 6 6-6"></path>
+                        </svg>
+
+                    </button>
+                </div>
+
+                <div
+                    class="empresa-combobox-menu"
+                    id="menuFiltroEmpresaUsuario">
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="filtroRolUsuario">Rol</label>
+
+            <select id="filtroRolUsuario">
+                <option value="todos">Todos los roles</option>
+                <option value="admin">Administradores</option>
+                <option value="dueno">Dueños</option>
+                <option value="supervisor">Supervisores</option>
+                <option value="chofer">Choferes</option>
+                <option value="tecnico">Técnicos</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="filtroEstadoUsuario">Estado</label>
+
+            <select id="filtroEstadoUsuario">
+                <option value="todos">Todos</option>
+                <option value="activo">Activos</option>
+                <option value="inactivo">Inactivos</option>
+            </select>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ============================================================
+     LISTADO
+     ============================================================ -->
+
+<section class="card usuarios-list-card">
+
+    <div class="card-header card-header-row">
+
+        <div>
+            <h3>Listado de usuarios</h3>
+            <p>Usuarios registrados en la plataforma.</p>
+        </div>
+
+        <span id="usuariosActualizacion" class="badge badge-muted">
+            Actualizando...
+        </span>
+
+    </div>
+
+
+    <div class="card-body">
+
+        <div id="usuariosListado" class="usuarios-listado">
+
+            <div class="empty-state">
+                <strong>Cargando usuarios...</strong>
+                <p>Estamos obteniendo la información de la plataforma.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ============================================================
+     MODAL CREAR / EDITAR USUARIO
+     ============================================================ -->
+
+<div class="modal-backdrop" id="modalUsuario">
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <div>
+                <h3 id="modalUsuarioTitulo">Nuevo usuario</h3>
+
+                <p id="modalUsuarioSubtitulo">
+                    Registra un usuario en TrackSecurity.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="btnCerrarModalUsuario">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="formUsuario" class="modal-body">
+
+            <input type="hidden" id="usuarioId">
+
+
+            <div class="form-group">
+                <label for="usuarioNombre">Nombre completo</label>
+
+                <input
+                    type="text"
+                    id="usuarioNombre"
+                    placeholder="Ej. Juan Pérez López">
+            </div>
+
+
+            <div class="form-group">
+                <label for="usuarioCorreo">Correo electrónico</label>
+
+                <input
+                    type="email"
+                    id="usuarioCorreo"
+                    placeholder="usuario@correo.com">
+            </div>
+
+
+            <div class="form-group">
+                <label for="usuarioTelefono">Teléfono</label>
+
+                <input
+                    type="text"
+                    id="usuarioTelefono"
+                    placeholder="Ej. 9611234567">
+            </div>
+
+
+            <div class="form-group">
+                <label for="usuarioTipo">Rol</label>
+
+                <select id="usuarioTipo">
+                    <option value="">Selecciona un rol</option>
+                    <option value="admin">Administrador</option>
+                    <option value="dueno">Dueño</option>
+                    <option value="supervisor">Supervisor</option>
+                    <option value="chofer">Chofer</option>
+                    <option value="tecnico">Técnico</option>
+                </select>
+            </div>
+
+
+            <div class="form-group" id="grupoEmpresaUsuario">
+                <label for="usuarioEmpresaBusqueda">Empresa</label>
+
+                <div class="empresa-combobox" id="comboboxUsuarioEmpresa">
+
+                    <div class="empresa-combobox-control">
+                        <input
+                            type="text"
+                            id="usuarioEmpresaBusqueda"
+                            placeholder="Escribe o selecciona una empresa"
+                            autocomplete="new-password">
+
+                        <button
+                            type="button"
+                            class="empresa-combobox-toggle"
+                            id="btnToggleUsuarioEmpresa"
+                            aria-label="Mostrar empresas">
+
+                            <svg viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6"></path>
+                            </svg>
+
+                        </button>
+                    </div>
+
+                    <input
+                        type="hidden"
+                        id="usuarioEmpresa">
+
+                    <div
+                        class="empresa-combobox-menu"
+                        id="menuUsuarioEmpresa">
+                    </div>
+
+                </div>
+
+                <small class="form-help">
+                    Escribe parte del nombre o selecciona una empresa existente.
+                    Los técnicos no requieren una empresa asignada.
+                </small>
+            </div>
+
+
+            <div class="form-group" id="grupoPasswordUsuario">
+                <label for="usuarioPassword">Contraseña inicial</label>
+
+                <div class="password-field-wrapper">
+                    <input
+                        type="password"
+                        id="usuarioPassword"
+                        placeholder="Mínimo 6 caracteres">
+
+                    <button
+                        type="button"
+                        class="password-toggle-btn"
+                        data-password-target="usuarioPassword"
+                        aria-label="Mostrar contraseña"
+                        title="Mostrar contraseña">
+
+                        <svg class="password-eye-icon password-eye-show"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+
+                        <svg class="password-eye-icon password-eye-hide"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="m3 3 18 18"></path>
+                            <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                            <path d="M9.9 4.2A10.7 10.7 0 0 1 12 4c6.5 0 10 8 10 8a18.4 18.4 0 0 1-2.1 3.2"></path>
+                            <path d="M6.6 6.6C3.7 8.3 2 12 2 12s3.5 8 10 8a9.8 9.8 0 0 0 4-.8"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <small class="form-help" id="usuarioPasswordAyuda">
+                    Obligatoria al crear un nuevo usuario.
+                </small>
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="btnCancelarUsuario">
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="btnGuardarUsuario">
+                    Guardar usuario
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     MODAL CAMBIO DE ESTADO
+     ============================================================ -->
+
+<div class="modal-backdrop" id="modalEstadoUsuario">
+
+    <div class="modal-card modal-card-small">
+
+        <div class="modal-header">
+
+            <div>
+                <h3 id="modalEstadoUsuarioTitulo">
+                    Cambiar estado
+                </h3>
+
+                <p id="modalEstadoUsuarioDescripcion">
+                    Confirma la acción para este usuario.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="btnCerrarModalEstadoUsuario">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="btnCancelarEstadoUsuario">
+                    Cancelar
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="btnConfirmarEstadoUsuario">
+                    Confirmar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     MODAL RESTABLECER CONTRASEÑA
+     ============================================================ -->
+
+<div class="modal-backdrop" id="modalPasswordUsuario">
+
+    <div class="modal-card modal-card-small">
+
+        <div class="modal-header">
+
+            <div>
+                <h3>Restablecer contraseña</h3>
+
+                <p id="modalPasswordUsuarioDescripcion">
+                    Ingresa una nueva contraseña para el usuario.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="btnCerrarModalPasswordUsuario">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+        <div class="form-group">
+            <label for="nuevaPasswordUsuario">
+                Nueva contraseña
+            </label>
+
+            <div class="password-field-wrapper">
+                <input
+                    type="password"
+                    id="nuevaPasswordUsuario"
+                    placeholder="Mínimo 6 caracteres">
+
+                <button
+                    type="button"
+                    class="password-toggle-btn"
+                    data-password-target="nuevaPasswordUsuario"
+                    aria-label="Mostrar contraseña"
+                    title="Mostrar contraseña">
+
+                    <svg class="password-eye-icon password-eye-show"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+
+                    <svg class="password-eye-icon password-eye-hide"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m3 3 18 18"></path>
+                        <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                        <path d="M9.9 4.2A10.7 10.7 0 0 1 12 4c6.5 0 10 8 10 8a18.4 18.4 0 0 1-2.1 3.2"></path>
+                        <path d="M6.6 6.6C3.7 8.3 2 12 2 12s3.5 8 10 8a9.8 9.8 0 0 0 4-.8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="confirmarPasswordUsuario">
+                Confirmar contraseña
+            </label>
+
+            <div class="password-field-wrapper">
+                <input
+                    type="password"
+                    id="confirmarPasswordUsuario"
+                    placeholder="Repite la contraseña">
+
+                <button
+                    type="button"
+                    class="password-toggle-btn"
+                    data-password-target="confirmarPasswordUsuario"
+                    aria-label="Mostrar contraseña"
+                    title="Mostrar contraseña">
+
+                    <svg class="password-eye-icon password-eye-show"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+
+                    <svg class="password-eye-icon password-eye-hide"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m3 3 18 18"></path>
+                        <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                        <path d="M9.9 4.2A10.7 10.7 0 0 1 12 4c6.5 0 10 8 10 8a18.4 18.4 0 0 1-2.1 3.2"></path>
+                        <path d="M6.6 6.6C3.7 8.3 2 12 2 12s3.5 8 10 8a9.8 9.8 0 0 0 4-.8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="btnCancelarPasswordUsuario">
+                    Cancelar
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="btnConfirmarPasswordUsuario">
+                    Restablecer
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div id="usuariosToastContainer" class="usuarios-toast-container"></div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/usuarios/index.js') }}"></script>
+{% endblock %}

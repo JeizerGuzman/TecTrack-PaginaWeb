@@ -1,0 +1,103 @@
+<div class="modal-backdrop"
+     id="modalEstadoSuscripcion"
+     aria-hidden="true">
+
+    <section class="modal-card modal-estado-suscripcion-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalEstadoSuscripcionTitulo">
+
+        <header class="modal-header">
+
+            <div>
+                <p class="modal-kicker">Cambio de estado</p>
+                <h2 id="modalEstadoSuscripcionTitulo">
+                    Actualizar suscripción
+                </h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="btnCerrarModalEstadoSuscripcion"
+                    aria-label="Cerrar">
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+
+        </header>
+
+
+        <div class="modal-body">
+
+            <div class="estado-suscripcion-confirmacion">
+
+                <div class="estado-suscripcion-icon"
+                     id="modalEstadoSuscripcionIcon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M12 8v4"></path>
+                        <path d="M12 16h.01"></path>
+                    </svg>
+
+                </div>
+
+                <div class="estado-suscripcion-content">
+
+                    <p class="estado-suscripcion-mensaje"
+                       id="modalEstadoSuscripcionMensaje">
+                    </p>
+
+                    <div class="form-group estado-suscripcion-selector">
+                        <label for="nuevoEstadoSuscripcion">
+                            Nuevo estado
+                        </label>
+
+                        <select id="nuevoEstadoSuscripcion">
+                            <option value="activa">Activa</option>
+                            <option value="suspendida">Suspendida</option>
+                            <option value="vencida">Vencida</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+
+                    <div class="estado-suscripcion-detalle"
+                         id="modalEstadoSuscripcionDetalle">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <footer class="modal-actions">
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    id="btnCancelarModalEstadoSuscripcion">
+                Cancelar
+            </button>
+
+            <button type="button"
+                    class="btn btn-primary"
+                    id="btnConfirmarEstadoSuscripcion">
+                Actualizar estado
+            </button>
+
+        </footer>
+
+    </section>
+</div>

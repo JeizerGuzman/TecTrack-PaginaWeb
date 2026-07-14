@@ -1,0 +1,64 @@
+<div class="modal-backdrop" id="modalTarifasPlan" aria-hidden="true">
+    <section class="modal-card modal-tarifas-card" role="dialog" aria-modal="true" aria-labelledby="modalTarifasTitulo">
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker">Precios por volumen</p>
+                <h2 id="modalTarifasTitulo">Tarifas del plan</h2>
+                <p class="modal-header-description" id="modalTarifasSubtitulo"></p>
+            </div>
+            <button type="button" class="modal-close" id="btnCerrarModalTarifas" aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+            </button>
+        </header>
+
+        <div class="modal-body">
+            <section class="tarifas-toolbar">
+                <div><h3>Rangos configurados</h3><p>Todos los precios mostrados son unitarios.</p></div>
+                <button type="button" class="btn btn-primary" id="btnNuevaTarifa">Nueva tarifa</button>
+            </section>
+
+            <div id="tarifasLista" class="tarifas-lista"></div>
+            <div id="tarifasEstadoVacio" class="tarifas-empty-state" hidden><p>No hay tarifas configuradas para este plan.</p></div>
+
+            <section class="tarifa-editor" id="tarifaEditor" hidden>
+                <div class="tarifa-editor-header">
+                    <div><h3 id="tarifaEditorTitulo">Nueva tarifa</h3><p>Define el rango de vehículos y los precios por unidad.</p></div>
+                    <button type="button" class="btn btn-secondary btn-small" id="btnCancelarTarifa">Cancelar edición</button>
+                </div>
+
+                <form id="formTarifa">
+                    <div class="tarifa-form-grid">
+                        <div class="form-group">
+                            <label for="tarifaCantidadMinima">Cantidad mínima</label>
+                            <input type="number" id="tarifaCantidadMinima" min="1" step="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarifaCantidadMaxima">Cantidad máxima</label>
+                            <input type="number" id="tarifaCantidadMaxima" min="1" step="1" placeholder="Sin límite">
+                            <small class="form-help">Déjalo vacío para indicar “o más”.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarifaPrecioDispositivo">Dispositivo por unidad</label>
+                            <div class="input-prefix"><span>$</span><input type="number" id="tarifaPrecioDispositivo" min="0" step="0.01" required></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarifaCostoInstalacion">Instalación por unidad</label>
+                            <div class="input-prefix"><span>$</span><input type="number" id="tarifaCostoInstalacion" min="0" step="0.01" required></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarifaMensualidad">Mensualidad por unidad</label>
+                            <div class="input-prefix"><span>$</span><input type="number" id="tarifaMensualidad" min="0" step="0.01" required></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarifaMantenimiento">Mantenimiento por unidad</label>
+                            <div class="input-prefix"><span>$</span><input type="number" id="tarifaMantenimiento" min="0" step="0.01" required></div>
+                        </div>
+                    </div>
+                    <div class="tarifa-editor-actions"><button type="submit" class="btn btn-primary" id="btnGuardarTarifa">Guardar tarifa</button></div>
+                </form>
+            </section>
+        </div>
+
+        <footer class="modal-actions"><button type="button" class="btn btn-secondary" id="btnCerrarTarifasFooter">Cerrar</button></footer>
+    </section>
+</div>

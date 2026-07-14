@@ -1,6 +1,7 @@
 let dashboardCargando = false;
 let dashboardTimer = null;
-const DASHBOARD_REFRESH_MS = 1000;
+
+let tiempoSinSenalSegundos = 60;
 
 // ============================================================
 // CONTROL DE SIN SEÑAL EN DASHBOARD
@@ -12,22 +13,58 @@ const DASHBOARD_REFRESH_MS = 1000;
 //
 // Si quieres que lo detecte más rápido, puedes cambiar 60 por 30 o 15.
 // ============================================================
-const TIEMPO_SIN_SENAL_SEGUNDOS = 5;
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+
     if (window.TrackGuards?.requireAuth) {
-        const autorizado = await TrackGuards.requireAuth("dueno");
-        if (!autorizado) return;
+
+        const autorizado =
+            await TrackGuards.requireAuth("dueno");
+
+        if (!autorizado) {
+            return;
+        }
+
     }
+
+
+    /*
+     * Obtenemos primero el tiempo global sin señal.
+     * Si existe cualquier problema, se mantienen 60 segundos
+     * como valor de respaldo.
+     */
+    tiempoSinSenalSegundos =
+        await TrackConfig.obtenerSegundosSinSenal();
+
 
     await cargarDashboardDueno();
 
-    dashboardTimer = setInterval(() => {
-        cargarDashboardDueno({ silencioso: true });
-    }, DASHBOARD_REFRESH_MS);
-});
 
+    const intervaloMs =
+        await TrackConfig.obtenerOperacionMs(
+            "dashboard",
+            5
+        );
+
+
+    if (dashboardTimer) {
+        clearInterval(dashboardTimer);
+    }
+
+
+    dashboardTimer = setInterval(
+        () => {
+
+            cargarDashboardDueno({
+                silencioso: true
+            });
+
+        },
+        intervaloMs
+    );
+
+});
 async function cargarDashboardDueno({ silencioso = false } = {}) {
     if (dashboardCargando) return;
 
@@ -80,22 +117,63 @@ async function cargarDashboardDueno({ silencioso = false } = {}) {
 // demasiado tiempo desde el último reporte del ESP32.
 // ============================================================
 function estaSinSenal(v) {
-    if (!v) return true;
 
-    // Si el backend ya manda sin_senal u online false, se respeta.
-    if (v.sin_senal === true || v.online === false) {
+    if (!v) {
         return true;
     }
 
-    // Si no hay última actualización, no hay forma de confirmar conexión.
+
+    /*
+     * Si el backend ya determinó que no existe señal,
+     * respetamos esa respuesta.
+     */
+    if (
+        v.sin_senal === true ||
+        v.online === false
+    ) {
+        return true;
+    }
+
+
+    /*
+     * Sin fecha de última actualización no podemos
+     * confirmar que el vehículo siga conectado.
+     */
     if (!v.ultima_actualizacion) {
         return true;
     }
 
-    const ahora = Math.floor(Date.now() / 1000);
-    const diff = ahora - Number(v.ultima_actualizacion);
 
-    return diff > TIEMPO_SIN_SENAL_SEGUNDOS;
+    const ahora =
+        Math.floor(
+            Date.now() / 1000
+        );
+
+
+    const ultimaActualizacion =
+        Number(
+            v.ultima_actualizacion
+        );
+
+
+    if (
+        !Number.isFinite(
+            ultimaActualizacion
+        )
+    ) {
+        return true;
+    }
+
+
+    const diferenciaSegundos =
+        ahora - ultimaActualizacion;
+
+
+    return (
+        diferenciaSegundos >
+        tiempoSinSenalSegundos
+    );
+
 }
 
 

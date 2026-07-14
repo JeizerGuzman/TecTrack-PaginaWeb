@@ -1,0 +1,211 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Servicios | TrackSecurity{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/servicios.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="admin-page-header servicios-page-header">
+    <div>
+        <p class="admin-section-kicker">Administración global</p>
+        <h1>Servicios técnicos</h1>
+        <p>
+            Programa servicios, asigna técnicos y consulta el historial técnico real
+            registrado por las operaciones del sistema.
+        </p>
+    </div>
+
+    <div class="servicios-header-actions">
+        <button type="button"
+                class="btn btn-primary"
+                id="btnAbrirModalServicio">
+            Nuevo servicio
+        </button>
+    </div>
+</section>
+
+
+<section class="servicios-stats-grid">
+
+    <article class="card servicio-stat-card servicio-stat-blue">
+        <div class="servicio-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.1-3.1a6 6 0 0 1-7.9 7.9l-6 6a2 2 0 0 1-2.8-2.8l6-6a6 6 0 0 1 7.9-7.9l-3.3 3z"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Total programados</p>
+            <strong id="statServiciosTotal">0</strong>
+            <span>Servicios registrados</span>
+        </div>
+    </article>
+
+    <article class="card servicio-stat-card servicio-stat-orange">
+        <div class="servicio-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 7v5l3 2"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Pendientes</p>
+            <strong id="statServiciosPendientes">0</strong>
+            <span>Pendientes o asignados</span>
+        </div>
+    </article>
+
+    <article class="card servicio-stat-card servicio-stat-purple">
+        <div class="servicio-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4"></path>
+                <path d="M12 18v4"></path>
+                <path d="M4.93 4.93l2.83 2.83"></path>
+                <path d="M16.24 16.24l2.83 2.83"></path>
+                <path d="M2 12h4"></path>
+                <path d="M18 12h4"></path>
+            </svg>
+        </div>
+        <div>
+            <p>En proceso</p>
+            <strong id="statServiciosProceso">0</strong>
+            <span>Trabajos en ejecución</span>
+        </div>
+    </article>
+
+    <article class="card servicio-stat-card servicio-stat-green">
+        <div class="servicio-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Realizados</p>
+            <strong id="statServiciosRealizados">0</strong>
+            <span>Servicios concluidos</span>
+        </div>
+    </article>
+
+</section>
+
+
+<section class="card servicios-tabs-card">
+    <div class="servicios-tabs" role="tablist">
+        <button type="button"
+                class="servicios-tab active"
+                data-tab="programados">
+            Servicios programados
+        </button>
+
+        <button type="button"
+                class="servicios-tab"
+                data-tab="historial">
+            Historial técnico
+        </button>
+    </div>
+</section>
+
+
+<section class="card servicios-filtros-card">
+
+    <div class="servicios-filtros-grid">
+
+        <div class="form-group">
+            <label for="filtroBusquedaServicio">Buscar</label>
+            <input type="search"
+                   id="filtroBusquedaServicio"
+                   placeholder="Empresa, vehículo, dispositivo o técnico">
+        </div>
+
+        <div class="form-group">
+            <label for="filtroTipoServicio">Tipo</label>
+            <select id="filtroTipoServicio">
+                <option value="todos">Todos los tipos</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="grupoFiltroEstadoServicio">
+            <label for="filtroEstadoServicio">Estado</label>
+            <select id="filtroEstadoServicio">
+                <option value="todos">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="asignado">Asignado</option>
+                <option value="en_proceso">En proceso</option>
+                <option value="realizado">Realizado</option>
+                <option value="cancelado">Cancelado</option>
+            </select>
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="panelServiciosProgramados"
+         class="servicios-panel active">
+
+    <div id="serviciosProgramadosLista"
+         class="servicios-grid"
+         aria-live="polite">
+    </div>
+
+    <div id="serviciosProgramadosVacio"
+         class="card servicios-empty-state"
+         hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+        </svg>
+        <h3>No hay servicios programados para mostrar</h3>
+        <p>Prueba con otros filtros o registra un nuevo servicio.</p>
+    </div>
+
+</section>
+
+
+<section id="panelServiciosHistorial"
+         class="servicios-panel">
+
+    <div id="serviciosHistorialLista"
+         class="servicios-grid"
+         aria-live="polite">
+    </div>
+
+    <div id="serviciosHistorialVacio"
+         class="card servicios-empty-state"
+         hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 3-6.7"></path>
+            <path d="M3 4v5h5"></path>
+            <path d="M12 7v5l3 2"></path>
+        </svg>
+        <h3>No hay historial técnico para mostrar</h3>
+        <p>Los servicios reales aparecerán aquí cuando sean registrados por el sistema.</p>
+    </div>
+
+</section>
+
+
+{% include "admin/servicios/modal_servicio.html" %}
+{% include "admin/servicios/modal_detalle.html" %}
+{% include "admin/servicios/modal_estado.html" %}
+
+<div id="serviciosToastContainer"
+     class="servicios-toast-container">
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/servicios/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin/servicios/formulario.js') }}"></script>
+{% endblock %}

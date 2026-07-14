@@ -122,3 +122,64 @@ def registrar_frontend_routes(app):
     @app.get("/dueno/configuracion/editar")
     def dueno_configuracion_editar():
         return render_template("dueno/configuracion/editar.html")
+
+    # ========================================================
+    # VISTAS ADMIN
+    # ========================================================
+    # Estas rutas solo renderizan páginas HTML.
+    # La seguridad real de datos está en los endpoints /api/admin
+    # protegidos con JWT y rol admin.
+    # ========================================================
+
+    @app.get("/admin")
+    def admin_home():
+        return redirect(url_for("admin_dashboard"))
+
+    @app.get("/admin/dashboard")
+    def admin_dashboard():
+        return render_template("admin/dashboard.html")
+
+    @app.get("/admin/empresas")
+    def admin_empresas():
+        return render_template("admin/empresas/index.html")
+
+    @app.get("/admin/usuarios")
+    def admin_usuarios():
+        return render_template("admin/usuarios/index.html")
+
+    @app.get("/admin/planes")
+    def admin_planes():
+        return render_template("admin/planes/index.html")
+
+    @app.get("/admin/vehiculos")
+    def admin_vehiculos_page():
+        return render_template(
+            "admin/vehiculos/index.html"
+        )
+        
+    @app.get("/admin/vehiculos/<int:vehiculo_id>")
+    def admin_vehiculo_detalle_page(vehiculo_id):
+        return render_template(
+            "admin/vehiculos/detalle.html",
+            vehiculo_id=vehiculo_id
+        )
+    
+    @app.get("/admin/dispositivos")
+    def admin_dispositivos():
+        return render_template("admin/dispositivos/index.html")
+
+    @app.get("/admin/suscripciones")
+    def admin_suscripciones():
+        return render_template("admin/suscripciones/index.html")
+
+    @app.get("/admin/servicios")
+    def admin_servicios():
+        return render_template("admin/servicios/index.html")
+
+    @app.get("/admin/alertas")
+    def admin_alertas():
+        return render_template("admin/alertas/index.html")
+
+    @app.get("/admin/configuracion")
+    def admin_configuracion():
+        return render_template("admin/configuracion/index.html")

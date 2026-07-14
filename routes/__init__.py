@@ -22,7 +22,12 @@ from .configuracion import registrar_configuracion_routes
 from .planes import registrar_planes_routes
 from .push import registrar_push_routes
 from .tecnico import registrar_tecnico_routes
-
+from .admin import registrar_admin_routes
+from .admin_suscripciones import registrar_admin_suscripciones_routes 
+from .admin_servicios import registrar_admin_servicios_routes
+from .admin_alertas import registrar_admin_alertas_routes
+from .admin_vehiculos import registrar_admin_vehiculos_routes
+from .admin_configuracion import registrar_admin_configuracion_routes
 
 # ------------------------------------------------------------
 # Registra todas las rutas del sistema.
@@ -44,3 +49,9 @@ def registrar_rutas(app):
     registrar_planes_routes(app)
     registrar_push_routes(app)
     registrar_tecnico_routes(app)
+    registrar_admin_routes(app)
+    registrar_admin_suscripciones_routes(app)
+    registrar_admin_servicios_routes(app)
+    registrar_admin_alertas_routes(app)
+    registrar_admin_vehiculos_routes(app)
+    registrar_admin_configuracion_routes(app)

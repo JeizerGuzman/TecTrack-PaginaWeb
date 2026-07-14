@@ -1,0 +1,235 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Dispositivos - TrackSecurity{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dispositivos.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="admin-page-header">
+    <div>
+        <p class="admin-section-kicker">Inventario TrackSecurity</p>
+        <h1>Dispositivos</h1>
+        <p>
+            Crea, consulta y administra dispositivos físicos. La serie y el PIN se generan automáticamente para instalación técnica.
+        </p>
+    </div>
+
+    <div class="dispositivos-header-actions">
+        <button type="button" class="btn btn-primary" id="btnAbrirModalDispositivo">
+            Nuevo dispositivo
+        </button>
+    </div>
+</section>
+
+<section class="dispositivos-stats-grid">
+    <article class="card dispositivo-stat-card stat-blue">
+        <div class="dispositivo-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="2" width="14" height="20" rx="2"></rect>
+                <path d="M12 18h.01"></path>
+                <path d="M9 6h6"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Total dispositivos</p>
+            <strong id="statDispositivosTotal">0</strong>
+        </div>
+    </article>
+
+    <article class="card dispositivo-stat-card stat-green">
+        <div class="dispositivo-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 12l2 2 4-4"></path>
+                <circle cx="12" cy="12" r="9"></circle>
+            </svg>
+        </div>
+        <div>
+            <p>Disponibles</p>
+            <strong id="statDispositivosDisponibles">0</strong>
+        </div>
+    </article>
+
+    <article class="card dispositivo-stat-card stat-orange">
+        <div class="dispositivo-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.1-3.1a6 6 0 0 1-7.9 7.9l-6 6a2 2 0 0 1-2.8-2.8l6-6a6 6 0 0 1 7.9-7.9l-3.3 3z"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Instalados</p>
+            <strong id="statDispositivosInstalados">0</strong>
+        </div>
+    </article>
+
+    <article class="card dispositivo-stat-card stat-gray">
+        <div class="dispositivo-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+            </svg>
+        </div>
+        <div>
+            <p>Mantenimiento</p>
+            <strong id="statDispositivosMantenimiento">0</strong>
+        </div>
+    </article>
+</section>
+
+<section class="card dispositivos-filtros-card">
+    <div class="dispositivos-filtros-grid">
+        <div class="form-group">
+            <label for="buscarDispositivo">Buscar dispositivo</label>
+            <input type="text" id="buscarDispositivo" placeholder="Buscar por serie, IMEI, modelo, empresa o vehículo">
+        </div>
+
+        <div class="form-group">
+            <label for="filtroEstadoDispositivo">Estado</label>
+            <select id="filtroEstadoDispositivo">
+                <option value="todos">Todos</option>
+                <option value="disponible">Disponibles</option>
+                <option value="activo">Activos</option>
+                <option value="instalado">Instalados</option>
+                <option value="mantenimiento">Mantenimiento</option>
+                <option value="desactivado">Desactivados</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<section class="card dispositivos-list-card">
+    <div class="card-header card-header-row">
+        <div>
+            <h3>Inventario de dispositivos</h3>
+            <p>Dispositivos registrados en la plataforma.</p>
+        </div>
+
+        <span id="dispositivosActualizacion" class="badge badge-muted">
+            Actualizando...
+        </span>
+    </div>
+
+    <div class="card-body">
+        <div id="dispositivosListado" class="dispositivos-listado">
+            <div class="empty-state">
+                <strong>Cargando dispositivos...</strong>
+                <p>Estamos obteniendo la información del inventario.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODAL CREAR / EDITAR DISPOSITIVO -->
+<div class="modal-backdrop" id="modalDispositivo">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div>
+                <h3 id="modalDispositivoTitulo">Nuevo dispositivo</h3>
+                <p id="modalDispositivoSubtitulo">Genera un dispositivo disponible para instalación.</p>
+            </div>
+
+            <button type="button" class="modal-close" id="btnCerrarModalDispositivo">
+                ×
+            </button>
+        </div>
+
+        <form id="formDispositivo" class="modal-body">
+            <input type="hidden" id="dispositivoId">
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="dispositivoSerie">Serie</label>
+                    <input type="text" id="dispositivoSerie" placeholder="TS-000001">
+                </div>
+
+                <div class="form-group">
+                    <label for="dispositivoPin">PIN de activación</label>
+                    <input type="text" id="dispositivoPin" placeholder="123456" maxlength="6">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="dispositivoModelo">Modelo / plan del dispositivo</label>
+                    <select id="dispositivoModelo">
+                        <option value="">Cargando modelos...</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dispositivoFirmware">Firmware</label>
+                    <input type="text" id="dispositivoFirmware" placeholder="Ej. v1.0.0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dispositivoImei">IMEI opcional</label>
+                <input type="text" id="dispositivoImei" placeholder="IMEI del módulo SIM si aplica">
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" id="btnCancelarDispositivo">
+                    Cancelar
+                </button>
+
+                <button type="button" class="btn btn-outline" id="btnRegenerarDatosDispositivo">
+                    Regenerar serie/PIN
+                </button>
+
+                <button type="submit" class="btn btn-primary" id="btnGuardarDispositivo">
+                    Guardar dispositivo
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL CAMBIO DE ESTADO -->
+<div class="modal-backdrop" id="modalEstadoDispositivo">
+    <div class="modal-card modal-card-small">
+        <div class="modal-header">
+            <div>
+                <h3>Cambiar estado</h3>
+                <p id="modalEstadoDispositivoDescripcion">Selecciona el nuevo estado del dispositivo.</p>
+            </div>
+
+            <button type="button" class="modal-close" id="btnCerrarModalEstadoDispositivo">
+                ×
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="nuevoEstadoDispositivo">Nuevo estado</label>
+                <select id="nuevoEstadoDispositivo">
+                    <option value="disponible">Disponible</option>
+                    <option value="activo">Activo</option>
+                    <option value="instalado">Instalado</option>
+                    <option value="mantenimiento">Mantenimiento</option>
+                    <option value="desactivado">Desactivado</option>
+                </select>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" id="btnCancelarEstadoDispositivo">
+                    Cancelar
+                </button>
+
+                <button type="button" class="btn btn-primary" id="btnConfirmarEstadoDispositivo">
+                    Guardar estado
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/dispositivos/index.js') }}"></script>
+{% endblock %}

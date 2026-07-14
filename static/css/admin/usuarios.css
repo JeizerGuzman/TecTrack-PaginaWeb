@@ -1,2 +1,1266 @@
 /* Estilos especificos de la pantalla admin/usuarios. */
 /* Debe ajustar tablas, filtros y acciones de gestion de usuarios. */
+/* ============================================================
+   USUARIOS ADMIN
+   ============================================================ */
+
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+.admin-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.admin-page-header > div:first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.usuarios-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    padding-top: 4px;
+}
+
+
+/* ============================================================
+   TARJETAS DE ESTADÍSTICAS
+   ============================================================ */
+
+.usuarios-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.usuario-stat-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 118px;
+    padding: 18px;
+    overflow: hidden;
+}
+
+.usuario-stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    border-radius: 4px 0 0 4px;
+    background: currentColor;
+}
+
+.usuario-stat-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 15px;
+}
+
+.usuario-stat-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+.usuario-stat-card p {
+    margin: 0 0 4px;
+    color: var(--color-texto-secundario);
+    font-size: 0.76rem;
+    font-weight: 850;
+}
+
+.usuario-stat-card strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--color-texto);
+    font-size: 1.65rem;
+    font-weight: 950;
+    line-height: 1;
+}
+
+.usuario-stat-card span {
+    color: var(--color-texto-secundario);
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+
+/* Azul */
+
+.usuario-stat-blue {
+    color: #2563eb;
+}
+
+.usuario-stat-blue .usuario-stat-icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+
+/* Morado */
+
+.usuario-stat-purple {
+    color: #7c3aed;
+}
+
+.usuario-stat-purple .usuario-stat-icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+
+/* Naranja */
+
+.usuario-stat-orange {
+    color: #ea580c;
+}
+
+.usuario-stat-orange .usuario-stat-icon {
+    background: #ffedd5;
+    color: #ea580c;
+}
+
+
+/* Verde */
+
+.usuario-stat-green {
+    color: #16a34a;
+}
+
+.usuario-stat-green .usuario-stat-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
+/* Gris */
+
+.usuario-stat-gray {
+    color: #64748b;
+}
+
+.usuario-stat-gray .usuario-stat-icon {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+
+/* ============================================================
+   FILTROS
+   ============================================================ */
+
+.usuarios-filtros-card {
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.usuarios-filtros-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 2fr) repeat(3, minmax(160px, 1fr));
+    gap: 14px;
+    align-items: end;
+}
+
+
+/* ============================================================
+   LISTADO
+   ============================================================ */
+
+.usuarios-list-card {
+    overflow: hidden;
+}
+
+.usuarios-listado {
+    display: grid;
+    gap: 12px;
+}
+
+
+/* ============================================================
+   TARJETA DE USUARIO
+   ============================================================ */
+
+.usuario-item {
+    display: grid;
+    grid-template-columns:
+        minmax(220px, 1.4fr)
+        minmax(180px, 1fr)
+        minmax(140px, 0.7fr)
+        minmax(120px, 0.6fr)
+        auto;
+
+    gap: 16px;
+    align-items: center;
+
+    padding: 16px 18px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        transform 0.18s ease;
+}
+
+.usuario-item:hover {
+    border-color: rgba(37, 99, 235, 0.25);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+    transform: translateY(-1px);
+}
+
+
+/* Información principal */
+
+.usuario-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.usuario-avatar {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 14px;
+
+    background: #dbeafe;
+    color: #2563eb;
+
+    font-size: 0.86rem;
+    font-weight: 950;
+    text-transform: uppercase;
+}
+
+.usuario-main-info {
+    min-width: 0;
+}
+
+.usuario-main-info strong {
+    display: block;
+    margin-bottom: 4px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: var(--color-texto);
+    font-size: 0.9rem;
+    font-weight: 900;
+}
+
+.usuario-main-info span {
+    display: block;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: var(--color-texto-secundario);
+    font-size: 0.78rem;
+}
+
+
+/* Empresa */
+
+.usuario-empresa strong,
+.usuario-rol strong {
+    display: block;
+    margin-bottom: 4px;
+
+    color: var(--color-texto);
+    font-size: 0.82rem;
+    font-weight: 850;
+}
+
+.usuario-empresa span {
+    color: var(--color-texto-secundario);
+    font-size: 0.76rem;
+}
+
+
+/* ============================================================
+   ROLES
+   ============================================================ */
+
+.usuario-role-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 30px;
+    padding: 0 10px;
+
+    border-radius: 999px;
+
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
+.role-dueno {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.role-supervisor {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.role-chofer {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.role-tecnico {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+
+/* ============================================================
+   ESTADOS
+   ============================================================ */
+
+.usuario-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 0.76rem;
+    font-weight: 900;
+}
+
+.usuario-status::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.usuario-status.activo {
+    color: #15803d;
+}
+
+.usuario-status.activo::before {
+    background: #22c55e;
+}
+
+.usuario-status.inactivo {
+    color: #64748b;
+}
+
+.usuario-status.inactivo::before {
+    background: #94a3b8;
+}
+
+
+/* ============================================================
+   ACCIONES
+   ============================================================ */
+
+.usuario-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+}
+
+.usuario-action-btn {
+    min-height: 36px;
+    padding: 0 11px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 11px;
+
+    background: #ffffff;
+    color: var(--color-texto-secundario);
+
+    font-size: 0.72rem;
+    font-weight: 850;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.usuario-action-btn:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #2563eb;
+}
+
+.usuario-action-btn.danger:hover {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #dc2626;
+}
+
+.usuario-action-btn.success:hover {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #16a34a;
+}
+
+
+/* ============================================================
+   AYUDA DE FORMULARIO
+   ============================================================ */
+
+.form-help {
+    display: block;
+    margin-top: 6px;
+
+    color: var(--color-texto-secundario);
+    font-size: 0.72rem;
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1250px) {
+    .usuarios-stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .usuario-item {
+        grid-template-columns:
+            minmax(220px, 1.3fr)
+            minmax(170px, 1fr)
+            minmax(130px, 0.7fr)
+            auto;
+    }
+
+    .usuario-estado-col {
+        display: none;
+    }
+}
+
+
+@media (max-width: 1000px) {
+    .usuarios-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .usuarios-filtros-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .usuario-item {
+        grid-template-columns: 1fr auto;
+    }
+
+    .usuario-empresa,
+    .usuario-rol,
+    .usuario-estado-col {
+        display: none;
+    }
+}
+
+
+@media (max-width: 800px) {
+    .admin-page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .usuarios-header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        padding-top: 0;
+    }
+}
+
+
+@media (max-width: 650px) {
+    .usuarios-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .usuarios-filtros-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .usuario-item {
+        grid-template-columns: 1fr;
+    }
+
+    .usuario-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+
+@media (max-width: 520px) {
+    .usuarios-header-actions .btn {
+        width: 100%;
+    }
+
+    .usuario-item {
+        padding: 14px;
+    }
+}
+
+/* ============================================================
+   MODALES USUARIOS
+   Ocultos por defecto y visibles solo con la clase .show
+   ============================================================ */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(15, 23, 42, 0.52);
+    backdrop-filter: blur(3px);
+}
+
+/* Mostrar modal */
+.modal-backdrop.show {
+    display: flex;
+}
+
+
+/* ============================================================
+   TARJETA DEL MODAL
+   ============================================================ */
+
+.modal-card {
+    width: min(620px, 100%);
+    max-height: calc(100vh - 48px);
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+    border: 1px solid var(--color-borde-suave, #e2e8f0);
+    border-radius: 22px;
+
+    box-shadow:
+        0 24px 70px rgba(15, 23, 42, 0.22),
+        0 8px 24px rgba(15, 23, 42, 0.08);
+
+    overflow: hidden;
+
+    animation: usuarioModalEntrada 0.2s ease;
+}
+
+.modal-card-small {
+    width: min(470px, 100%);
+}
+
+
+/* ============================================================
+   ANIMACIÓN
+   ============================================================ */
+
+@keyframes usuarioModalEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ============================================================
+   HEADER DEL MODAL
+   ============================================================ */
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid var(--color-borde-suave, #e2e8f0);
+}
+
+.modal-header > div:first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.modal-header h3 {
+    margin: 0 0 6px;
+
+    color: var(--color-texto, #0f172a);
+
+    font-size: 1.15rem;
+    font-weight: 950;
+    line-height: 1.2;
+}
+
+.modal-header p {
+    margin: 0;
+
+    color: var(--color-texto-secundario, #64748b);
+
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   BOTÓN CERRAR
+   ============================================================ */
+
+.modal-close {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--color-borde-suave, #e2e8f0);
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: var(--color-texto-secundario, #64748b);
+
+    font-size: 1.5rem;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.modal-close:hover {
+    background: #f8fafc;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+.modal-close:active {
+    transform: scale(0.95);
+}
+
+
+/* ============================================================
+   CUERPO DEL MODAL
+   ============================================================ */
+
+.modal-body {
+    padding: 22px 24px 24px;
+
+    overflow-y: auto;
+}
+
+
+/* ============================================================
+   CAMPOS DEL FORMULARIO
+   ============================================================ */
+
+.modal-body .form-group {
+    margin-bottom: 16px;
+}
+
+.modal-body .form-group:last-of-type {
+    margin-bottom: 0;
+}
+
+.modal-body label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--color-texto, #0f172a);
+
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+.modal-body input,
+.modal-body select,
+.modal-body textarea {
+    width: 100%;
+    min-height: 46px;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--color-borde, #dbe3ef);
+    border-radius: 13px;
+
+    background: #ffffff;
+    color: var(--color-texto, #0f172a);
+
+    font-size: 0.85rem;
+
+    outline: none;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+.modal-body textarea {
+    min-height: 100px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    resize: vertical;
+}
+
+.modal-body input::placeholder,
+.modal-body textarea::placeholder {
+    color: #94a3b8;
+}
+
+.modal-body input:focus,
+.modal-body select:focus,
+.modal-body textarea:focus {
+    border-color: var(--color-primario, #2563eb);
+
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+}
+
+
+/* ============================================================
+   TEXTO DE AYUDA
+   ============================================================ */
+
+.modal-body .form-help {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--color-texto-secundario, #64748b);
+
+    font-size: 0.72rem;
+    line-height: 1.45;
+}
+
+
+/* ============================================================
+   ACCIONES DEL MODAL
+   ============================================================ */
+
+.modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+
+    margin-top: 22px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--color-borde-suave, #e2e8f0);
+}
+
+
+/* ============================================================
+   BOTONES DENTRO DEL MODAL
+   ============================================================ */
+
+.modal-actions .btn {
+    min-height: 44px;
+    padding: 0 16px;
+
+    border-radius: 13px;
+
+    font-size: 0.82rem;
+    font-weight: 900;
+
+    cursor: pointer;
+}
+
+.modal-actions .btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+
+/* ============================================================
+   RESPONSIVE MODALES
+   ============================================================ */
+
+@media (max-width: 650px) {
+    .modal-backdrop {
+        align-items: flex-end;
+        padding: 12px;
+    }
+
+    .modal-card,
+    .modal-card-small {
+        width: 100%;
+        max-height: calc(100vh - 24px);
+
+        border-radius: 22px 22px 18px 18px;
+    }
+
+    .modal-header {
+        padding: 18px;
+    }
+
+    .modal-body {
+        padding: 18px;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .modal-actions .btn {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+   BÚSQUEDA DE EMPRESAS
+   ============================================================ */
+
+.empresa-search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.empresa-search-wrapper input {
+    width: 100%;
+}
+
+
+/* ============================================================
+   TOAST USUARIOS
+   ============================================================ */
+
+.usuarios-toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 3000;
+
+    width: min(390px, calc(100vw - 32px));
+
+    display: grid;
+    gap: 12px;
+
+    pointer-events: none;
+}
+
+
+.usuarios-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    padding: 15px 16px;
+
+    border: 1px solid var(--color-borde-suave, #e2e8f0);
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.16);
+
+    opacity: 0;
+    transform: translateX(20px);
+
+    transition:
+        opacity 0.22s ease,
+        transform 0.22s ease;
+
+    pointer-events: auto;
+}
+
+
+.usuarios-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+
+.usuarios-toast-icon {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+
+    font-size: 0.9rem;
+    font-weight: 950;
+}
+
+
+.usuarios-toast-content {
+    flex: 1;
+    min-width: 0;
+}
+
+
+.usuarios-toast-content strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--color-texto, #0f172a);
+
+    font-size: 0.82rem;
+    font-weight: 950;
+}
+
+
+.usuarios-toast-content p {
+    margin: 0;
+
+    color: var(--color-texto-secundario, #64748b);
+
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+
+/* Error */
+
+.usuarios-toast-error {
+    border-color: #fecaca;
+}
+
+.usuarios-toast-error .usuarios-toast-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+/* Éxito */
+
+.usuarios-toast-success {
+    border-color: #bbf7d0;
+}
+
+.usuarios-toast-success .usuarios-toast-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
+/* Responsive */
+
+@media (max-width: 600px) {
+    .usuarios-toast-container {
+        top: 14px;
+        right: 16px;
+        left: 16px;
+
+        width: auto;
+    }
+}
+
+/* ============================================================
+   INPUT CON DATALIST - MISMO ESTILO QUE LOS SELECT
+   ============================================================ */
+
+.empresa-search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.empresa-search-wrapper input {
+    width: 100%;
+    padding-right: 44px;
+}
+
+/* Oculta el indicador nativo del datalist en Chrome/Edge */
+.empresa-search-wrapper input::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    display: none;
+    pointer-events: none;
+}
+
+/* Flecha personalizada igual visualmente a los select */
+.empresa-search-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 18px;
+
+    width: 8px;
+    height: 8px;
+
+    border-right: 2px solid var(--color-texto, #0f172a);
+    border-bottom: 2px solid var(--color-texto, #0f172a);
+
+    transform: translateY(-65%) rotate(45deg);
+
+    pointer-events: none;
+}
+
+/* ============================================================
+   COMBOBOX PERSONALIZADO DE EMPRESAS
+   ============================================================ */
+
+.empresa-combobox {
+    position: relative;
+    width: 100%;
+}
+
+.empresa-combobox-control {
+    position: relative;
+    width: 100%;
+}
+
+.empresa-combobox-control input {
+    width: 100%;
+    padding-right: 48px;
+}
+
+.empresa-combobox-toggle {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+
+    width: 38px;
+    height: 38px;
+
+    transform: translateY(-50%);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+    color: var(--color-texto, #0f172a);
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+.empresa-combobox-toggle:hover {
+    background: #f1f5f9;
+    color: var(--color-primario, #2563eb);
+}
+
+.empresa-combobox-toggle svg {
+    width: 18px;
+    height: 18px;
+
+    transition: transform 0.18s ease;
+}
+
+.empresa-combobox.open .empresa-combobox-toggle svg {
+    transform: rotate(180deg);
+}
+
+
+/* Menú */
+
+.empresa-combobox-menu {
+    position: absolute;
+    top: calc(100% + 7px);
+    left: 0;
+    right: 0;
+
+    z-index: 1100;
+
+    display: none;
+
+    max-height: 230px;
+    overflow-y: auto;
+
+    padding: 6px;
+
+    border: 1px solid var(--color-borde-suave, #e2e8f0);
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 16px 40px rgba(15, 23, 42, 0.14);
+}
+
+.empresa-combobox.open .empresa-combobox-menu {
+    display: block;
+}
+
+
+/* Opciones */
+
+.empresa-combobox-option {
+    width: 100%;
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 12px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+    color: var(--color-texto, #0f172a);
+
+    text-align: left;
+
+    font-size: 0.82rem;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.16s ease,
+        color 0.16s ease;
+}
+
+.empresa-combobox-option:hover {
+    background: #eff6ff;
+    color: var(--color-primario, #2563eb);
+}
+
+
+/* Estado vacío */
+
+.empresa-combobox-empty {
+    padding: 14px 12px;
+
+    color: var(--color-texto-secundario, #64748b);
+
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.usuario-stat-admin {
+    color: #1d4ed8;
+}
+
+.usuario-stat-admin .usuario-stat-icon {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.role-admin {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+/* ============================================================
+   CAMPOS DE CONTRASEÑA CON BOTÓN MOSTRAR / OCULTAR
+   ============================================================ */
+
+.password-field-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-field-wrapper input {
+    width: 100%;
+    padding-right: 50px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: 7px;
+
+    width: 38px;
+    height: 38px;
+
+    transform: translateY(-50%);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 10px;
+
+    background: transparent;
+    color: var(--color-texto-secundario, #64748b);
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+.password-toggle-btn:hover {
+    background: #f1f5f9;
+    color: var(--color-primario, #2563eb);
+}
+
+.password-toggle-btn:focus-visible {
+    outline: 2px solid var(--color-primario, #2563eb);
+    outline-offset: 2px;
+}
+
+.password-eye-icon {
+    width: 19px;
+    height: 19px;
+}
+
+.password-eye-hide {
+    display: none;
+}
+
+/* Cuando la contraseña está visible */
+.password-toggle-btn.is-visible .password-eye-show {
+    display: none;
+}
+
+.password-toggle-btn.is-visible .password-eye-hide {
+    display: block;
+}

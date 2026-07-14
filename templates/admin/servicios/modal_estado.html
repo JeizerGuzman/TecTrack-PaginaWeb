@@ -1,0 +1,89 @@
+<div class="modal-backdrop"
+     id="modalEstadoServicio"
+     aria-hidden="true">
+
+    <section class="modal-card modal-estado-servicio-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalEstadoServicioTitulo">
+
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker">Cambio de estado</p>
+                <h2 id="modalEstadoServicioTitulo">Actualizar servicio</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="btnCerrarModalEstadoServicio"
+                    aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </header>
+
+
+        <div class="modal-body">
+
+            <div class="estado-servicio-confirmacion">
+
+                <div class="estado-servicio-icon"
+                     id="modalEstadoServicioIcon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M12 8v4"></path>
+                        <path d="M12 16h.01"></path>
+                    </svg>
+                </div>
+
+                <div class="estado-servicio-content">
+
+                    <p class="estado-servicio-mensaje"
+                       id="modalEstadoServicioMensaje">
+                    </p>
+
+                    <div class="form-group">
+                        <label for="nuevoEstadoServicio">Nuevo estado</label>
+                        <select id="nuevoEstadoServicio">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="asignado">Asignado</option>
+                            <option value="en_proceso">En proceso</option>
+                            <option value="realizado">Realizado</option>
+                            <option value="cancelado">Cancelado</option>
+                        </select>
+                    </div>
+
+                    <div class="estado-servicio-detalle"
+                         id="modalEstadoServicioDetalle">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <footer class="modal-actions">
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    id="btnCancelarModalEstadoServicio">
+                Cancelar
+            </button>
+
+            <button type="button"
+                    class="btn btn-primary"
+                    id="btnConfirmarEstadoServicio">
+                Actualizar estado
+            </button>
+
+        </footer>
+
+    </section>
+</div>

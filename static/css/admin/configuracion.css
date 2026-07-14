@@ -1,0 +1,865 @@
+/* ============================================================
+   CONFIGURACIÓN ADMIN - TrackSecurity
+   ============================================================ */
+
+
+.admin-config-page {
+    display: grid;
+    gap: 20px;
+}
+
+
+/* ============================================================
+   ENCABEZADO
+   ============================================================ */
+
+.admin-config-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.admin-config-header h1 {
+    margin: 4px 0 6px;
+
+    font-size: 2rem;
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+
+    color: var(--color-texto);
+}
+
+.admin-config-header p:not(.admin-section-kicker) {
+    max-width: 760px;
+    margin: 0;
+
+    font-size: 0.94rem;
+    line-height: 1.55;
+
+    color: var(--color-texto-secundario);
+}
+
+.admin-config-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    flex-shrink: 0;
+}
+
+.admin-config-save-status {
+    min-height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 999px;
+
+    background: #ffffff;
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    color: var(--color-texto-secundario);
+}
+
+.admin-config-save-status.has-changes {
+    border-color: #fde68a;
+    background: #fffbeb;
+    color: #a16207;
+}
+
+.admin-config-save-status.saved {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+
+/* ============================================================
+   PESTAÑAS
+   ============================================================ */
+
+.config-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    overflow-x: auto;
+
+    padding: 6px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    scrollbar-width: thin;
+}
+
+.config-tab {
+    min-height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    flex-shrink: 0;
+
+    padding: 0 14px;
+
+    border: 0;
+    border-radius: 11px;
+
+    background: transparent;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 800;
+
+    color: var(--color-texto-secundario);
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+.config-tab:hover {
+    background: #f8fafc;
+    color: var(--color-texto);
+}
+
+.config-tab.active {
+    background: var(--color-primario-suave);
+    color: var(--color-primario);
+}
+
+.config-tab-icon {
+    width: 19px;
+    height: 19px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+}
+
+.config-tab-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+
+/* ============================================================
+   CARGA
+   ============================================================ */
+
+.config-loading {
+    min-height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    padding: 28px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: var(--radius-lg);
+
+    background: #ffffff;
+
+    text-align: left;
+}
+
+.config-loading-spinner {
+    width: 36px;
+    height: 36px;
+
+    border: 4px solid #e2e8f0;
+    border-top-color: var(--color-primario);
+    border-radius: 999px;
+
+    animation: configSpin 0.8s linear infinite;
+
+    flex-shrink: 0;
+}
+
+.config-loading strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--color-texto);
+}
+
+.config-loading p {
+    margin: 0;
+
+    font-size: 0.84rem;
+
+    color: var(--color-texto-secundario);
+}
+
+@keyframes configSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ============================================================
+   CONTENIDO Y PANELES
+   ============================================================ */
+
+.config-content {
+    display: block;
+}
+
+.config-panel {
+    display: none;
+}
+
+.config-panel.active {
+    display: grid;
+    gap: 18px;
+}
+
+
+/* ============================================================
+   TARJETAS
+   ============================================================ */
+
+.config-card {
+    overflow: hidden;
+
+    border-radius: var(--radius-lg);
+}
+
+.config-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 20px 22px;
+
+    border-bottom: 1px solid var(--color-borde-suave);
+}
+
+.config-card-icon {
+    width: 46px;
+    height: 46px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 15px;
+}
+
+.config-card-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+.config-icon-blue {
+    background: var(--color-primario-suave);
+    color: var(--color-primario);
+}
+
+.config-icon-orange {
+    background: var(--color-alerta-suave);
+    color: #b45309;
+}
+
+.config-icon-purple {
+    background: rgba(124, 58, 237, 0.12);
+    color: #7c3aed;
+}
+
+.config-icon-green {
+    background: var(--color-exito-suave);
+    color: var(--color-exito);
+}
+
+.config-icon-gray {
+    background: #eef2f7;
+    color: var(--color-texto-secundario);
+}
+
+.config-card-header h2 {
+    margin: 0 0 4px;
+
+    font-size: 1.04rem;
+    line-height: 1.25;
+    font-weight: 850;
+
+    color: var(--color-texto);
+}
+
+.config-card-header p {
+    margin: 0;
+
+    font-size: 0.84rem;
+    line-height: 1.45;
+
+    color: var(--color-texto-secundario);
+}
+
+.config-card-body {
+    padding: 22px;
+}
+
+
+/* ============================================================
+   FORMULARIO GENERAL
+   ============================================================ */
+
+.config-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.config-field-full {
+    grid-column: 1 / -1;
+}
+
+.config-card .form-group {
+    display: grid;
+    gap: 7px;
+}
+
+.config-card .form-group label {
+    font-size: 0.82rem;
+    font-weight: 800;
+
+    color: var(--color-texto);
+}
+
+.config-card .form-group input {
+    width: 100%;
+    min-height: 44px;
+
+    padding: 0 13px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.88rem;
+
+    color: var(--color-texto);
+
+    outline: none;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.config-card .form-group input:focus {
+    border-color: var(--color-primario);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.1);
+}
+
+.config-card .form-group small {
+    font-size: 0.74rem;
+
+    color: var(--color-texto-muted);
+}
+
+
+/* ============================================================
+   FILAS DE AJUSTES
+   ============================================================ */
+
+.config-settings-list {
+    display: grid;
+    gap: 12px;
+}
+
+.config-setting-row {
+    min-height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+
+    padding: 15px 17px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 13px;
+
+    background: #f8fafc;
+}
+
+.config-setting-info {
+    min-width: 0;
+}
+
+.config-setting-info strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 0.88rem;
+    font-weight: 850;
+
+    color: var(--color-texto);
+}
+
+.config-setting-info p {
+    margin: 0;
+
+    font-size: 0.8rem;
+    line-height: 1.45;
+
+    color: var(--color-texto-secundario);
+}
+
+
+/* ============================================================
+   CONTROLES NUMÉRICOS
+   ============================================================ */
+
+.config-number-control {
+    min-width: 132px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+.config-number-control input {
+    width: 78px;
+    min-height: 40px;
+
+    padding: 0 10px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 800;
+
+    text-align: center;
+
+    color: var(--color-texto);
+
+    outline: none;
+}
+
+.config-number-control input:focus {
+    border-color: var(--color-primario);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.1);
+}
+
+.config-number-control span {
+    font-size: 0.78rem;
+    font-weight: 750;
+
+    color: var(--color-texto-secundario);
+}
+
+
+/* ============================================================
+   INTERVALOS DEL PANEL
+   ============================================================ */
+
+.config-interval-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.config-interval-item {
+    min-height: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+
+    padding: 11px 13px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 12px;
+
+    background: #f8fafc;
+}
+
+.config-interval-item label {
+    font-size: 0.82rem;
+    line-height: 1.35;
+    font-weight: 800;
+
+    color: var(--color-texto);
+}
+
+.config-interval-item .config-number-control {
+    min-width: auto;
+}
+
+.config-interval-item .config-number-control input {
+    width: 68px;
+}
+
+
+/* ============================================================
+   SWITCH
+   ============================================================ */
+
+.config-switch {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    cursor: pointer;
+}
+
+.config-switch input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+.config-switch-track {
+    width: 48px;
+    height: 26px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 3px;
+
+    border-radius: 999px;
+
+    background: #cbd5e1;
+
+    transition: background 0.18s ease;
+}
+
+.config-switch-thumb {
+    width: 20px;
+    height: 20px;
+
+    display: block;
+
+    border-radius: 999px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 2px 5px
+        rgba(15, 23, 42, 0.18);
+
+    transition: transform 0.18s ease;
+}
+
+.config-switch input:checked + .config-switch-track {
+    background: var(--color-primario);
+}
+
+.config-switch input:checked
++ .config-switch-track
+.config-switch-thumb {
+    transform: translateX(22px);
+}
+
+
+/* ============================================================
+   INFORMACIÓN DEL SISTEMA
+   ============================================================ */
+
+.config-system-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.config-system-item {
+    min-height: 92px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 15px 16px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 13px;
+
+    background: #f8fafc;
+}
+
+.config-system-item span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 0.73rem;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    color: var(--color-texto-muted);
+}
+
+.config-system-item strong {
+    display: block;
+
+    font-size: 0.94rem;
+    line-height: 1.35;
+    font-weight: 850;
+
+    color: var(--color-texto);
+}
+
+.config-system-online {
+    color: var(--color-exito) !important;
+}
+
+.config-last-update {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    margin-top: 16px;
+    padding: 14px 16px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 12px;
+
+    background: #ffffff;
+}
+
+.config-last-update span {
+    font-size: 0.8rem;
+    font-weight: 750;
+
+    color: var(--color-texto-secundario);
+}
+
+.config-last-update strong {
+    font-size: 0.82rem;
+    font-weight: 850;
+
+    color: var(--color-texto);
+}
+
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+
+.config-toast {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 1500;
+
+    min-width: 260px;
+    max-width: 420px;
+
+    padding: 13px 15px;
+
+    border: 1px solid var(--color-borde-suave);
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 14px 35px
+        rgba(15, 23, 42, 0.14);
+
+    font-size: 0.84rem;
+    font-weight: 800;
+
+    color: var(--color-texto);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(12px);
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease,
+        transform 0.2s ease;
+}
+
+.config-toast.show {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+.config-toast.success {
+    border-color: #bbf7d0;
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.config-toast.error {
+    border-color: #fecaca;
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1050px) {
+
+    .config-system-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 850px) {
+
+    .admin-config-header {
+        flex-direction: column;
+    }
+
+    .admin-config-header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .config-interval-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .admin-config-page {
+        gap: 16px;
+    }
+
+    .admin-config-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .admin-config-header-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-config-save-status {
+        justify-content: center;
+    }
+
+    .config-tabs {
+        border-radius: 13px;
+    }
+
+    .config-tab {
+        padding: 0 12px;
+    }
+
+    .config-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .config-field-full {
+        grid-column: auto;
+    }
+
+    .config-setting-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .config-number-control {
+        width: 100%;
+    }
+
+    .config-number-control input {
+        flex: 1;
+        width: auto;
+    }
+
+    .config-interval-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .config-interval-item .config-number-control {
+        width: 100%;
+    }
+
+    .config-interval-item .config-number-control input {
+        flex: 1;
+        width: auto;
+    }
+
+    .config-system-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .config-last-update {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .config-toast {
+        right: 14px;
+        bottom: 14px;
+        left: 14px;
+
+        min-width: 0;
+        max-width: none;
+    }
+}
+
+/* ============================================================
+   OCULTAR CORRECTAMENTE ELEMENTOS CON EL ATRIBUTO HIDDEN
+   ============================================================ */
+
+.config-loading[hidden],
+.config-content[hidden] {
+    display: none !important;
+}   
+
+

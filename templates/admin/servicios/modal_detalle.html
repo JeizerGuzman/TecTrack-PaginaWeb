@@ -1,0 +1,99 @@
+<div class="modal-backdrop"
+     id="modalDetalleServicio"
+     aria-hidden="true">
+
+    <section class="modal-card modal-detalle-servicio-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalDetalleServicioTitulo">
+
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker">Detalle técnico</p>
+                <h2 id="modalDetalleServicioTitulo">Detalle del servicio</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="btnCerrarModalDetalleServicio"
+                    aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </header>
+
+        <div class="modal-body">
+
+            <div class="detalle-servicio-header">
+                <span class="status-badge"
+                      id="detalleServicioEstado">
+                    Estado
+                </span>
+
+                <h3 id="detalleServicioTipo">Tipo de servicio</h3>
+
+                <p id="detalleServicioDescripcion">
+                    Sin descripción
+                </p>
+            </div>
+
+
+            <div class="detalle-servicio-grid">
+
+                <article>
+                    <span>Empresa</span>
+                    <strong id="detalleServicioEmpresa">-</strong>
+                </article>
+
+                <article>
+                    <span>Vehículo</span>
+                    <strong id="detalleServicioVehiculo">-</strong>
+                </article>
+
+                <article>
+                    <span>Dispositivo</span>
+                    <strong id="detalleServicioDispositivo">-</strong>
+                </article>
+
+                <article>
+                    <span>Técnico</span>
+                    <strong id="detalleServicioTecnico">-</strong>
+                </article>
+
+                <article>
+                    <span>Fecha programada</span>
+                    <strong id="detalleServicioFechaProgramada">-</strong>
+                </article>
+
+                <article>
+                    <span>Fecha de inicio</span>
+                    <strong id="detalleServicioFechaInicio">-</strong>
+                </article>
+
+                <article>
+                    <span>Fecha de finalización</span>
+                    <strong id="detalleServicioFechaFinalizacion">-</strong>
+                </article>
+
+                <article>
+                    <span>Costo estimado</span>
+                    <strong id="detalleServicioCosto">$0.00</strong>
+                </article>
+
+            </div>
+
+        </div>
+
+        <footer class="modal-actions">
+            <button type="button"
+                    class="btn btn-secondary"
+                    id="btnCerrarDetalleServicioFooter">
+                Cerrar
+            </button>
+        </footer>
+
+    </section>
+</div>

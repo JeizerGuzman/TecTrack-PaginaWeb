@@ -167,6 +167,20 @@ def registrar_usuarios_routes(app):
         if existe:
             return jsonify({"error": "ya existe otro usuario con ese correo"}), 409
 
+        if usuario.tipo == "chofer" and tipo != "chofer":
+            vehiculo_asignado = Vehiculo.query.filter_by(
+                chofer_id=usuario.id,
+                activo=True
+            ).first()
+
+            if vehiculo_asignado:
+                return jsonify({
+                    "error": (
+                        f"No puedes cambiar el rol de este chofer porque está "
+                        f"asignado al vehículo {vehiculo_asignado.nombre}"
+                    )
+                }), 409
+        
         try:
             usuario.nombre = nombre
             usuario.correo = correo

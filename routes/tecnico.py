@@ -421,6 +421,243 @@ def registrar_tecnico_routes(app):
                 "error": "error interno al reemplazar dispositivo"
             }), 500
 
+
+    # ========================================================
+    # RETIRAR DISPOSITIVO DE UN VEHÍCULO
+    # ========================================================
+    #
+    # Permite que un técnico o administrador retire físicamente
+    # un dispositivo instalado sin reemplazarlo por otro.
+    #
+    # El vehículo queda sin dispositivo y el dispositivo retirado
+    # puede pasar a:
+    #
+    # - disponible
+    # - mantenimiento
+    # - desactivado
+    #
+    # Al dejar de estar instalado:
+    #
+    # - empresa_id = None
+    # - fecha_instalacion = None
+    #
+    # También se registra un servicio técnico y un evento
+    # para mantener historial de la operación.
+    # ========================================================
+    @app.route("/api/dispositivos/retirar", methods=["POST"])
+    @jwt_required()
+    @rol_requerido("tecnico", "admin")
+    def retirar_dispositivo():
+        usuario = obtener_usuario_actual()
+        data = request.get_json(silent=True) or {}
+
+        # ----------------------------------------------------
+        # OBTENER Y LIMPIAR DATOS RECIBIDOS
+        # ----------------------------------------------------
+        vehiculo_id = data.get("vehiculo_id")
+
+        estado_dispositivo = str(
+            data.get("estado_dispositivo", "")
+        ).strip().lower()
+
+        motivo = str(
+            data.get("motivo", "")
+        ).strip()
+
+        # ----------------------------------------------------
+        # ESTADOS PERMITIDOS DESPUÉS DEL RETIRO
+        # ----------------------------------------------------
+        estados_permitidos = {
+            "disponible",
+            "mantenimiento",
+            "desactivado",
+        }
+
+        # ----------------------------------------------------
+        # VALIDAR CAMPOS OBLIGATORIOS
+        # ----------------------------------------------------
+        if not vehiculo_id:
+            return jsonify({
+                "error": "vehiculo_id es requerido"
+            }), 400
+
+        if not estado_dispositivo:
+            return jsonify({
+                "error": "estado_dispositivo es requerido"
+            }), 400
+
+        if not motivo:
+            return jsonify({
+                "error": "motivo es requerido"
+            }), 400
+
+        # ----------------------------------------------------
+        # VALIDAR ESTADO FINAL
+        # ----------------------------------------------------
+        if estado_dispositivo not in estados_permitidos:
+            return jsonify({
+                "error": (
+                    "estado_dispositivo no válido. "
+                    "Debe ser: disponible, mantenimiento "
+                    "o desactivado"
+                )
+            }), 400
+
+        # ----------------------------------------------------
+        # VALIDAR ID DEL VEHÍCULO
+        # ----------------------------------------------------
+        try:
+            vehiculo_id = int(vehiculo_id)
+        except (TypeError, ValueError):
+            return jsonify({
+                "error": "vehiculo_id debe ser un número entero válido"
+            }), 400
+
+        # ----------------------------------------------------
+        # BUSCAR VEHÍCULO
+        # ----------------------------------------------------
+        vehiculo = db.session.get(Vehiculo, vehiculo_id)
+
+        if not vehiculo:
+            return jsonify({
+                "error": "vehículo no encontrado"
+            }), 404
+
+        # ----------------------------------------------------
+        # VERIFICAR QUE TENGA DISPOSITIVO VINCULADO
+        # ----------------------------------------------------
+        if not vehiculo.dispositivo_id:
+            return jsonify({
+                "error": "el vehículo no tiene un dispositivo vinculado"
+            }), 400
+
+        # Guardamos el ID antes de quitarlo del vehículo.
+        dispositivo_id = vehiculo.dispositivo_id
+
+        # ----------------------------------------------------
+        # BUSCAR DISPOSITIVO ACTUAL
+        # ----------------------------------------------------
+        dispositivo = db.session.get(
+            Dispositivo,
+            dispositivo_id
+        )
+
+        if not dispositivo:
+            return jsonify({
+                "error": (
+                    "el vehículo tiene un dispositivo_id vinculado, "
+                    "pero el dispositivo no existe"
+                )
+            }), 404
+
+        # ----------------------------------------------------
+        # GUARDAR DATOS ANTES DEL CAMBIO
+        # ----------------------------------------------------
+        empresa_id = vehiculo.empresa_id
+        serie_dispositivo = dispositivo.serie
+        nombre_vehiculo = vehiculo.nombre
+
+        try:
+            # =================================================
+            # 1. DESVINCULAR DISPOSITIVO DEL VEHÍCULO
+            # =================================================
+            vehiculo.dispositivo_id = None
+
+            # =================================================
+            # 2. ACTUALIZAR DISPOSITIVO RETIRADO
+            # =================================================
+            dispositivo.estado = estado_dispositivo
+
+            # Al dejar de estar instalado ya no pertenece
+            # operativamente a una empresa.
+            dispositivo.empresa_id = None
+
+            # Ya no está instalado en ningún vehículo.
+            dispositivo.fecha_instalacion = None
+
+            # =================================================
+            # 3. REGISTRAR SERVICIO TÉCNICO
+            # =================================================
+            descripcion_servicio = (
+                f"Se retiró el dispositivo {serie_dispositivo} "
+                f"del vehículo {nombre_vehiculo}. "
+                f"Motivo: {motivo}"
+            )
+
+            servicio = Servicio(
+                empresa_id=empresa_id,
+                vehiculo_id=vehiculo.id,
+                dispositivo_id=dispositivo.id,
+                tipo="retiro_dispositivo",
+                descripcion=descripcion_servicio,
+                estado=estado_dispositivo,
+                timestamp=timestamp_actual(),
+            )
+
+            db.session.add(servicio)
+
+            # =================================================
+            # 4. REGISTRAR EVENTO DEL VEHÍCULO
+            # =================================================
+            #
+            # Esto es adicional al Servicio y permite que el retiro
+            # también aparezca en la bitácora/eventos del vehículo.
+            # =================================================
+            nombre_usuario = (
+                usuario.nombre
+                if usuario
+                else "Usuario desconocido"
+            )
+
+            registrar_evento(
+                vehiculo_id=vehiculo.id,
+                tipo="dispositivo_retirado",
+                descripcion=(
+                    f"{nombre_usuario} retiró el dispositivo "
+                    f"{serie_dispositivo}. "
+                    f"Estado final: {estado_dispositivo}. "
+                    f"Motivo: {motivo}"
+                ),
+            )
+
+            # =================================================
+            # 5. CONFIRMAR CAMBIOS
+            # =================================================
+            db.session.commit()
+
+            return jsonify({
+                "ok": True,
+                "mensaje": "Dispositivo retirado correctamente",
+
+                "dispositivo": {
+                    "id": dispositivo.id,
+                    "serie": dispositivo.serie,
+                    "estado": dispositivo.estado,
+                    "empresa_id": dispositivo.empresa_id,
+                    "fecha_instalacion": dispositivo.fecha_instalacion,
+                },
+
+                "vehiculo": {
+                    "id": vehiculo.id,
+                    "nombre": vehiculo.nombre,
+                    "placa": vehiculo.placa,
+                    "dispositivo_id": vehiculo.dispositivo_id,
+                }
+            }), 200
+
+        except Exception as e:
+            db.session.rollback()
+
+            print(
+                f"❌ Error retirando dispositivo "
+                f"{serie_dispositivo} del vehículo "
+                f"{nombre_vehiculo}: {e}"
+            )
+
+            return jsonify({
+                "error": "error interno al retirar el dispositivo"
+            }), 500
+
     # --------------------------------------------------------
     # Devuelve diagnóstico técnico por serie del dispositivo.
     #

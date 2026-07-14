@@ -1,0 +1,297 @@
+<div class="modal-backdrop"
+     id="modalSuscripcion"
+     aria-hidden="true">
+
+    <section class="modal-card modal-suscripcion-card"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalSuscripcionTitulo">
+
+        <header class="modal-header">
+            <div>
+                <p class="modal-kicker">Acuerdo comercial</p>
+                <h2 id="modalSuscripcionTitulo">Nueva suscripción</h2>
+            </div>
+
+            <button type="button"
+                    class="modal-close"
+                    id="btnCerrarModalSuscripcion"
+                    aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round">
+                    <path d="M18 6 6 18"></path>
+                    <path d="m6 6 12 12"></path>
+                </svg>
+            </button>
+        </header>
+
+
+        <form id="formSuscripcion">
+
+            <div class="modal-body">
+
+                <section class="suscripcion-form-section">
+                    <div class="suscripcion-form-section-header">
+                        <h3>Empresa y plan</h3>
+                        <p>Selecciona la empresa, el plan y la cantidad de vehículos contratados.</p>
+                    </div>
+
+                    <div class="suscripcion-form-grid">
+
+                        <div class="form-group">
+                            <label for="suscripcionEmpresaBusqueda">Empresa</label>
+
+                            <div class="empresa-combobox"
+                                 id="comboboxSuscripcionEmpresa">
+
+                                <div class="empresa-combobox-control">
+                                    <input type="text"
+                                           id="suscripcionEmpresaBusqueda"
+                                           placeholder="Escribe o selecciona una empresa"
+                                           autocomplete="new-password">
+
+                                    <button type="button"
+                                            class="empresa-combobox-toggle"
+                                            id="btnToggleSuscripcionEmpresa"
+                                            aria-label="Mostrar empresas">
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+                                            <path d="m6 9 6 6 6-6"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <input type="hidden"
+                                       id="suscripcionEmpresa">
+
+                                <div class="empresa-combobox-menu"
+                                     id="menuSuscripcionEmpresa">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="suscripcionPlan">Plan</label>
+                            <select id="suscripcionPlan" required>
+                                <option value="">Selecciona un plan</option>
+                            </select>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="suscripcionCantidadVehiculos">
+                                Cantidad de vehículos
+                            </label>
+                            <input type="number"
+                                   id="suscripcionCantidadVehiculos"
+                                   min="1"
+                                   step="1"
+                                   required
+                                   placeholder="Ej. 10">
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <section class="suscripcion-form-section">
+
+                    <div class="suscripcion-form-section-header">
+                        <h3>Tarifa detectada</h3>
+                        <p>
+                            Se selecciona automáticamente según el plan y la cantidad de vehículos.
+                        </p>
+                    </div>
+
+                    <div class="tarifa-detectada-card"
+                         id="tarifaDetectadaCard">
+
+                        <div class="tarifa-detectada-vacia"
+                             id="tarifaDetectadaVacia">
+                            Selecciona un plan e indica la cantidad de vehículos.
+                        </div>
+
+                        <div class="tarifa-detectada-contenido"
+                             id="tarifaDetectadaContenido"
+                             hidden>
+
+                            <div class="tarifa-detectada-header">
+                                <div>
+                                    <span class="tarifa-detectada-label">
+                                        Rango de referencia
+                                    </span>
+
+                                    <strong id="tarifaDetectadaRango">
+                                        -
+                                    </strong>
+                                </div>
+
+                                <span class="status-badge status-active">
+                                    Activa
+                                </span>
+                            </div>
+
+                            <div class="tarifa-detectada-grid">
+
+                                <div>
+                                    <span>Dispositivo</span>
+                                    <strong id="tarifaSugeridaDispositivo">$0.00</strong>
+                                    <small>por unidad</small>
+                                </div>
+
+                                <div>
+                                    <span>Instalación</span>
+                                    <strong id="tarifaSugeridaInstalacion">$0.00</strong>
+                                    <small>por unidad</small>
+                                </div>
+
+                                <div>
+                                    <span>Mensualidad</span>
+                                    <strong id="tarifaSugeridaMensualidad">$0.00</strong>
+                                    <small>por unidad</small>
+                                </div>
+
+                                <div>
+                                    <span>Mantenimiento</span>
+                                    <strong id="tarifaSugeridaMantenimiento">$0.00</strong>
+                                    <small>por unidad</small>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <section class="suscripcion-form-section">
+
+                    <div class="suscripcion-form-section-header">
+                        <h3>Precios acordados</h3>
+                        <p>
+                            Se cargan desde la tarifa detectada, pero pueden ajustarse por negociación.
+                        </p>
+                    </div>
+
+                    <div class="suscripcion-form-grid">
+
+                        <div class="form-group">
+                            <label for="suscripcionPrecioDispositivo">
+                                Dispositivo por unidad
+                            </label>
+                            <div class="input-prefix">
+                                <span>$</span>
+                                <input type="number"
+                                       id="suscripcionPrecioDispositivo"
+                                       min="0"
+                                       step="0.01"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="suscripcionCostoInstalacion">
+                                Instalación por unidad
+                            </label>
+                            <div class="input-prefix">
+                                <span>$</span>
+                                <input type="number"
+                                       id="suscripcionCostoInstalacion"
+                                       min="0"
+                                       step="0.01"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="suscripcionMensualidad">
+                                Mensualidad por unidad
+                            </label>
+                            <div class="input-prefix">
+                                <span>$</span>
+                                <input type="number"
+                                       id="suscripcionMensualidad"
+                                       min="0"
+                                       step="0.01"
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="suscripcionMantenimiento">
+                                Mantenimiento por unidad
+                            </label>
+                            <div class="input-prefix">
+                                <span>$</span>
+                                <input type="number"
+                                       id="suscripcionMantenimiento"
+                                       min="0"
+                                       step="0.01"
+                                       required>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+
+                <section class="suscripcion-form-section">
+
+                    <div class="suscripcion-form-section-header">
+                        <h3>Totales calculados</h3>
+                        <p>Se actualizan automáticamente con la cantidad y los precios acordados.</p>
+                    </div>
+
+                    <div class="suscripcion-totales-grid">
+
+                        <article>
+                            <span>Dispositivos</span>
+                            <strong id="totalSuscripcionDispositivos">$0.00</strong>
+                        </article>
+
+                        <article>
+                            <span>Instalación</span>
+                            <strong id="totalSuscripcionInstalacion">$0.00</strong>
+                        </article>
+
+                        <article>
+                            <span>Mensualidad</span>
+                            <strong id="totalSuscripcionMensualidad">$0.00</strong>
+                        </article>
+
+                        <article>
+                            <span>Mantenimiento</span>
+                            <strong id="totalSuscripcionMantenimiento">$0.00</strong>
+                        </article>
+
+                    </div>
+                </section>
+
+            </div>
+
+
+            <footer class="modal-actions">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        id="btnCancelarSuscripcion">
+                    Cancelar
+                </button>
+
+                <button type="submit"
+                        class="btn btn-primary"
+                        id="btnGuardarSuscripcion">
+                    Guardar suscripción
+                </button>
+
+            </footer>
+
+        </form>
+
+    </section>
+</div>

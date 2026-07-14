@@ -5,26 +5,50 @@
 
 let detalleCargando = false;
 let detalleTimer = null;
-const DETALLE_REFRESH_MS = 1000;
 let mapaVehiculo = null;
 let marcadorVehiculo = null;
 let ultimaDireccionKey = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+
     if (window.TrackGuards?.requireAuth) {
-        const ok = await window.TrackGuards.requireAuth();
-        if (!ok) return;
+
+        const ok =
+            await window.TrackGuards.requireAuth();
+
+        if (!ok) {
+            return;
+        }
+
     }
 
+
     await cargarDetalleVehiculo();
+
+
+    const intervaloMs =
+        await TrackConfig.obtenerOperacionMs(
+            "detalle_vehiculo",
+            3
+        );
+
 
     if (detalleTimer) {
         clearInterval(detalleTimer);
     }
 
-    detalleTimer = setInterval(() => {
-        cargarDetalleVehiculo({ silencioso: true });
-    }, DETALLE_REFRESH_MS);
+
+    detalleTimer = setInterval(
+        () => {
+
+            cargarDetalleVehiculo({
+                silencioso: true
+            });
+
+        },
+        intervaloMs
+    );
+
 });
 
 async function cargarDetalleVehiculo({ silencioso = false } = {}) {
@@ -178,48 +202,170 @@ function renderVehiculo(v, els) {
 function renderSensores(v, sensoresBox) {
     if (!sensoresBox || !v) return;
 
-    const puerta = String(v.puerta || "desconocida").toLowerCase();
-    const vibracion = Number(v.vibracion || 0);
+    const puerta = String(
+        v.puerta || "desconocida"
+    ).toLowerCase();
+
+    const vibracion = (
+        v.vibracion === null ||
+        v.vibracion === undefined
+    )
+        ? null
+        : Number(v.vibracion);
+
     const alerta = Number(v.alerta || 0);
-    const estadoActual = String(v.estado || "").toLowerCase();
+
+    const estadoActual = String(
+        v.estado || ""
+    ).toLowerCase();
+
+    /*
+     * Se considera sin conexión cuando:
+     * - sin_senal es true
+     * - online es false
+     * - el estado visible es sin_senal
+     */
+    const sinConexion = (
+        v.sin_senal === true ||
+        v.online === false ||
+        estadoActual === "sin_senal"
+    );
+
+
+    /* ========================================================
+       SIN CONEXIÓN
+       Todos los sensores se muestran en gris.
+       ======================================================== */
+
+    if (sinConexion) {
+        sensoresBox.innerHTML = `
+            <div class="sensor-card sensor-desconectado">
+                <span>Sensor de puerta</span>
+                <strong>Sin conexión</strong>
+                <small>
+                    ${tiempoRelativo(v.ultima_actualizacion)}
+                </small>
+            </div>
+
+            <div class="sensor-card sensor-desconectado">
+                <span>Sensor de vibración</span>
+                <strong>Sin conexión</strong>
+                <small>
+                    ${tiempoRelativo(v.ultima_actualizacion)}
+                </small>
+            </div>
+
+            <div class="sensor-card sensor-desconectado">
+                <span>Alerta general</span>
+                <strong>Sin conexión</strong>
+                <small>
+                    ${tiempoRelativo(v.ultima_actualizacion)}
+                </small>
+            </div>
+
+            <div class="sensor-card sensor-desconectado">
+                <span>Botón de pánico</span>
+                <strong>Sin conexión</strong>
+                <small>
+                    ${tiempoRelativo(v.ultima_actualizacion)}
+                </small>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    /* ========================================================
+       CON CONEXIÓN
+       Verde = normal
+       Rojo  = detección o alerta
+       ======================================================== */
 
     sensoresBox.innerHTML = `
-        <div class="sensor-card ${puerta === "abierta" ? "sensor-alerta" : "sensor-ok"}">
+        <div class="sensor-card ${
+            puerta === "abierta"
+                ? "sensor-alerta"
+                : "sensor-ok"
+        }">
             <span>Sensor de puerta</span>
-            <strong>${puerta === "abierta" ? "Puerta abierta" : puerta === "cerrada" ? "Puerta cerrada" : "Desconocido"}</strong>
-            <small>${tiempoRelativo(v.ultima_actualizacion)}</small>
+
+            <strong>
+                ${
+                    puerta === "abierta"
+                        ? "Puerta abierta"
+                        : puerta === "cerrada"
+                            ? "Puerta cerrada"
+                            : "Desconocido"
+                }
+            </strong>
+
+            <small>
+                ${tiempoRelativo(v.ultima_actualizacion)}
+            </small>
         </div>
+
 
         <div class="sensor-card ${
-            v.sin_senal || v.online === false || vibracion === null || vibracion === undefined
-                ? "sensor-desconectado"
-                : vibracion === 1
-                    ? "sensor-alerta"
-                    : "sensor-ok"
+            vibracion === 1
+                ? "sensor-alerta"
+                : "sensor-ok"
         }">
             <span>Sensor de vibración</span>
-            <strong>${
-                v.sin_senal || v.online === false || vibracion === null || vibracion === undefined
-                    ? "Desconocido"
-                    : vibracion === 1
+
+            <strong>
+                ${
+                    vibracion === 1
                         ? "Vibración detectada"
                         : "Normal"
-            }</strong>
-            <small>${
-                tiempoRelativo(v.ultima_actualizacion)
-            }</small>
+                }
+            </strong>
+
+            <small>
+                ${tiempoRelativo(v.ultima_actualizacion)}
+            </small>
         </div>
 
-        <div class="sensor-card ${alerta === 1 ? "sensor-alerta" : "sensor-ok"}">
+
+        <div class="sensor-card ${
+            alerta === 1
+                ? "sensor-alerta"
+                : "sensor-ok"
+        }">
             <span>Alerta general</span>
-            <strong>${alerta === 1 ? "Alerta activa" : "Sin alerta"}</strong>
-            <small>${tiempoRelativo(v.ultima_actualizacion)}</small>
+
+            <strong>
+                ${
+                    alerta === 1
+                        ? "Alerta activa"
+                        : "Sin alerta"
+                }
+            </strong>
+
+            <small>
+                ${tiempoRelativo(v.ultima_actualizacion)}
+            </small>
         </div>
 
-        <div class="sensor-card ${estadoActual === "panico" ? "sensor-alerta" : "sensor-ok"}">
+
+        <div class="sensor-card ${
+            estadoActual === "panico"
+                ? "sensor-alerta"
+                : "sensor-ok"
+        }">
             <span>Botón de pánico</span>
-            <strong>${estadoActual === "panico" ? "Pánico activo" : "Inactivo"}</strong>
-            <small>${tiempoRelativo(v.ultima_actualizacion)}</small>
+
+            <strong>
+                ${
+                    estadoActual === "panico"
+                        ? "Pánico activo"
+                        : "Inactivo"
+                }
+            </strong>
+
+            <small>
+                ${tiempoRelativo(v.ultima_actualizacion)}
+            </small>
         </div>
     `;
 }

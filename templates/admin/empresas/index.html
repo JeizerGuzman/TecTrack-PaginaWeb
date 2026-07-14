@@ -1,0 +1,222 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Empresas - TrackSecurity{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/empresas.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="admin-page-header">
+    <div>
+        <p class="admin-section-kicker">Administración global</p>
+        <h1>Empresas</h1>
+        <p>
+            Administra las empresas registradas en TrackSecurity, sus datos generales y su estado en la plataforma.
+        </p>
+    </div>
+
+    <div class="empresas-header-actions">
+        <button type="button" class="btn btn-primary" id="btnAbrirModalEmpresa">
+            Nueva empresa
+        </button>
+    </div>
+</section>
+
+<section class="empresas-stats-grid">
+    <article class="card empresa-stat-card empresa-stat-blue">
+        <div class="empresa-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21h18"></path>
+                <path d="M5 21V7l8-4v18"></path>
+                <path d="M19 21V11l-6-4"></path>
+                <path d="M9 9h.01"></path>
+                <path d="M9 13h.01"></path>
+                <path d="M9 17h.01"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Total empresas</p>
+            <strong id="statEmpresasTotal">0</strong>
+            <span>Registradas</span>
+        </div>
+    </article>
+
+    <article class="card empresa-stat-card empresa-stat-green">
+        <div class="empresa-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Activas</p>
+            <strong id="statEmpresasActivas">0</strong>
+            <span>Operando</span>
+        </div>
+    </article>
+
+    <article class="card empresa-stat-card empresa-stat-gray">
+        <div class="empresa-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M15 9 9 15"></path>
+                <path d="M9 9l6 6"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Inactivas</p>
+            <strong id="statEmpresasInactivas">0</strong>
+            <span>Suspendidas</span>
+        </div>
+    </article>
+
+    <article class="card empresa-stat-card empresa-stat-orange">
+        <div class="empresa-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 16V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path>
+                <path d="M2 16h20"></path>
+                <path d="M6 16v3"></path>
+                <path d="M18 16v3"></path>
+                <circle cx="7.5" cy="16.5" r="1.5"></circle>
+                <circle cx="16.5" cy="16.5" r="1.5"></circle>
+                <path d="M17 11h3l2 3v2"></path>
+            </svg>
+        </div>
+
+        <div>
+            <p>Vehículos</p>
+            <strong id="statEmpresasVehiculos">0</strong>
+            <span>Registrados</span>
+        </div>
+    </article>
+</section>
+
+<section class="card empresas-filtros-card">
+    <div class="empresas-filtros-grid">
+        <div class="form-group">
+            <label for="buscarEmpresa">Buscar empresa</label>
+            <input type="text" id="buscarEmpresa" placeholder="Buscar por nombre, correo o teléfono">
+        </div>
+
+        <div class="form-group">
+            <label for="filtroEstadoEmpresa">Estado</label>
+            <select id="filtroEstadoEmpresa">
+                <option value="todos">Todas</option>
+                <option value="activo">Activas</option>
+                <option value="inactivo">Inactivas</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<section class="card empresas-list-card">
+    <div class="card-header card-header-row">
+        <div>
+            <h3>Listado de empresas</h3>
+            <p>Empresas registradas en la plataforma.</p>
+        </div>
+
+        <span id="empresasActualizacion" class="badge badge-muted">
+            Actualizando...
+        </span>
+    </div>
+
+    <div class="card-body">
+        <div id="empresasListado" class="empresas-listado">
+            <div class="empty-state">
+                <strong>Cargando empresas...</strong>
+                <p>Estamos obteniendo la información de la plataforma.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODAL CREAR / EDITAR EMPRESA -->
+<div class="modal-backdrop" id="modalEmpresa">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div>
+                <h3 id="modalEmpresaTitulo">Nueva empresa</h3>
+                <p id="modalEmpresaSubtitulo">Registra una empresa en TrackSecurity.</p>
+            </div>
+
+            <button type="button" class="modal-close" id="btnCerrarModalEmpresa">
+                ×
+            </button>
+        </div>
+
+        <form id="formEmpresa" class="modal-body">
+            <input type="hidden" id="empresaId">
+
+            <div class="form-group">
+                <label for="empresaNombre">Nombre de la empresa</label>
+                <input type="text" id="empresaNombre" placeholder="Ej. Transportes del Sur">
+            </div>
+
+            <div class="form-group">
+                <label for="empresaCorreo">Correo</label>
+                <input type="email" id="empresaCorreo" placeholder="contacto@empresa.com">
+            </div>
+
+            <div class="form-group">
+                <label for="empresaTelefono">Teléfono</label>
+                <input type="text" id="empresaTelefono" placeholder="Ej. 9611234567">
+            </div>
+
+            <div class="form-group">
+                <label for="empresaDireccion">Dirección</label>
+                <textarea id="empresaDireccion" rows="3" placeholder="Dirección de la empresa"></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" id="btnCancelarEmpresa">
+                    Cancelar
+                </button>
+
+                <button type="submit" class="btn btn-primary" id="btnGuardarEmpresa">
+                    Guardar empresa
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL CAMBIO DE ESTADO -->
+<div class="modal-backdrop" id="modalEstadoEmpresa">
+    <div class="modal-card modal-card-small">
+        <div class="modal-header">
+            <div>
+                <h3 id="modalEstadoTitulo">Cambiar estado</h3>
+                <p id="modalEstadoDescripcion">Confirma la acción para esta empresa.</p>
+            </div>
+
+            <button type="button" class="modal-close" id="btnCerrarModalEstadoEmpresa">
+                ×
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" id="btnCancelarEstadoEmpresa">
+                    Cancelar
+                </button>
+
+                <button type="button" class="btn btn-primary" id="btnConfirmarEstadoEmpresa">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/empresas/index.js') }}"></script>
+{% endblock %}
