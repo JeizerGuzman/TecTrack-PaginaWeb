@@ -1,0 +1,28 @@
+<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Sombra suave -->
+  <ellipse cx="160" cy="248" rx="80" ry="14" fill="#e5e9f5"/>
+
+  <!-- Caja -->
+  <g>
+    <rect x="90" y="140" width="140" height="100" rx="10" fill="#3b82f6"/>
+    <rect x="90" y="140" width="140" height="34" rx="10" fill="#2563eb"/>
+    <rect x="90" y="164" width="140" height="10" fill="#2563eb"/>
+    <path d="M160 140V240" stroke="#1e3a8a" stroke-width="4"/>
+    <path d="M90 174H230" stroke="#1e3a8a" stroke-width="4"/>
+  </g>
+
+  <!-- Cinta cruzada -->
+  <path d="M115 140L135 240" stroke="#93c5fd" stroke-width="6" stroke-linecap="round"/>
+  <path d="M205 140L185 240" stroke="#93c5fd" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Pin de ubicación -->
+  <g>
+    <path d="M226 90C226 111 198 138 198 138C198 138 170 111 170 90C170 74.536 182.536 62 198 62C213.464 62 226 74.536 226 90Z" fill="#f97316"/>
+    <circle cx="198" cy="90" r="12" fill="#ffffff"/>
+  </g>
+
+  <!-- Ondas de señal -->
+  <path d="M242 84C248 90 248 100 242 106" stroke="#f97316" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <path d="M252 76C264 88 264 104 252 116" stroke="#f97316" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.4"/>
+</svg>

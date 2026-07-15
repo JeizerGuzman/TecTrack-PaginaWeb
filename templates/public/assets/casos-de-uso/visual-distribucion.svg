@@ -1,0 +1,33 @@
+<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Base tipo mapa -->
+  <rect x="50" y="70" width="220" height="180" rx="16" fill="#eef2ff"/>
+  <path d="M50 130H270" stroke="#c7d5f5" stroke-width="2"/>
+  <path d="M50 190H270" stroke="#c7d5f5" stroke-width="2"/>
+  <path d="M120 70V250" stroke="#c7d5f5" stroke-width="2"/>
+  <path d="M200 70V250" stroke="#c7d5f5" stroke-width="2"/>
+
+  <!-- Ruta -->
+  <path d="M95 210C120 180 150 220 180 170C205 128 230 150 250 100" stroke="#2563eb" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="1 12"/>
+
+  <!-- Punto origen -->
+  <g>
+    <path d="M95 210C95 195 110 182 110 182C110 182 95 195 95 210Z" fill="none"/>
+    <circle cx="95" cy="210" r="10" fill="#3b82f6"/>
+    <circle cx="95" cy="210" r="4" fill="#ffffff"/>
+  </g>
+
+  <!-- Punto destino -->
+  <g>
+    <path d="M232 90C232 74 250 62 250 62C250 62 268 74 268 90C268 106 250 128 250 128C250 128 232 106 232 90Z" fill="#f97316"/>
+    <circle cx="250" cy="90" r="10" fill="#ffffff"/>
+  </g>
+
+  <!-- Camion en la ruta -->
+  <g transform="translate(150,150)">
+    <rect x="0" y="0" width="34" height="20" rx="4" fill="#1e3a8a"/>
+    <rect x="34" y="6" width="16" height="14" rx="3" fill="#3b82f6"/>
+    <circle cx="10" cy="22" r="5" fill="#0f172a"/>
+    <circle cx="38" cy="22" r="5" fill="#0f172a"/>
+  </g>
+</svg>

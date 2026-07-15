@@ -1,0 +1,23 @@
+<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+
+  <ellipse cx="160" cy="252" rx="80" ry="12" fill="#e5e9f5"/>
+
+  <!-- Escudo -->
+  <path d="M160 70L215 92V150C215 190 190 218 160 232C130 218 105 190 105 150V92L160 70Z" fill="#3b82f6"/>
+  <path d="M160 88L200 104V150C200 180 182 202 160 214C138 202 120 180 120 150V104L160 88Z" fill="#1e3a8a"/>
+
+  <!-- Boton de panico en el centro -->
+  <circle cx="160" cy="150" r="30" fill="#f97316"/>
+  <circle cx="160" cy="150" r="30" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.6"/>
+  <circle cx="160" cy="150" r="12" fill="#ffffff"/>
+
+  <!-- Ondas de alerta -->
+  <path d="M200 150C200 165 190 178 176 184" stroke="#f97316" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M215 150C215 175 200 196 178 205" stroke="#f97316" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.3"/>
+
+  <!-- Icono de conductor -->
+  <g transform="translate(140,235)">
+    <circle cx="20" cy="10" r="10" fill="#1e3a8a"/>
+    <path d="M2 40C2 26 10 20 20 20C30 20 38 26 38 40" fill="#1e3a8a"/>
+  </g>
+</svg>

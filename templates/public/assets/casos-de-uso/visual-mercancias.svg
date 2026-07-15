@@ -1,0 +1,28 @@
+<svg width="320" height="320" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+
+  <ellipse cx="160" cy="250" rx="95" ry="14" fill="#e5e9f5"/>
+
+  <!-- Contenedor del camion -->
+  <rect x="60" y="130" width="130" height="90" rx="8" fill="#3b82f6"/>
+  <rect x="60" y="130" width="130" height="24" rx="8" fill="#2563eb"/>
+  <path d="M75 170H175" stroke="#1e3a8a" stroke-width="3" opacity="0.6"/>
+  <path d="M75 190H175" stroke="#1e3a8a" stroke-width="3" opacity="0.6"/>
+
+  <!-- Cabina -->
+  <path d="M190 160H230C238 160 244 166 244 174V220H190V160Z" fill="#1e3a8a"/>
+  <rect x="200" y="172" width="30" height="24" rx="4" fill="#93c5fd"/>
+
+  <!-- Llantas -->
+  <circle cx="110" cy="228" r="18" fill="#0f172a"/>
+  <circle cx="110" cy="228" r="7" fill="#e5e7eb"/>
+  <circle cx="210" cy="228" r="18" fill="#0f172a"/>
+  <circle cx="210" cy="228" r="7" fill="#e5e7eb"/>
+
+  <!-- Señal GPS arriba -->
+  <g>
+    <circle cx="230" cy="90" r="16" fill="#f97316"/>
+    <circle cx="230" cy="90" r="6" fill="#ffffff"/>
+  </g>
+  <path d="M230 74C244 74 256 86 256 100" stroke="#f97316" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M230 62C258 62 280 84 280 112" stroke="#f97316" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.3"/>
+</svg>

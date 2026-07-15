@@ -1,0 +1,259 @@
+:root {
+  --bg-page: #e5e5e3;
+  --text-main: #1a1a1a;
+  --text-muted: #7a7a7a;
+}
+
+
+.use-cases {
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  margin: auto;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.bento-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 28px;
+}
+
+.bento-title {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-main);
+  margin: 0;
+  flex-shrink: 0;
+  max-width: 640px;
+}
+
+.bento-desc {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 8px 0 0;
+  max-width: 260px;
+  text-align: left;
+}
+
+/* ==========================================
+   GRID (bento layout)
+========================================== */
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "voice fuel  fuel"
+    "voice sound work"
+    "step  step  ready";
+  gap: 20px;
+}
+
+.card-voice { grid-area: voice; }
+.card-fuel  { grid-area: fuel; }
+.card-sound { grid-area: sound; }
+.card-work  { grid-area: work; }
+.card-step  { grid-area: step; }
+.card-ready { grid-area: ready; }
+
+/* ==========================================
+   TARJETA BASE
+========================================== */
+
+.bento-card {
+  background: #C5C5C522;
+  border-radius: 20px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-text h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 10px;
+  line-height: 1.2;
+}
+
+.card-text p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 220px;
+}
+
+.card-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-visual img {
+  width:220px;
+    height:220px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ==========================================
+   CARD: COMMUNITY VOICE
+   (imagen arriba, texto abajo, ocupa 2 filas)
+========================================== */
+
+.card-voice {
+  justify-content: space-between;
+}
+
+.card-voice .card-visual {
+  flex: 1;
+  min-height: 260px;
+}
+
+.card-voice .card-visual img {
+  width: 70%;
+}
+
+/* ==========================================
+   CARD: FUEL YOUR HUSTLE
+   (texto izquierda, imagen derecha, ancha)
+========================================== */
+
+.card-fuel {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.card-fuel .card-visual {
+  flex: 1;
+  min-height: 180px;
+}
+
+.card-fuel .card-visual img {
+  width: 90%;
+}
+
+/* ==========================================
+   CARD: SOUND OF THE STREETS / WORK MEETS STREET
+   (texto izquierda, imagen derecha, cuadradas)
+========================================== */
+
+.card-sound,
+.card-work {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-sound .card-visual,
+.card-work .card-visual {
+  flex-shrink: 0;
+  width: 45%;
+  min-height: 150px;
+}
+
+.card-sound .card-visual img,
+.card-work .card-visual img {
+  width: 100%;
+}
+
+/* ==========================================
+   CARD: STEP UP YOUR GAME
+   (texto izquierda, imagen derecha grande, ancha)
+========================================== */
+
+.card-step {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.card-step .card-visual {
+  flex: 1;
+  min-height: 220px;
+}
+
+.card-step .card-visual img {
+  width: 95%;
+}
+
+/* ==========================================
+   CARD: READY FOR ANYWHERE
+   (texto izquierda, imagen derecha)
+========================================== */
+
+.card-ready {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-ready .card-visual {
+  flex-shrink: 0;
+  width: 45%;
+  min-height: 220px;
+}
+
+.card-ready .card-visual img {
+  width: 100%;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 900px) {
+  .bento-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "voice"
+      "fuel"
+      "sound"
+      "work"
+      "step"
+      "ready";
+  }
+
+  .card-fuel,
+  .card-sound,
+  .card-work,
+  .card-step,
+  .card-ready {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-sound .card-visual,
+  .card-work .card-visual,
+  .card-ready .card-visual {
+    width: 100%;
+  }
+
+  .bento-title {
+    font-size: 28px;
+  }
+}

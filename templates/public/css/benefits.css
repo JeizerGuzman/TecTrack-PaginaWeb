@@ -1,0 +1,307 @@
+:root {
+  --blue-dark: #1e3a8a;
+  --blue-primary: #2563eb;
+  --blue-mid: #3b82f6;
+  --blue-light: #eef2ff;
+  --bg-page: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-soft: #e2e8f0;
+}
+
+.benefits {
+  width: 100%;
+  max-width: 1080px;
+  margin: auto;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.benefits-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.benefits-eyebrow {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue-primary);
+  margin-bottom: 10px;
+}
+
+.benefits-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+}
+
+/* ICON */
+.fa-user, .fa-user-tie{
+    color: var(--blue-primary);
+}
+
+/* ==========================================
+   WRAPPER: TABS + PANEL
+========================================== */
+
+.benefits-wrapper {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ==========================================
+   TABS (BOTONES IZQUIERDA)
+========================================== */
+
+.benefits-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tab-btn {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  background: var(--card-bg);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.15s ease, border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.tab-btn:hover {
+  border-color: var(--blue-mid);
+}
+
+/* Feedback inmediato al presionar: se "hunde" un poco */
+.tab-btn:active {
+  transform: scale(0.97);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--blue-mid), var(--blue-dark));
+  border-color: transparent;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+  animation: tab-activate 0.4s ease;
+}
+
+/* Pequeño "pop" al activarse */
+@keyframes tab-activate {
+  0% {
+    transform: scale(0.97);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ==========================================
+   EFECTO RIPPLE (ondas al hacer click)
+========================================== */
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.35);
+  transform: scale(0);
+  animation: ripple-expand 0.6s ease-out;
+  pointer-events: none;
+}
+
+.tab-btn.active .ripple {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+@keyframes ripple-expand {
+  to {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* ==========================================
+   ICONO
+========================================== */
+
+.tab-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+
+.tab-btn.active .tab-icon {
+  background: #FFF;
+  animation: icon-bounce 0.45s ease;
+}
+
+/* Rebote del ícono al activarse el tab */
+@keyframes icon-bounce {
+  0% {
+    transform: scale(0.7) rotate(-8deg);
+  }
+  60% {
+    transform: scale(1.15) rotate(4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.tab-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.tab-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tab-text strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  transition: color 0.3s ease;
+}
+
+.tab-text small {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.tab-btn.active .tab-text strong,
+.tab-btn.active .tab-text small {
+  color: #ffffff;
+}
+
+.tab-btn.active .tab-text small {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ==========================================
+   PANEL DERECHA
+========================================== */
+
+.benefits-panel{
+  position:relative;
+  background:var(--card-bg);
+  border-radius:20px;
+  border:1px solid var(--border-soft);
+  overflow:hidden;
+  height:500px;
+}
+
+.panel-content{
+  display:none;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  height:100%;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .4s ease,transform .4s ease;
+}
+
+.panel-content.active{
+  display:grid;
+  opacity:1;
+  transform:translateY(0);
+}
+
+.panel-image{
+  width:100%;
+  height:100%;
+  background:var(--blue-light);
+  overflow:hidden;
+}
+
+.panel-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.panel-info {
+  padding: 36px 32px;
+}
+
+.panel-info h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 24px;
+}
+
+.benefit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.benefit-list li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.benefit-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.benefit-icon img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.benefit-list h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 4px;
+}
+
+.benefit-list p {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 0;
+}
