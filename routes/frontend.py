@@ -25,9 +25,12 @@ from flask import render_template, redirect, url_for
 def registrar_frontend_routes(app):
 
     # Redirige la raíz del sistema al login.
-    @app.route("/")
-    def home():
-        return redirect(url_for("login_view"))
+    @app.get("/")
+    def pagina_publica():
+
+        return render_template(
+            "public/index.html"
+        )
 
     # Muestra la pantalla de inicio de sesión.
     @app.get("/login")

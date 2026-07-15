@@ -682,3 +682,41 @@ transparent 72%
 pointer-events:none;
 
 }
+
+/* ============================================================
+   VOLVER AL INICIO
+   ============================================================ */
+
+.login-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 24px;
+
+    color: #64748b;
+
+    font-size: 0.9rem;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition:
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.login-back-link svg {
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+}
+
+
+.login-back-link:hover {
+    color: #2563eb;
+
+    transform: translateX(-2px);
+}
