@@ -27,7 +27,9 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
 from config import db, Config
-from models import crear_datos_iniciales
+from seeders.datos_iniciales import (
+    crear_datos_iniciales
+)
 from routes import registrar_rutas
 
 

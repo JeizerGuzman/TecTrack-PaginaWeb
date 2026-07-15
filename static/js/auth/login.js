@@ -7,7 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnLogin = document.getElementById("btnLogin");
     const message = document.getElementById("loginMessage");
     const togglePassword = document.getElementById("togglePassword");
-
+    const rememberInput =
+        document.getElementById(
+            "remember"
+        );
     // ============================================================
     // CONFIGURACIÓN DE ROLES EN WEB
     // ============================================================
@@ -94,13 +97,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 // ====================================================
                 // Solo se guarda si el rol sí está permitido en la web.
                 // ====================================================
-                const guardado = TrackAuth.saveSession(data);
+                const recordarSesion =
+                    Boolean(
+                        rememberInput?.checked
+                    );
+
+
+                const guardado =
+                    TrackAuth.saveSession(
+                        data,
+                        recordarSesion
+                    );
 
                 if (!guardado) {
                     throw new Error("No se pudo guardar la sesión.");
                 }
-
-                console.log("Token guardado:", localStorage.getItem("access_token"));
 
                 setMessage("Inicio de sesión correcto. Redirigiendo...", "success");
 
@@ -139,9 +150,41 @@ document.addEventListener("DOMContentLoaded", () => {
     // o chofer en localStorage.
     // ============================================================
     function limpiarSesionWeb() {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("usuario");
-        localStorage.removeItem("tracksecurity_token");
-        localStorage.removeItem("tracksecurity_user");
+
+        if (
+            window.TrackAuth
+            &&
+            typeof TrackAuth.clearSession ===
+                "function"
+        ) {
+
+            TrackAuth.clearSession();
+
+            return;
+
+        }
+
+
+        const claves = [
+
+            "access_token",
+            "ts_usuario",
+            "ts_recordar_sesion",
+            "token",
+            "usuario",
+            "tracksecurity_token",
+            "tracksecurity_user",
+
+        ];
+
+
+        claves.forEach((clave) => {
+
+            localStorage.removeItem(clave);
+
+            sessionStorage.removeItem(clave);
+
+        });
+
     }
 });

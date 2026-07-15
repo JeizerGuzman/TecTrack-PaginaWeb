@@ -227,6 +227,14 @@ def serializar_vehiculo(vehiculo):
         "online": estado_visible["online"],
         "sin_senal": estado_visible["sin_senal"],
         "segundos_sin_senal": estado_visible["segundos_sin_senal"],
+        
+        # Último paquete recibido directamente
+        # desde el dispositivo ESP32.
+        "ultima_conexion": (
+            dispositivo.ultima_conexion
+            if dispositivo
+            else None
+        ),
 
         # Estado visible para web/app.
         "estado": estado_visible["estado"],

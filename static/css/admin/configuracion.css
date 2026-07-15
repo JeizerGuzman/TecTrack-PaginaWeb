@@ -276,6 +276,11 @@
     color: var(--color-primario);
 }
 
+.config-icon-red {
+    background: #ffcfcf;
+    color: #ce2301;
+}
+
 .config-icon-orange {
     background: var(--color-alerta-suave);
     color: #b45309;

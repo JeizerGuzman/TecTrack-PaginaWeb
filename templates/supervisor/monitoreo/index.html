@@ -1,0 +1,441 @@
+{% extends "supervisor/base_supervisor.html" %}
+
+{% block title %}
+Monitoreo - TrackSecurity
+{% endblock %}
+
+
+{% block page_title %}
+Monitoreo
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/supervisor/monitoreo.css'
+    ) }}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="monitoreo-page">
+
+
+    <!-- ================================================= -->
+    <!-- ENCABEZADO                                        -->
+    <!-- ================================================= -->
+
+    <section class="monitoreo-header">
+
+        <div>
+
+            <p class="section-kicker">
+                Operación en tiempo real
+            </p>
+
+            <h2>
+                Monitoreo de la flota
+            </h2>
+
+            <p>
+                Consulta el estado, sensores y actividad actual
+                de los vehículos de tu empresa.
+            </p>
+
+        </div>
+
+
+        <div class="monitoreo-refresh-card">
+
+            <span id="ultimaActualizacionMonitoreo">
+                Sin actualizar
+            </span>
+
+            <span id="estadoActualizacionMonitoreo">
+                En tiempo real
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- MÉTRICAS                                          -->
+    <!-- ================================================= -->
+
+    <section class="monitoreo-stats-grid">
+
+
+        <article class="card monitoreo-stat-card">
+
+            <div class="
+                monitoreo-stat-icon
+                monitoreo-stat-total
+            ">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M3 16V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path>
+                    <path d="M2 16h20"></path>
+                    <circle cx="7.5" cy="16.5" r="1.5"></circle>
+                    <circle cx="16.5" cy="16.5" r="1.5"></circle>
+                </svg>
+
+            </div>
+
+
+            <div>
+
+                <p>
+                    Total vehículos
+                </p>
+
+                <strong id="statMonitoreoTotal">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+        <article class="card monitoreo-stat-card">
+
+            <div class="
+                monitoreo-stat-icon
+                monitoreo-stat-activos
+            ">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="m8 12 2.5 2.5L16 9"></path>
+                </svg>
+
+            </div>
+
+
+            <div>
+
+                <p>
+                    En línea
+                </p>
+
+                <strong id="statMonitoreoActivos">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+        <article class="card monitoreo-stat-card">
+
+            <div class="
+                monitoreo-stat-icon
+                monitoreo-stat-alerta
+            ">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M10.3 2.9a2 2 0 0 1 3.4 0l8 14A2 2 0 0 1 20 20H4a2 2 0 0 1-1.7-3.1z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+
+            </div>
+
+
+            <div>
+
+                <p>
+                    En alerta
+                </p>
+
+                <strong id="statMonitoreoAlertas">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+        <article class="card monitoreo-stat-card">
+
+            <div class="
+                monitoreo-stat-icon
+                monitoreo-stat-sin-senal
+            ">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                    <line x1="3" y1="3" x2="21" y2="21"></line>
+                </svg>
+
+            </div>
+
+
+            <div>
+
+                <p>
+                    Sin señal
+                </p>
+
+                <strong id="statMonitoreoSinSenal">
+                    0
+                </strong>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- FILTROS                                           -->
+    <!-- ================================================= -->
+
+    <section class="card monitoreo-filtros-card">
+
+        <div class="monitoreo-filtros-grid">
+
+
+            <div class="form-group monitoreo-search-field">
+
+                <label for="buscarVehiculoMonitoreo">
+                    Buscar
+                </label>
+
+                <input
+                    type="text"
+                    id="buscarVehiculoMonitoreo"
+                    placeholder="Nombre, placa o identificador..."
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="filtroEstadoMonitoreo">
+                    Estado
+                </label>
+
+                <select id="filtroEstadoMonitoreo">
+
+                    <option value="">
+                        Todos los estados
+                    </option>
+
+                    <option value="activo">
+                        Activos
+                    </option>
+
+                    <option value="alerta">
+                        En alerta
+                    </option>
+
+                    <option value="panico">
+                        Pánico
+                    </option>
+
+                    <option value="manual">
+                        Modo manual
+                    </option>
+
+                    <option value="sin_senal">
+                        Sin señal
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="monitoreo-filtros-actions">
+
+                <button
+                    type="button"
+                    id="btnActualizarMonitoreo"
+                    class="btn btn-primary"
+                >
+                    Actualizar
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- CONTENIDO PRINCIPAL                               -->
+    <!-- ================================================= -->
+
+    <section class="monitoreo-main-grid">
+
+
+        <!-- ============================================= -->
+        <!-- LISTA VEHÍCULOS                               -->
+        <!-- ============================================= -->
+
+        <article class="card monitoreo-list-card">
+
+            <div class="card-header monitoreo-list-header">
+
+                <div>
+
+                    <h3>
+                        Vehículos
+                    </h3>
+
+                    <p id="cantidadVehiculosMonitoreo">
+                        0 vehículos
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="listaVehiculosMonitoreo"
+                class="monitoreo-vehiculos-list"
+            >
+
+                <div class="empty-state">
+
+                    <strong>
+                        Cargando vehículos...
+                    </strong>
+
+                    <p>
+                        Espera mientras se consulta el estado de la flota.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- ============================================= -->
+        <!-- DETALLE OPERATIVO                             -->
+        <!-- ============================================= -->
+
+        <article class="card monitoreo-detail-card">
+
+            <div class="card-header monitoreo-detail-header">
+
+                <div>
+
+                    <p class="section-kicker">
+                        Vehículo seleccionado
+                    </p>
+
+                    <h3 id="monitoreoDetalleNombre">
+                        Ningún vehículo seleccionado
+                    </h3>
+
+                    <p id="monitoreoDetalleSubtitulo">
+                        Selecciona un vehículo para consultar su estado.
+                    </p>
+
+                </div>
+
+
+                <a
+                    id="btnVerDetalleVehiculoMonitoreo"
+                    class="btn btn-outline"
+                    href="#"
+                    hidden
+                >
+                    Ver detalle
+                </a>
+
+            </div>
+
+
+            <div
+                id="monitoreoDetalleContenido"
+                class="monitoreo-detail-content"
+            >
+
+                <div class="empty-state">
+
+                    <strong>
+                        Selecciona un vehículo
+                    </strong>
+
+                    <p>
+                        Aquí aparecerán sus sensores, ubicación,
+                        velocidad y estado actual.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/supervisor/monitoreo/index.js'
+    ) }}"
+></script>
+
+{% endblock %}

@@ -1,0 +1,111 @@
+<section class="card reportes-filtros-card">
+
+    <div class="reportes-filtros-header">
+
+        <div>
+
+            <h3>
+                Filtros del reporte
+            </h3>
+
+            <p>
+                Ajusta los datos que deseas consultar.
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="btnLimpiarFiltrosReporte"
+            class="btn btn-outline"
+        >
+            Limpiar filtros
+        </button>
+
+    </div>
+
+
+    <div class="reportes-filtros-grid">
+
+
+        <div class="form-group">
+
+            <label for="filtroReporteVehiculo">
+                Vehículo
+            </label>
+
+            <select id="filtroReporteVehiculo">
+
+                <option value="">
+                    Todos los vehículos
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="filtroReporteDesde">
+                Desde
+            </label>
+
+            <input
+                type="date"
+                id="filtroReporteDesde"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="filtroReporteHasta">
+                Hasta
+            </label>
+
+            <input
+                type="date"
+                id="filtroReporteHasta"
+            >
+
+        </div>
+
+
+        <div
+            class="form-group"
+            id="grupoFiltroEstadoReporte"
+        >
+
+            <label for="filtroReporteEstado">
+                Estado
+            </label>
+
+            <select id="filtroReporteEstado">
+
+                <option value="">
+                    Todos los estados
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div class="reportes-filtros-actions">
+
+        <button
+            type="button"
+            id="btnGenerarReporte"
+            class="btn btn-primary"
+        >
+            Generar reporte
+        </button>
+
+    </div>
+
+</section>

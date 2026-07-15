@@ -1,0 +1,437 @@
+{% extends "supervisor/base_supervisor.html" %}
+
+{% block title %}
+Historial - TrackSecurity
+{% endblock %}
+
+{% block page_title %}
+Historial
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/supervisor/historial.css'
+    ) }}"
+>
+
+{% endblock %}
+
+
+{% block content %}
+
+<section class="historial-page">
+
+
+    <!-- ================================================= -->
+    <!-- ENCABEZADO                                        -->
+    <!-- ================================================= -->
+
+    <section class="historial-header">
+
+        <div>
+
+            <p class="section-kicker">
+                Actividad de la flota
+            </p>
+
+            <h2>
+                Historial general
+            </h2>
+
+            <p>
+                Consulta alertas, eventos, servicios y puntos
+                GPS registrados por los vehículos de tu empresa.
+            </p>
+
+        </div>
+
+
+        <div class="historial-refresh-info">
+
+            <span id="ultimaActualizacionHistorial">
+                Sin actualizar
+            </span>
+
+            <span id="estadoCargaHistorial">
+                Esperando
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- MÉTRICAS                                          -->
+    <!-- ================================================= -->
+
+    <section class="historial-stats-grid">
+
+        <article class="card historial-stat-card">
+
+            <div class="historial-stat-icon historial-stat-total">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M3 12a9 9 0 1 0 3-6.7"></path>
+                    <path d="M3 3v6h6"></path>
+                    <path d="M12 7v5l3 3"></path>
+                </svg>
+
+            </div>
+
+            <div>
+                <p>
+                    Total actividad
+                </p>
+
+                <strong id="statHistorialTotal">
+                    0
+                </strong>
+            </div>
+
+        </article>
+
+
+        <article class="card historial-stat-card">
+
+            <div class="historial-stat-icon historial-stat-alertas">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M10.3 2.9a2 2 0 0 1 3.4 0l8 14A2 2 0 0 1 20 20H4a2 2 0 0 1-1.7-3.1z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+
+            </div>
+
+            <div>
+                <p>
+                    Alertas
+                </p>
+
+                <strong id="statHistorialAlertas">
+                    0
+                </strong>
+            </div>
+
+        </article>
+
+
+        <article class="card historial-stat-card">
+
+            <div class="historial-stat-icon historial-stat-eventos">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M4 4h16v16H4z"></path>
+                    <path d="M8 9h8"></path>
+                    <path d="M8 13h6"></path>
+                </svg>
+
+            </div>
+
+            <div>
+                <p>
+                    Eventos
+                </p>
+
+                <strong id="statHistorialEventos">
+                    0
+                </strong>
+            </div>
+
+        </article>
+
+
+        <article class="card historial-stat-card">
+
+            <div class="historial-stat-icon historial-stat-servicios">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M14.7 6.3a4 4 0 0 0-5-5L7 4l3 3 2.7-2.7"></path>
+                    <path d="m5 8-3 3 11 11 3-3"></path>
+                    <path d="m14 15 5-5"></path>
+                    <path d="m17 8 3-3 2 2-3 3"></path>
+                </svg>
+
+            </div>
+
+            <div>
+                <p>
+                    Servicios
+                </p>
+
+                <strong id="statHistorialServicios">
+                    0
+                </strong>
+            </div>
+
+        </article>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- FILTROS                                           -->
+    <!-- ================================================= -->
+
+    <section class="card historial-filtros-card">
+
+        <div class="historial-filtros-header">
+
+            <div>
+
+                <h3>
+                    Filtros del historial
+                </h3>
+
+                <p>
+                    Selecciona un vehículo, categoría o periodo.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="btnLimpiarHistorial"
+                class="btn btn-outline"
+            >
+                Limpiar filtros
+            </button>
+
+        </div>
+
+
+        <div class="historial-filtros-grid">
+
+            <div class="form-group historial-search-field">
+
+                <label for="buscarHistorial">
+                    Buscar
+                </label>
+
+                <input
+                    type="text"
+                    id="buscarHistorial"
+                    placeholder="Vehículo, descripción, tipo..."
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="filtroHistorialVehiculo">
+                    Vehículo
+                </label>
+
+                <select id="filtroHistorialVehiculo">
+
+                    <option value="">
+                        Todos los vehículos
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="filtroHistorialDesde">
+                    Desde
+                </label>
+
+                <input
+                    type="date"
+                    id="filtroHistorialDesde"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="filtroHistorialHasta">
+                    Hasta
+                </label>
+
+                <input
+                    type="date"
+                    id="filtroHistorialHasta"
+                >
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- CATEGORÍAS                                        -->
+    <!-- ================================================= -->
+
+    <section class="historial-categorias">
+
+        <button
+            type="button"
+            class="historial-categoria-btn active"
+            data-historial-categoria="todos"
+        >
+            Todos
+        </button>
+
+
+        <button
+            type="button"
+            class="historial-categoria-btn"
+            data-historial-categoria="alertas"
+        >
+            Alertas
+        </button>
+
+
+        <button
+            type="button"
+            class="historial-categoria-btn"
+            data-historial-categoria="eventos"
+        >
+            Eventos
+        </button>
+
+
+        <button
+            type="button"
+            class="historial-categoria-btn"
+            data-historial-categoria="gps"
+        >
+            GPS
+        </button>
+
+
+        <button
+            type="button"
+            class="historial-categoria-btn"
+            data-historial-categoria="servicios"
+        >
+            Servicios
+        </button>
+
+    </section>
+
+
+    <!-- ================================================= -->
+    <!-- LISTADO                                           -->
+    <!-- ================================================= -->
+
+    <section class="card historial-list-card">
+
+        <div class="card-header historial-list-header">
+
+            <div>
+
+                <h3 id="historialListadoTitulo">
+                    Actividad reciente
+                </h3>
+
+                <p id="historialListadoDescripcion">
+                    Alertas, eventos y servicios registrados.
+                </p>
+
+            </div>
+
+
+            <div class="historial-list-meta">
+
+                <span id="historialCantidadMostrada">
+                    0 registros
+                </span>
+
+
+                <button
+                    type="button"
+                    id="btnActualizarHistorial"
+                    class="btn btn-primary"
+                >
+                    Actualizar
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div
+                id="historialListado"
+                class="historial-listado"
+            >
+
+                <div class="empty-state">
+
+                    <strong>
+                        Cargando historial...
+                    </strong>
+
+                    <p>
+                        Espera mientras se consulta la actividad.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/supervisor/historial/index.js'
+    ) }}"
+></script>
+
+{% endblock %}

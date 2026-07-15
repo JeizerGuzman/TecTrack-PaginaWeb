@@ -219,11 +219,14 @@ def registrar_reportes_routes(app):
             }), 404
 
 
-        if usuario.tipo != "dueno":
+        if usuario.tipo not in (
+            "dueno",
+            "supervisor",
+        ):
 
             return jsonify({
                 "error": (
-                    "solo el dueño puede acceder "
+                    "tu rol no tiene acceso "
                     "a los reportes"
                 )
             }), 403

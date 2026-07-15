@@ -1,2 +1,915 @@
-/* Estilos especificos de la pantalla supervisor/monitoreo. */
-/* Debe soportar mapa, estados vivos y panel operativo. */
+/* ============================================================
+   MONITOREO DEL SUPERVISOR - TrackSecurity
+   ============================================================ */
+
+
+.monitoreo-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* ============================================================
+   ENCABEZADO
+   ============================================================ */
+
+.monitoreo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+}
+
+
+.monitoreo-header h2 {
+    margin: 0 0 6px;
+
+    color: var(--color-texto);
+
+    font-size: 1.45rem;
+    font-weight: 900;
+
+    letter-spacing: -0.03em;
+}
+
+
+.monitoreo-header p {
+    margin: 0;
+
+    max-width: 680px;
+
+    color: var(--color-texto-secundario);
+
+    line-height: 1.55;
+}
+
+
+.monitoreo-refresh-card {
+    min-width: 185px;
+    padding: 11px 16px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    text-align: right;
+
+    background: var(--color-superficie);
+
+    border: 1px solid
+        var(--color-borde-suave);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 5px 15px
+        rgba(15, 23, 42, 0.05);
+}
+
+
+#ultimaActualizacionMonitoreo {
+    color: var(--color-texto);
+
+    font-size: 0.84rem;
+    font-weight: 800;
+}
+
+
+#estadoActualizacionMonitoreo {
+    color: var(--color-primario);
+
+    font-size: 0.68rem;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+
+/* ============================================================
+   MÉTRICAS
+   ============================================================ */
+
+.monitoreo-stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+
+.monitoreo-stat-card {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 18px;
+
+    overflow: hidden;
+
+    border-radius: 18px !important;
+}
+
+
+.monitoreo-stat-card::before {
+    content: "";
+
+    position: absolute;
+
+    inset:
+        0 auto 0 0;
+
+    width: 4px;
+}
+
+
+.monitoreo-stat-card:nth-child(1)::before {
+    background: #2563eb;
+}
+
+
+.monitoreo-stat-card:nth-child(2)::before {
+    background: #16a34a;
+}
+
+
+.monitoreo-stat-card:nth-child(3)::before {
+    background: #ef4444;
+}
+
+
+.monitoreo-stat-card:nth-child(4)::before {
+    background: #64748b;
+}
+
+
+.monitoreo-stat-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+}
+
+
+.monitoreo-stat-icon svg {
+    width: 23px;
+    height: 23px;
+}
+
+
+.monitoreo-stat-total {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+
+.monitoreo-stat-activos {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
+.monitoreo-stat-alerta {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+.monitoreo-stat-sin-senal {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+
+.monitoreo-stat-card p {
+    margin: 0 0 5px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.7rem;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+
+.monitoreo-stat-card strong {
+    color: var(--color-texto);
+
+    font-size: 1.9rem;
+    font-weight: 900;
+}
+
+
+/* ============================================================
+   FILTROS
+   ============================================================ */
+
+.monitoreo-filtros-card {
+    padding: 18px;
+
+    border-radius: 18px !important;
+}
+
+
+.monitoreo-filtros-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 2fr)
+        minmax(180px, 1fr)
+        auto;
+
+    gap: 14px;
+
+    align-items: end;
+}
+
+
+.monitoreo-filtros-actions {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+
+/* ============================================================
+   CONTENIDO PRINCIPAL
+   ============================================================ */
+
+.monitoreo-main-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(290px, 0.78fr)
+        minmax(0, 1.72fr);
+
+    gap: 16px;
+
+    align-items: stretch;
+}
+
+
+/* ============================================================
+   LISTA DE VEHÍCULOS
+   ============================================================ */
+
+.monitoreo-list-card {
+    min-width: 0;
+
+    border-radius: 20px !important;
+
+    overflow: hidden;
+}
+
+
+.monitoreo-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+
+.monitoreo-list-header h3 {
+    margin: 0 0 3px;
+
+    color: var(--color-texto);
+
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+
+.monitoreo-list-header p {
+    margin: 0;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.78rem;
+}
+
+
+.monitoreo-vehiculos-list {
+    max-height: 600px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    padding: 12px;
+
+    overflow-y: auto;
+}
+
+
+/* ============================================================
+   ITEM DE VEHÍCULO
+   ============================================================ */
+
+.monitoreo-vehicle-item {
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        9px
+        minmax(0, 1fr)
+        auto;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px 13px;
+
+    border: 1px solid
+        var(--color-borde-suave);
+
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.monitoreo-vehicle-item:hover {
+    background: #f8fafc;
+
+    border-color: #cbd5e1;
+
+    transform: translateY(-1px);
+}
+
+
+.monitoreo-vehicle-item.selected {
+    background: #eff6ff;
+
+    border-color: #93c5fd;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.08);
+}
+
+
+.monitoreo-vehicle-status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #94a3b8;
+}
+
+
+.monitoreo-vehicle-main {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+
+.monitoreo-vehicle-main strong {
+    overflow: hidden;
+
+    color: var(--color-texto);
+
+    font-size: 0.84rem;
+    font-weight: 900;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.monitoreo-vehicle-main small {
+    overflow: hidden;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.72rem;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.monitoreo-vehicle-status {
+    flex-shrink: 0;
+
+    font-size: 0.72rem;
+    font-weight: 900;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   COLORES POR ESTADO EN LA LISTA
+   ============================================================ */
+
+.monitoreo-vehicle-activo
+.monitoreo-vehicle-status-dot {
+    background: #16a34a;
+}
+
+
+.monitoreo-vehicle-activo
+.monitoreo-vehicle-status {
+    color: #16a34a;
+}
+
+
+.monitoreo-vehicle-alerta
+.monitoreo-vehicle-status-dot {
+    background: #f97316;
+}
+
+
+.monitoreo-vehicle-alerta
+.monitoreo-vehicle-status {
+    color: #ea580c;
+}
+
+
+.monitoreo-vehicle-panico
+.monitoreo-vehicle-status-dot {
+    background: #dc2626;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(220, 38, 38, 0.12);
+}
+
+
+.monitoreo-vehicle-panico
+.monitoreo-vehicle-status {
+    color: #dc2626;
+}
+
+
+.monitoreo-vehicle-manual
+.monitoreo-vehicle-status-dot {
+    background: #7c3aed;
+}
+
+
+.monitoreo-vehicle-manual
+.monitoreo-vehicle-status {
+    color: #7c3aed;
+}
+
+
+.monitoreo-vehicle-sin_senal
+.monitoreo-vehicle-status-dot {
+    background: #64748b;
+}
+
+
+.monitoreo-vehicle-sin_senal
+.monitoreo-vehicle-status {
+    color: #64748b;
+}
+
+
+.monitoreo-vehicle-apagado
+.monitoreo-vehicle-status-dot {
+    background: #475569;
+}
+
+
+.monitoreo-vehicle-apagado
+.monitoreo-vehicle-status {
+    color: #475569;
+}
+
+
+/* ============================================================
+   DETALLE OPERATIVO
+   ============================================================ */
+
+.monitoreo-detail-card {
+    min-width: 0;
+
+    border-radius: 20px !important;
+
+    overflow: hidden;
+}
+
+
+.monitoreo-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+}
+
+
+.monitoreo-detail-header h3 {
+    margin: 0 0 4px;
+
+    color: var(--color-texto);
+
+    font-size: 1.1rem;
+    font-weight: 900;
+
+    letter-spacing: -0.02em;
+}
+
+
+.monitoreo-detail-header p {
+    margin: 0;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.8rem;
+}
+
+
+.monitoreo-detail-content {
+    min-height: 300px;
+
+    padding: 18px;
+}
+
+
+/* ============================================================
+   ESTADO GENERAL DEL DETALLE
+   ============================================================ */
+
+.monitoreo-detail-status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 12px;
+
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+
+    border-bottom: 1px solid
+        var(--color-borde-suave);
+}
+
+
+.monitoreo-detail-status {
+    display: inline-flex;
+    align-items: center;
+
+    font-size: 0.82rem;
+    font-weight: 900;
+}
+
+
+.monitoreo-detail-updated {
+    color: var(--color-texto-secundario);
+
+    font-size: 0.76rem;
+    font-weight: 700;
+
+    text-align: right;
+}
+
+
+/* ============================================================
+   COLORES DEL ESTADO EN DETALLE
+   ============================================================ */
+
+.monitoreo-status-activo {
+    color: #16a34a;
+}
+
+
+.monitoreo-status-alerta {
+    color: #ea580c;
+}
+
+
+.monitoreo-status-panico {
+    color: #dc2626;
+}
+
+
+.monitoreo-status-manual {
+    color: #7c3aed;
+}
+
+
+.monitoreo-status-sin_senal {
+    color: #64748b;
+}
+
+
+.monitoreo-status-apagado {
+    color: #475569;
+}
+
+
+/* ============================================================
+   DATOS DEL VEHÍCULO
+   ============================================================ */
+
+.monitoreo-detail-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+.monitoreo-detail-field {
+    min-width: 0;
+
+    padding: 14px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    background: #f8fafc;
+
+    border: 1px solid
+        var(--color-borde-suave);
+
+    border-radius: 13px;
+}
+
+
+.monitoreo-detail-field span {
+    color: var(--color-texto-secundario);
+
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+
+.monitoreo-detail-field strong {
+    overflow-wrap: anywhere;
+
+    color: var(--color-texto);
+
+    font-size: 0.87rem;
+    font-weight: 900;
+}
+
+
+/* ============================================================
+   BOTÓN VER DETALLE
+   ============================================================ */
+
+#btnVerDetalleVehiculoMonitoreo {
+    flex-shrink: 0;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   ESTADOS VACÍOS
+   ============================================================ */
+
+.monitoreo-page .empty-state {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 28px;
+
+    text-align: center;
+}
+
+
+.monitoreo-page .empty-state strong {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--color-texto);
+
+    font-size: 0.96rem;
+    font-weight: 900;
+}
+
+
+.monitoreo-page .empty-state p {
+    margin: 0;
+
+    max-width: 420px;
+
+    color: var(--color-texto-secundario);
+
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   SCROLLBAR DE LA LISTA
+   ============================================================ */
+
+.monitoreo-vehiculos-list::-webkit-scrollbar {
+    width: 7px;
+}
+
+
+.monitoreo-vehiculos-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.monitoreo-vehiculos-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+
+    border-radius: 999px;
+}
+
+
+.monitoreo-vehiculos-list::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (
+    max-width: 1100px
+) {
+
+    .monitoreo-stats-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .monitoreo-main-grid {
+        grid-template-columns:
+            minmax(260px, 0.9fr)
+            minmax(0, 1.4fr);
+    }
+
+
+    .monitoreo-detail-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* ============================================================
+   TABLET PEQUEÑA
+   ============================================================ */
+
+@media (
+    max-width: 850px
+) {
+
+    .monitoreo-main-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .monitoreo-vehiculos-list {
+        max-height: 360px;
+    }
+
+
+    .monitoreo-filtros-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .monitoreo-filtros-actions {
+        grid-column:
+            1 / -1;
+
+        justify-content: flex-end;
+    }
+
+}
+
+
+/* ============================================================
+   MÓVIL
+   ============================================================ */
+
+@media (
+    max-width: 650px
+) {
+
+    .monitoreo-page {
+        gap: 16px;
+    }
+
+
+    .monitoreo-header {
+        flex-direction: column;
+    }
+
+
+    .monitoreo-refresh-card {
+        width: 100%;
+
+        text-align: left;
+    }
+
+
+    .monitoreo-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .monitoreo-filtros-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .monitoreo-filtros-actions {
+        grid-column: auto;
+    }
+
+
+    .monitoreo-filtros-actions .btn {
+        width: 100%;
+    }
+
+
+    .monitoreo-detail-header {
+        flex-direction: column;
+    }
+
+
+    #btnVerDetalleVehiculoMonitoreo {
+        width: 100%;
+    }
+
+
+    .monitoreo-detail-status-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+
+    .monitoreo-detail-updated {
+        text-align: left;
+    }
+
+
+    .monitoreo-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .monitoreo-vehicle-item {
+        grid-template-columns:
+            9px
+            minmax(0, 1fr);
+    }
+
+
+    .monitoreo-vehicle-status {
+        grid-column:
+            2;
+
+        justify-self: start;
+    }
+
+}   

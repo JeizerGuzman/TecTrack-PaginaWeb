@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TrackSecurity{% endblock %}</title>
+
+    <script>
+        (function () {
+            if (localStorage.getItem('ts_sidebar_collapsed') === '1') {
+                document.documentElement.classList.add('sidebar-pre-collapsed');
+            }
+        })();
+    </script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="app-body">
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="app-layout" id="appLayout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">TS</div>
+
+                <div class="brand-text">
+                    <h2>TRACKSECURITY</h2>
+                    <span>Monitoreo vehicular</span>
+                </div>
+            </div>
+
+            <button type="button" class="sidebar-collapse-btn" id="btnCollapseSidebar">
+                ☰
+            </button>
+
+            <nav class="sidebar-nav">
+                <a
+                    href="/supervisor/dashboard"
+                    class="nav-link {% if request.path.startswith('/supervisor/dashboard') %}active{% endif %}"
+                >
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 10.5 12 3l9 7.5"></path>
+                            <path d="M5 9.5V20h14V9.5"></path>
+                            <path d="M9 20v-6h6v6"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+
+                <a
+                    href="/supervisor/monitoreo"
+                    class="nav-link {% if request.path.startswith('/supervisor/monitoreo') %}active{% endif %}"
+                >
+                    <span
+                        class="nav-icon"
+                        aria-hidden="true"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
+                        </svg>
+                    </span>
+
+                    <span class="nav-text">
+                        Monitoreo
+                    </span>
+                </a>
+
+                <a
+                    href="/supervisor/vehiculos"
+                    class="nav-link {% if request.path.startswith('/supervisor/vehiculos') %}active{% endif %}"
+                >
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 16V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path>
+                            <path d="M2 16h20"></path>
+                            <path d="M6 16v3"></path>
+                            <path d="M18 16v3"></path>
+                            <circle cx="7.5" cy="16.5" r="1.5"></circle>
+                            <circle cx="16.5" cy="16.5" r="1.5"></circle>
+                            <path d="M17 11h3l2 3v2"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Vehículos</span>
+                </a>
+
+                <a
+                    href="/supervisor/alertas"
+                    class="nav-link {% if request.path.startswith('/supervisor/alertas') %}active{% endif %}"
+                >
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3l-8.47-14.14a2 2 0 0 0-3.42 0Z"></path>
+                            <path d="M12 9v4"></path>
+                            <path d="M12 17h.01"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Alertas</span>
+                </a>
+
+                <a
+                    href="/supervisor/historial"
+                    class="nav-link {% if request.path.startswith('/supervisor/historial') %}active{% endif %}"
+                >
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12a9 9 0 1 0 3-6.7"></path>
+                            <path d="M3 3v6h6"></path>
+                            <path d="M12 7v5l3 3"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Historial</span>
+                </a>
+
+                <a
+                    href="/supervisor/reportes"
+                    class="nav-link {% if request.path.startswith('/supervisor/reportes') %}active{% endif %}"
+                >
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 3v18h18"></path>
+                            <path d="M7 15v-4"></path>
+                            <path d="M12 15V7"></path>
+                            <path d="M17 15v-6"></path>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Reportes</span>
+                </a>
+                
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-session">
+                    <p>Sesión activa</p>
+                    <strong id="sidebarUserName">Dueño</strong>
+                </div>
+            </div>
+            <div class="sidebar-logout">
+                <button
+                    class="sidebar-logout-btn"
+                    type="button"
+                    id="btnSidebarLogout"
+                    title="Cerrar sesión">
+
+                    <svg viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round">
+
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <path d="M16 17l5-5-5-5"/>
+                        <path d="M21 12H9"/>
+
+                    </svg>
+
+                    <span class="logout-text">
+                        Cerrar sesión
+                    </span>
+
+                </button>
+            </div>
+        </aside>
+
+            <div class="main-wrapper">
+                <header class="mobile-topbar">
+                    <button type="button" class="mobile-menu-btn" id="btnMobileMenu">
+                        ☰
+                    </button>
+
+                    <strong class="mobile-topbar-brand">TRACKSECURITY</strong>
+                </header>
+            <main class="content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/configuracion_sistema.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/guards.js') }}"></script>
+
+    <script>
+        document.addEventListener(
+            "DOMContentLoaded",
+            async function () {
+
+                if (
+                    window.TrackGuards
+                        ?.requireAuth
+                ) {
+
+                    const autorizado =
+                        await TrackGuards.requireAuth(
+                            "supervisor"
+                        );
+
+                    if (!autorizado) {
+                        return;
+                    }
+
+                }
+
+            }
+        );
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const layout = document.getElementById('appLayout');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const btnCollapse = document.getElementById('btnCollapseSidebar');
+            const btnMobile = document.getElementById('btnMobileMenu');
+
+            const user = window.TrackAuth
+                ? TrackAuth.getUser()
+                : null;
+
+            const name =
+                user?.nombre || "Supervisor";
+
+            const topbarName = document.getElementById('topbarUserName');
+            const sidebarName = document.getElementById('sidebarUserName');
+            const btnLogout = document.getElementById('btnLogout');
+            const btnSidebarLogout = document.getElementById('btnSidebarLogout');
+
+            if (btnSidebarLogout) {
+                btnSidebarLogout.addEventListener('click', function () {
+                    TrackAuth.logout();
+                });
+}
+
+            if (topbarName) topbarName.textContent = name;
+            if (sidebarName) sidebarName.textContent = name;
+
+            if (localStorage.getItem('ts_sidebar_collapsed') === '1') {
+                layout.classList.add('sidebar-collapsed');
+            }
+
+            document.documentElement.classList.remove('sidebar-pre-collapsed');
+
+            btnCollapse?.addEventListener('click', function () {
+                layout.classList.toggle('sidebar-collapsed');
+                localStorage.setItem(
+                    'ts_sidebar_collapsed',
+                    layout.classList.contains('sidebar-collapsed') ? '1' : '0'
+                );
+            });
+
+            function abrirMenuMovil() {
+                layout.classList.add('sidebar-mobile-open');
+            }
+
+            function cerrarMenuMovil() {
+                layout.classList.remove('sidebar-mobile-open');
+            }
+
+            btnMobile?.addEventListener('click', function (event) {
+                event.stopPropagation();
+                abrirMenuMovil();
+            });
+
+            overlay?.addEventListener('click', function () {
+                cerrarMenuMovil();
+            });
+
+            document.addEventListener('click', function (event) {
+                const menuAbierto = layout.classList.contains('sidebar-mobile-open');
+
+                if (!menuAbierto) return;
+
+                const clickDentroSidebar = sidebar?.contains(event.target);
+                const clickEnBotonMovil = btnMobile?.contains(event.target);
+
+                if (!clickDentroSidebar && !clickEnBotonMovil) {
+                    cerrarMenuMovil();
+                }
+            });
+
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                link.addEventListener('click', function () {
+                    cerrarMenuMovil();
+                });
+            });
+
+            if (btnLogout) {
+                btnLogout.addEventListener('click', function () {
+                    TrackAuth.logout();
+                });
+            }
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

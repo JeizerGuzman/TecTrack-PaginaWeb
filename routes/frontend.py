@@ -123,6 +123,82 @@ def registrar_frontend_routes(app):
     def dueno_configuracion_editar():
         return render_template("dueno/configuracion/editar.html")
 
+    
+    
+    # ========================================================
+    # VISTAS SUPERVISOR
+    # ========================================================
+
+    # Redirige /supervisor hacia el dashboard.
+    @app.get("/supervisor")
+    def supervisor_home():
+        return redirect(
+            url_for(
+                "supervisor_dashboard"
+            )
+        )
+
+
+    # Dashboard principal del supervisor.
+    @app.get("/supervisor/dashboard")
+    def supervisor_dashboard():
+        return render_template(
+            "supervisor/dashboard.html"
+        )
+
+
+    # Monitoreo operativo en vivo.
+    @app.get("/supervisor/monitoreo")
+    def supervisor_monitoreo():
+        return render_template(
+            "supervisor/monitoreo/index.html"
+        )
+
+
+    # Listado de vehículos en modo consulta.
+    @app.get("/supervisor/vehiculos")
+    def supervisor_vehiculos():
+        return render_template(
+            "supervisor/vehiculos/index.html"
+        )
+
+
+    # Detalle de vehículo en modo consulta.
+    @app.get(
+        "/supervisor/vehiculos/<int:vehiculo_id>"
+    )
+    def supervisor_vehiculo_detalle(
+        vehiculo_id
+    ):
+        return render_template(
+            "supervisor/vehiculos/detalle.html",
+            vehiculo_id=vehiculo_id
+        )
+
+
+    # Alertas del supervisor.
+    @app.get("/supervisor/alertas")
+    def supervisor_alertas():
+        return render_template(
+            "supervisor/alertas/index.html"
+        )
+
+
+    # Historial operativo.
+    @app.get("/supervisor/historial")
+    def supervisor_historial():
+        return render_template(
+            "supervisor/historial/index.html"
+        )
+
+
+    # Reportes.
+    @app.get("/supervisor/reportes")
+    def supervisor_reportes():
+        return render_template(
+            "supervisor/reportes/index.html"
+        )
+    
     # ========================================================
     # VISTAS ADMIN
     # ========================================================

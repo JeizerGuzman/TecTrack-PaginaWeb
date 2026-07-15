@@ -1,10 +1,34 @@
 window.TrackAPI = {
+    
     getToken() {
-        return localStorage.getItem("access_token");
+
+        if (
+            window.TrackAuth
+            &&
+            typeof TrackAuth.getToken ===
+                "function"
+        ) {
+
+            return TrackAuth.getToken();
+
+        }
+
+
+        return (
+            sessionStorage.getItem(
+                "access_token"
+            )
+            ||
+            localStorage.getItem(
+                "access_token"
+            )
+        );
+
     },
 
     async request(endpoint, options = {}) {
-        const token = TrackAuth.getToken ? TrackAuth.getToken() : localStorage.getItem("token");
+        const token =
+            this.getToken();
 
         const response = await fetch(endpoint, {
             ...options,
