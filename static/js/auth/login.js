@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "tecnico",
 
         // Descomenta esta línea si quieres que el chofer tampoco pueda entrar a la web:
-        // "chofer",
+        "chofer",
     ];
 
     // Mensaje personalizado por rol bloqueado.

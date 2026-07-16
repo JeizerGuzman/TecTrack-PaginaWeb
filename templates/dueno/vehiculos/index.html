@@ -82,6 +82,7 @@
                     <option value="alerta">Con alerta</option>
                     <option value="sin_senal">Sin señal</option>
                     <option value="sin_dispositivo">Sin dispositivo</option>
+                    <option value="desactivado">Desactivado</option>
                 </select>
             </div>
         </div>
@@ -144,7 +145,37 @@
         </div>
     </div>
 </div>
+<div id="modalReactivarVehiculo" class="modal-vehiculo-overlay">
+    <div class="modal-vehiculo">
+        <div class="modal-vehiculo-header">
+            <h3>Reactivar vehículo</h3>
+            <button type="button" id="btnCerrarModalReactivarVehiculo" class="modal-vehiculo-close">×</button>
+        </div>
 
+        <div class="modal-vehiculo-body">
+            <p>Vas a reactivar este vehículo:</p>
+
+            <div class="modal-vehiculo-info">
+                <strong id="modalReactivarVehiculoNombre">Vehículo</strong>
+                <span id="modalReactivarVehiculoPlaca">Placa no registrada</span>
+            </div>
+
+            <p class="modal-vehiculo-note">
+                El vehículo volverá a aparecer como unidad disponible para operación.
+            </p>
+        </div>
+
+        <div class="modal-vehiculo-actions">
+            <button type="button" id="btnCancelarReactivarVehiculo" class="btn btn-outline">
+                Cancelar
+            </button>
+
+            <button type="button" id="btnConfirmarReactivarVehiculo" class="btn btn-primary">
+                Reactivar vehículo
+            </button>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}

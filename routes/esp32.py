@@ -21,6 +21,8 @@ from models import (
     Vehiculo,
     Evento,
     Alerta,
+    UbicacionActual,
+
 )
 
 from helpers import (
@@ -39,6 +41,125 @@ from helpers import (
 # Registra rutas del ESP32.
 # ------------------------------------------------------------
 def registrar_esp32_routes(app):
+
+
+    def obtener_estado_manual_anterior(
+        vehiculo_id,
+        estado_anterior_ubicacion
+    ):
+
+        ultimo_evento_manual = (
+
+            Evento.query
+
+            .filter(
+                Evento.vehiculo_id == vehiculo_id,
+                Evento.tipo.in_(
+                    [
+                        "manual",
+                        "modo_manual",
+                        "modo_manual_activado",
+                        "modo_manual_desactivado",
+                    ]
+                )
+            )
+
+            .order_by(
+                Evento.timestamp.desc()
+            )
+
+            .first()
+
+        )
+
+
+        if ultimo_evento_manual:
+
+            tipo_ultimo_evento = str(
+                ultimo_evento_manual.tipo or ""
+            ).lower()
+
+
+            if tipo_ultimo_evento in (
+                "manual",
+                "modo_manual",
+                "modo_manual_activado",
+            ):
+
+                return True
+
+
+            if tipo_ultimo_evento == "modo_manual_desactivado":
+
+                return False
+
+
+        return estado_anterior_ubicacion in (
+            "manual",
+            "modo_manual",
+        )
+
+
+    def registrar_evento_cambio_manual(
+        vehiculo_id,
+        modo_manual_actual,
+        modo_manual_anterior,
+        data,
+        ahora
+    ):
+
+        if (
+            modo_manual_actual
+            and
+            not modo_manual_anterior
+        ):
+
+            evento = Evento(
+                vehiculo_id=vehiculo_id,
+                tipo="modo_manual_activado",
+                descripcion="Modo manual activado",
+                lat=data.get("lat"),
+                lng=data.get("lng"),
+                timestamp=ahora,
+            )
+
+            db.session.add(evento)
+
+            print(
+                "📝 EVENTO CREADO -> "
+                "tipo: modo_manual_activado"
+            )
+
+            return True
+
+
+        if (
+            not modo_manual_actual
+            and
+            modo_manual_anterior
+        ):
+
+            evento = Evento(
+                vehiculo_id=vehiculo_id,
+                tipo="modo_manual_desactivado",
+                descripcion="Modo manual desactivado",
+                lat=data.get("lat"),
+                lng=data.get("lng"),
+                timestamp=ahora,
+            )
+
+            db.session.add(evento)
+
+            print(
+                "📝 EVENTO CREADO -> "
+                "tipo: modo_manual_desactivado"
+            )
+
+            return True
+
+
+        return False
+
 
     # ========================================================
     # RECIBIR DATOS DEL ESP32
@@ -275,6 +396,36 @@ def registrar_esp32_routes(app):
             ):
                 modo_manual_actual = True
 
+            # =================================================
+            # ESTADO ANTERIOR DEL VEHÍCULO
+            #
+            # Se obtiene antes de actualizar UbicacionActual.
+            # Sirve para registrar eventos solo cuando existe
+            # cambio real de estado.
+            # =================================================
+
+            ubicacion_anterior = db.session.get(
+                UbicacionActual,
+                vehiculo.id
+            )
+
+
+            estado_anterior_ubicacion = (
+                str(
+                    ubicacion_anterior.estado or ""
+                ).strip().lower()
+                if ubicacion_anterior
+                else ""
+            )
+
+
+            modo_manual_anterior = (
+                obtener_estado_manual_anterior(
+                    vehiculo.id,
+                    estado_anterior_ubicacion
+                )
+            )
+
 
             # =================================================
             # ÚLTIMA CONEXIÓN DEL DISPOSITIVO
@@ -324,47 +475,106 @@ def registrar_esp32_routes(app):
 
             # =================================================
             # EVENTOS
+            #
+            # Los eventos de modo manual solo se registran
+            # cuando cambia el estado:
+            #
+            # - normal -> manual
+            # - manual -> normal
+            #
+            # No se registra un evento por cada paquete del ESP32.
             # =================================================
 
             evento_creado = False
 
 
+            evento_creado = registrar_evento_cambio_manual(
+                vehiculo.id,
+                modo_manual_actual,
+                modo_manual_anterior,
+                data,
+                ahora
+            )
+
+
             if estado_actual in (
                 "encendido",
                 "apagado",
-                "modo_manual",
-                "manual"
             ):
 
-                evento = Evento(
+                ultimo_evento_mismo_tipo = (
 
-                    vehiculo_id=vehiculo.id,
+                    Evento.query
 
-                    tipo=estado_actual,
+                    .filter_by(
+                        vehiculo_id=vehiculo.id,
+                        tipo=estado_actual
+                    )
 
-                    descripcion=(
-                        f"Evento '{estado_actual}' "
-                        "recibido desde dispositivo"
-                    ),
+                    .order_by(
+                        Evento.timestamp.desc()
+                    )
 
-                    lat=data.get("lat"),
+                    .first()
 
-                    lng=data.get("lng"),
-
-                    timestamp=ahora,
                 )
 
 
-                db.session.add(evento)
+                crear_evento_estado = True
 
 
-                evento_creado = True
+                if ultimo_evento_mismo_tipo:
+
+                    segundos_desde_ultimo_evento = (
+                        ahora
+                        -
+                        int(
+                            ultimo_evento_mismo_tipo.timestamp
+                            or 0
+                        )
+                    )
 
 
-                print(
-                    "📝 EVENTO CREADO -> "
-                    f"tipo: {estado_actual}"
-                )
+                    crear_evento_estado = (
+                        segundos_desde_ultimo_evento
+                        >
+                        10
+                    )
+
+
+                if crear_evento_estado:
+
+                    evento = Evento(
+                        vehiculo_id=vehiculo.id,
+                        tipo=estado_actual,
+                        descripcion=(
+                            f"Evento '{estado_actual}' "
+                            "recibido desde dispositivo"
+                        ),
+                        lat=data.get("lat"),
+                        lng=data.get("lng"),
+                        timestamp=ahora,
+                    )
+
+
+                    db.session.add(evento)
+
+
+                    evento_creado = True
+
+
+                    print(
+                        "📝 EVENTO CREADO -> "
+                        f"tipo: {estado_actual}"
+                    )
+
+
+                else:
+
+                    print(
+                        "⏳ EVENTO OMITIDO -> "
+                        f"tipo repetido: {estado_actual}"
+                    )
 
 
             # =================================================

@@ -213,6 +213,9 @@ def serializar_vehiculo(vehiculo):
         "marca": vehiculo.marca,
         "modelo": vehiculo.modelo,
         "anio": vehiculo.anio,
+        
+        # Estado administrativo del vehículo.
+        "activo": vehiculo.activo,
 
         # Chofer asignado.
         "chofer": chofer.nombre if chofer else None,

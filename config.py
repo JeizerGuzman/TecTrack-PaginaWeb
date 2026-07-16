@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from datetime import timedelta
 
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
@@ -32,7 +33,11 @@ class Config:
     # =========================
     SECRET_KEY = os.getenv("SECRET_KEY", "TrackSecurity2026")
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "TrackSecurityJWT2026")
-
+    
+    # Tiempo que dura la sesion abierta antes de que caduque el token
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=1)
+    # JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=8)
+    
     # =========================
     # BASE DE DATOS
     # =========================

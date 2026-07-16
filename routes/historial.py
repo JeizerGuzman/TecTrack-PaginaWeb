@@ -176,6 +176,12 @@ def titulo_evento(tipo):
 
         "modo_manual":
             "Modo manual activado",
+            
+        "modo_manual_activado":
+            "Modo manual activado",
+
+        "modo_manual_desactivado":
+            "Modo manual desactivado",
 
         "sistema_encendido":
             "Sistema encendido",
@@ -618,6 +624,7 @@ def registrar_historial_routes(app):
                         categoria,
 
                     "total_mostrado": 0,
+                    "total_disponible": 0,
 
                 }), 200
 
@@ -747,6 +754,38 @@ def registrar_historial_routes(app):
                 "servicios":
                     total_servicios,
             }
+    
+            if categoria == "todos":
+
+                total_disponible = (
+                    metricas["total_actividad"]
+                )
+
+
+            elif categoria == "alertas":
+
+                total_disponible = (
+                    total_alertas
+                )
+
+
+            elif categoria == "eventos":
+
+                total_disponible = (
+                    total_eventos
+                )
+
+
+            elif categoria == "servicios":
+
+                total_disponible = (
+                    total_servicios
+                )
+
+
+            else:
+
+                total_disponible = 0
 
 
             # ================================================
@@ -1173,7 +1212,10 @@ def registrar_historial_routes(app):
                         fecha_hasta
                     )
                 )
-
+                
+                total_disponible = (
+                    query_gps.count()
+                )
 
                 puntos_gps = (
 
@@ -1328,6 +1370,9 @@ def registrar_historial_routes(app):
 
                 "total_mostrado":
                     len(registros),
+
+                "total_disponible":
+                    total_disponible,
 
             }), 200
 

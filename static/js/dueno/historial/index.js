@@ -11,6 +11,7 @@ let historialVehiculos = [];
 
 let historialCategoriaActual = "todos";
 
+let historialTotalDisponible = 0;
 
 /* ============================================================
    INICIALIZACIÓN
@@ -211,6 +212,10 @@ async function cargarHistorial() {
                 ? respuesta.vehiculos
                 : [];
 
+        historialTotalDisponible =
+            Number(
+                respuesta?.total_disponible || 0
+            );
 
         pintarMetricasHistorial(
             respuesta?.metricas || {}
@@ -1315,13 +1320,52 @@ function actualizarCantidadMostrada(
     }
 
 
+    const busqueda =
+        normalizarHistorial(
+            document
+                .getElementById(
+                    "buscarHistorial"
+                )
+                ?.value || ""
+        );
+
+
+    if (busqueda) {
+
+        elemento.textContent =
+            cantidad === 1
+                ? "1 resultado filtrado"
+                : `${cantidad} resultados filtrados`;
+
+        return;
+
+    }
+
+
+    const totalDisponible =
+        Number(
+            historialTotalDisponible || 0
+        );
+
+
+    if (
+        totalDisponible > cantidad
+    ) {
+
+        elemento.textContent =
+            `Mostrando ${cantidad} de ${totalDisponible} registros`;
+
+        return;
+
+    }
+
+
     elemento.textContent =
         cantidad === 1
             ? "1 registro"
             : `${cantidad} registros`;
 
 }
-
 
 /* ============================================================
    HELPERS DE CATEGORÍA

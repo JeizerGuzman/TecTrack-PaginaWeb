@@ -133,13 +133,39 @@ def registrar_vehiculos_routes(app):
     def listar_vehiculos():
         usuario = obtener_usuario_actual()
 
-        if usuario.tipo in ("admin", "dueno", "supervisor"):
-            vehiculos = Vehiculo.query.filter_by(
-                empresa_id=usuario.empresa_id,
-                activo=True
-            ).all()
+        incluir_desactivados = (
+            request.args.get(
+                "incluir_desactivados",
+                "0"
+            )
+            ==
+            "1"
+        )
+
+
+        if usuario.tipo in (
+            "admin",
+            "dueno",
+            "supervisor"
+        ):
+
+            consulta = Vehiculo.query.filter_by(
+                empresa_id=usuario.empresa_id
+            )
+
+
+            if not incluir_desactivados:
+
+                consulta = consulta.filter(
+                    Vehiculo.activo == True
+                )
+
+
+            vehiculos = consulta.all()
+
 
         elif usuario.tipo == "chofer":
+
             vehiculos = Vehiculo.query.filter_by(
                 chofer_id=usuario.id,
                 activo=True
@@ -478,6 +504,11 @@ def registrar_vehiculos_routes(app):
         if vehiculo.empresa_id != usuario.empresa_id:
             return jsonify({"error": "no tienes acceso a este vehículo"}), 403
 
+        if vehiculo.activo is False:
+
+            return jsonify({
+                "error": "este vehículo ya está desactivado"
+            }), 400
         try:
             vehiculo.activo = False
 
@@ -497,4 +528,63 @@ def registrar_vehiculos_routes(app):
         except Exception as e:
             db.session.rollback()
             print(f"❌ Error al desactivar vehículo: {e}")
+            return jsonify({"error": "error interno del servidor"}), 500
+
+    # Reactiva un vehículo previamente desactivado.
+    #
+    # Se usa actualmente en:
+    # - static/js/dueno/vehiculos/index.js
+    @app.route("/api/vehiculos/<int:vehiculo_id>/reactivar", methods=["PUT"])
+    @jwt_required()
+    @rol_requerido("dueno", "admin")
+    def reactivar_vehiculo(vehiculo_id):
+        usuario = obtener_usuario_actual()
+        vehiculo = db.session.get(Vehiculo, vehiculo_id)
+
+        if not vehiculo:
+            return jsonify({"error": "vehículo no encontrado"}), 404
+
+        if vehiculo.empresa_id != usuario.empresa_id:
+            return jsonify({"error": "no tienes acceso a este vehículo"}), 403
+
+        if vehiculo.activo is True:
+
+            return jsonify({
+                "error": "este vehículo ya está activo"
+            }), 400
+        
+        try:
+            vehiculo.activo = True
+
+            if hasattr(
+                vehiculo,
+                "estado_instalacion"
+            ):
+
+                if vehiculo.dispositivo_id:
+
+                    vehiculo.estado_instalacion = "instalado"
+
+                else:
+
+                    vehiculo.estado_instalacion = "sin_dispositivo"
+
+
+            registrar_evento(
+                vehiculo_id=vehiculo.id,
+                tipo="vehiculo_reactivado",
+                descripcion=f"{usuario.nombre} reactivó el vehículo {vehiculo.nombre}"
+            )
+
+            db.session.commit()
+
+            return jsonify({
+                "ok": True,
+                "mensaje": "vehículo reactivado correctamente",
+                "vehiculo": serializar_vehiculo(vehiculo)
+            }), 200
+
+        except Exception as e:
+            db.session.rollback()
+            print(f"❌ Error al reactivar vehículo: {e}")
             return jsonify({"error": "error interno del servidor"}), 500

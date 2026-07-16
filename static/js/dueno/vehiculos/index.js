@@ -15,12 +15,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let vehiculosOriginales = [];
     let vehiculoSeleccionadoDesactivar = null;
+    let vehiculoSeleccionadoReactivar = null;
     let intervaloActualizacionVehiculos = null;
     let cargandoVehiculos = false;
 
     await cargarVehiculos(false);
 
     configurarModalDesactivarVehiculo();
+    configurarModalReactivarVehiculo();
 
     await iniciarActualizacionAutomatica();
 
@@ -44,7 +46,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         cargandoVehiculos = true;
 
         try {
-            const response = await TrackAPI.obtenerVehiculos();
+            const response = await TrackAPI.obtenerVehiculos({
+                incluirDesactivados: true
+            });
             vehiculosOriginales = response.vehiculos || [];
 
             renderStats(vehiculosOriginales);
@@ -241,9 +245,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                             Editar
                         </button>
 
-                        <button class="btn btn-danger-outline btn-sm btn-desactivar-vehiculo" data-id="${v.id}">
-                            Desactivar
-                        </button>
+                        ${
+                            v.activo === false
+                                ? `
+                                    <button class="btn btn-primary btn-sm btn-reactivar-vehiculo" data-id="${v.id}">
+                                        Reactivar
+                                    </button>
+                                `
+                                : `
+                                    <button class="btn btn-danger-outline btn-sm btn-desactivar-vehiculo" data-id="${v.id}">
+                                        Desactivar
+                                    </button>
+                                `
+                        }
                     </div>
                 </article>
             `;
@@ -280,6 +294,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                 abrirModalDesactivarVehiculo(vehiculo);
             });
         });
+
+        document.querySelectorAll(".btn-reactivar-vehiculo").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const vehiculoId = Number(btn.dataset.id);
+                const vehiculo = vehiculosOriginales.find(v => Number(v.id) === vehiculoId);
+
+                if (!vehiculo) {
+                    mostrarToastVehiculo("No se encontró el vehículo seleccionado.", "error");
+                    return;
+                }
+
+                abrirModalReactivarVehiculo(vehiculo);
+            });
+        });
     }
 
     // ============================================================
@@ -292,12 +320,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("btnCerrarModalVehiculo")?.addEventListener("click", cerrarModalDesactivarVehiculo);
         document.getElementById("btnCancelarDesactivarVehiculo")?.addEventListener("click", cerrarModalDesactivarVehiculo);
         document.getElementById("btnConfirmarDesactivarVehiculo")?.addEventListener("click", confirmarDesactivarVehiculo);
+    }
 
-        document.getElementById("modalDesactivarVehiculo")?.addEventListener("click", (event) => {
-            if (event.target.id === "modalDesactivarVehiculo") {
-                cerrarModalDesactivarVehiculo();
-            }
-        });
+    function configurarModalReactivarVehiculo() {
+        document.getElementById("btnCerrarModalReactivarVehiculo")?.addEventListener("click", cerrarModalReactivarVehiculo);
+        document.getElementById("btnCancelarReactivarVehiculo")?.addEventListener("click", cerrarModalReactivarVehiculo);
+        document.getElementById("btnConfirmarReactivarVehiculo")?.addEventListener("click", confirmarReactivarVehiculo);
     }
 
     // ============================================================
@@ -340,6 +368,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+
+    function abrirModalReactivarVehiculo(vehiculo) {
+        vehiculoSeleccionadoReactivar = vehiculo;
+
+        const nombre = document.getElementById("modalReactivarVehiculoNombre");
+        const placa = document.getElementById("modalReactivarVehiculoPlaca");
+        const modal = document.getElementById("modalReactivarVehiculo");
+
+        if (nombre) nombre.textContent = vehiculo.nombre || "Vehículo sin nombre";
+        if (placa) placa.textContent = vehiculo.placa || "Placa no registrada";
+        if (modal) modal.classList.add("visible");
+    }
+
+
+    function cerrarModalReactivarVehiculo() {
+        vehiculoSeleccionadoReactivar = null;
+
+        const modal = document.getElementById("modalReactivarVehiculo");
+        const btn = document.getElementById("btnConfirmarReactivarVehiculo");
+
+        if (modal) modal.classList.remove("visible");
+
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = "Reactivar vehículo";
+        }
+    }
+
     // ============================================================
     // Desactiva el vehículo seleccionado.
     //
@@ -377,6 +433,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    async function confirmarReactivarVehiculo() {
+        if (!vehiculoSeleccionadoReactivar) return;
+
+        const btn = document.getElementById("btnConfirmarReactivarVehiculo");
+
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = "Reactivando...";
+        }
+
+        try {
+            await TrackAPI.reactivarVehiculo(vehiculoSeleccionadoReactivar.id);
+
+            cerrarModalReactivarVehiculo();
+            await cargarVehiculos(false);
+
+            mostrarToastVehiculo("Vehículo reactivado correctamente.", "success");
+
+        } catch (error) {
+            console.error("Error reactivando vehículo:", error);
+            mostrarToastVehiculo(error.message || "No se pudo reactivar el vehículo.", "error");
+
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = "Reactivar vehículo";
+            }
+        }
+    }
     // ============================================================
     // Normaliza el estado recibido del backend.
     //
@@ -392,6 +476,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // - sin_dispositivo
     // ============================================================
     function normalizarEstadoVehiculo(v) {
+        if (v.activo === false) return "desactivado";
+        
         if (!v.dispositivo_id && !v.dispositivo_serie) return "sin_dispositivo";
 
         const estado = String(v.estado || "").toLowerCase();
@@ -420,7 +506,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             activo: "Activo",
             alerta: "Con alerta",
             sin_senal: "Sin señal",
-            sin_dispositivo: "Sin dispositivo"
+            sin_dispositivo: "Sin dispositivo",
+            desactivado: "Desactivado"
         };
 
         return mapa[estado] || "Activo";

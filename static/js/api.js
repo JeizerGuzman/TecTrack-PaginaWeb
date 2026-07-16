@@ -30,22 +30,94 @@ window.TrackAPI = {
         const token =
             this.getToken();
 
-        const response = await fetch(endpoint, {
-            ...options,
-            headers: {
-                "Content-Type": "application/json",
-                ...(token ? { "Authorization": `Bearer ${token}` } : {}),
-                ...(options.headers || {})
+        const response =
+            await fetch(endpoint, {
+                ...options,
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+                    ...(options.headers || {})
+                }
+            });
+
+        const data =
+            await response
+                .json()
+                .catch(() => ({}));
+
+
+        if (
+            response.status === 401
+            ||
+            response.status === 422
+        ) {
+
+            console.warn(
+                "Sesión expirada o token inválido:",
+                data
+            );
+
+
+            if (
+                window.TrackAuth
+                &&
+                typeof TrackAuth.clearSession === "function"
+            ) {
+
+                TrackAuth.clearSession();
+
+            } else {
+
+                const clavesSesion = [
+                    "access_token",
+                    "ts_usuario",
+                    "ts_recordar_sesion",
+                    "token",
+                    "usuario",
+                    "tracksecurity_token",
+                    "tracksecurity_user",
+                ];
+
+
+                clavesSesion.forEach((clave) => {
+                    localStorage.removeItem(clave);
+                    sessionStorage.removeItem(clave);
+                });
+
             }
-        });
 
-        const data = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
-        const message = data?.error || data?.mensaje || `Error HTTP ${response.status}`;
-        console.error("Respuesta del backend:", data);
-        throw new Error(message);
-    }
+            window.location.href = "/login";
+
+            throw new Error(
+                "Tu sesión expiró. Inicia sesión nuevamente."
+            );
+
+        }
+
+
+        if (!response.ok) {
+
+            const message =
+                data?.error
+                ||
+                data?.mensaje
+                ||
+                `Error HTTP ${response.status}`;
+
+
+            console.error(
+                "Respuesta del backend:",
+                data
+            );
+
+
+            throw new Error(
+                message
+            );
+
+        }
+
 
         return data;
     },
@@ -168,8 +240,40 @@ window.TrackAPI = {
         });
     },
 
-    obtenerVehiculos() {
-        return this.request("/api/vehiculos");
+    obtenerVehiculos(
+        opciones = {}
+    ) {
+
+        const query =
+            new URLSearchParams();
+
+
+        if (
+            opciones.incluirDesactivados
+        ) {
+
+            query.set(
+                "incluir_desactivados",
+                "1"
+            );
+
+        }
+
+
+        const cadena =
+            query.toString();
+
+
+        const endpoint =
+            cadena
+                ? `/api/vehiculos?${cadena}`
+                : "/api/vehiculos";
+
+
+        return this.request(
+            endpoint
+        );
+
     },
 
     crearVehiculo(data) {
@@ -192,6 +296,12 @@ window.TrackAPI = {
 
     desactivarVehiculo(vehiculoId) {
         return this.request(`/api/vehiculos/${vehiculoId}/desactivar`, {
+            method: "PUT"
+        });
+    },
+
+    reactivarVehiculo(vehiculoId) {
+        return this.request(`/api/vehiculos/${vehiculoId}/reactivar`, {
             method: "PUT"
         });
     },
