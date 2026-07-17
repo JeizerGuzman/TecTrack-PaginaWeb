@@ -7,7 +7,7 @@ let detalleCargando = false;
 let detalleTimer = null;
 let mapaVehiculo = null;
 let marcadorVehiculo = null;
-let ultimaDireccionKey = null;
+
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -192,10 +192,23 @@ function renderVehiculo(v, els) {
     }
 
     if (els.ubicacionTexto) {
+
+        const direccion =
+            window.TrackDireccion
+                ? TrackDireccion.obtenerTexto(
+                    v
+                )
+                : (
+                    v.direccion ||
+                    "Dirección no disponible"
+                );
+
+
         els.ubicacionTexto.textContent =
             v.lat != null && v.lng != null
-                ? `Última ubicación recibida: ${v.lat}, ${v.lng}`
+                ? `Última ubicación recibida: ${v.lat}, ${v.lng} · ${direccion}`
                 : "Este vehículo aún no tiene una ubicación reportada.";
+
     }
 }
 
@@ -218,6 +231,19 @@ function renderSensores(v, sensoresBox) {
     const estadoActual = String(
         v.estado || ""
     ).toLowerCase();
+
+    const modoManual = [
+        "manual",
+        "modo_manual",
+    ].includes(
+        estadoActual
+    );
+
+    const puertaAbierta =
+        puerta === "abierta";
+
+    const vibracionDetectada =
+        vibracion === 1;
 
     /*
      * Se considera sin conexión cuando:
@@ -276,28 +302,54 @@ function renderSensores(v, sensoresBox) {
     }
 
 
-    /* ========================================================
-       CON CONEXIÓN
-       Verde = normal
-       Rojo  = detección o alerta
-       ======================================================== */
+    const clasePuerta =
+        puertaAbierta
+            ? (
+                modoManual
+                    ? "sensor-info"
+                    : "sensor-alerta"
+            )
+            : "sensor-ok";
+
+
+    const claseVibracion =
+        vibracionDetectada
+            ? (
+                modoManual
+                    ? "sensor-info"
+                    : "sensor-alerta"
+            )
+            : "sensor-ok";
+
+
+    const textoPuerta =
+        puertaAbierta
+            ? (
+                modoManual
+                    ? "Puerta abierta en modo manual"
+                    : "Puerta abierta"
+            )
+            : puerta === "cerrada"
+                ? "Puerta cerrada"
+                : "Desconocido";
+
+
+    const textoVibracion =
+        vibracionDetectada
+            ? (
+                modoManual
+                    ? "Vibración detectada en modo manual"
+                    : "Vibración detectada"
+            )
+            : "Normal";
+
 
     sensoresBox.innerHTML = `
-        <div class="sensor-card ${
-            puerta === "abierta"
-                ? "sensor-alerta"
-                : "sensor-ok"
-        }">
+        <div class="sensor-card ${clasePuerta}">
             <span>Sensor de puerta</span>
 
             <strong>
-                ${
-                    puerta === "abierta"
-                        ? "Puerta abierta"
-                        : puerta === "cerrada"
-                            ? "Puerta cerrada"
-                            : "Desconocido"
-                }
+                ${textoPuerta}
             </strong>
 
             <small>
@@ -306,19 +358,11 @@ function renderSensores(v, sensoresBox) {
         </div>
 
 
-        <div class="sensor-card ${
-            vibracion === 1
-                ? "sensor-alerta"
-                : "sensor-ok"
-        }">
+        <div class="sensor-card ${claseVibracion}">
             <span>Sensor de vibración</span>
 
             <strong>
-                ${
-                    vibracion === 1
-                        ? "Vibración detectada"
-                        : "Normal"
-                }
+                ${textoVibracion}
             </strong>
 
             <small>
@@ -567,78 +611,152 @@ function actualizarMapaVehiculo(vehiculo) {
     const lat = Number(vehiculo.lat);
     const lng = Number(vehiculo.lng);
 
-    const ubicacionTexto = document.getElementById("detalleUbicacionTexto");
-    const btnGoogle = document.getElementById("btnAbrirGoogleMaps");
+    const ubicacionTexto =
+        document.getElementById(
+            "detalleUbicacionTexto"
+        );
 
-    if (!lat || !lng || Number.isNaN(lat) || Number.isNaN(lng)) {
+    const direccionTexto =
+        document.getElementById(
+            "detalleDireccionVehiculo"
+        );
+
+    const btnGoogle =
+        document.getElementById(
+            "btnAbrirGoogleMaps"
+        );
+
+    const direccion =
+        window.TrackDireccion
+            ? TrackDireccion.obtenerTexto(
+                vehiculo
+            )
+            : (
+                vehiculo.direccion ||
+                "Dirección no disponible"
+            );
+
+    const tieneUbicacionValida =
+        Number.isFinite(lat) &&
+        Number.isFinite(lng) &&
+        !(lat === 0 && lng === 0);
+
+
+    if (!tieneUbicacionValida) {
+
         if (ubicacionTexto) {
-            ubicacionTexto.textContent = "Este vehículo aún no tiene una ubicación válida.";
+
+            ubicacionTexto.textContent =
+                "Este vehículo aún no tiene una ubicación válida.";
+
         }
+
+
+        if (direccionTexto) {
+
+            direccionTexto.textContent =
+                direccion;
+
+        }
+
+
+        if (btnGoogle) {
+
+            btnGoogle.removeAttribute(
+                "href"
+            );
+
+        }
+
+
         return;
+
     }
+
 
     if (ubicacionTexto) {
-        ubicacionTexto.textContent = `Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)} · ${vehiculo.velocidad ?? 0} km/h`;
+
+        ubicacionTexto.textContent =
+            `Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)} · ${vehiculo.velocidad ?? 0} km/h`;
+
     }
+
+
+    if (direccionTexto) {
+
+        direccionTexto.textContent =
+            direccion;
+
+    }
+
 
     if (btnGoogle) {
-        btnGoogle.href = `https://www.google.com/maps?q=${lat},${lng}`;
+
+        btnGoogle.href =
+            `https://www.google.com/maps?q=${lat},${lng}`;
+
     }
+
 
     if (!mapaVehiculo) {
-        mapaVehiculo = L.map("mapaVehiculo", {
-            zoomControl: true
-        }).setView([lat, lng], 16);
 
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution: "&copy; OpenStreetMap"
-        }).addTo(mapaVehiculo);
+        mapaVehiculo = L.map(
+            "mapaVehiculo",
+            {
+                zoomControl: true
+            }
+        ).setView(
+            [lat, lng],
+            16
+        );
 
-        marcadorVehiculo = L.marker([lat, lng]).addTo(mapaVehiculo);
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                maxZoom: 19,
+                attribution: "&copy; OpenStreetMap"
+            }
+        ).addTo(
+            mapaVehiculo
+        );
+
+
+        marcadorVehiculo =
+            L.marker(
+                [lat, lng]
+            ).addTo(
+                mapaVehiculo
+            );
+
     } else {
-        marcadorVehiculo.setLatLng([lat, lng]);
-        mapaVehiculo.panTo([lat, lng], {
-            animate: true,
-            duration: 0.8
-        });
+
+        marcadorVehiculo.setLatLng(
+            [lat, lng]
+        );
+
+
+        mapaVehiculo.panTo(
+            [lat, lng],
+            {
+                animate: true,
+                duration: 0.8
+            }
+        );
+
     }
+
 
     marcadorVehiculo.bindPopup(`
         <strong>${escapeHtml(vehiculo.nombre || "Vehículo")}</strong><br>
         ${escapeHtml(vehiculo.placa || "Sin placa")}<br>
+        ${escapeHtml(direccion)}<br>
         Velocidad: ${vehiculo.velocidad ?? 0} km/h<br>
         Último reporte: ${tiempoRelativo(vehiculo.ultima_actualizacion)}
     `);
 
-    cargarDireccionCercana(lat, lng);
 }
 
-async function cargarDireccionCercana(lat, lng) {
-    const direccionEl = document.getElementById("detalleDireccionVehiculo");
-    if (!direccionEl) return;
-
-    const key = `${lat.toFixed(4)},${lng.toFixed(4)}`;
-
-    if (ultimaDireccionKey === key) return;
-    ultimaDireccionKey = key;
-
-    try {
-        direccionEl.textContent = "Buscando dirección cercana...";
-
-        const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
-
-        const response = await fetch(url);
-        const data = await response.json();
-
-        direccionEl.textContent =
-            data.display_name || "No se encontró una dirección cercana.";
-
-    } catch (error) {
-        console.warn("No se pudo obtener dirección:", error);
-        direccionEl.textContent = "Dirección no disponible por ahora.";
-    }
-}
 
 function volverPaginaAnterior() {
     if (document.referrer && document.referrer !== window.location.href) {

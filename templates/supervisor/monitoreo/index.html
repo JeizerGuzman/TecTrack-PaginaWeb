@@ -431,11 +431,7 @@ Monitoreo
 
 {% block extra_js %}
 
-<script
-    src="{{ url_for(
-        'static',
-        filename='js/supervisor/monitoreo/index.js'
-    ) }}"
-></script>
+<script src="{{ url_for('static', filename='js/utils/direccion.js') }}"></script>
+<script src="{{ url_for('static', filename='js/supervisor/monitoreo/index.js') }}"></script>
 
 {% endblock %}

@@ -282,7 +282,7 @@ function renderVehiculosResumen(vehiculos) {
                 </div>
 
                 <div class="dashboard-vehicle-actions">
-                    <a href="/dueno/vehiculos/${v.id}" class="btn btn-primary btn-sm">
+                    <a href="/supervisor/vehiculos/${v.id}" class="btn btn-primary btn-sm">
                         Ver vehículo
                     </a>
                 </div>

@@ -571,6 +571,26 @@ class UbicacionActual(db.Model):
     vibracion = db.Column(db.Integer, default=0)
     alerta = db.Column(db.Integer, default=0)
 
+    direccion = db.Column(
+        db.String(255),
+        nullable=True
+    )
+
+    direccion_lat = db.Column(
+        db.Float,
+        nullable=True
+    )
+
+    direccion_lng = db.Column(
+        db.Float,
+        nullable=True
+    )
+
+    ultima_actualizacion_direccion = db.Column(
+        db.Integer,
+        nullable=True
+    )
+
     ultima_actualizacion = db.Column(
         db.Integer,
         default=timestamp_actual
@@ -950,6 +970,30 @@ class ConfiguracionSistema(db.Model):
         db.Boolean,
         nullable=False,
         default=True
+    )
+    
+    distancia_minima_gps_metros = db.Column(
+        db.Integer,
+        nullable=False,
+        default=15
+    )
+
+    velocidad_minima_kmh = db.Column(
+        db.Float,
+        nullable=False,
+        default=1.0
+    )
+
+    geocodificacion_direccion_segundos = db.Column(
+        db.Integer,
+        nullable=False,
+        default=120
+    )
+
+    distancia_minima_direccion_metros = db.Column(
+        db.Integer,
+        nullable=False,
+        default=50
     )
 
 

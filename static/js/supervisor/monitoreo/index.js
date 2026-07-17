@@ -540,6 +540,7 @@ function crearTarjetaVehiculoMonitoreo(
                         vehiculo.nombre ||
                         "Vehículo"
                     )}
+                    
                 </strong>
 
 
@@ -709,7 +710,6 @@ function pintarDetalleVehiculoMonitoreo() {
 
         botonDetalle.hidden = true;
 
-
         contenido.innerHTML = `
 
             <div class="empty-state">
@@ -737,6 +737,13 @@ function pintarDetalleVehiculoMonitoreo() {
         obtenerEstadoMonitoreo(
             vehiculo
         );
+
+    const direccionHtml =
+        window.TrackDireccion
+            ? TrackDireccion.renderDireccion(
+                vehiculo
+            )
+            : "";
 
 
     nombre.textContent =
@@ -862,7 +869,7 @@ function pintarDetalleVehiculoMonitoreo() {
 
 
         </div>
-
+        ${direccionHtml}
     `;
 
 }

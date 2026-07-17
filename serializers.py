@@ -114,7 +114,19 @@ def calcular_estado_visible_vehiculo(ubicacion=None, dispositivo=None):
             "lat": None,
             "lng": None,
             "velocidad": None,
+            
+            "direccion": (
+                ubicacion.direccion
+                if ubicacion
+                else None
+            ),
 
+            "ultima_actualizacion_direccion": (
+                ubicacion.ultima_actualizacion_direccion
+                if ubicacion
+                else None
+            ),
+            
             "puerta": "sin_conexion",
             "vibracion": None,
             "alerta": 0,
@@ -145,6 +157,18 @@ def calcular_estado_visible_vehiculo(ubicacion=None, dispositivo=None):
         "lat": ubicacion.lat if ubicacion else None,
         "lng": ubicacion.lng if ubicacion else None,
         "velocidad": ubicacion.velocidad if ubicacion else 0,
+
+        "direccion": (
+            ubicacion.direccion
+            if ubicacion
+            else None
+        ),
+
+        "ultima_actualizacion_direccion": (
+            ubicacion.ultima_actualizacion_direccion
+            if ubicacion
+            else None
+        ),
 
         "puerta": ubicacion.puerta if ubicacion else "desconocida",
         "vibracion": ubicacion.vibracion if ubicacion else None,
@@ -250,6 +274,15 @@ def serializar_vehiculo(vehiculo):
         "lat": estado_visible["lat"],
         "lng": estado_visible["lng"],
         "velocidad": estado_visible["velocidad"],
+
+        "direccion": estado_visible.get(
+            "direccion"
+        ),
+
+        "ultima_actualizacion_direccion": estado_visible.get(
+            "ultima_actualizacion_direccion"
+        ),
+
         "ultima_actualizacion": estado_visible["ultima_actualizacion"],
 
         # Sensores visibles.

@@ -1051,3 +1051,23 @@
     color: #94a3b8;
 }
 
+/* ============================================================
+   SENSOR INFORMATIVO - MODO MANUAL
+   ============================================================ */
+
+.sensor-info {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.sensor-info::before {
+    background: #2563eb;
+}
+
+.sensor-info strong {
+    color: #1e40af;
+}
+
+.sensor-info small {
+    color: #475569;
+}

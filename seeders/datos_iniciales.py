@@ -528,6 +528,18 @@ def crear_configuracion_sistema():
         guardar_gps_inmediato_alerta=
             True,
 
+        distancia_minima_gps_metros=
+            15,
+
+        velocidad_minima_kmh=
+            1.0,
+
+        geocodificacion_direccion_segundos=
+            120,
+
+        distancia_minima_direccion_metros=
+            50,
+
     )
 
 
