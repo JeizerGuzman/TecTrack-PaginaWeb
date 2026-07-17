@@ -221,10 +221,35 @@
    RESPONSIVE
 ========================================== */
 
-@media (max-width: 900px) {
+/* Tablet: mantiene 2 columnas antes de colapsar del todo,
+   así los bloques no se sienten tan enormes de golpe */
+@media (max-width: 1000px) {
+  .bento-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "voice fuel"
+      "voice sound"
+      "voice work"
+      "step  step"
+      "ready ready";
+  }
+
+  .bento-title {
+    font-size: 30px;
+  }
+}
+
+/* Tablet chica / móvil grande: 1 columna, pero con bloques
+   más compactos (menos padding, menos min-height) */
+@media (max-width: 720px) {
   .bento-header {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+  }
+
+  .bento-desc {
+    max-width: 100%;
+    text-align: left;
   }
 
   .bento-grid {
@@ -236,6 +261,11 @@
       "work"
       "step"
       "ready";
+    gap: 14px;
+  }
+
+  .bento-card {
+    padding: 20px;
   }
 
   .card-fuel,
@@ -245,6 +275,7 @@
   .card-ready {
     flex-direction: column;
     align-items: flex-start;
+    gap: 14px;
   }
 
   .card-sound .card-visual,
@@ -253,7 +284,53 @@
     width: 100%;
   }
 
+  /* Reduce los altos mínimos de las imágenes: en desktop
+     estaban pensados para tarjetas anchas, en 1 columna
+     se sentían gigantes */
+  .card-voice .card-visual {
+    min-height: 160px;
+  }
+
+  .card-fuel .card-visual,
+  .card-step .card-visual {
+    min-height: 140px;
+  }
+
+  .card-sound .card-visual,
+  .card-work .card-visual,
+  .card-ready .card-visual {
+    min-height: 120px;
+  }
+
   .bento-title {
-    font-size: 28px;
+    font-size: 24px;
+  }
+
+  .card-text h3 {
+    font-size: 19px;
+  }
+
+  .card-text p {
+    font-size: 12.5px;
+    max-width: 100%;
+  }
+}
+
+/* Móvil chico: un último ajuste de espaciado */
+@media (max-width: 420px) {
+  .bento-card {
+    padding: 16px;
+  }
+
+  .card-text h3 {
+    font-size: 17px;
+  }
+
+  .bento-title {
+    font-size: 21px;
+  }
+
+  .bento-cta {
+    font-size: 13px;
   }
 }

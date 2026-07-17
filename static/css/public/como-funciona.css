@@ -82,7 +82,7 @@
   font-family: var(--serif-font);
   font-size: 26px;
   font-weight: 400;
-  color: var(--text-main);
+  color: var(--blue-primary);
   line-height: 1;
 }
 
@@ -110,4 +110,49 @@
   color: var(--text-muted);
   margin: 0;
   max-width: 420px;
+}
+
+/* ==========================================
+   RESPONSIVE 
+========================================== */
+
+@media (max-width: 900px) {
+  .como-funciona {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .list-cf-col {
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--divider);
+    padding-top: 28px;
+  }
+
+  .como-funciona-title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 560px) {
+  .list-cf-item {
+    grid-template-columns: 34px 20px 1fr;
+    padding: 18px 0;
+  }
+
+  .item-cf-number {
+    font-size: 20px;
+  }
+
+  .item-cf-text h3 {
+    font-size: 12px;
+  }
+
+  .item-cf-text p {
+    font-size: 12px;
+  }
+
+  .como-funciona-title {
+    font-size: 19px;
+  }
 }

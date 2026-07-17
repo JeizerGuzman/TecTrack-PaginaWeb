@@ -126,7 +126,24 @@ def registrar_frontend_routes(app):
     def dueno_configuracion_editar():
         return render_template("dueno/configuracion/editar.html")
 
+    # ========================================================
+    # Frontend - Rodri
+    # ========================================================
     
+    # Página de contacto.
+    # @app.get("/sobrenosotros")
+    # def sobre_nosotros():
+    #     return render_template(
+    #         "public/sobre-nosotros.html"
+    #     )
+    
+    # Página de paquetes y precios    
+    @app.get("/paquetes")
+    def paquetes():
+        return render_template(
+            "public/paquetes.html"
+        )        
+
     
     # ========================================================
     # VISTAS SUPERVISOR

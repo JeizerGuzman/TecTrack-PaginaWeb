@@ -113,7 +113,7 @@
   justify-content: center;
   padding: 13px 26px;
   border-radius: 30px;
-  background: linear-gradient(135deg, #3a3a3a, var(--blue-dark));
+  background: linear-gradient(135deg, var(--blue-primary), var(--blue-dark));
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;

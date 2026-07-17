@@ -1,0 +1,342 @@
+:root {
+  --bg-page: #f1f2f9;
+  --card-bg: #ffffff;
+  --text-main: #1e1b3a;
+  --text-muted: #7a7a8c;
+  --border-soft: #e5e5ef;
+  --check-bg: #eceefb;
+}
+
+.pricing {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+  margin: auto;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.pricing-header h1 {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 12px;
+}
+
+.pricing-header p {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin: 0 0 32px;
+}
+
+/* ==========================================
+   TOGGLE MONTHLY / YEARLY
+========================================== */
+
+.toggle-switch {
+  display: inline-flex;
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 6px;
+  gap: 4px;
+  margin-bottom: 56px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.toggle-btn {
+  border: none;
+  background: transparent;
+  padding: 10px 24px;
+  border-radius: 24px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn.active {
+  background: linear-gradient(135deg, var(--blue-primary), var(--blue-dark));
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(103, 114, 229, 0.35);
+}
+
+/* ==========================================
+   GRID DE PLANES
+========================================== */
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.pricing-card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 40px 32px;
+  text-align: left;
+  box-shadow: 0 10px 30px rgba(30, 27, 58, 0.06);
+  position: relative;
+}
+
+/* Tarjeta destacada: más grande, elevada, color de fondo distinto */
+.pricing-card-highlight {
+  background: linear-gradient(160deg, var(--blue-primary), var(--blue-dark));
+  padding: 44px 32px 40px;
+  transform: scale(1.06);
+  box-shadow: 0 24px 50px rgba(74, 84, 199, 0.35);
+  z-index: 2;
+}
+
+.badge-popular {
+  position: absolute;
+  top: 22px;
+  right: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+/* ==========================================
+   PRECIO
+========================================== */
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.price {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.period {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.pricing-card-highlight .price,
+.pricing-card-highlight .period {
+  color: #ffffff;
+}
+
+/* ==========================================
+   TÍTULO Y DESCRIPCIÓN DEL PLAN
+========================================== */
+
+.pricing-card h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 18px 0 10px;
+}
+
+.pricing-card-highlight h3 {
+  color: #ffffff;
+}
+
+.plan-desc {
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 0 0 24px;
+}
+
+.pricing-card-highlight .plan-desc {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ==========================================
+   LISTA DE FEATURES
+========================================== */
+
+.feature-list {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.pricing-card-highlight .feature-list li {
+  color: #ffffff;
+}
+
+.check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--check-bg);
+  color: var(--blue-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pricing-card-highlight .check {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+.btn-plan {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-outline {
+  background: var(--check-bg);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  transform: translateY(-2px);
+}
+
+.btn-solid {
+  background: #ffffff;
+  color: var(--blue-dark);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-solid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================
+   RESPONSIVE 
+========================================== */
+
+/* Tablet: reduce tamaños antes de colapsar a 1 columna */
+@media (max-width: 1024px) {
+  .pricing-grid {
+    gap: 18px;
+  }
+
+  .pricing-card {
+    padding: 32px 24px;
+  }
+
+  .pricing-card-highlight {
+    padding: 36px 24px 32px;
+  }
+
+  .price {
+    font-size: 34px;
+  }
+}
+
+/* Colapsa a 1 columna, tarjeta destacada arriba y a tamaño normal */
+@media (max-width: 900px) {
+  .pricing-header h1 {
+    font-size: 28px;
+  }
+
+  .pricing-header p {
+    font-size: 14px;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin: 0 auto;
+    gap: 20px;
+  }
+
+  .pricing-card-highlight {
+    transform: scale(1);
+    order: -1;
+  }
+
+  .badge-popular {
+    top: 20px;
+    right: 24px;
+  }
+}
+
+/* Móvil chico: ajustes finos de espaciado y tipografía */
+@media (max-width: 480px) {
+  .toggle-switch {
+    margin-bottom: 36px;
+  }
+
+  .toggle-btn {
+    padding: 9px 18px;
+    font-size: 11px;
+  }
+
+  .pricing-card,
+  .pricing-card-highlight {
+    padding: 28px 20px;
+  }
+
+  .price {
+    font-size: 30px;
+  }
+
+  .pricing-card h3 {
+    font-size: 20px;
+    margin: 14px 0 8px;
+  }
+
+  .plan-desc {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .feature-list {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .feature-list li {
+    font-size: 13px;
+  }
+
+  .btn-plan {
+    padding: 12px;
+    font-size: 13px;
+  }
+}

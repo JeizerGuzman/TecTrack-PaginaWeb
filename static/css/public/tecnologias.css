@@ -150,9 +150,8 @@
   animation: orbit-cw var(--duration-3) linear infinite;
 }
 
-.orbit-container:hover .orbit,
-.orbit-container:hover .icon-inner {
-  animation-play-state: paused;
+.orbit-center img{
+  width: 80px;
 }
 
 /* Posición fija de cada ícono sobre su circunferencia */
@@ -309,13 +308,15 @@
 }
 
 /* ==========================================
-   RESPONSIVE
+   RESPONSIVE — tecnologias.css
 ========================================== */
 
+/* Tablet: apila texto arriba, órbita abajo, todo centrado */
 @media (max-width: 960px) {
-  .tech-section {
+  .tecnologias {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 24px;
   }
 
   .tech-left {
@@ -332,6 +333,26 @@
   }
 }
 
+/* Tablet chica: reduce un poco el tamaño de la órbita
+   antes de saltar directo al tamaño móvil */
+@media (max-width: 780px) {
+  :root {
+    --radius-1: 75px;
+    --radius-2: 130px;
+    --radius-3: 185px;
+  }
+
+  .orbit-container {
+    width: 420px;
+    height: 420px;
+  }
+
+  .tech-title {
+    font-size: 30px;
+  }
+}
+
+/* Móvil */
 @media (max-width: 640px) {
   :root {
     --radius-1: 60px;
@@ -365,5 +386,47 @@
 
   .tech-title {
     font-size: 24px;
+  }
+
+  .tech-desc {
+    font-size: 13.5px;
+  }
+
+  .orbit-center img{
+    width: 50px;
+  }
+}
+
+/* Móvil chico: la órbita ya no cabe cómoda a 340px de ancho
+   en pantallas angostas, así que la reducimos otro poco más */
+@media (max-width: 380px) {
+  :root {
+    --radius-1: 48px;
+    --radius-2: 82px;
+    --radius-3: 116px;
+  }
+
+  .orbit-container {
+    width: 280px;
+    height: 280px;
+  }
+
+  .orbit-center {
+    width: 74px;
+    height: 74px;
+  }
+
+  .orbit-center span {
+    font-size: 10.5px;
+  }
+
+  .icon-inner img {
+    width: 24px;
+    height: 24px;
+    padding: 5px;
+  }
+
+  .icon-inner span {
+    font-size: 8px;
   }
 }

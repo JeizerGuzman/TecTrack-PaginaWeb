@@ -12,11 +12,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/problemas.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/como-funciona.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/caracteristicas.css') }}">
-    <!-- <link rel="stylesheet" href="./css/dashboard.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/dashboard.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/benefits.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/tecnologias.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/demo.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/casos-de-uso.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/paquetes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/contacto.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
 
     <!-- Fontawesome Kit -->
@@ -432,8 +434,41 @@
 
     <!-- Dashboard -->
 
-    <section class="dashboard" id="dashboard">
-        <h2>Dashboard</h2>
+    <section class="dashboard-section" id="dashboard">
+
+        <span class="eyebrow">Dashboard</span>
+        <h2>Toda la información de tu flota, en un solo lugar</h2>
+
+        <!-- COLUMNA IZQUIERDA: CAPTURA PRINCIPAL -->
+        <div class="dashboard-preview-col">
+
+            <div class="dashboard-selector" id="dashboardSelector">
+            <!-- Las 5 capturas se generan dinámicamente con JS -->
+            </div>
+
+            <div class="dashboard-card">
+            <img 
+                src="dashboard-main.png" 
+                alt="Dashboard principal TecTrack Security" 
+                class="dashboard-main" 
+                id="dashboardMain"
+            >
+
+            <div class="dashboard-overlay">
+                <div class="dashboard-title-block">
+                <h2 id="dashboardTitle">Monitoreo general</h2>
+                <p id="dashboardSubtitle">
+                    Visualiza el estado general de tu flota en tiempo real
+                </p>
+                </div>
+
+                <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}" alt="Logo" class="logo-img">
+            </div>
+
+            </div>
+
+        </div>
+
     </section>
 
     <!-- Beneficios -->
@@ -568,7 +603,7 @@
         
             <!-- CENTRO -->
             <div class="orbit-center">
-                <span>TecTrack Security</span>
+                <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}">
             </div>
         
             <!-- ANILLOS GUÍA (visuales) -->
@@ -580,21 +615,21 @@
             <div class="orbit orbit-1">
                 <div class="orbit-icon" style="--i:0; --total:3;">
                     <div class="icon-inner">
-                    <img src="icon-esp32.png" alt="ESP32">
+                    <i class="fa-solid fa-microchip"></i>
                     <span>ESP32</span>
                     </div>
                 </div>
             
                 <div class="orbit-icon" style="--i:1; --total:3;">
                     <div class="icon-inner">
-                    <img src="icon-gps.png" alt="GPS">
+                    <i class="fa-solid fa-satellite"></i>
                     <span>GPS</span>
                     </div>
                 </div>
             
                 <div class="orbit-icon" style="--i:2; --total:3;">
                     <div class="icon-inner">
-                    <img src="icon-sim.png" alt="Módulo SIM">
+                    <i class="fa-solid fa-sim-card"></i>
                     <span>Módulo SIM</span>
                     </div>
                 </div>
@@ -604,21 +639,21 @@
                 <div class="orbit orbit-2">
                     <div class="orbit-icon" style="--i:0; --total:3;">
                         <div class="icon-inner">
-                        <img src="icon-flask.png" alt="Flask">
+                        <i class="fa-brands fa-python"></i>
                         <span>Flask</span>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:1; --total:3;">
                         <div class="icon-inner">
-                        <img src="icon-mysql.png" alt="MySQL">
+                        <i class="fa-solid fa-database"></i>
                         <span>MySQL</span>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:2; --total:3;">
                         <div class="icon-inner">
-                        <img src="icon-railway.png" alt="Railway">
+                        <i class="fa-solid fa-globe"></i>
                         <span>Railway</span>
                         </div>
                     </div>
@@ -628,28 +663,28 @@
                 <div class="orbit orbit-3">
                     <div class="orbit-icon" style="--i:0; --total:4;">
                         <div class="icon-inner">
-                        <img src="icon-html.png" alt="HTML">
+                        <i class="fa-brands fa-html5"></i>
                         <span>HTML</span>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:1; --total:4;">
                         <div class="icon-inner">
-                        <img src="icon-css.png" alt="CSS">
+                        <i class="fa-brands fa-css"></i>
                         <span>CSS</span>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:2; --total:4;">
                         <div class="icon-inner">
-                        <img src="icon-js.png" alt="JavaScript">
+                        <i class="fa-brands fa-js"></i>
                         <span>JavaScript</span>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:3; --total:4;">
                         <div class="icon-inner">
-                        <img src="icon-bluetooth.png" alt="Bluetooth">
+                        <i class="fa-brands fa-bluetooth"></i>
                         <span>Bluetooth</span>
                         </div>
                     </div>
@@ -762,6 +797,227 @@
         </div>
     </section>
 
+    <!-- Precios y Paquetes -->
+    <section class="pricing" id="paquetes">
+
+        <div class="pricing-header">
+
+            <span class="eyebrow">
+                Planes
+            </span>
+
+            <h1>
+                Soluciones adaptadas a tu flota
+            </h1>
+
+            <p>
+                Elige el plan que mejor se adapte al tamaño de tu operación y
+                mantén tus unidades siempre monitoreadas.
+            </p>
+
+        </div>
+
+
+        <div class="pricing-grid">
+
+
+            <!-- PLAN: STARTER -->
+            <div class="pricing-card">
+
+                <div class="price-row">
+                    <span class="price">
+                        $299
+                    </span>
+
+                    <span class="period">
+                        /mes
+                    </span>
+                </div>
+
+
+                <h3>
+                    Starter
+                </h3>
+
+
+                <p class="plan-desc">
+                    Ideal para pequeñas empresas que buscan comenzar a monitorear sus unidades.
+                </p>
+
+
+                <ul class="feature-list">
+
+                    <li>
+                        <span class="check">✓</span>
+                        Monitoreo GPS en tiempo real
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Ubicación de unidades
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Historial básico de recorridos
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Configuración mediante Bluetooth
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Soporte técnico
+                    </li>
+
+                </ul>
+
+
+                <a href="{{ url_for('paquetes') }}" class="btn-plan btn-outline">
+                    Mas información
+                </a>
+
+            </div>
+
+
+
+            <!-- PLAN: PROFESSIONAL -->
+            <div class="pricing-card pricing-card-highlight">
+
+                <span class="badge-popular">
+                    Más popular
+                </span>
+
+
+                <div class="price-row">
+
+                    <span class="price">
+                        $599
+                    </span>
+
+                    <span class="period">
+                        /mes
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    Professional
+                </h3>
+
+
+                <p class="plan-desc">
+                    Para empresas que necesitan mayor seguridad y control operativo.
+                </p>
+
+
+                <ul class="feature-list">
+
+                    <li>
+                        <span class="check">✓</span>
+                        Todo lo incluido en Starter
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Alertas instantáneas
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Detección de apertura y vibraciones
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Dashboard completo
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Gestión de múltiples unidades
+                    </li>
+
+                </ul>
+
+
+                <a href="{{ url_for('paquetes') }}" class="btn-plan btn-solid">
+                    Mas información
+                </a>
+
+
+            </div>
+
+
+
+            <!-- PLAN: ENTERPRISE -->
+            <div class="pricing-card">
+
+
+                <div class="price-row">
+
+                    <span class="price">
+                        Personalizado
+                    </span>
+
+                </div>
+
+
+                <h3>
+                    Enterprise
+                </h3>
+
+
+                <p class="plan-desc">
+                    Soluciones completas para grandes flotillas y operaciones críticas.
+                </p>
+
+
+                <ul class="feature-list">
+
+                    <li>
+                        <span class="check">✓</span>
+                        Flotas de gran escala
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Configuración personalizada
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Integración con sistemas externos
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Reportes avanzados
+                    </li>
+
+                    <li>
+                        <span class="check">✓</span>
+                        Atención prioritaria
+                    </li>
+
+                </ul>
+
+
+                <a href="#contacto" class="btn-plan btn-outline">
+                    Hablemos
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
     <!-- Demo -->
     <section class="section-demo">
         <div class="cta-card">
@@ -793,10 +1049,173 @@
                         Solicitar demostración
                     </a>
 
-                    <a href="#" class="btn-outline">
+                    <a href="#contacto" class="btn-outline">
                         Contactar con un asesor
                     </a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contáctanos -->
+    <section class="contact-section" id="contacto">
+
+        <span class="eyebrow">Contáctanos</span>
+        <div class="contact-header">
+            <h1>Hablemos de tu flota</h1>
+            <p>
+                Cuéntanos sobre tu operación y descubre cómo TecTrack puede ayudarte
+                a mejorar la seguridad y monitoreo de tus unidades.
+            </p>
+        </div>
+
+        <div class="contact-wrapper">
+
+            <!-- FORMULARIO -->
+            <form class="contact-form">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" placeholder="Tu nombre completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" placeholder="correo@empresa.com">
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel" placeholder="+52 961 000 0000">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de operación</label>
+
+                        <select>
+                            <option value="" selected disabled>
+                                Selecciona una opción...
+                            </option>
+
+                            <option>
+                                Transporte de carga
+                            </option>
+
+                            <option>
+                                Empresas de paquetería
+                            </option>
+
+                            <option>
+                                Distribución y logística
+                            </option>
+
+                            <option>
+                                Flotilla empresarial
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label>Número de vehículos</label>
+
+                        <select>
+                            <option value="" selected disabled>
+                                Selecciona cantidad...
+                            </option>
+
+                            <option>
+                                1 - 10 unidades
+                            </option>
+
+                            <option>
+                                11 - 50 unidades
+                            </option>
+
+                            <option>
+                                Más de 50 unidades
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Servicio de interés</label>
+
+                        <select>
+
+                            <option value="" selected disabled>
+                                Selecciona un servicio...
+                            </option>
+
+                            <option>
+                                Monitoreo GPS
+                            </option>
+
+                            <option>
+                                Alertas de seguridad
+                            </option>
+
+                            <option>
+                                Gestión de flotas
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group full-width">
+
+                    <label>
+                        Mensaje
+                    </label>
+
+                    <textarea placeholder="Cuéntanos sobre tus necesidades..."></textarea>
+
+                </div>
+
+
+                <button type="submit" class="submit-btn">
+
+                    Enviar
+
+                    <span class="btn-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+
+                </button>
+
+
+            </form>
+
+
+            <!-- IMAGEN -->
+            <div class="contact-visual">
+                <img 
+                    src="{{ url_for('static',filename='img/public/hero/pexels-psingh-31780878.jpg') }}" 
+                    alt="Monitoreo de flotas">
+
+                <span class="visual-badge">
+                    TecTrack Security
+                </span>
             </div>
         </div>
     </section>
@@ -825,7 +1244,8 @@
                 <h4>Compañía</h4>
                 <a href="#">Inicio</a>
                 <a href="#">Sobre nosotros</a>
-                <a href="#">Pricing</a>
+                <a href="#paquetes">Precios y paquetes</a>
+                <a href="#contacto">Contacto</a>
             </div>
         
             <!-- COLUMNA 3: PRODUCT -->
@@ -835,7 +1255,6 @@
                 <a href="#como_funciona">¿Cómo funciona?</a>
                 <a href="#dashboard">Dashboard</a>
                 <a href="#casos_de_uso">Casos de uso</a>
-                <a href="#">Contact</a>
             </div>
         
             <!-- COLUMNA 4: NEWSLETTER -->
@@ -870,5 +1289,6 @@
     <!-- JS -->
     <script src="{{ url_for( 'static', filename='js/public/benefits.js') }}"></script>
     <script src="{{ url_for('static', filename='js/public/caracteristicas.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/dashboard.js') }}"></script>
 </body>
 </html>

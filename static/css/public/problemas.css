@@ -128,3 +128,41 @@
   color: var(--text-muted);
   margin: 0;
 }
+
+/* ==========================================
+   RESPONSIVE 
+========================================== */
+
+@media (max-width: 900px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .visual-box {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 560px) {
+  .section-title {
+    font-size: 22px;
+  }
+
+  .section-desc {
+    font-size: 13.5px;
+  }
+
+  .benefit-item {
+    gap: 12px;
+  }
+
+  .benefit-text h3 {
+    font-size: 15.5px;
+  }
+}

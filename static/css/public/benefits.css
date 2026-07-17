@@ -305,3 +305,56 @@
   color: var(--text-muted);
   margin: 0;
 }
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 860px) {
+  .benefits-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .benefits-tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .benefits-panel {
+    height: auto;
+  }
+
+  .panel-content.active {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-image {
+    min-height: 220px;
+  }
+
+  .benefits-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .tab-btn {
+    flex: 1 1 100%;
+  }
+
+  .panel-info {
+    padding: 24px 20px;
+  }
+
+  .panel-info h3 {
+    font-size: 18px;
+  }
+
+  .benefit-list h4 {
+    font-size: 14px;
+  }
+}

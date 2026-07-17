@@ -78,7 +78,7 @@
 /* Elevación + sombra más marcada al hover */
 .service-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* ==========================================
@@ -106,7 +106,7 @@
 
 /* Al hacer hover en la tarjeta, el círculo se llena de color y rota un poco */
 .service-card:hover .icon-circle {
-  background: linear-gradient(135deg, var(--blue-primary), #1e3a8a);
+  background: var(--blue-primary);
   transform: rotate(-8deg) scale(1.08);
 }
 
@@ -208,10 +208,22 @@
   .services-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .section-title {
+    font-size: 26px;
+  }
 }
 
 @media (max-width: 560px) {
   .services-grid {
     grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+
+  .service-card {
+    padding: 26px 20px 22px;
   }
 }

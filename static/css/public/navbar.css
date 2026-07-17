@@ -242,3 +242,99 @@
     color:rgba(255,255,255,.8);
     margin:0;
 }
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1100px) {
+  .hero-text h1 {
+    font-size: 42px;
+  }
+
+  .hero-content {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    min-height: auto;
+    padding: 100px 0 60px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-features {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .feature-card {
+    flex: 1 1 calc(50% - 7px);
+    min-width: 220px;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    width: 92%;
+    padding: 14px 18px;
+  }
+
+  .hero-text h1 {
+    font-size: 32px;
+  }
+
+  .hero-text p {
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    padding: 12px 22px;
+    font-size: 14px;
+  }
+
+  .demo {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .login-link {
+    font-size: 13px;
+  }
+
+  .feature-card {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-right {
+    gap: 12px;
+  }
+
+  .demo span,
+  .demo {
+    white-space: nowrap;
+  }
+
+  .hero-text h1 {
+    font-size: 26px;
+  }
+}
