@@ -46,7 +46,7 @@ class Config:
     if not _db_url:
         _db_url = os.getenv(
             "LOCAL_DATABASE_URL",
-            "mysql+pymysql://root@localhost:3306/tracksecurity"
+            "mysql+pymysql://root:davidlaid@localhost:3306/tracksecurity"
         )
 
     # Railway suele entregar mysql:// y SQLAlchemy necesita mysql+pymysql://
