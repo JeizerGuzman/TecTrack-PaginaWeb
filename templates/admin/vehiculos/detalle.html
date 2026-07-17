@@ -79,9 +79,9 @@
 
                     <div class="mapa-info">
                         <strong id="detalleDireccionVehiculo">
-                            Buscando dirección cercana...
+                            Dirección no disponible
                         </strong>
-
+                        
                         <p id="detalleUbicacionTexto">
                             Sin ubicación disponible por el momento.
                         </p>
@@ -177,5 +177,6 @@
 
 {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/utils/direccion.js') }}"></script>
 <script src="{{ url_for('static', filename='js/admin/vehiculos/detalle.js') }}"></script>
 {% endblock %}

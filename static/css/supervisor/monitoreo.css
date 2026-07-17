@@ -913,3 +913,94 @@
     }
 
 }   
+
+
+/* ============================================================
+   DIRECCIÓN APROXIMADA
+   ============================================================ */
+
+.direccion-vehiculo-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    padding: 14px 16px;
+    margin-top: 14px;
+
+    border: 1px solid #dbeafe;
+    border-radius: 16px;
+
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.direccion-vehiculo-card--vacia {
+    border-color: #e2e8f0;
+
+    background: #f8fafc;
+    color: #64748b;
+}
+
+.direccion-vehiculo-icono {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: #dbeafe;
+}
+
+.direccion-vehiculo-card--vacia .direccion-vehiculo-icono {
+    background: #e2e8f0;
+}
+
+.direccion-vehiculo-icono svg {
+    width: 20px;
+    height: 20px;
+}
+
+.direccion-vehiculo-info {
+    min-width: 0;
+}
+
+.direccion-vehiculo-info span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.direccion-vehiculo-info strong {
+    display: block;
+
+    font-size: 0.92rem;
+    font-weight: 800;
+    line-height: 1.35;
+
+    word-break: break-word;
+}
+
+/* ============================================================
+   ESTADO INFORMATIVO - MODO MANUAL
+   ============================================================ */
+
+.monitoreo-detail-field.sensor-info,
+.monitoreo-sensor-info {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+}
+
+.monitoreo-detail-field.sensor-info strong,
+.monitoreo-sensor-info strong {
+    color: #1e40af;
+}

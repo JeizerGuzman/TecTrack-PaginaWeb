@@ -160,11 +160,31 @@ const camposConfiguracion = {
         ubicacion_actual_segundos:
             document.getElementById(
                 "configUbicacionActual"
-            ),
+            ),  
 
         historial_gps_segundos:
             document.getElementById(
                 "configHistorialGps"
+            ),
+
+        distancia_minima_gps_metros:
+            document.getElementById(
+                "configDistanciaMinimaGps"
+            ),
+
+        velocidad_minima_kmh:
+            document.getElementById(
+                "configVelocidadMinima"
+            ),
+
+        geocodificacion_direccion_segundos:
+            document.getElementById(
+                "configDireccionSegundos"
+            ),
+
+        distancia_minima_direccion_metros:
+            document.getElementById(
+                "configDistanciaDireccion"
             ),
 
         guardar_gps_inmediato_alerta:
@@ -490,6 +510,41 @@ function pintarConfiguracion(configuracion) {
         telemetria.historial_gps_segundos
     );
 
+    asignarValor(
+        camposConfiguracion
+            .telemetria
+            .distancia_minima_gps_metros,
+
+        telemetria.distancia_minima_gps_metros
+    );
+
+
+    asignarValor(
+        camposConfiguracion
+            .telemetria
+            .velocidad_minima_kmh,
+
+        telemetria.velocidad_minima_kmh
+    );
+
+
+    asignarValor(
+        camposConfiguracion
+            .telemetria
+            .geocodificacion_direccion_segundos,
+
+        telemetria.geocodificacion_direccion_segundos
+    );
+
+
+    asignarValor(
+        camposConfiguracion
+            .telemetria
+            .distancia_minima_direccion_metros,
+
+        telemetria.distancia_minima_direccion_metros
+    );
+
 
     if (
         camposConfiguracion
@@ -726,6 +781,34 @@ function obtenerDatosFormulario() {
                     camposConfiguracion
                         .telemetria
                         .historial_gps_segundos
+                ),
+
+            distancia_minima_gps_metros:
+                obtenerEntero(
+                    camposConfiguracion
+                        .telemetria
+                        .distancia_minima_gps_metros
+                ),
+
+            velocidad_minima_kmh:
+                obtenerDecimal(
+                    camposConfiguracion
+                        .telemetria
+                        .velocidad_minima_kmh
+                ),
+
+            geocodificacion_direccion_segundos:
+                obtenerEntero(
+                    camposConfiguracion
+                        .telemetria
+                        .geocodificacion_direccion_segundos
+                ),
+
+            distancia_minima_direccion_metros:
+                obtenerEntero(
+                    camposConfiguracion
+                        .telemetria
+                        .distancia_minima_direccion_metros
                 ),
 
             guardar_gps_inmediato_alerta:
@@ -1129,6 +1212,14 @@ function obtenerEntero(elemento) {
     return Number.parseInt(
         elemento?.value,
         10
+    );
+
+}
+
+function obtenerDecimal(elemento) {
+
+    return Number.parseFloat(
+        elemento?.value
     );
 
 }

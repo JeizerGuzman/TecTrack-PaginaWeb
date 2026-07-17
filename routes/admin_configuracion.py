@@ -127,6 +127,18 @@ def serializar_configuracion_sistema(configuracion):
                 bool(
                     configuracion.guardar_gps_inmediato_alerta
                 ),
+
+            "distancia_minima_gps_metros":
+                configuracion.distancia_minima_gps_metros,
+
+            "velocidad_minima_kmh":
+                configuracion.velocidad_minima_kmh,
+
+            "geocodificacion_direccion_segundos":
+                configuracion.geocodificacion_direccion_segundos,
+
+            "distancia_minima_direccion_metros":
+                configuracion.distancia_minima_direccion_metros,
         },
 
 
@@ -165,6 +177,28 @@ def convertir_entero_configuracion(
 
     return numero
 
+
+def convertir_decimal_configuracion(
+    valor,
+    nombre_campo,
+    minimo,
+    maximo
+):
+    try:
+        numero = float(valor)
+
+    except (TypeError, ValueError):
+        raise ValueError(
+            f"{nombre_campo} debe ser un número válido"
+        )
+
+    if numero < minimo or numero > maximo:
+        raise ValueError(
+            f"{nombre_campo} debe estar entre "
+            f"{minimo} y {maximo}"
+        )
+
+    return numero
 
 # ============================================================
 # CONVERTIR BOOLEANO
@@ -532,6 +566,72 @@ def registrar_admin_configuracion_routes(app):
                     )
                 )
 
+            if (
+                "distancia_minima_gps_metros"
+                in telemetria
+            ):
+
+                configuracion.distancia_minima_gps_metros = (
+                    convertir_entero_configuracion(
+                        telemetria.get(
+                            "distancia_minima_gps_metros"
+                        ),
+                        "Distancia mínima GPS",
+                        1,
+                        1000
+                    )
+                )
+
+
+            if (
+                "velocidad_minima_kmh"
+                in telemetria
+            ):
+
+                configuracion.velocidad_minima_kmh = (
+                    convertir_decimal_configuracion(
+                        telemetria.get(
+                            "velocidad_minima_kmh"
+                        ),
+                        "Velocidad mínima",
+                        0,
+                        20
+                    )
+                )
+
+
+            if (
+                "geocodificacion_direccion_segundos"
+                in telemetria
+            ):
+
+                configuracion.geocodificacion_direccion_segundos = (
+                    convertir_entero_configuracion(
+                        telemetria.get(
+                            "geocodificacion_direccion_segundos"
+                        ),
+                        "Intervalo para actualizar dirección",
+                        30,
+                        86400
+                    )
+                )
+
+
+            if (
+                "distancia_minima_direccion_metros"
+                in telemetria
+            ):
+
+                configuracion.distancia_minima_direccion_metros = (
+                    convertir_entero_configuracion(
+                        telemetria.get(
+                            "distancia_minima_direccion_metros"
+                        ),
+                        "Distancia mínima para actualizar dirección",
+                        1,
+                        5000
+                    )
+                )
 
             # =================================================
             # ACTUALIZAR TIMESTAMP

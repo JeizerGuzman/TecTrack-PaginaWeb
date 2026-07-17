@@ -88,7 +88,7 @@
                     <div id="mapaVehiculo" class="mapa-vehiculo"></div>
 
                     <div class="mapa-info">
-                        <strong id="detalleDireccionVehiculo">Buscando dirección cercana...</strong>
+                        <strong id="detalleDireccionVehiculo">Dirección no disponible</strong>
                         <p id="detalleUbicacionTexto">Sin ubicación disponible por el momento.</p>
                         <a id="btnAbrirGoogleMaps" href="#" target="_blank" class="btn btn-outline btn-sm">
                             Abrir en Google Maps
@@ -181,5 +181,6 @@
 
 {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/utils/direccion.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dueno/vehiculos/detalle.js') }}"></script>
 {% endblock %}

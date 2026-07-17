@@ -14,6 +14,10 @@
 # ============================================================
 
 import time
+import math
+import json
+import urllib.parse
+import urllib.request
 import bcrypt
 from flask_jwt_extended import get_jwt_identity
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -115,8 +119,8 @@ def obtener_configuracion_telemetria():
     - GPS.
     - Alertas.
 
-    Devuelve valores seguros aunque exista algún problema
-    al consultar la configuración.
+    En Fase 1 algunos valores todavía tienen respaldo fijo.
+    En Fase 2 se podrán editar desde el panel admin.
     """
 
     try:
@@ -134,6 +138,10 @@ def obtener_configuracion_telemetria():
                 "historial_gps_segundos": 30,
                 "guardar_gps_inmediato_alerta": True,
                 "segundos_separacion_alertas": 10,
+                "distancia_minima_gps_metros": 15,
+                "velocidad_minima_kmh": 1,
+                "geocodificacion_direccion_segundos": 120,
+                "distancia_minima_direccion_metros": 50,
             }
 
 
@@ -157,6 +165,41 @@ def obtener_configuracion_telemetria():
         )
 
 
+        distancia_minima_gps_metros = float(
+            getattr(
+                configuracion,
+                "distancia_minima_gps_metros",
+                15
+            )
+        )
+
+
+        velocidad_minima_kmh = float(
+            getattr(
+                configuracion,
+                "velocidad_minima_kmh",
+                1
+            )
+        )
+        
+        geocodificacion_direccion_segundos = int(
+            getattr(
+                configuracion,
+                "geocodificacion_direccion_segundos",
+                120
+            )
+        )
+
+
+        distancia_minima_direccion_metros = int(
+            getattr(
+                configuracion,
+                "distancia_minima_direccion_metros",
+                50
+            )
+        )
+
+
         # ====================================================
         # RESPALDOS DE SEGURIDAD
         # ====================================================
@@ -173,6 +216,22 @@ def obtener_configuracion_telemetria():
             segundos_separacion_alertas = 10
 
 
+        if distancia_minima_gps_metros <= 0:
+            distancia_minima_gps_metros = 15
+
+
+        if velocidad_minima_kmh < 0:
+            velocidad_minima_kmh = 1
+            
+            
+        if geocodificacion_direccion_segundos <= 0:
+            geocodificacion_direccion_segundos = 120
+
+
+        if distancia_minima_direccion_metros <= 0:
+            distancia_minima_direccion_metros = 50
+
+
         return {
 
             "ubicacion_actual_segundos":
@@ -186,6 +245,18 @@ def obtener_configuracion_telemetria():
 
             "segundos_separacion_alertas":
                 segundos_separacion_alertas,
+
+            "distancia_minima_gps_metros":
+                distancia_minima_gps_metros,
+
+            "velocidad_minima_kmh":
+                velocidad_minima_kmh,
+                
+            "geocodificacion_direccion_segundos":
+                geocodificacion_direccion_segundos,
+
+            "distancia_minima_direccion_metros":
+                distancia_minima_direccion_metros,
         }
 
 
@@ -202,8 +273,340 @@ def obtener_configuracion_telemetria():
             "historial_gps_segundos": 30,
             "guardar_gps_inmediato_alerta": True,
             "segundos_separacion_alertas": 10,
+            "distancia_minima_gps_metros": 15,
+            "velocidad_minima_kmh": 1,
+            "geocodificacion_direccion_segundos": 120,
+            "distancia_minima_direccion_metros": 50,
         }
+        
+        
+        
+# ------------------------------------------------------------
+# Convierte un valor a float opcional.
+#
+# Se usa para limpiar coordenadas y velocidad recibidas desde:
+# - ESP32 físico
+# - app simuladora móvil
+# ------------------------------------------------------------
+def convertir_float_opcional(valor):
 
+    if valor in (
+        None,
+        "",
+    ):
+        return None
+
+
+    try:
+
+        return float(valor)
+
+    except (
+        TypeError,
+        ValueError
+    ):
+
+        return None
+
+
+# ------------------------------------------------------------
+# Normaliza velocidad.
+#
+# Reglas:
+# - Si no viene velocidad válida: 0.0
+# - Si es menor al mínimo configurado: 0.0
+# - Si es válida: se redondea a 1 decimal
+#
+# Esto evita valores como:
+# 0.78865 km/h
+# cuando el celular está quieto.
+# ------------------------------------------------------------
+def normalizar_velocidad_kmh(
+    valor,
+    velocidad_minima_kmh=1
+):
+
+    velocidad = convertir_float_opcional(
+        valor
+    )
+
+
+    if velocidad is None:
+        return 0.0
+
+
+    if velocidad < 0:
+        return 0.0
+
+
+    if velocidad < float(
+        velocidad_minima_kmh
+    ):
+        return 0.0
+
+
+    return round(
+        velocidad,
+        1
+    )
+
+
+# ------------------------------------------------------------
+# Calcula distancia entre dos coordenadas usando Haversine.
+#
+# Devuelve metros.
+# ------------------------------------------------------------
+def calcular_distancia_metros(
+    lat1,
+    lng1,
+    lat2,
+    lng2
+):
+
+    lat1 = convertir_float_opcional(lat1)
+    lng1 = convertir_float_opcional(lng1)
+    lat2 = convertir_float_opcional(lat2)
+    lng2 = convertir_float_opcional(lng2)
+
+
+    if (
+        lat1 is None
+        or lng1 is None
+        or lat2 is None
+        or lng2 is None
+    ):
+
+        return None
+
+
+    radio_tierra_metros = 6371000
+
+
+    lat1_rad = math.radians(lat1)
+    lng1_rad = math.radians(lng1)
+    lat2_rad = math.radians(lat2)
+    lng2_rad = math.radians(lng2)
+
+
+    diferencia_lat = lat2_rad - lat1_rad
+    diferencia_lng = lng2_rad - lng1_rad
+
+
+    a = (
+        math.sin(diferencia_lat / 2) ** 2
+        +
+        math.cos(lat1_rad)
+        *
+        math.cos(lat2_rad)
+        *
+        math.sin(diferencia_lng / 2) ** 2
+    )
+
+
+    c = 2 * math.atan2(
+        math.sqrt(a),
+        math.sqrt(1 - a)
+    )
+
+
+    return radio_tierra_metros * c
+
+
+# ------------------------------------------------------------
+# Prepara datos de telemetría antes de guardarlos.
+#
+# Corrige:
+# - velocidad con demasiados decimales
+# - velocidad falsa cuando el celular está quieto
+# - movimiento falso por variación pequeña de GPS
+#
+# Si la nueva ubicación se movió menos de X metros,
+# conserva la ubicación anterior para que el mapa no brinque.
+# ------------------------------------------------------------
+def preparar_datos_telemetria(
+    vehiculo_id,
+    data,
+    distancia_minima_gps_metros=15,
+    velocidad_minima_kmh=1
+):
+
+    datos = dict(
+        data or {}
+    )
+
+
+    # ========================================================
+    # GPS VÁLIDO
+    # ========================================================
+
+    gps_valido_recibido = datos.get(
+        "gps_valido",
+        True
+    )
+
+
+    gps_valido = True
+
+
+    if isinstance(
+        gps_valido_recibido,
+        str
+    ):
+
+        gps_valido = (
+            gps_valido_recibido
+            .strip()
+            .lower()
+            not in (
+                "0",
+                "false",
+                "no",
+                "gps_invalido",
+            )
+        )
+
+
+    elif isinstance(
+        gps_valido_recibido,
+        int
+    ):
+
+        gps_valido = (
+            gps_valido_recibido == 1
+        )
+
+
+    elif isinstance(
+        gps_valido_recibido,
+        bool
+    ):
+
+        gps_valido = gps_valido_recibido
+
+
+    datos["gps_valido"] = gps_valido
+
+
+    # ========================================================
+    # VELOCIDAD
+    # ========================================================
+
+    datos["velocidad"] = (
+        normalizar_velocidad_kmh(
+            datos.get("velocidad", 0),
+            velocidad_minima_kmh
+        )
+    )
+
+
+    # ========================================================
+    # COORDENADAS
+    # ========================================================
+
+    lat_nueva = convertir_float_opcional(
+        datos.get("lat")
+    )
+
+    lng_nueva = convertir_float_opcional(
+        datos.get("lng")
+    )
+
+
+    datos["_gps_movimiento_valido"] = False
+    datos["_gps_distancia_metros"] = None
+
+
+    if (
+        not gps_valido
+        or lat_nueva is None
+        or lng_nueva is None
+    ):
+
+        datos["lat"] = None
+        datos["lng"] = None
+
+        return datos
+
+
+    ubicacion_anterior = db.session.get(
+        UbicacionActual,
+        vehiculo_id
+    )
+
+
+    if (
+        not ubicacion_anterior
+        or ubicacion_anterior.lat is None
+        or ubicacion_anterior.lng is None
+    ):
+
+        datos["lat"] = round(
+            lat_nueva,
+            6
+        )
+
+        datos["lng"] = round(
+            lng_nueva,
+            6
+        )
+
+        datos["_gps_movimiento_valido"] = True
+
+        return datos
+
+
+    distancia_metros = calcular_distancia_metros(
+        ubicacion_anterior.lat,
+        ubicacion_anterior.lng,
+        lat_nueva,
+        lng_nueva
+    )
+
+
+    datos["_gps_distancia_metros"] = (
+        round(
+            distancia_metros,
+            2
+        )
+        if distancia_metros is not None
+        else None
+    )
+
+
+    if (
+        distancia_metros is not None
+        and distancia_metros <
+        float(distancia_minima_gps_metros)
+    ):
+
+        # Conserva ubicación anterior para evitar saltos falsos.
+        datos["lat"] = ubicacion_anterior.lat
+        datos["lng"] = ubicacion_anterior.lng
+        datos["_gps_movimiento_valido"] = False
+
+        print(
+            "📍 GPS FILTRADO -> "
+            "movimiento menor al mínimo | "
+            f"distancia: {round(distancia_metros, 2)} m | "
+            f"mínimo: {distancia_minima_gps_metros} m"
+        )
+
+        return datos
+
+
+    datos["lat"] = round(
+        lat_nueva,
+        6
+    )
+
+    datos["lng"] = round(
+        lng_nueva,
+        6
+    )
+
+    datos["_gps_movimiento_valido"] = True
+
+    return datos        
 
 # ------------------------------------------------------------
 # Decide si ya corresponde actualizar UbicacionActual.
@@ -494,6 +897,403 @@ def crear_alerta(
 
     return alerta
 
+
+# ------------------------------------------------------------
+# Construye una dirección corta a partir de la respuesta
+# de Nominatim / OpenStreetMap.
+# ------------------------------------------------------------
+def construir_direccion_corta(
+    datos_direccion
+):
+
+    if not isinstance(
+        datos_direccion,
+        dict
+    ):
+
+        return None
+
+
+    address = datos_direccion.get(
+        "address",
+        {}
+    )
+
+
+    if not isinstance(
+        address,
+        dict
+    ):
+
+        return datos_direccion.get(
+            "display_name"
+        )
+
+
+    calle = (
+        address.get("road")
+        or address.get("pedestrian")
+        or address.get("residential")
+        or address.get("path")
+        or address.get("footway")
+    )
+
+
+    numero = address.get(
+        "house_number"
+    )
+
+
+    colonia = (
+        address.get("neighbourhood")
+        or address.get("suburb")
+        or address.get("quarter")
+    )
+
+
+    ciudad = (
+        address.get("city")
+        or address.get("town")
+        or address.get("village")
+        or address.get("municipality")
+    )
+
+
+    estado = address.get(
+        "state"
+    )
+
+
+    partes = []
+
+
+    if calle and numero:
+
+        partes.append(
+            f"{calle} {numero}"
+        )
+
+    elif calle:
+
+        partes.append(
+            calle
+        )
+
+
+    if colonia:
+        partes.append(
+            colonia
+        )
+
+
+    if ciudad:
+        partes.append(
+            ciudad
+        )
+
+
+    if estado:
+        partes.append(
+            estado
+        )
+
+
+    if partes:
+
+        return ", ".join(
+            partes[:4]
+        )
+
+
+    return datos_direccion.get(
+        "display_name"
+    )
+
+
+# ------------------------------------------------------------
+# Consulta dirección aproximada usando Nominatim.
+#
+# IMPORTANTE:
+# No debe llamarse en cada paquete del ESP32/app simuladora.
+# Se controla con:
+# - intervalo de configuración
+# - distancia mínima de configuración
+# ------------------------------------------------------------
+def consultar_direccion_por_coordenadas(
+    lat,
+    lng
+):
+
+    lat = convertir_float_opcional(
+        lat
+    )
+
+    lng = convertir_float_opcional(
+        lng
+    )
+
+
+    if lat is None or lng is None:
+        return None
+
+
+    parametros = urllib.parse.urlencode({
+        "format": "jsonv2",
+        "lat": f"{lat:.6f}",
+        "lon": f"{lng:.6f}",
+        "zoom": "18",
+        "addressdetails": "1",
+        "accept-language": "es",
+    })
+
+
+    url = (
+        "https://nominatim.openstreetmap.org"
+        f"/reverse?{parametros}"
+    )
+
+
+    solicitud = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": (
+                "TrackSecurity/1.0 "
+                "(contacto: soporte@tracksecurity.local)"
+            )
+        }
+    )
+
+
+    try:
+
+        with urllib.request.urlopen(
+            solicitud,
+            timeout=4
+        ) as respuesta:
+
+            contenido = respuesta.read().decode(
+                "utf-8"
+            )
+
+
+        datos = json.loads(
+            contenido
+        )
+
+
+        direccion = construir_direccion_corta(
+            datos
+        )
+
+
+        if direccion:
+
+            return direccion[:255]
+
+
+        return None
+
+
+    except Exception as error:
+
+        print(
+            "⚠️ No se pudo obtener dirección "
+            f"por coordenadas: {error}"
+        )
+
+        return None
+
+
+# ------------------------------------------------------------
+# Decide si ya toca actualizar la dirección textual.
+#
+# Reglas:
+# - Si no hay dirección previa, sí consulta.
+# - Si no ha pasado el intervalo configurado, no consulta.
+# - Si no se movió la distancia mínima configurada, no consulta.
+# ------------------------------------------------------------
+def debe_actualizar_direccion_ubicacion(
+    ubicacion,
+    lat,
+    lng,
+    intervalo_segundos,
+    distancia_minima_metros
+):
+
+    if not ubicacion:
+        return False
+
+
+    lat = convertir_float_opcional(
+        lat
+    )
+
+    lng = convertir_float_opcional(
+        lng
+    )
+
+
+    if lat is None or lng is None:
+        return False
+
+
+    if not ubicacion.direccion:
+
+        return True
+
+
+    ahora = timestamp_actual()
+
+
+    ultima_actualizacion_direccion = (
+        ubicacion.ultima_actualizacion_direccion
+    )
+
+
+    if ultima_actualizacion_direccion:
+
+        segundos_transcurridos = (
+            ahora
+            -
+            int(
+                ultima_actualizacion_direccion
+            )
+        )
+
+
+        if segundos_transcurridos < int(
+            intervalo_segundos
+        ):
+
+            return False
+
+
+    if (
+        ubicacion.direccion_lat is None
+        or ubicacion.direccion_lng is None
+    ):
+
+        return True
+
+
+    distancia = calcular_distancia_metros(
+        ubicacion.direccion_lat,
+        ubicacion.direccion_lng,
+        lat,
+        lng
+    )
+
+
+    if distancia is None:
+
+        return True
+
+
+    return distancia >= float(
+        distancia_minima_metros
+    )
+
+
+# ------------------------------------------------------------
+# Actualiza la dirección textual si corresponde.
+# ------------------------------------------------------------
+def actualizar_direccion_si_corresponde(
+    ubicacion,
+    data,
+    config_telemetria
+):
+
+    if not ubicacion:
+        return None
+
+
+    gps_valido = data.get(
+        "gps_valido",
+        True
+    )
+
+
+    if gps_valido is False:
+
+        print(
+            "📍 DIRECCIÓN OMITIDA -> GPS inválido"
+        )
+
+        return None
+
+
+    lat = data.get(
+        "lat"
+    )
+
+    lng = data.get(
+        "lng"
+    )
+
+
+    intervalo_segundos = int(
+        config_telemetria.get(
+            "geocodificacion_direccion_segundos",
+            120
+        )
+    )
+
+
+    distancia_minima_metros = int(
+        config_telemetria.get(
+            "distancia_minima_direccion_metros",
+            50
+        )
+    )
+
+
+    if not debe_actualizar_direccion_ubicacion(
+        ubicacion,
+        lat,
+        lng,
+        intervalo_segundos,
+        distancia_minima_metros
+    ):
+
+        print(
+            "📍 DIRECCIÓN OMITIDA -> "
+            "no cumple intervalo/distancia mínima"
+        )
+
+        return None
+
+
+    direccion = consultar_direccion_por_coordenadas(
+        lat,
+        lng
+    )
+
+
+    if not direccion:
+
+        print(
+            "📍 DIRECCIÓN NO DISPONIBLE"
+        )
+
+        return None
+
+
+    ubicacion.direccion = direccion
+    ubicacion.direccion_lat = lat
+    ubicacion.direccion_lng = lng
+    ubicacion.ultima_actualizacion_direccion = (
+        timestamp_actual()
+    )
+
+
+    print(
+        "📍 DIRECCIÓN ACTUALIZADA -> "
+        f"{direccion}"
+    )
+
+
+    return direccion
+
 # ------------------------------------------------------------
 # Actualiza la ubicación actual del vehículo.
 #
@@ -505,7 +1305,8 @@ def crear_alerta(
 # ------------------------------------------------------------
 def actualizar_ubicacion_actual(
     vehiculo_id,
-    data
+    data,
+    config_telemetria=None
 ):
     ubicacion = db.session.get(
         UbicacionActual,
@@ -556,6 +1357,21 @@ def actualizar_ubicacion_actual(
         timestamp_actual()
     )
 
+
+    if config_telemetria is None:
+
+        config_telemetria = (
+            obtener_configuracion_telemetria()
+        )
+
+
+    actualizar_direccion_si_corresponde(
+        ubicacion,
+        data,
+        config_telemetria
+    )
+
+
     print(
         "📍 UBICACIÓN ACTUAL ACTUALIZADA -> "
         f"vehiculo_id: {vehiculo_id}"
@@ -585,9 +1401,9 @@ def guardar_historial_gps(
         True
     )
 
-    # Si el ESP32 indica explícitamente que el GPS no es válido,
-    # no se crea un punto histórico.
+
     if gps_valido is False:
+
         print(
             "⚠️ HISTORIAL GPS OMITIDO -> "
             "GPS marcado como inválido"
@@ -595,14 +1411,30 @@ def guardar_historial_gps(
 
         return None
 
-    # Sin coordenadas no tiene sentido guardar el punto.
+
+    if (
+        motivo == "intervalo"
+        and
+        data.get("_gps_movimiento_valido") is False
+    ):
+
+        print(
+            "⚠️ HISTORIAL GPS OMITIDO -> "
+            "movimiento menor al mínimo configurado"
+        )
+
+        return None
+
+
     if lat is None or lng is None:
+
         print(
             "⚠️ HISTORIAL GPS OMITIDO -> "
             "sin coordenadas válidas"
         )
 
         return None
+
 
     punto = HistorialGPS(
         vehiculo_id=vehiculo_id,

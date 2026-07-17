@@ -34,6 +34,7 @@ from helpers import (
     obtener_configuracion_telemetria,
     debe_actualizar_ubicacion_actual,
     debe_guardar_historial_gps,
+    preparar_datos_telemetria,
 )
 
 
@@ -311,6 +312,19 @@ def registrar_esp32_routes(app):
                     "segundos_separacion_alertas"
                 ]
             )
+            
+            distancia_minima_gps_metros = (
+                config_telemetria[
+                    "distancia_minima_gps_metros"
+                ]
+            )
+
+
+            velocidad_minima_kmh = (
+                config_telemetria[
+                    "velocidad_minima_kmh"
+                ]
+            )
 
 
             # =================================================
@@ -395,6 +409,21 @@ def registrar_esp32_routes(app):
                 "modo_manual"
             ):
                 modo_manual_actual = True
+                
+            # =================================================
+            # NORMALIZAR GPS Y VELOCIDAD
+            #
+            # Aquí se filtra el movimiento falso del GPS y se
+            # redondea la velocidad antes de guardar o crear
+            # historial.
+            # =================================================
+
+            data = preparar_datos_telemetria(
+                vehiculo.id,
+                data,
+                distancia_minima_gps_metros,
+                velocidad_minima_kmh
+            )
 
             # =================================================
             # ESTADO ANTERIOR DEL VEHÍCULO
@@ -459,7 +488,8 @@ def registrar_esp32_routes(app):
 
                 actualizar_ubicacion_actual(
                     vehiculo.id,
-                    data
+                    data,
+                    config_telemetria
                 )
 
                 ubicacion_actualizada = True
@@ -628,6 +658,8 @@ def registrar_esp32_routes(app):
                 "puerta_abierta": {
                     "activa": (
                         puerta_actual == "abierta"
+                        and
+                        not modo_manual_actual
                     ),
                     "nivel": "alto",
                     "descripcion": (
@@ -639,6 +671,8 @@ def registrar_esp32_routes(app):
                 "vibracion": {
                     "activa": (
                         vibracion_actual == 1
+                        and
+                        not modo_manual_actual
                     ),
                     "nivel": "medio",
                     "descripcion": (
@@ -670,6 +704,7 @@ def registrar_esp32_routes(app):
                 "activa": (
                     alerta_actual == 1
                     and not hay_alerta_especifica
+                    and not modo_manual_actual
                 ),
 
                 "nivel": "medio",
