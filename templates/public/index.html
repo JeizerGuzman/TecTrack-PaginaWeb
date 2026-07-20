@@ -432,39 +432,42 @@
       </div>
     </section>
 
-    <!-- Dashboard -->
+   <!-- Dashboard -->
 
     <section class="dashboard-section" id="dashboard">
 
-        <span class="eyebrow">Dashboard</span>
-        <h2>Toda la información de tu flota, en un solo lugar</h2>
-
-        <!-- COLUMNA IZQUIERDA: CAPTURA PRINCIPAL -->
-        <div class="dashboard-preview-col">
+        <div class="dashboard-header">
+            <div class="dashboard-header-text">
+                <span class="eyebrow">Dashboard</span>
+                <h2>Toda la información de tu flota, en un solo lugar</h2>
+            </div>
 
             <div class="dashboard-selector" id="dashboardSelector">
-            <!-- Las 5 capturas se generan dinámicamente con JS -->
+                <!-- Las 6 vistas se generan dinámicamente con JS -->
             </div>
+        </div>
+
+        <!-- CAPTURA PRINCIPAL -->
+        <div class="dashboard-preview-col">
 
             <div class="dashboard-card">
-            <img 
-                src="dashboard-main.png" 
-                alt="Dashboard principal TecTrack Security" 
-                class="dashboard-main" 
-                id="dashboardMain"
-            >
+                <img
+                    src="{{ url_for('static',filename='img/public/dashboard/monitoreo-general.png') }}"
+                    alt="Dashboard principal TecTrack Security"
+                    class="dashboard-main"
+                    id="dashboardMain"
+                >
 
-            <div class="dashboard-overlay">
-                <div class="dashboard-title-block">
-                <h2 id="dashboardTitle">Monitoreo general</h2>
-                <p id="dashboardSubtitle">
-                    Visualiza el estado general de tu flota en tiempo real
-                </p>
+                <div class="dashboard-overlay">
+                    <div class="dashboard-title-block">
+                        <h2 id="dashboardTitle">Monitoreo general</h2>
+                        <p id="dashboardSubtitle">
+                            Visualiza el estado general de tu flota en tiempo real
+                        </p>
+                    </div>
+
+                    <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}" alt="Logo" class="logo-img">
                 </div>
-
-                <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}" alt="Logo" class="logo-img">
-            </div>
-
             </div>
 
         </div>
@@ -615,22 +618,28 @@
             <div class="orbit orbit-1">
                 <div class="orbit-icon" style="--i:0; --total:3;">
                     <div class="icon-inner">
-                    <i class="fa-solid fa-microchip"></i>
-                    <span>ESP32</span>
+                        <div class="icon-spin">
+                            <i class="fa-solid fa-microchip"></i>
+                            <span>ESP32</span>
+                        </div>
                     </div>
                 </div>
             
                 <div class="orbit-icon" style="--i:1; --total:3;">
                     <div class="icon-inner">
-                    <i class="fa-solid fa-satellite"></i>
-                    <span>GPS</span>
+                        <div class="icon-spin">
+                            <i class="fa-solid fa-satellite"></i>
+                            <span>GPS</span>
+                        </div>
                     </div>
                 </div>
             
                 <div class="orbit-icon" style="--i:2; --total:3;">
                     <div class="icon-inner">
-                    <i class="fa-solid fa-sim-card"></i>
-                    <span>Módulo SIM</span>
+                        <div class="icon-spin">
+                            <i class="fa-solid fa-sim-card"></i>
+                            <span>Módulo SIM</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -639,22 +648,28 @@
                 <div class="orbit orbit-2">
                     <div class="orbit-icon" style="--i:0; --total:3;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-python"></i>
-                        <span>Flask</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-python"></i>
+                                <span>Flask</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:1; --total:3;">
                         <div class="icon-inner">
-                        <i class="fa-solid fa-database"></i>
-                        <span>MySQL</span>
+                            <div class="icon-spin">
+                                <i class="fa-solid fa-database"></i>
+                                <span>MySQL</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:2; --total:3;">
                         <div class="icon-inner">
-                        <i class="fa-solid fa-globe"></i>
-                        <span>Railway</span>
+                            <div class="icon-spin">
+                                <i class="fa-solid fa-globe"></i>
+                                <span>Railway</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -663,29 +678,37 @@
                 <div class="orbit orbit-3">
                     <div class="orbit-icon" style="--i:0; --total:4;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-html5"></i>
-                        <span>HTML</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-html5"></i>
+                                <span>HTML</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:1; --total:4;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-css"></i>
-                        <span>CSS</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-css"></i>
+                                <span>CSS</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:2; --total:4;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-js"></i>
-                        <span>JavaScript</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-js"></i>
+                                <span>JavaScript</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:3; --total:4;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-bluetooth"></i>
-                        <span>Bluetooth</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-bluetooth"></i>
+                                <span>Bluetooth</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1121,9 +1144,7 @@
                             </option>
 
                         </select>
-
                     </div>
-
                 </div>
 
 
@@ -1243,7 +1264,7 @@
             <div class="footer-links">
                 <h4>Compañía</h4>
                 <a href="#">Inicio</a>
-                <a href="#">Sobre nosotros</a>
+                <a href="{{ url_for('sobre_nosotros') }}">Sobre nosotros</a>
                 <a href="#paquetes">Precios y paquetes</a>
                 <a href="#contacto">Contacto</a>
             </div>
@@ -1290,5 +1311,6 @@
     <script src="{{ url_for( 'static', filename='js/public/benefits.js') }}"></script>
     <script src="{{ url_for('static', filename='js/public/caracteristicas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/public/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
 </body>
 </html>

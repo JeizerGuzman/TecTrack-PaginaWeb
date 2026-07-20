@@ -18,21 +18,33 @@
 }
 
 /* ==========================================
-   NAVBAR
+   NAVBAR (ahora fixed/sticky, con fondo glass
+   permanente para que se lea bien sobre cualquier
+   contenido, no solo sobre la foto del hero)
 ========================================== */
 
 .navbar{
-    position:absolute;
+    position:fixed;
     top:20px;
     left:50%;
     transform:translateX(-50%);
-    z-index:3;
+    z-index:100;
     width:90%;
-    padding:20px 24px;
+    max-width:1200px;
+    padding:16px 24px;
     display:flex;
     justify-content:space-between;
     align-items:center;
     border-radius:16px;
+    transition:background .3s ease, box-shadow .3s ease, padding .3s ease;
+}
+
+/* Se refuerza el fondo cuando el usuario ya hizo scroll
+   (clase agregada por JS) para más contraste y legibilidad */
+.navbar.scrolled{
+    background: var(--blue-primary);
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    padding: 12px 24px;
 }
 
 /* ==========================================
@@ -57,7 +69,7 @@
 }
 
 /* ==========================================
-   LINKS
+   LINKS (con animación hover)
 ========================================== */
 
 .nav-links{
@@ -67,6 +79,7 @@
 }
 
 .nav-item{
+    position:relative;
     display:flex;
     align-items:center;
     gap:8px;
@@ -75,6 +88,28 @@
     font-weight:500;
     white-space:nowrap;
     text-decoration:none;
+    transition:color .3s ease;
+}
+
+/* Subrayado animado que crece desde la izquierda al hacer hover */
+.nav-item::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:0;
+    height:2px;
+    background:var(--blue-mid);
+    border-radius:2px;
+    transition:width .3s ease;
+}
+
+.nav-item:hover{
+    color:var(--blue-light);
+}
+
+.nav-item:hover::after{
+    width:100%;
 }
 
 .nav-item .icon{
@@ -83,12 +118,19 @@
     display:flex;
     justify-content:center;
     align-items:center;
+    transition:transform .35s cubic-bezier(.34,1.56,.64,1);
 }
 
 .nav-item .icon img{
     width:100%;
     height:100%;
     object-fit:contain;
+    transition:filter .3s ease;
+}
+
+/* El ícono rebota/rota un poco al hacer hover en el link */
+.nav-item:hover .icon{
+    transform:scale(1.15) rotate(-8deg);
 }
 
 /* ==========================================
@@ -102,10 +144,32 @@
 }
 
 .login-link{
+    position:relative;
     color:white;
     font-size:15px;
     font-weight:600;
     text-decoration:none;
+    transition:color .3s ease;
+}
+
+.login-link::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:0;
+    height:2px;
+    background:var(--blue-mid);
+    border-radius:2px;
+    transition:width .3s ease;
+}
+
+.login-link:hover{
+    color:var(--blue-light);
+}
+
+.login-link:hover::after{
+    width:100%;
 }
 
 /* Botón demo */
@@ -130,6 +194,17 @@
     color:white;
     box-shadow:0 4px 14px rgba(37,99,235,.35);
     border-color:transparent;
+    transform:translateY(-2px);
+}
+
+.demo .fa-arrow-right,
+.demo img{
+    transition:transform .3s ease;
+}
+
+.demo:hover .fa-arrow-right,
+.demo:hover img{
+    transform:translateX(4px);
 }
 
 .fa-arrow-right{

@@ -131,11 +131,11 @@ def registrar_frontend_routes(app):
     # ========================================================
     
     # Página de contacto.
-    # @app.get("/sobrenosotros")
-    # def sobre_nosotros():
-    #     return render_template(
-    #         "public/sobre-nosotros.html"
-    #     )
+    @app.get("/sobrenosotros")
+    def sobre_nosotros():
+        return render_template(
+            "public/nosotros.html"
+        )
     
     # Página de paquetes y precios    
     @app.get("/paquetes")
