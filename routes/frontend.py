@@ -55,7 +55,7 @@ def registrar_frontend_routes(app):
     # Página principal del dueño/admin.
     @app.get("/dueno/dashboard")
     def dueno_dashboard():
-        return render_template("dueno/dashboard.html")
+        return render_template("dueno/dashboard/index.html")
 
     # Listado de vehículos.
     @app.get("/dueno/vehiculos")
@@ -163,7 +163,7 @@ def registrar_frontend_routes(app):
     @app.get("/supervisor/dashboard")
     def supervisor_dashboard():
         return render_template(
-            "supervisor/dashboard.html"
+            "supervisor/dashboard/index.html"
         )
 
 

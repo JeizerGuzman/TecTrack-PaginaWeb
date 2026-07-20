@@ -36,7 +36,7 @@
             </button>
 
             <nav class="sidebar-nav">
-                <a href="/dueno/dashboard" class="nav-link {% if request.path.startswith('/dueno/dashboard') %}active{% endif %}">
+                <a href="/dueno/dashboard" class="nav-link {% if request.path.startswith('/dueno/dashboard') %}active{% endif %}" title="Dashboard" data-tooltip="Dashboard">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -46,9 +46,9 @@
                         </svg>
                     </span>
                     <span class="nav-text">Dashboard</span>
-                </a>
+                </a></a>
 
-                <a href="/dueno/vehiculos" class="nav-link {% if request.path.startswith('/dueno/vehiculos') %}active{% endif %}">
+                <a href="/dueno/vehiculos" class="nav-link {% if request.path.startswith('/dueno/vehiculos') %}active{% endif %}" title="Vehículos" data-tooltip="Vehículos">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -62,9 +62,9 @@
                         </svg>
                     </span>
                     <span class="nav-text">Vehículos</span>
-                </a>
+                </a></a>
 
-                <a href="/dueno/alertas" class="nav-link {% if request.path.startswith('/dueno/alertas') %}active{% endif %}">
+                <a href="/dueno/alertas" class="nav-link {% if request.path.startswith('/dueno/alertas') %}active{% endif %}" title="Alertas" data-tooltip="Alertas">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -74,9 +74,9 @@
                         </svg>
                     </span>
                     <span class="nav-text">Alertas</span>
-                </a>
+                </a></a>
 
-                <a href="/dueno/historial" class="nav-link {% if request.path.startswith('/dueno/historial') %}active{% endif %}">
+                <a href="/dueno/historial" class="nav-link {% if request.path.startswith('/dueno/historial') %}active{% endif %}" title="Historial" data-tooltip="Historial">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -86,9 +86,9 @@
                         </svg>
                     </span>
                     <span class="nav-text">Historial</span>
-                </a>
+                </a></a>
 
-                <a href="/dueno/reportes" class="nav-link {% if request.path.startswith('/dueno/reportes') %}active{% endif %}">
+                <a href="/dueno/reportes" class="nav-link {% if request.path.startswith('/dueno/reportes') %}active{% endif %}" title="Reportes" data-tooltip="Reportes">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -99,9 +99,9 @@
                         </svg>
                     </span>
                     <span class="nav-text">Reportes</span>
-                </a>
+                </a></a>
 
-                <a href="/dueno/usuarios" class="nav-link {% if request.path.startswith('/dueno/usuarios') %}active{% endif %}">
+                <a href="/dueno/usuarios" class="nav-link {% if request.path.startswith('/dueno/usuarios') %}active{% endif %}" title="Usuarios" data-tooltip="Usuarios">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -112,9 +112,9 @@
                         </svg>
                     </span>
                     <span class="nav-text">Usuarios</span>
-                </a>
+                </a></a>
 
-                <a href="/dueno/configuracion" class="nav-link {% if request.path.startswith('/dueno/configuracion') %}active{% endif %}">
+                <a href="/dueno/configuracion" class="nav-link {% if request.path.startswith('/dueno/configuracion') %}active{% endif %}" title="Configuración" data-tooltip="Configuración">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -123,7 +123,7 @@
                         </svg>
                     </span>
                     <span class="nav-text">Configuración</span>
-                </a>
+                </a></a>
             </nav>
             <div class="sidebar-footer">
                 <div class="sidebar-session">
@@ -258,7 +258,7 @@
                     TrackAuth.logout();
                 });
             }
-        });
+        });s
     </script>
 
     {% block extra_js %}{% endblock %}

@@ -1,0 +1,24 @@
+<div class="dashboard-map-modal" id="modalMapaDashboard" aria-hidden="true">
+    <div class="dashboard-map-modal-backdrop" data-cerrar-mapa-dashboard></div>
+
+    <section class="dashboard-map-modal-card" role="dialog" aria-modal="true" aria-labelledby="tituloMapaDashboard">
+        <header class="dashboard-map-modal-header">
+            <div>
+                <h3 id="tituloMapaDashboard">Mapa completo de flota</h3>
+                <p>Consulta la ubicación actual y la última ubicación conocida de la flota.</p>
+            </div>
+
+            <div class="dashboard-map-modal-actions">
+                <button type="button" class="btn btn-outline btn-sm" id="btnCentrarMapaDashboardModal">
+                    Centrar flota
+                </button>
+
+                <button type="button" class="dashboard-map-modal-close" data-cerrar-mapa-dashboard aria-label="Cerrar mapa">
+                    ×
+                </button>
+            </div>
+        </header>
+
+        <div id="dashboardMapaFlotaModal" class="dashboard-map dashboard-map-full"></div>
+    </section>
+</div>

@@ -12,7 +12,7 @@
             }
         })();
     </script>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/supervisor/base_supervisor.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
@@ -39,7 +39,7 @@
                 <a
                     href="/supervisor/dashboard"
                     class="nav-link {% if request.path.startswith('/supervisor/dashboard') %}active{% endif %}"
-                >
+                 title="Dashboard" data-tooltip="Dashboard">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -49,12 +49,12 @@
                         </svg>
                     </span>
                     <span class="nav-text">Dashboard</span>
-                </a>
+                </a></a>
 
                 <a
                     href="/supervisor/monitoreo"
                     class="nav-link {% if request.path.startswith('/supervisor/monitoreo') %}active{% endif %}"
-                >
+                 title="Monitoreo" data-tooltip="Monitoreo">
                     <span
                         class="nav-icon"
                         aria-hidden="true"
@@ -75,12 +75,12 @@
                     <span class="nav-text">
                         Monitoreo
                     </span>
-                </a>
+                </a></a>
 
                 <a
                     href="/supervisor/vehiculos"
                     class="nav-link {% if request.path.startswith('/supervisor/vehiculos') %}active{% endif %}"
-                >
+                 title="Vehículos" data-tooltip="Vehículos">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -94,12 +94,12 @@
                         </svg>
                     </span>
                     <span class="nav-text">Vehículos</span>
-                </a>
+                </a></a>
 
                 <a
                     href="/supervisor/alertas"
                     class="nav-link {% if request.path.startswith('/supervisor/alertas') %}active{% endif %}"
-                >
+                 title="Alertas" data-tooltip="Alertas">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -109,12 +109,12 @@
                         </svg>
                     </span>
                     <span class="nav-text">Alertas</span>
-                </a>
+                </a></a>
 
                 <a
                     href="/supervisor/historial"
                     class="nav-link {% if request.path.startswith('/supervisor/historial') %}active{% endif %}"
-                >
+                 title="Historial" data-tooltip="Historial">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -124,12 +124,12 @@
                         </svg>
                     </span>
                     <span class="nav-text">Historial</span>
-                </a>
+                </a></a>
 
                 <a
                     href="/supervisor/reportes"
                     class="nav-link {% if request.path.startswith('/supervisor/reportes') %}active{% endif %}"
-                >
+                 title="Reportes" data-tooltip="Reportes">
                     <span class="nav-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -140,7 +140,7 @@
                         </svg>
                     </span>
                     <span class="nav-text">Reportes</span>
-                </a>
+                </a></a>
                 
             </nav>
             <div class="sidebar-footer">

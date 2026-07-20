@@ -1,0 +1,30 @@
+<article class="card dashboard-map-card">
+    <div class="dashboard-card-header">
+        <div>
+            <h3>Mapa general de flota</h3>
+            <p>Ubicación actual y última ubicación conocida de la flota.</p>
+        </div>
+
+        <div class="dashboard-map-actions">
+            <button type="button" class="btn btn-outline btn-sm" id="btnCentrarMapaDashboard">
+                Centrar flota
+            </button>
+
+            <button type="button" class="btn btn-secondary btn-sm" id="btnAbrirMapaDashboard">
+                Ver mapa completo
+            </button>
+        </div>
+    </div>
+
+    <div class="dashboard-map-wrap">
+        <div id="dashboardMapaFlota" class="dashboard-map"></div>
+
+        <div class="dashboard-map-legend">
+            <span><i class="legend-dot estado-activo"></i> En línea</span>
+            <span><i class="legend-dot estado-alerta"></i> Alerta</span>
+            <span><i class="legend-dot estado-panico"></i> Pánico</span>
+            <span><i class="legend-dot estado-manual"></i> Manual</span>
+            <span><i class="legend-dot estado-sin-senal"></i> Sin señal</span>
+        </div>
+    </div>
+</article>

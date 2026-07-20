@@ -1,0 +1,19 @@
+<article class="card dashboard-side-card">
+    <div class="dashboard-card-header">
+        <div>
+            <h3>Alertas de hoy</h3>
+            <p>Alertas registradas durante el día actual.</p>
+        </div>
+
+        <a href="{{ url_alertas }}" class="btn btn-outline btn-sm">
+            Ver alertas
+        </a>
+    </div>
+
+    <div id="alertasRecientes" class="dashboard-alertas-list">
+        <div class="empty-state">
+            <strong>Cargando alertas...</strong>
+            <p>Espera mientras se consulta la información.</p>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,51 @@
+{% extends "base/base.html" %}
+
+{% block title %}Dashboard dueño - TrackSecurity{% endblock %}
+{% block page_title %}Dashboard del dueño{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="dashboard-page">
+
+    <section class="dashboard-header">
+        <div>
+            <p class="section-kicker">Monitoreo general</p>
+            <h2>Estado de la flota</h2>
+            <p>
+                Consulta el estado operativo, alertas, ubicación y actividad reciente de los vehículos.
+            </p>
+        </div>
+
+        <div class="dashboard-refresh-info">
+            <span id="ultimaActualizacion">Actualizando...</span>
+            <span id="estadoCargaDashboard">Sincronizando...</span>
+        </div>
+    </section>
+
+    {% include "dueno/dashboard/metricas.html" %}
+
+    <section class="dashboard-main-grid">
+        {% include "dueno/dashboard/mapa.html" %}
+        {% with url_alertas="/dueno/alertas" %}
+            {% include "dueno/dashboard/alertas.html" %}
+        {% endwith %}
+    </section>
+
+    {% with url_historial="/dueno/historial" %}
+        {% include "dueno/dashboard/eventos.html" %}
+    {% endwith %}
+
+    {% include "dueno/dashboard/modal_mapa.html" %}
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='js/utils/direccion.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dueno/dashboard/index.js') }}"></script>
+{% endblock %}
