@@ -1,33 +1,16 @@
 /* ==========================================
-   HERO
+   NAVBAR
+   Este archivo debe incluirse en el <head> de
+   TODAS las páginas del sitio (home, sobre-nosotros,
+   y cualquier página futura), ya que el navbar se
+   reutiliza vía {% include "components/navbar.html" %}
 ========================================== */
-
-.hero{
-    position:relative;
-    min-height:97vh;
-    background-image:url("../../img/public/hero/pexels-umudicreative-19797993.jpg");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    border-radius:16px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
-    margin-bottom: 50px;
-}
-
-/* ==========================================
-   NAVBAR (ahora fixed/sticky, con fondo glass
-   permanente para que se lea bien sobre cualquier
-   contenido, no solo sobre la foto del hero)
-========================================== */
-
 .navbar{
     position:fixed;
     top:20px;
     left:50%;
-    transform:translateX(-50%);
+    --nav-y: 0%;
+    transform:translateX(-50%) translateY(var(--nav-y));
     z-index:100;
     width:90%;
     max-width:1200px;
@@ -36,15 +19,18 @@
     justify-content:space-between;
     align-items:center;
     border-radius:16px;
-    transition:background .3s ease, box-shadow .3s ease, padding .3s ease;
+    transition:background .3s ease, box-shadow .3s ease, padding .3s ease, transform .3s ease;
+    height: 77px;
 }
 
-/* Se refuerza el fondo cuando el usuario ya hizo scroll
-   (clase agregada por JS) para más contraste y legibilidad */
 .navbar.scrolled{
     background: var(--blue-primary);
     box-shadow: 0 8px 24px rgba(0,0,0,.2);
     padding: 12px 24px;
+}
+
+.navbar.nav-hidden{
+    --nav-y: -150%; /* -100% no alcanza porque el navbar tiene top:20px y separación */
 }
 
 /* ==========================================
@@ -55,6 +41,13 @@
     display:flex;
     align-items:center;
     gap:36px;
+    min-width:0;
+}
+
+.logo{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
 }
 
 /* ==========================================
@@ -62,8 +55,8 @@
 ========================================== */
 
 .logo-img{
-    width:34px;
-    height:34px;
+    width:45px;
+    height:45px;
     object-fit:contain;
     display:block;
 }
@@ -99,7 +92,7 @@
     bottom:-6px;
     width:0;
     height:2px;
-    background:var(--blue-mid);
+    background: #FFF;
     border-radius:2px;
     transition:width .3s ease;
 }
@@ -141,6 +134,7 @@
     display:flex;
     align-items:center;
     gap:24px;
+    flex-shrink:0;
 }
 
 .login-link{
@@ -150,6 +144,7 @@
     font-weight:600;
     text-decoration:none;
     transition:color .3s ease;
+    white-space:nowrap;
 }
 
 .login-link::after{
@@ -159,7 +154,7 @@
     bottom:-6px;
     width:0;
     height:2px;
-    background:var(--blue-mid);
+    background: #FFF;
     border-radius:2px;
     transition:width .3s ease;
 }
@@ -187,6 +182,7 @@
     border:1px solid #FFF;
     transition:.3s ease;
     text-decoration:none;
+    white-space:nowrap;
 }
 
 .demo:hover{
@@ -212,204 +208,200 @@
 }
 
 /* ==========================================
-   HERO CONTENT
+   BOTÓN HAMBURGUESA (oculto en desktop)
 ========================================== */
 
-.hero-content{
-    position:relative;
-    z-index:2;
-    width:90%;
-    display:flex;
-    justify-content:space-between;
+.nav-toggle{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
     align-items:center;
-    gap:40px;
+    gap:5px;
+    width:38px;
+    height:38px;
+    background:transparent;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:background .3s ease;
 }
 
+.nav-toggle:hover{
+    background:rgba(255,255,255,.1);
+}
+
+.nav-toggle-bar{
+    width:22px;
+    height:2px;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+}
+
+/* Transforma las 3 barras en una "X" cuando el menú está abierto */
+.nav-toggle.active .nav-toggle-bar:nth-child(1){
+    transform:translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.active .nav-toggle-bar:nth-child(2){
+    opacity:0;
+}
+
+.nav-toggle.active .nav-toggle-bar:nth-child(3){
+    transform:translateY(-7px) rotate(-45deg);
+}
 
 /* ==========================================
-   HERO TEXT
+   MENÚ MÓVIL (panel desplegable)
 ========================================== */
 
-.hero-text{
-    max-width:600px;
-    text-align:left;
+.mobile-menu{
+    position:fixed;
+    top:88px;
+    left:50%;
+    transform:translateX(-50%) translateY(-12px);
+    z-index:99;
+    width:90%;
+    max-width:1200px;
+    background: var(--blue-primary);
+    border-radius:16px;
+    box-shadow:0 16px 40px rgba(0,0,0,.25);
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .3s ease, transform .3s ease, visibility .3s ease;
+}
+
+.mobile-menu.active{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateX(-50%) translateY(0);
+}
+
+.mobile-nav-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
     color:#fff;
+    font-size:15px;
+    font-weight:500;
+    text-decoration:none;
+    padding:14px 16px;
+    border-radius:10px;
+    transition:background .2s ease;
 }
 
-.hero-text h1{
-    font-size:52px;
-    font-weight:700;
-    line-height:1.15;
-    margin:0 0 20px;
+.mobile-nav-item i{
+    width:18px;
+    text-align:center;
+    font-size:15px;
 }
 
-.hero-text p{
-    font-size:18px;
-    line-height:1.5;
-    color:rgba(255,255,255,.85);
-    max-width:500px;
-    margin-bottom:32px;
+.mobile-nav-item:hover{
+    background:rgba(255,255,255,.12);
 }
 
+.mobile-menu-divider{
+    height:1px;
+    background:rgba(255,255,255,.18);
+    margin:6px 8px;
+}
 
-/* ==========================================
-   BOTÓN PRINCIPAL
-========================================== */
-
-.btn{
-    display:inline-flex;
+.mobile-demo{
+    display:flex;
     align-items:center;
     justify-content:center;
-    padding:14px 28px;
+    gap:8px;
+    margin:6px 8px 4px;
+    padding:14px;
     border-radius:10px;
     background:linear-gradient(135deg,var(--blue-mid),var(--blue-dark));
     color:#fff;
-    font-size:16px;
+    font-size:15px;
     font-weight:600;
     text-decoration:none;
-    box-shadow:0 6px 20px rgba(37,99,235,.4);
-    transition:.3s ease;
+    transition:transform .2s ease, box-shadow .2s ease;
 }
 
-.btn:hover{
+.mobile-demo:hover{
     transform:translateY(-2px);
-    box-shadow:0 8px 24px rgba(37,99,235,.5);
+    box-shadow:0 8px 20px rgba(37,99,235,.35);
 }
 
-/* ==========================================
-   FEATURE CARDS
-========================================== */
-
-.hero-features{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
-    width:280px;
-}
-
-.feature-card{
-    padding:20px;
-    border-radius:16px;
-    background:rgba(255,255,255,.12);
-    backdrop-filter:blur(12px);
-    border:1px solid rgba(255,255,255,.2);
-    color:white;
-    transition:.3s ease;
-}
-
-.feature-card:hover{
-    transform:translateX(-8px);
-    background:rgba(255,255,255,.18);
-}
-
-.feature-card .icon{
-    font-size:28px;
-    margin-bottom:10px;
-}
-
-.feature-card h3{
-    font-size:18px;
-    margin:0 0 5px;
-}
-
-.feature-card p{
-    font-size:14px;
-    color:rgba(255,255,255,.8);
-    margin:0;
+/* Bloquea el scroll del body cuando el menú está abierto
+   (la clase la agrega el JS sobre <body>) */
+body.mobile-menu-open{
+    overflow:hidden;
 }
 
 /* ==========================================
    RESPONSIVE
 ========================================== */
 
-@media (max-width: 1100px) {
-  .hero-text h1 {
-    font-size: 42px;
-  }
+/* Tablet: reduce espaciados antes de colapsar del todo */
+@media (max-width: 1024px){
+    .nav-left{
+        gap:24px;
+    }
 
-  .hero-content {
-    gap: 24px;
-  }
+    .nav-links{
+        gap:20px;
+    }
 }
 
-@media (max-width: 900px) {
-  .hero {
-    min-height: auto;
-    padding: 100px 0 60px;
-  }
+/* A partir de aquí: navbar de escritorio -> navbar móvil
+   con hamburguesa. Se oculta todo lo de desktop y aparece
+   el botón toggle. */
+@media (max-width: 900px){
+    .navbar{
+        width:92%;
+        padding:14px 18px;
+    }
 
-  .nav-links {
-    display: none;
-  }
+    .nav-links,
+    .nav-right{
+        display:none;
+    }
 
-  .hero-content {
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-  }
+    .nav-toggle{
+        display:flex;
+    }
 
-  .hero-features {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
-
-  .feature-card {
-    flex: 1 1 calc(50% - 7px);
-    min-width: 220px;
-  }
-
-  .feature-card:hover {
-    transform: translateY(-4px);
-  }
+    .mobile-menu{
+        top:76px;
+        width:92%;
+    }
 }
 
-@media (max-width: 640px) {
-  .navbar {
-    width: 92%;
-    padding: 14px 18px;
-  }
+@media (max-width: 480px){
+    .navbar{
+        padding:12px 16px;
+    }
 
-  .hero-text h1 {
-    font-size: 32px;
-  }
+    .logo-img{
+        width:30px;
+        height:30px;
+    }
 
-  .hero-text p {
-    font-size: 15px;
-    margin-bottom: 24px;
-  }
+    .mobile-menu{
+        top:70px;
+        padding:10px;
+    }
 
-  .btn {
-    padding: 12px 22px;
-    font-size: 14px;
-  }
+    .mobile-nav-item{
+        font-size:14px;
+        padding:12px 14px;
+    }
 
-  .demo {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-
-  .login-link {
-    font-size: 13px;
-  }
-
-  .feature-card {
-    flex: 1 1 100%;
-  }
-}
-
-@media (max-width: 420px) {
-  .nav-right {
-    gap: 12px;
-  }
-
-  .demo span,
-  .demo {
-    white-space: nowrap;
-  }
-
-  .hero-text h1 {
-    font-size: 26px;
-  }
+    .mobile-demo{
+        font-size:14px;
+        padding:12px;
+    }
 }

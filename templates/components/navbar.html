@@ -1,0 +1,92 @@
+<div class="navbar">
+    <div class="nav-left">
+
+        <div class="logo">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='img/public/hero/logo.png') }}"
+alt="Logo"
+class="logo-img">
+            </a>
+        </div>
+
+        <div class="nav-links">
+
+            <a class="nav-item" href="{{ url_for('home') }}">
+                <span class="icon">
+                    <i class="fa-solid fa-house"></i>
+                </span>
+                Inicio
+            </a>
+
+            <a class="nav-item" href="{{ url_for('paquetes') }}">
+                <span class="icon">
+                    <i class="fa-solid fa-box-open"></i>
+                </span>
+                Paquetes
+            </a>
+
+            <a class="nav-item" href="{{ url_for('sobre_nosotros') }}">
+                <span class="icon">
+                    <i class="fa-solid fa-users"></i>
+                </span>
+                Sobre Nosotros
+            </a>
+
+            <a class="nav-item" href="{{ url_for('home') }}#contacto">
+                <span class="icon">
+                    <i class="fa-solid fa-envelope"></i>
+                </span>
+                Contacto
+            </a>
+
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <a class="login-link" href="{{ url_for('login_view') }}">
+            Iniciar sesión
+        </a>
+
+        <a class="demo" href="#">
+            Consigue una demo
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <!-- Botón hamburguesa: solo visible en móvil/tablet -->
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+    </button>
+</div>
+
+<!-- Panel de menú móvil (oculto por defecto, se abre con el botón hamburguesa) -->
+<div class="mobile-menu" id="mobileMenu">
+    <a class="mobile-nav-item" href="{{ url_for('home') }}">
+        <i class="fa-solid fa-house"></i> Inicio
+    </a>
+
+    <a class="mobile-nav-item" href="{{ url_for('paquetes') }}">
+        <i class="fa-solid fa-box-open"></i> Paquetes
+    </a>
+
+    <a class="mobile-nav-item" href="{{ url_for('sobre_nosotros') }}">
+        <i class="fa-solid fa-users"></i> Sobre Nosotros
+    </a>
+
+    <a class="mobile-nav-item" href="{{ url_for('home') }}#contacto">
+        <i class="fa-solid fa-envelope"></i> Contacto
+    </a>
+
+    <div class="mobile-menu-divider"></div>
+
+    <a class="mobile-nav-item" href="{{ url_for('login_view') }}">
+        <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
+    </a>
+
+    <a class="mobile-demo" href="#">
+        Consigue una demo
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+</div>

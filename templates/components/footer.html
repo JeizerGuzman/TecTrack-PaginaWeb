@@ -1,0 +1,81 @@
+<footer class="site-footer">
+    <div class="footer-top">
+
+        <!-- COLUMNA 1: MARCA -->
+        <div class="footer-brand">
+            <div class="brand-logo">
+                <img src="{{ url_for('static', filename='img/public/hero/logo-black.jpeg') }}" alt="">
+                <span>TecTrack Security</span>
+            </div>
+
+            <p>
+                Monitorea vehículos en tiempo real, recibe alertas de seguridad y protege tu mercancía desde una plataforma centralizada.
+            </p>
+
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <!-- COLUMNA 2 -->
+        <div class="footer-links">
+            <h4>Compañía</h4>
+
+            <a href="{{ url_for('home') }}">Inicio</a>
+            <a href="{{ url_for('sobre_nosotros') }}">Sobre nosotros</a>
+            <a href="{{ url_for('paquetes') }}">Precios y paquetes</a>
+            <a href="{{ url_for('home') }}#contacto">Contacto</a>
+        </div>
+
+        <!-- COLUMNA 3 -->
+        <div class="footer-links">
+            <h4>Productos</h4>
+
+            <a href="{{ url_for('home') }}#caracteristicas">Características</a>
+            <a href="{{ url_for('home') }}#como_funciona">¿Cómo funciona?</a>
+            <a href="{{ url_for('home') }}#dashboard">Dashboard</a>
+            <a href="{{ url_for('home') }}#casos_de_uso">Casos de uso</a>
+        </div>
+
+        <!-- COLUMNA 4 -->
+        <div class="footer-newsletter">
+            <h4>Buzón</h4>
+
+            <p>
+                Recibe novedades, actualizaciones del sistema y consejos para mejorar la seguridad de tu flota.
+            </p>
+
+            <form class="newsletter-form">
+                <input
+                    type="email"
+                    placeholder="Correo electrónico"
+                    required
+                >
+
+                <button type="submit">
+                    Suscribirse
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- BARRA INFERIOR -->
+    <div class="footer-bottom">
+
+        <span class="copyright">
+            © 2026 TecTrack Security. Todos los derechos reservados.
+        </span>
+
+        <div class="footer-legal">
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Términos y Servicios</a>
+            <a href="#">Seguridad</a>
+            <a href="#">Cookies</a>
+        </div>
+
+    </div>
+
+</footer>

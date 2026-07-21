@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackSecurity - Paquetes</title>
+
+  <!-- CSS Links -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public/sobre-nosotros.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
+
+  <!-- Fontawesome Kit -->
+  <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
+
+  <!-- Vista publica para mostrar paquetes o planes comerciales. -->
+  <!-- Rol: publico. -->
+  <!-- Endpoints probables: GET /api/planes y GET /api/servicios. -->
+</head>
+<body>
+  <!-- Tarjetas de planes, comparativas y botones de contacto o registro. -->
+  
+  <!-- Navbar -->
+  {% include "components/navbar.html" %}
+
+  <!-- CONTENIDO HERO -->
+  <div class="hero-nosotros">
+      <div class="hero-nosotros-center">
+
+          <img
+              src="{{ url_for('static', filename='img/public/sobre-nosotros/hero.jpg') }}"
+              alt="Sobre Nosotros"
+              class="hero-nosotros-image"
+          >
+
+          <h1>Paquetes</h1>
+
+      </div>
+  </div>
+
+  <main>
+
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  {% include "components/footer.html" %}
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
+</body>
+</html>

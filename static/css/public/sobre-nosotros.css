@@ -1,0 +1,509 @@
+/* ==========================================
+   VARIABLES COMPARTIDAS
+   (antes se repetían --ink, --gray, --blue... en
+   cada sección; ahora viven una sola vez en :root)
+========================================== */
+:root {
+  --ink: #101828;
+  --gray: #667085;
+  --blue-primary: #2f6fed;
+  --border: #e6e8ec;
+  --border-soft: #ececf1;
+}
+
+/* ==========================================
+    HERO — SOBRE NOSOTROS
+========================================== */
+
+.hero-nosotros-content {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-nosotros-center {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.hero-nosotros-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 18px;
+}
+
+/* Overlay oscuro sobre la imagen: garantiza que el texto
+   blanco se lea bien sin importar qué tan clara sea la foto */
+.hero-nosotros-center::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.35) 0%,
+    rgba(15, 23, 42, 0.55) 100%
+  );
+  border-radius: 18px;
+  z-index: 1;
+}
+
+.hero-nosotros-center h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+
+  color: #ffffff;
+  /* Tipografía responsive: nunca más chica que 28px,
+     nunca más grande que 52px, y escala con el viewport */
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  padding: 0 24px;
+  max-width: 90%;
+
+  text-align: center;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+
+  animation: hero-title-in 0.7s ease both;
+}
+
+/* Entrada sutil: aparece con un pequeño fade + slide hacia arriba */
+@keyframes hero-title-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* ==========================================
+   S1 — NUESTRA HISTORIA / ABOUT
+========================================== */
+
+.s1-about {
+  --s1-blue-bg: #eaf1ff;
+  --s1-card-bg: #f4f5f7;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+.s1-about * { box-sizing: border-box; }
+
+.s1-wrap {
+  max-width: 1140px;
+  margin: 80px auto 0;
+}
+
+.s1-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+.s1-eyebrow {
+  display: block;
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.s1-title {
+  font-size: 36px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  max-width: 480px;
+}
+
+.s1-stats {
+  display: flex;
+  gap: 40px;
+  padding-top: 6px;
+}
+.s1-stat-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue-primary);
+  margin: 0;
+}
+.s1-stat-label {
+  font-size: 14px;
+  color: var(--gray);
+  margin: 4px 0 0;
+  white-space: nowrap;
+}
+
+.s1-body {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.s1-photo {
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 460px;
+  background-size: cover;
+  background-position: center;
+  background-image: url('../../img/public/sobre-nosotros/s1-1.jpg');
+}
+
+.s1-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 24px;
+}
+.s1-card {
+  border-radius: 16px;
+  padding: 28px;
+  background: var(--s1-card-bg);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+.s1-card--accent {
+  background: var(--s1-blue-bg);
+  border-color: transparent;
+}
+.s1-card--wide {
+  grid-column: 1 / -1;
+}
+.s1-card h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.s1-card p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--gray);
+  margin: 0 0 20px;
+  flex-grow: 1;
+}
+.s1-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  background: #ffffff;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.s1-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(16, 24, 40, 0.08);
+}
+.s1-btn svg { width: 14px; height: 14px; }
+
+/* ==========================================
+   S2 — WHO WE ARE
+========================================== */
+
+.s2-who {
+  background: #ffffff;
+  box-sizing: border-box;
+}
+.s2-who * { box-sizing: border-box; }
+
+.s2-wrap { max-width: 1140px; margin: 0 auto; }
+
+.s2-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.s2-eyebrow {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--blue-primary);
+  margin-bottom: 12px;
+}
+.s2-title {
+  font-size: 34px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  max-width: 420px;
+}
+.s2-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--gray);
+  max-width: 480px;
+  margin: 0;
+  padding-top: 4px;
+}
+
+.s2-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.s2-photo {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 340px;
+  background-size: cover;
+  background-position: center;
+}
+.s2-photo--vision {
+  background-image: url('../../img/public/sobre-nosotros/s2-1.jpg');
+}
+.s2-photo--goal {
+  background-image: url('../../img/public/sobre-nosotros/s2-2.jpg');
+}
+.s2-photo-card {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.15);
+}
+.s2-photo-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+.s2-photo-card p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--gray);
+  margin: 0;
+}
+
+.s2-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.s2-stat {
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 22px 16px;
+  text-align: center;
+}
+.s2-stat-num {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--blue-primary); /* antes apuntaba a una variable inexistente */
+  margin: 0;
+}
+.s2-stat-label {
+  font-size: 13.5px;
+  color: var(--gray);
+  margin: 6px 0 0;
+}
+
+/* ==========================================
+   S3 — OUR DYNAMIC WORK ENVIRONMENT
+========================================== */
+
+.s3-env {
+  --s3-icon-bg: #eeecfd;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+.s3-env * { box-sizing: border-box; }
+
+.s3-wrap { max-width: 1140px; margin: 0 auto; }
+
+.s3-intro {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto 48px;
+}
+.s3-intro h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 14px;
+}
+.s3-intro p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--gray);
+  margin: 0;
+}
+
+.s3-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.s3-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.s3-photo {
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  min-height: 200px;
+}
+.s3-photo--a {
+  background-image: url('../../img/public/sobre-nosotros/s3-1.jpg');
+}
+.s3-photo--b {
+  background-image: url('../../img/public/sobre-nosotros/s3-2.jpg');
+}
+.s3-photo--c {
+  grid-column: 1 / -1;
+  background-image: url('../../img/public/sobre-nosotros/s3-3.jpg');
+  min-height: 200px;
+}
+
+.s3-content h3 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.s3-content > p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--gray);
+  margin: 0 0 28px;
+}
+
+.s3-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.s3-feature {
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  padding: 20px;
+}
+.s3-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--s3-icon-bg);
+  color: var(--blue-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.s3-icon svg { width: 20px; height: 20px; }
+.s3-feature h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+.s3-feature p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--gray);
+  margin: 0;
+}
+
+/* ==========================================
+   RESPONSIVE — CONSOLIDADO
+   Antes había un bloque @media por sección
+   (s1, s2, s3) repetido en cada uno con el
+   mismo breakpoint. Ahora hay UN solo bloque
+   por breakpoint con las reglas de todas las
+   secciones agrupadas.
+========================================== */
+
+/* ---------- Tablet: <= 860px ---------- */
+@media (max-width: 860px) {
+  /* S1 */
+  .s1-body { grid-template-columns: 1fr; }
+  .s1-photo { min-height: 320px; }
+  .s1-header { flex-direction: column; }
+  .s1-stats { gap: 28px; }
+
+  /* S2 */
+  .s2-photos { grid-template-columns: 1fr; }
+  .s2-stats { grid-template-columns: repeat(2, 1fr); }
+  .s2-title { font-size: 28px; }
+
+  /* S3 */
+  .s3-body { grid-template-columns: 1fr; }
+}
+
+/* ---------- Móvil: <= 480px ---------- */
+@media (max-width: 480px) {
+  /* Hero */
+  .hero-nosotros-content { width: 94%; }
+  .hero-nosotros-center h1 { padding: 0 16px; }
+
+  /* S1 */
+  .s1-title { font-size: 28px; }
+  .s1-cards { grid-template-columns: 1fr; }
+
+  /* Fix: en pantallas chicas el flex con gap 28px + labels
+     "nowrap" hacía que las 3 estadísticas se salieran del
+     contenedor (overflow horizontal) o se vieran apretadas.
+     Ahora pasa a grid de 3 columnas iguales, centrado,
+     con texto que puede partirse en 2 líneas si hace falta. */
+  .s1-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+    padding-top: 0;
+  }
+  .s1-stats > div {
+    text-align: center;
+  }
+  .s1-stat-num { font-size: 20px; }
+  .s1-stat-label {
+    white-space: normal;
+    font-size: 11.5px;
+    line-height: 1.3;
+  }
+
+  /* S2 */
+  .s2-stats { grid-template-columns: 1fr 1fr; }
+
+  /* S3 */
+  .s3-features { grid-template-columns: 1fr; }
+  .s3-intro h2 { font-size: 26px; }
+}
