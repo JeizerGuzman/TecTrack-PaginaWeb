@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public/precios.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/public/sobre-nosotros.css') }}">
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
@@ -31,7 +32,7 @@
       <div class="hero-nosotros-center">
 
           <img
-              src="{{ url_for('static', filename='img/public/sobre-nosotros/hero.jpg') }}"
+              src="{{ url_for('static', filename='img/public/paquetes/hero.jpg') }}"
               alt="Sobre Nosotros"
               class="hero-nosotros-image"
           >
@@ -42,7 +43,54 @@
   </div>
 
   <main>
-
+      <section class="precios" id="precios" aria-labelledby="precios-titulo">
+        <div class="precios__header">
+          <span class="precios__eyebrow">
+            <i class="fa-solid fa-satellite-dish"></i> Planes de monitoreo
+          </span>
+          <h2 id="precios-titulo" class="precios__titulo">Elige el nivel de protección de tu flota</h2>
+          <p class="precios__subtitulo">
+            Cada plan activa un conjunto distinto de sensores y retención de datos.
+            Cambia entre planes para ver el detalle completo.
+          </p>
+        </div>
+      
+        <!-- Selector de planes -->
+        <div class="selector" role="tablist" aria-label="Selecciona un plan">
+          <div class="selector__track" id="selector-track">
+            <span class="selector__indicator" id="selector-indicator" aria-hidden="true">
+              <span class="selector__pulso"></span>
+            </span>
+            <!-- Los botones del selector se generan por JS a partir de PLANES_EJEMPLO -->
+          </div>
+        </div>
+      
+        <!-- Tarjeta principal: se llena por completo vía JS -->
+        <div class="precios__cuerpo">
+          <article class="tarjeta-principal" id="tarjeta-principal">
+      
+            <div class="tarjeta-principal__badge" id="tp-badge" hidden>
+              <i class="fa-solid fa-star"></i> Recomendado
+            </div>
+      
+            <header class="tarjeta-principal__header">
+              <h3 class="tarjeta-principal__nombre" id="tp-nombre"></h3>
+              <p class="tarjeta-principal__descripcion" id="tp-descripcion"></p>
+            </header>
+      
+            <ul class="tarjeta-principal__caracteristicas" id="tp-caracteristicas"></ul>
+      
+            <div class="tarjeta-principal__retenciones" id="tp-retenciones"></div>
+      
+            <button type="button" class="tarjeta-principal__cta" id="tp-cta">
+              Solicitar este plan <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </article>
+      
+          <!-- Mini-tarjetas de los otros planes -->
+          <div class="mini-planes" id="mini-planes" aria-label="Otros planes disponibles"></div>
+        </div>
+      </section>
 
   </main>
 
@@ -51,5 +99,6 @@
 
   <!-- JS -->
   <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/public/precios.js') }}"></script>
 </body>
 </html>

@@ -249,12 +249,17 @@
     min-height: 260px;
   }
 
+  .contact-visual img{
+    object-position: center bottom;
+  }
+
   .contact-header {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .contact-header p {
     text-align: left;
+    margin: 0;
   }
 
   .contact-header h1 {
