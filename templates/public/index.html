@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/hero.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/problemas.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/como-funciona.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/caracteristicas.css') }}">
@@ -34,54 +35,7 @@
     <!-- ================= HERO + NAVBAR ================= -->
     <header class="hero">
 
-        <div class="navbar">
-            <div class="nav-left">
-                <div class="logo">
-                    <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}" alt="Logo" class="logo-img">
-                </div>
-
-                <div class="nav-links">
-
-                    <a class="nav-item" href="#caracteristicas">
-                        <span class="icon">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </span>
-                        Características
-                    </a>
-
-                    <a class="nav-item" href="#dashboard">
-                        <span class="icon">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </span>
-                        Dashboard
-                    </a>
-
-                    <a class="nav-item" href="#tecnologias">
-                        <span class="icon">
-                            <i class="fa-solid fa-microchip"></i>
-                        </span>
-                        Tecnologías
-                    </a>
-
-                    <a class="nav-item" href="#casos_de_uso">
-                        <span class="icon">
-                            <i class="fa-solid fa-truck-front"></i>
-                        </span>
-                        Casos de Uso
-                    </a>
-                </div>
-            </div>
-
-            <div class="nav-right">
-              <a class="login-link" href="{{ url_for('login_view') }}">
-                    Iniciar sesión
-                </a>
-                <a class="demo" href="#">
-                    Consigue una demo
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
+        {% include "components/navbar.html" %}
 
         <!-- CONTENIDO HERO -->
         <div class="hero-content">
@@ -436,35 +390,38 @@
 
     <section class="dashboard-section" id="dashboard">
 
-        <span class="eyebrow">Dashboard</span>
-        <h2>Toda la información de tu flota, en un solo lugar</h2>
-
-        <!-- COLUMNA IZQUIERDA: CAPTURA PRINCIPAL -->
-        <div class="dashboard-preview-col">
+        <div class="dashboard-header">
+            <div class="dashboard-header-text">
+                <span class="eyebrow">Dashboard</span>
+                <h2>Toda la información de tu flota, en un solo lugar</h2>
+            </div>
 
             <div class="dashboard-selector" id="dashboardSelector">
-            <!-- Las 5 capturas se generan dinámicamente con JS -->
+                <!-- Las 6 vistas se generan dinámicamente con JS -->
             </div>
+        </div>
+
+        <!-- CAPTURA PRINCIPAL -->
+        <div class="dashboard-preview-col">
 
             <div class="dashboard-card">
-            <img 
-                src="dashboard-main.png" 
-                alt="Dashboard principal TecTrack Security" 
-                class="dashboard-main" 
-                id="dashboardMain"
-            >
+                <img
+                    src="{{ url_for('static',filename='img/public/dashboard/monitoreo-general.png') }}"
+                    alt="Dashboard principal TecTrack Security"
+                    class="dashboard-main"
+                    id="dashboardMain"
+                >
 
-            <div class="dashboard-overlay">
-                <div class="dashboard-title-block">
-                <h2 id="dashboardTitle">Monitoreo general</h2>
-                <p id="dashboardSubtitle">
-                    Visualiza el estado general de tu flota en tiempo real
-                </p>
+                <div class="dashboard-overlay">
+                    <div class="dashboard-title-block">
+                        <h2 id="dashboardTitle">Monitoreo general</h2>
+                        <p id="dashboardSubtitle">
+                            Visualiza el estado general de tu flota en tiempo real
+                        </p>
+                    </div>
+
+                    <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}" alt="Logo" class="logo-img">
                 </div>
-
-                <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}" alt="Logo" class="logo-img">
-            </div>
-
             </div>
 
         </div>
@@ -615,22 +572,28 @@
             <div class="orbit orbit-1">
                 <div class="orbit-icon" style="--i:0; --total:3;">
                     <div class="icon-inner">
-                    <i class="fa-solid fa-microchip"></i>
-                    <span>ESP32</span>
+                        <div class="icon-spin">
+                            <i class="fa-solid fa-microchip"></i>
+                            <span>ESP32</span>
+                        </div>
                     </div>
                 </div>
             
                 <div class="orbit-icon" style="--i:1; --total:3;">
                     <div class="icon-inner">
-                    <i class="fa-solid fa-satellite"></i>
-                    <span>GPS</span>
+                        <div class="icon-spin">
+                            <i class="fa-solid fa-satellite"></i>
+                            <span>GPS</span>
+                        </div>
                     </div>
                 </div>
             
                 <div class="orbit-icon" style="--i:2; --total:3;">
                     <div class="icon-inner">
-                    <i class="fa-solid fa-sim-card"></i>
-                    <span>Módulo SIM</span>
+                        <div class="icon-spin">
+                            <i class="fa-solid fa-sim-card"></i>
+                            <span>Módulo SIM</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -639,22 +602,28 @@
                 <div class="orbit orbit-2">
                     <div class="orbit-icon" style="--i:0; --total:3;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-python"></i>
-                        <span>Flask</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-python"></i>
+                                <span>Flask</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:1; --total:3;">
                         <div class="icon-inner">
-                        <i class="fa-solid fa-database"></i>
-                        <span>MySQL</span>
+                            <div class="icon-spin">
+                                <i class="fa-solid fa-database"></i>
+                                <span>MySQL</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:2; --total:3;">
                         <div class="icon-inner">
-                        <i class="fa-solid fa-globe"></i>
-                        <span>Railway</span>
+                            <div class="icon-spin">
+                                <i class="fa-solid fa-globe"></i>
+                                <span>Railway</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -663,29 +632,37 @@
                 <div class="orbit orbit-3">
                     <div class="orbit-icon" style="--i:0; --total:4;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-html5"></i>
-                        <span>HTML</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-html5"></i>
+                                <span>HTML</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:1; --total:4;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-css"></i>
-                        <span>CSS</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-css"></i>
+                                <span>CSS</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:2; --total:4;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-js"></i>
-                        <span>JavaScript</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-js"></i>
+                                <span>JavaScript</span>
+                            </div>
                         </div>
                     </div>
                 
                     <div class="orbit-icon" style="--i:3; --total:4;">
                         <div class="icon-inner">
-                        <i class="fa-brands fa-bluetooth"></i>
-                        <span>Bluetooth</span>
+                            <div class="icon-spin">
+                                <i class="fa-brands fa-bluetooth"></i>
+                                <span>Bluetooth</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1019,43 +996,7 @@
     </section>
 
     <!-- Demo -->
-    <section class="section-demo">
-        <div class="cta-card">
-
-            <!-- Decoración -->
-            <span class="deco-square sq-1"></span>
-            <span class="deco-square sq-2"></span>
-            <span class="deco-square sq-3"></span>
-
-            <div class="cta-content">
-
-                <span class="eyebrow">
-                    ¿Listo para comenzar?
-                </span>
-
-                <h2>
-                    Protege tu flota con monitoreo inteligente
-                </h2>
-
-                <p>
-                    Solicita una demostración y conoce cómo TecTrack puede ayudarte a
-                    monitorear tus unidades, recibir alertas en tiempo real y mantener
-                    tu mercancía siempre bajo control.
-                </p>
-
-                <div class="cta-buttons">
-
-                    <a href="#" class="btn-dark">
-                        Solicitar demostración
-                    </a>
-
-                    <a href="#contacto" class="btn-outline">
-                        Contactar con un asesor
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+    {% include "components/demo.html" %}
 
     <!-- Contáctanos -->
     <section class="contact-section" id="contacto">
@@ -1121,9 +1062,7 @@
                             </option>
 
                         </select>
-
                     </div>
-
                 </div>
 
 
@@ -1222,73 +1161,12 @@
     </main>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="site-footer">
-        <div class="footer-top">
-            <!-- COLUMNA 1: MARCA -->
-            <div class="footer-brand">
-                <div class="brand-logo">
-                    <img src="{{ url_for('static',filename='img/public/hero/logo-black.jpeg') }}" alt="">
-                    <span>TecTrack Security</span>
-                </div>
-                <p>Monitorea vehículos en tiempo real, recibe alertas de seguridad y protege tu mercancía desde una plataforma centralizada.</p>
-            
-                <div class="social-links">
-                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                </div>
-            </div>
-        
-            <!-- COLUMNA 2: COMPANY -->
-            <div class="footer-links">
-                <h4>Compañía</h4>
-                <a href="#">Inicio</a>
-                <a href="#">Sobre nosotros</a>
-                <a href="#paquetes">Precios y paquetes</a>
-                <a href="#contacto">Contacto</a>
-            </div>
-        
-            <!-- COLUMNA 3: PRODUCT -->
-            <div class="footer-links">
-                <h4>Productos</h4>
-                <a href="#caracteristicas">Características</a>
-                <a href="#como_funciona">¿Cómo funciona?</a>
-                <a href="#dashboard">Dashboard</a>
-                <a href="#casos_de_uso">Casos de uso</a>
-            </div>
-        
-            <!-- COLUMNA 4: NEWSLETTER -->
-            <div class="footer-newsletter">
-                <h4>Buzón</h4>
-                <p>Recibe novedades, actualizaciones del sistema y consejos para mejorar la seguridad de tu flota.</p>
-            
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Correo electrónico" required>
-                    <button type="submit">
-                    Suscribirse
-                    </button>
-                </form>
-            </div>
-        
-        </div>
-        
-        <!-- BARRA INFERIOR -->
-        <div class="footer-bottom">
-            <span class="copyright">© 2026 Tectrack. Todos los derechos reservados.</span>
-        
-            <div class="footer-legal">
-            <a href="#">Politica de Privacidad</a>
-            <a href="#">Términos y Servicios</a>
-            <a href="#">Seguridad</a>
-            <a href="#">Cookies</a>
-            </div>
-        </div>
-        
-        </footer>
+    {% include "components/footer.html" %}
 
     <!-- JS -->
     <script src="{{ url_for( 'static', filename='js/public/benefits.js') }}"></script>
     <script src="{{ url_for('static', filename='js/public/caracteristicas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/public/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSecurity - Nosotros</title>
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/sobre-nosotros.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/demo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
+
+    <!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
+    
+    <!-- Vista publica para contar la historia, mision y equipo del proyecto. -->
+    <!-- Rol: publico. -->
+    <!-- Endpoints probables: GET /api/servicios y GET /api/planes para contenido comercial. -->
+</head>
+<body>
+    <!-- Seccion institucional, valores, vision y experiencia del producto. -->
+    
+    <!-- Navbar -->
+    {% include "components/navbar.html" %}
+
+    <!-- CONTENIDO HERO -->
+    <div class="hero-nosotros">
+        <div class="hero-nosotros-center">
+
+            <img
+                src="{{ url_for('static', filename='img/public/sobre-nosotros/hero.jpg') }}"
+                alt="Sobre Nosotros"
+                class="hero-nosotros-image"
+            >
+
+            <h1>Sobre Nosotros</h1>
+
+        </div>
+    </div>
+
+    <!-- ================= CONTENIDO ================= -->
+    <main>
+
+        <!-- ===================== SECCIÓN 1: SOBRE TECTRACK ===================== -->
+        <section class="s1-about">
+            <div class="s1-wrap">
+                <div class="s1-header">
+                    <div>
+                        <span class="s1-eyebrow">Sobre TecTrack Security</span>
+
+                        <h2 class="s1-title">
+                            Tecnología que impulsa la seguridad y el control de flotas
+                        </h2>
+                    </div>
+
+                    <div class="s1-stats">
+                        <div>
+                            <p class="s1-stat-num">24/7</p>
+                            <p class="s1-stat-label">Monitoreo continuo</p>
+                        </div>
+
+                        <div>
+                            <p class="s1-stat-num">GPS</p>
+                            <p class="s1-stat-label">Seguimiento en tiempo real</p>
+                        </div>
+
+                        <div>
+                            <p class="s1-stat-num">100%</p>
+                            <p class="s1-stat-label">Plataforma web</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="s1-body">
+                    <div class="s1-photo"></div>
+
+                    <div class="s1-cards">
+                        <div class="s1-card s1-card--accent">
+                            <h3>Seguridad Inteligente</h3>
+
+                            <p>
+                                Protegemos cada unidad mediante monitoreo en tiempo real,
+                                alertas automáticas y herramientas diseñadas para actuar
+                                rápidamente ante cualquier incidente.
+                            </p>
+
+                        </div>
+
+                        <div class="s1-card">
+                            <h3>Gestión de Flotas</h3>
+
+                            <p>
+                                Administra todos tus vehículos desde una sola plataforma,
+                                consulta información relevante y mejora la eficiencia de
+                                cada recorrido.
+                            </p>
+                        </div>
+
+                        <div class="s1-card s1-card--wide">
+                            <h3>Nuestra propuesta de valor</h3>
+                            <p>
+                                Integramos monitoreo GPS, alertas en tiempo real y una plataforma web intuitiva
+                                para que las empresas puedan supervisar sus flotas desde un solo lugar,
+                                optimizando la seguridad y la toma de decisiones.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== SECCIÓN 2: QUIÉNES SOMOS ===================== -->
+        <section class="s2-who">
+            <div class="s2-wrap">
+                <div class="s2-header">
+                    <div>
+                        <span class="s2-eyebrow">
+                            QUIÉNES SOMOS
+                        </span>
+
+                        <h2 class="s2-title">
+                            Impulsando el futuro del monitoreo vehicular
+                        </h2>
+                    </div>
+
+                    <p class="s2-desc">
+                        En TecTrack Security creemos que la innovación y la tecnología
+                        son la mejor herramienta para proteger vehículos, mercancías y
+                        personas. Nuestra plataforma integra monitoreo GPS, alertas
+                        inteligentes y un dashboard intuitivo que facilita la toma de
+                        decisiones en tiempo real.
+                    </p>
+                </div>
+
+                <div class="s2-photos">
+                    <div class="s2-photo s2-photo--vision">
+                        <div class="s2-photo-card">
+                            <h3>Nuestra Visión</h3>
+                            <p>
+                                Ser una empresa referente en soluciones inteligentes para
+                                la seguridad y gestión de flotas, impulsando la
+                                transformación digital del sector transporte.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="s2-photo s2-photo--goal">
+                        <div class="s2-photo-card">
+                            <h3>Nuestra Misión</h3>
+                            <p>
+                                Brindar una plataforma confiable que permita a empresas
+                                supervisar sus unidades, optimizar sus operaciones y
+                                fortalecer la seguridad de cada viaje.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ===================== SECCIÓN 3: NUESTROS VALORES ===================== -->
+        <section class="s3-env">
+            <div class="s3-wrap">
+                <div class="s3-intro">
+                    <h2>Nuestros Valores</h2>
+
+                    <p>
+                        En TecTrack Security trabajamos bajo principios que guían el
+                        desarrollo de nuestra plataforma y fortalecen la confianza de
+                        nuestros clientes.
+                    </p>
+                </div>
+
+                <div class="s3-body">
+
+                    <div class="s3-gallery">
+                        <div class="s3-photo s3-photo--a"></div>
+                        <div class="s3-photo s3-photo--b"></div>
+                        <div class="s3-photo s3-photo--c"></div>
+                    </div>
+
+                    <div class="s3-content">
+                        <h3>Comprometidos con la innovación</h3>
+
+                        <p>
+                            Nuestro compromiso es desarrollar soluciones tecnológicas que
+                            simplifiquen la administración de flotas, fortalezcan la
+                            seguridad y permitan tomar decisiones con información en
+                            tiempo real.
+                        </p>
+
+                        <div class="s3-features">
+                            <div class="s3-feature">
+                                <div class="s3-icon">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </div>
+
+                                <h4>Seguridad</h4>
+                                <p>
+                                    Protegemos la información y las operaciones mediante
+                                    herramientas confiables y monitoreo constante.
+                                </p>
+                            </div>
+
+                            <div class="s3-feature">
+                                <div class="s3-icon">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+
+                                <h4>Monitoreo</h4>
+
+                                <p>
+                                    Seguimiento preciso de cada unidad para mantener el
+                                    control total de la operación.
+                                </p>
+                            </div>
+
+                            <div class="s3-feature">
+                                <div class="s3-icon">
+                                    <i class="fa-solid fa-truck-fast"></i>
+                                </div>
+
+                                <h4>Eficiencia</h4>
+                                <p>
+                                    Optimizamos rutas y procesos para mejorar el
+                                    rendimiento de las flotas.
+                                </p>
+                            </div>
+
+                            <div class="s3-feature">
+                                <div class="s3-icon">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                </div>
+
+                                <h4>Innovación</h4>
+                                <p>
+                                    Apostamos por la mejora continua y el uso de nuevas
+                                    tecnologías para ofrecer soluciones cada vez más
+                                    inteligentes.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo -->
+        {% include "components/demo.html" %}
+
+        <!-- ================= FOOTER ================= -->
+        {% include "components/footer.html" %}
+    </main>
+    
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
+</body>
+</html>

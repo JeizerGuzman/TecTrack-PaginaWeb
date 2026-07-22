@@ -15,6 +15,11 @@
   --duration-1: 18s;
   --duration-2: 26s;
   --duration-3: 34s;
+
+  /* Tamaño del círculo de ícono y su fuente, reutilizado en media queries */
+  --icon-size: 48px;
+  --icon-font: 18px;
+  --icon-label: 11px;
 }
 
 .tecnologias {
@@ -124,6 +129,10 @@
   padding: 0 10px;
 }
 
+.orbit-center img {
+  width: 80px;
+}
+
 /* ==========================================
    ANILLOS GIRATORIOS (contenedores)
    Cada uno gira completo; los íconos van
@@ -150,10 +159,6 @@
   animation: orbit-cw var(--duration-3) linear infinite;
 }
 
-.orbit-center img{
-  width: 80px;
-}
-
 /* Posición fija de cada ícono sobre su circunferencia */
 .orbit-icon {
   position: absolute;
@@ -175,51 +180,90 @@
   transform: rotate(calc(360deg / var(--total) * var(--i))) translateX(var(--radius-3));
 }
 
-/* Contrarrota para que el ícono se mantenga siempre "de pie" mientras viaja */
+/* .icon-inner SOLO centra el ícono sobre su punto en la órbita.
+   Es un transform ESTÁTICO (sin animación) — a propósito. Mezclar
+   translate(-50%,-50%) con rotate() animado en la misma propiedad
+   transform causa que el ícono "orbite" alrededor de su propio centro
+   en vez de girar limpio, porque el translate es un vector fijo que
+   no rota junto con la caja. Por eso la rotación se movió a un hijo
+   aparte (.icon-spin) que NO tiene ningún translate. */
 .icon-inner {
   position: absolute;
   transform: translate(-50%, -50%);
+  width: 84px;
+}
+
+/* .icon-spin es quien realmente gira. Al no tener translate mezclado,
+   rota limpiamente sobre su propio centro (transform-origin: center,
+   valor por defecto).
+   IMPORTANTE: cada .icon-spin debe girar en sentido CONTRARIO a su
+   .orbit padre y a la MISMA duración, para cancelar exactamente la
+   rotación del anillo. Por eso orbit-1 (cw) empareja con icon-ccw,
+   orbit-2 (ccw) con icon-cw, y orbit-3 (cw) de nuevo con icon-ccw.
+   Las duraciones usan las mismas variables --duration-1/2/3 que sus
+   anillos para no perder sync. */
+.icon-spin {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  width: 84px;
+  transform-origin: center;
 }
 
-.orbit-1 .icon-inner {
+.orbit-1 .icon-spin {
   animation: icon-ccw var(--duration-1) linear infinite;
 }
 
-.orbit-2 .icon-inner {
+.orbit-2 .icon-spin {
   animation: icon-cw var(--duration-2) linear infinite;
 }
 
-.orbit-3 .icon-inner {
+.orbit-3 .icon-spin {
   animation: icon-ccw var(--duration-3) linear infinite;
 }
 
-.icon-inner img {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  padding: 9px;
+/* ==========================================
+   ÍCONOS (Font Awesome <i>)
+========================================== */
+
+.icon-spin i {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
   background: #ffffff;
-  border-radius: 14px;
   border: 1px solid var(--border-soft);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+  font-size: var(--icon-font);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.icon-inner:hover img {
-  transform: scale(1.15);
-  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.25);
+.icon-spin:hover i {
+  transform: scale(1.08);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
 }
 
-.icon-inner span {
-  font-size: 11px;
+.icon-spin span {
+  font-size: var(--icon-label);
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-main);
+  text-align: center;
   white-space: nowrap;
+}
+
+/* Color de ícono según el anillo: Hardware / Backend / Frontend */
+.orbit-1 .icon-spin i {
+  color: var(--blue-primary);
+}
+
+.orbit-2 .icon-spin i {
+  color: var(--blue-mid);
+}
+
+.orbit-3 .icon-spin i {
+  color: var(--blue-dark);
 }
 
 /* ==========================================
@@ -249,23 +293,22 @@
   }
 }
 
-/* Igual que orbit-cw/ccw pero conservando el translate(-50%,-50%)
-   que centra cada ícono sobre su punto en la circunferencia */
+/* Rotación pura para .icon-spin (sin translate mezclado, ver nota arriba) */
 @keyframes icon-cw {
   from {
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
 @keyframes icon-ccw {
   from {
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-    transform: translate(-50%, -50%) rotate(-360deg);
+    transform: rotate(-360deg);
   }
 }
 
@@ -340,6 +383,9 @@
     --radius-1: 75px;
     --radius-2: 130px;
     --radius-3: 185px;
+    --icon-size: 42px;
+    --icon-font: 16px;
+    --icon-label: 10px;
   }
 
   .orbit-container {
@@ -350,6 +396,15 @@
   .tech-title {
     font-size: 30px;
   }
+
+  .orbit-center {
+    width: 105px;
+    height: 105px;
+  }
+
+  .orbit-center img {
+    width: 68px;
+  }
 }
 
 /* Móvil */
@@ -358,6 +413,9 @@
     --radius-1: 60px;
     --radius-2: 100px;
     --radius-3: 140px;
+    --icon-size: 34px;
+    --icon-font: 13px;
+    --icon-label: 9px;
   }
 
   .orbit-container {
@@ -374,14 +432,16 @@
     font-size: 12px;
   }
 
-  .icon-inner img {
-    width: 30px;
-    height: 30px;
-    padding: 7px;
+  .orbit-center img {
+    width: 50px;
   }
 
-  .icon-inner span {
-    font-size: 9px;
+  .icon-inner {
+    width: 64px;
+  }
+
+  .icon-spin {
+    gap: 5px;
   }
 
   .tech-title {
@@ -390,10 +450,6 @@
 
   .tech-desc {
     font-size: 13.5px;
-  }
-
-  .orbit-center img{
-    width: 50px;
   }
 }
 
@@ -404,6 +460,9 @@
     --radius-1: 48px;
     --radius-2: 82px;
     --radius-3: 116px;
+    --icon-size: 28px;
+    --icon-font: 11px;
+    --icon-label: 8px;
   }
 
   .orbit-container {
@@ -420,13 +479,15 @@
     font-size: 10.5px;
   }
 
-  .icon-inner img {
-    width: 24px;
-    height: 24px;
-    padding: 5px;
+  .orbit-center img {
+    width: 42px;
   }
 
-  .icon-inner span {
-    font-size: 8px;
+  .icon-inner {
+    width: 54px;
+  }
+
+  .icon-spin {
+    gap: 4px;
   }
 }

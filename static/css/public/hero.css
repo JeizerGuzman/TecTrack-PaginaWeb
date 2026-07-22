@@ -1,0 +1,194 @@
+/* ==========================================
+   HERO
+========================================== */
+
+.hero{
+    position:relative;
+    min-height:97vh;
+    background-image:url("../../img/public/hero/pexels-umudicreative-19797993.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    border-radius:16px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    margin-bottom: 50px;
+}
+
+/* ==========================================
+   HERO CONTENT
+========================================== */
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    width:90%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:40px;
+}
+
+
+/* ==========================================
+   HERO TEXT
+========================================== */
+
+.hero-text{
+    max-width:600px;
+    text-align:left;
+    color:#fff;
+}
+
+.hero-text h1{
+    font-size:52px;
+    font-weight:700;
+    line-height:1.15;
+    margin:0 0 20px;
+}
+
+.hero-text p{
+    font-size:18px;
+    line-height:1.5;
+    color:rgba(255,255,255,.85);
+    max-width:500px;
+    margin-bottom:32px;
+}
+
+
+/* ==========================================
+   BOTÓN PRINCIPAL
+========================================== */
+
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 28px;
+    border-radius:10px;
+    background:linear-gradient(135deg,var(--blue-mid),var(--blue-dark));
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+    text-decoration:none;
+    box-shadow:0 6px 20px rgba(37,99,235,.4);
+    transition:.3s ease;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(37,99,235,.5);
+}
+
+/* ==========================================
+   FEATURE CARDS
+========================================== */
+
+.hero-features{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    width:280px;
+}
+
+.feature-card{
+    padding:20px;
+    border-radius:16px;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.2);
+    color:white;
+    transition:.3s ease;
+}
+
+.feature-card:hover{
+    transform:translateX(-8px);
+    background:rgba(255,255,255,.18);
+}
+
+.feature-card .icon{
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+.feature-card h3{
+    font-size:18px;
+    margin:0 0 5px;
+}
+
+.feature-card p{
+    font-size:14px;
+    color:rgba(255,255,255,.8);
+    margin:0;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1100px) {
+  .hero-text h1 {
+    font-size: 42px;
+  }
+
+  .hero-content {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    min-height: auto;
+    padding: 100px 0 60px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-features {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .feature-card {
+    flex: 1 1 calc(50% - 7px);
+    min-width: 220px;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-text h1 {
+    font-size: 32px;
+  }
+
+  .hero-text p {
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    padding: 12px 22px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-text h1 {
+    font-size: 26px;
+  }
+}

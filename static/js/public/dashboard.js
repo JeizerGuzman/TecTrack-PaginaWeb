@@ -6,45 +6,45 @@ document.addEventListener("DOMContentLoaded", () => {
   const dashboardViews = [
 
     {
-      title: "Moniteo general",
+      title: "Monitoreo general",
       subtitle: "Consulta el estado actual de tus unidades, indicadores principales y la información más importante de tu operación desde un solo panel.",
-      image: "dashboard-main.png",
-      icon: "fa-solid fa-chart-simple"
-    },
-
-    {
-      title: "Monitoreo de la flota",
-      subtitle: "Visualiza la ubicación de cada vehículo en tiempo real, revisa recorridos y mantén seguimiento constante de tus unidades.",
-      image: "dashboard-gps.png",
-      icon: "fa-solid fa-location-dot"
+      image: "/static/img/public/dashboard/monitoreo-general.png",
+      icon: "fa-solid fa-home"
     },
 
     {
       title: "Gestion de vehículos",
       subtitle: "Administra la información de tus unidades, controla dispositivos asociados y organiza tu flota de manera eficiente.",
-      image: "dashboard-alertas.png",
+      image: "/static/img/public/dashboard/vehiculos.png",
       icon: "fa-solid fa-truck"
     },
 
     {
       title: "Alertas de la flota",
       subtitle: "Recibe notificaciones sobre eventos importantes, detecta situaciones sospechosas y responde rápidamente ante incidentes.",
-      image: "dashboard-history.png",
-      icon: "fa-solid fa-bell"
+      image: "/static/img/public/dashboard/alertas.png",
+      icon: "fa-solid fa-warning"
     },
 
     {
       title: "Historial general",
       subtitle: "Analiza recorridos anteriores, consulta eventos registrados y obtén información para mejorar la operación.",
-      image: "dashboard-fleet.png",
+      image: "/static/img/public/dashboard/historial.png",
       icon: "fa-solid fa-route"
     },
 
     {
       title: "Reportes",
       subtitle: "Genera reportes detallados de la actividad de tu flota para facilitar el análisis y la toma de decisiones.",
-      image: "dashboard-fleet.png",
-      icon: "fa-solid fa-file-lines"
+      image: "/static/img/public/dashboard/reportes.png",
+      icon: "fa-solid fa-chart-simple"
+    },
+
+    {
+      title: "Usuarios",
+      subtitle: "Gestiona los usuarios de la plataforma, administra permisos y mantén un control seguro del acceso al sistema.",
+      image: "/static/img/public/dashboard/usuarios.png",
+      icon: "fa-solid fa-user"
     }
 
   ];
@@ -167,4 +167,14 @@ document.addEventListener("DOMContentLoaded", () => {
   resetAutoAdvance();
 
 
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dashboardOverlay = document.querySelector(".dashboard-overlay");
+ 
+  if (dashboardOverlay) {
+    dashboardOverlay.addEventListener("click", () => {
+      dashboardOverlay.classList.toggle("expanded");
+    });
+  }
 });

@@ -20,8 +20,8 @@
 .badge {
   display: inline-block;
   background: var(--badge-bg);
-  border: 1px solid var(--blue-dark);
-  color: var(--blue-dark);
+  border: 1px solid var(--blue-primary);
+  color: var(--blue-primary);
   font-size: 12px;
   font-weight: 500;
   padding: 6px 14px;

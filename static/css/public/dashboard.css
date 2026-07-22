@@ -10,38 +10,47 @@
   width: 100%;
   max-width: 1200px;
   margin: auto;
+  overflow-x: hidden;
 }
 
-/* Título de la sección */
+/* ==========================================
+   HEADER: título a la izquierda, thumbs a la derecha
+========================================== */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.dashboard-header-text {
+  min-width: 0;
+}
+
 .dashboard-section .eyebrow {
   display: block;
   font-size: 13px;
   font-weight: 600;
   color: #2563eb;
   margin-bottom: 6px;
-  text-transform: uppercase;
 }
 
-.dashboard-section > h2 {
-  font-size: 42px;
+.dashboard-header-text h2 {
+  font-size: 32px;
   font-weight: 800;
   color: var(--text-main);
-  margin: 0 0 20px;
+  margin: 0;
 }
 
-/* Columna donde está la captura */
-.dashboard-preview-col {
-  position: relative;
-}
-
-/* Selector de capturas */
+/* Selector de capturas (ahora en flujo normal, ya no absolute) */
 .dashboard-selector {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 5;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 /* Botones de selección */
@@ -49,20 +58,18 @@
   width: 54px;
   height: 54px;
   border-radius: 14px;
-  background: rgba(255,255,255,.85);
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   border: 2px solid transparent;
-  opacity: .65;
   transition: .3s ease;
-  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.1);
 }
 
 .dashboard-thumb:hover {
   transform: translateY(-3px);
-  opacity: 1;
 }
 
 /* Iconos de los botones */
@@ -73,30 +80,38 @@
 
 /* Botón seleccionado */
 .dashboard-thumb.active {
-  opacity: 1;
   border-color: var(--blue-accent);
+  background: #eef2ff;
 }
 
-/* Contenedor de la imagen */
+/* ==========================================
+   CAPTURA PRINCIPAL
+========================================== */
+
+.dashboard-preview-col {
+  position: relative;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .dashboard-card {
   position: relative;
   width: 100%;
+  max-width: 100%;
   background: var(--dashboard-bg);
   border-radius: 26px;
   overflow: hidden;
   aspect-ratio: 16 / 10;
 }
 
-/* Captura principal */
 .dashboard-main {
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
   animation: dashboard-fade .5s ease;
 }
 
-/* Animación al cambiar captura */
 @keyframes dashboard-fade {
   from {
     opacity: 0;
@@ -115,8 +130,9 @@
   bottom: 20px;
   left: 20px;
   right: 20px;
+  max-width: 100%;
 
-  background: rgba(20,20,22,.55);
+  background: rgba(20, 20, 22, .55);
   backdrop-filter: blur(8px);
 
   border-radius: 18px;
@@ -125,51 +141,73 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
-/* Título y descripción */
+.dashboard-title-block {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 .dashboard-title-block h2 {
   margin: 0 0 6px;
   font-size: 25px;
   font-weight: 700;
   color: white;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .dashboard-title-block p {
   margin: 0;
   font-size: 14px;
-  color: rgba(255,255,255,.8);
+  color: rgba(255, 255, 255, .8);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
-/* Logo dentro del overlay */
 .logo-img {
   width: 45px;
   height: 45px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 
-/* Responsive tablet */
-@media(max-width:900px) {
+/* ==========================================
+   RESPONSIVE
+========================================== */
 
-  .dashboard-section > h2 {
-    font-size: 32px;
+/* Tablet */
+@media (max-width: 900px) {
+
+  .dashboard-header-text h2 {
+    font-size: 26px;
   }
 
   .dashboard-card {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 9;
   }
 
 }
 
+/* Móvil: el header se apila (título arriba, thumbs abajo,
+   ya que lado a lado con 6 thumbs no cabe cómodo) */
+@media (max-width: 640px) {
 
-/* Responsive móvil */
-@media(max-width:600px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
 
   .dashboard-selector {
-    top: 14px;
-    left: 14px;
-    gap: 6px;
+    width: 100%;
+  }
+
+  .dashboard-header-text h2 {
+    font-size: 22px;
   }
 
   .dashboard-thumb {
@@ -182,11 +220,40 @@
     font-size: 16px;
   }
 
+  /* La tarjeta pasa de "imagen con overlay encima" a
+     "imagen arriba + bloque de info debajo", apilados */
+  .dashboard-card {
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dashboard-main {
+    position: static;
+    width: 100%;
+    height: 220px;
+    border-radius: 0;
+  }
+
   .dashboard-overlay {
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    padding: 14px;
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    backdrop-filter: none;
+    background: var(--blue-primary);
+    padding: 18px 16px;
+
+    /* Ya no hay que truncar ni expandir: al estar debajo
+       de la imagen, sobra espacio para el texto completo */
+    max-height: none;
+    overflow: visible;
+    cursor: default;
+    align-items: flex-start;
+  }
+
+  .dashboard-overlay::after {
+    display: none;
   }
 
   .dashboard-title-block h2 {
@@ -194,7 +261,8 @@
   }
 
   .dashboard-title-block p {
-    font-size: 12px;
+    font-size: 13px;
+    line-height: 1.5;
   }
 
   .logo-img {
