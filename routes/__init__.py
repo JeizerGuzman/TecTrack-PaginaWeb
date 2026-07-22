@@ -29,6 +29,7 @@ from .admin_servicios import registrar_admin_servicios_routes
 from .admin_alertas import registrar_admin_alertas_routes
 from .admin_vehiculos import registrar_admin_vehiculos_routes
 from .admin_configuracion import registrar_admin_configuracion_routes
+from .paquetes import registrar_paquetes_routes
 
 # ------------------------------------------------------------
 # Registra todas las rutas del sistema.
@@ -57,3 +58,4 @@ def registrar_rutas(app):
     registrar_admin_alertas_routes(app)
     registrar_admin_vehiculos_routes(app)
     registrar_admin_configuracion_routes(app)
+    registrar_paquetes_routes(app)

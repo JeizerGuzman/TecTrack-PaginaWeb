@@ -595,3 +595,85 @@ def serializar_diagnostico(dispositivo):
         "ultima_actualizacion": ultima_actualizacion,
         "segundos_desde_ultima_actualizacion": segundos_desde
     }
+    
+
+# ==========================================================
+# PLANES PÚBLICOS
+# ==========================================================
+
+def serializar_plan_publico(plan):
+
+    caracteristicas = [
+
+        {
+            "etiqueta": "GPS en tiempo real",
+            "incluida": plan.tiene_gps
+        },
+
+        {
+            "etiqueta": "Sensor de vibración",
+            "incluida": plan.tiene_sensor_vibracion
+        },
+
+        {
+            "etiqueta": "Sensor de apertura de puertas",
+            "incluida": plan.tiene_sensor_puerta
+        },
+
+        {
+            "etiqueta": "Botón de pánico",
+            "incluida": plan.tiene_boton_panico
+        },
+
+        {
+            "etiqueta": "Sirena de alerta",
+            "incluida": plan.tiene_sirena
+        },
+
+        {
+            "etiqueta": "Dashboard web",
+            "incluida": plan.tiene_dashboard_web
+        },
+
+        {
+            "etiqueta": "Aplicación móvil",
+            "incluida": plan.tiene_app_movil
+        },
+
+        {
+            "etiqueta": "Procesamiento FPGA",
+            "incluida": plan.tiene_fpga
+        },
+
+        {
+            "etiqueta": "Cámara de evidencia",
+            "incluida": plan.tiene_camara
+        },
+
+        {
+            "etiqueta": "Captura automática de evidencia",
+            "incluida": plan.tiene_captura_evidencia
+        }
+
+    ]
+
+    return {
+
+        "id": plan.id,
+
+        "nombre": plan.nombre,
+
+        "descripcion": plan.descripcion,
+
+        "caracteristicas": caracteristicas,
+
+        "retenciones": {
+
+            "gps": plan.dias_retencion_gps,
+
+            "alertas": plan.dias_retencion_alertas,
+
+            "evidencias": plan.dias_retencion_evidencias
+
+        }
+    }
