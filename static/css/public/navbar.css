@@ -299,6 +299,10 @@
     transition:background .2s ease;
 }
 
+.mobile-nav-item-primero{
+    margin-top: 20px;
+}
+
 .mobile-nav-item i{
     width:18px;
     text-align:center;
@@ -340,6 +344,7 @@
    (la clase la agrega el JS sobre <body>) */
 body.mobile-menu-open{
     overflow:hidden;
+    position: fixed;
 }
 
 /* ==========================================

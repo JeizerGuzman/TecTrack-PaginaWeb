@@ -10,6 +10,11 @@
     box-sizing:border-box !important;
 }
 
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
 html {
     scroll-behavior: smooth;
 }
