@@ -3,9 +3,9 @@
 
         <div class="logo">
             <a href="{{ url_for('home') }}">
-                <img src="{{ url_for('static', filename='img/public/hero/logo.png') }}"
-alt="Logo"
-class="logo-img">
+                <img src="{{ url_for('static', filename='img/public/logo/logo.png') }}"
+                    alt="Logo"
+                    class="logo-img">
             </a>
         </div>
 
@@ -43,14 +43,16 @@ class="logo-img">
     </div>
 
     <div class="nav-right">
-        <a class="login-link" href="{{ url_for('login_view') }}">
+
+        <a class="login-link nav-item" href="{{ url_for('login_view') }}">
             Iniciar sesión
         </a>
 
-        <a class="demo" href="#">
+        <!-- Comentado por ahora -->
+        <!-- <a class="demo" href="#">
             Consigue una demo
             <i class="fa-solid fa-arrow-right"></i>
-        </a>
+        </a> -->
     </div>
 
     <!-- Botón hamburguesa: solo visible en móvil/tablet -->
@@ -85,8 +87,9 @@ class="logo-img">
         <i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión
     </a>
 
-    <a class="mobile-demo" href="#">
+    <!-- Comentado por ahora -->
+    <!-- <a class="mobile-demo" href="#">
         Consigue una demo
         <i class="fa-solid fa-arrow-right"></i>
-    </a>
+    </a> -->
 </div>

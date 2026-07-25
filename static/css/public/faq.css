@@ -1,0 +1,207 @@
+:root {
+    --faq-color-primary: #2563eb;
+    --faq-color-primary-light: #e8eefd;
+    --faq-color-text: #0f172a;
+    --faq-color-text-muted: #64748b;
+    --faq-color-numero: #94a3b8;
+}
+
+.navbar{
+    background-color: #2563eb;
+}
+
+.faq-page {
+    padding: 7rem 1.5rem 0;
+}
+
+.faq {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.faq__card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 0.9fr 1.4fr;
+    gap: 3rem;
+    box-shadow: 0 20px 40px -20px rgba(15, 23, 42, 0.15);
+}
+
+/* ---------- Columna izquierda ---------- */
+
+.faq__intro {
+    display: flex;
+    flex-direction: column;
+}
+
+.faq__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--faq-color-primary);
+    margin-bottom: 1.25rem;
+}
+
+.faq__eyebrow i {
+    font-size: 0.5rem;
+}
+
+.faq__titulo {
+    font-size: clamp(1.8rem, 2.6vw, 2.3rem);
+    line-height: 1.2;
+    color: var(--faq-color-text);
+    margin: 0;
+}
+
+.faq__contacto {
+    margin-top: auto;
+    padding-top: 3rem;
+}
+
+.faq__contacto-titulo {
+    font-weight: 700;
+    color: var(--faq-color-text);
+    margin-bottom: 0.4rem;
+}
+
+.faq__contacto-texto {
+    color: var(--faq-color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    max-width: 260px;
+}
+
+.faq__btn-contacto {
+    display: inline-block;
+    padding: 0.7rem 1.5rem;
+    border-radius: 10px;
+    background: var(--faq-color-primary);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    box-shadow: 0 10px 20px -8px rgba(37, 99, 235, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.faq__btn-contacto:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 24px -8px rgba(37, 99, 235, 0.6);
+}
+
+/* ---------- Columna derecha ---------- */
+
+.faq__lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.faq-item {
+    background: #eceef2;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: background 0.2s ease;
+}
+
+.faq-item.is-abierto {
+    background: var(--faq-color-primary-light);
+}
+
+.faq-item__pregunta {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+}
+
+.faq-item__numero {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--faq-color-numero);
+    padding-top: 0.15rem;
+}
+
+.faq-item__contenido {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.faq-item__texto {
+    font-weight: 600;
+    color: var(--faq-color-text);
+}
+
+.faq-item__icono {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--faq-color-numero);
+    font-size: 0.8rem;
+    transition: transform 0.35s ease, color 0.2s ease;
+}
+
+.faq-item.is-abierto .faq-item__icono {
+    color: var(--faq-color-primary);
+    transform: rotate(180deg);
+}
+
+/* ---------- Respuesta animada (grid-template-rows) ---------- */
+
+.faq-item__respuesta-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s ease;
+}
+
+.faq-item.is-abierto .faq-item__respuesta-wrapper {
+    grid-template-rows: 1fr;
+}
+
+.faq-item__respuesta {
+    overflow: hidden;
+    color: var(--faq-color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 0 1.25rem 0 2.6rem;
+    transition: padding 0.35s ease;
+}
+
+.faq-item.is-abierto .faq-item__respuesta {
+    padding: 0.4rem 1.25rem 1.1rem 2.6rem;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 768px) {
+
+    .faq__card {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.5rem;
+    }
+
+    .faq__contacto {
+        padding-top: 2rem;
+    }
+
+}

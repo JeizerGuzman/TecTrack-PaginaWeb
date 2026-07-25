@@ -149,6 +149,12 @@ def registrar_frontend_routes(app):
             "public/pages/paquetes.html"
         )        
 
+    # Página de preguntas frecuentes
+    @app.get("/faq")
+    def faq():
+        return render_template(
+            "public/pages/faq.html"
+        )    
     
     # ========================================================
     # VISTAS SUPERVISOR

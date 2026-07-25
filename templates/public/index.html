@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/como-funciona.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/caracteristicas.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/galeria.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/benefits.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/tecnologias.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/casos-de-uso.css') }}">
@@ -52,9 +53,10 @@
                     tu mercancía desde una plataforma centralizada.
                 </p>
 
-                <a href="#" class="btn">
+                <!-- Comentado por ahora -->
+                <!-- <a href="#" class="btn">
                     Solicitar demostración
-                </a>
+                </a> -->
             </div>
 
             <div class="hero-features">
@@ -99,1065 +101,1032 @@
 
     <!-- ================= CONTENIDO ================= -->
     <main>
-      <!-- Problemas -->
-      <section class="problems">
-
-        <span class="badge">
-            Problemas que resolvemos
-        </span>
-
-        <h1 class="section-title">
-            Protege tu flota, reduce riesgos y mantén el control en todo momento
-        </h1>
-
-        <p class="section-desc">
-            TecTrack ayuda a las empresas de transporte a prevenir incidentes, monitorear sus unidades en tiempo real y reaccionar rápidamente ante cualquier situación. Todo desde una sola plataforma diseñada para brindar mayor seguridad y control operativo.
-        </p>
-
-        <div class="content-wrapper">
-
-            <!-- IMAGEN PRINCIPAL -->
-            <div class="visual-box">
-                <img src="{{ url_for('static',filename='img/public/problems/pexels-tima-miroshnichenko-6169859.jpg') }}" alt="Monitoreo de flotas" class="visual-img">
-            </div>
-
-            <!-- LISTA DE PROBLEMAS -->
-            <div class="benefits-list">
-                <div class="benefit-item">
-                    <i class="fa-solid fa-people-robbery"></i>
-
-                    <div class="benefit-text">
-                        <h3>
-                            Robo de mercancía
-                        </h3>
-
-                        <p>
-                            La pérdida de mercancía durante los trayectos representa uno de los mayores riesgos para las empresas de transporte y genera importantes pérdidas económicas.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="benefit-item">
-                    <i class="fa-solid fa-door-open"></i>
-
-                    <div class="benefit-text">
-                        <h3>
-                            Apertura no autorizada de puertas
-                        </h3>
-
-                        <p>
-                            Detecta de inmediato cualquier apertura fuera de los puntos autorizados y recibe una alerta para actuar antes de que ocurra un incidente.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="benefit-item">
-                    <i class="fa-solid fa-location-dot"></i>
-
-                    <div class="benefit-text">
-                        <h3>
-                            Pérdida de ubicación de unidades
-                        </h3>
-
-                        <p>
-                            Mantén siempre visible la ubicación de cada vehículo mediante monitoreo GPS en tiempo real y consulta sus recorridos cuando lo necesites.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="benefit-item">
-                    <i class="fa-solid fa-display"></i>
-
-                    <div class="benefit-text">
-                        <h3>
-                            Falta de monitoreo en tiempo real
-                        </h3>
-
-                        <p>
-                            Supervisa toda tu flota desde un solo panel y conoce el estado de cada unidad en cualquier momento y desde cualquier lugar.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="benefit-item">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-
-                    <div class="benefit-text">
-                        <h3>
-                            Respuesta tardía ante emergencias
-                        </h3>
-
-                        <p>
-                            Recibe notificaciones instantáneas ante eventos críticos para reducir el tiempo de respuesta y mejorar la seguridad del conductor y la carga.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Características -->
-    <section class="caracteristicas" id="caracteristicas">
-      <span class="eyebrow">
-          Características
-      </span>
-
-      <h1 class="section-title">
-          Una plataforma completa para el monitoreo inteligente
-      </h1>
-
-      <div class="services-grid">
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-solid fa-globe"></i>
-              </div>
-
-              <h3>
-                  Monitoreo GPS en tiempo real
-              </h3>
-
-              <p>
-                  Visualiza la ubicación exacta y los recorridos de cada unidad.
-              </p>
-          </div>
-
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-solid fa-person-circle-exclamation"></i>
-              </div>
-
-              <h3>
-                  Alertas instantáneas
-              </h3>
-
-              <p>
-                  Recibe notificaciones por apertura de puertas, vibraciones sospechosas y botón de pánico.
-              </p>
-          </div>
-
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-solid fa-calendar"></i>
-              </div>
-
-              <h3>
-                  Historial de eventos
-              </h3>
-
-              <p>
-                  Consulta eventos anteriores con fecha, hora, duración y ubicación.
-              </p>
-          </div>
-
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-solid fa-truck-fast"></i>
-              </div>
-
-              <h3>
-                  Gestión de flotas
-              </h3>
-
-              <p>
-                  Administra múltiples vehículos desde un único dashboard.
-              </p>
-          </div>
-
-          <div class="service-card">
-              <div class="icon-circle">
-                  <i class="fa-brands fa-bluetooth-b"></i>
-              </div>
-
-              <h3>
-                  Configuración mediante bluetooth
-              </h3>
-
-              <p>
-                  Configura rápidamente los dispositivos desde la aplicación móvil sin necesidad de herramientas adicionales.
-              </p>
-          </div>
-
-          <div class="service-card-img">
-            <a href="#como_funciona"><img src="{{ url_for('static',filename='img/public/como-funciona/pexels-tima-miroshnichenko-6169129.jpg') }}" alt=""></a>
-          </div>
-      </div>
-    </section>
-
-    <!-- ¿Cómo funciona? -->
-
-    <section class="como-funciona" id="como_funciona">
-      <!-- COLUMNA IZQUIERDA -->
-      <div class="como-funciona-col">
-        <span class="como-funciona-label">
-              ¿Cómo funciona?
-          </span>
-
-          <h2 class="como-funciona-title">
-              Desde la instalación del dispositivo hasta el monitoreo en tiempo real de toda tu flota.
-          </h2>
-        
-          <div class="como-funciona-image">
-              <img src="{{ url_for('static',filename='img/public/como-funciona/pexels-introspectivedsgn-9966011.jpg') }}" alt="Sistema de monitoreo de flotas">
-          </div>
-      </div>
-
-      <!-- COLUMNA DERECHA -->
-      <div class="list-cf-col">
-          <div class="list-cf-item">
-              <span class="item-cf-number">01</span>
-              <span class="item-cf-line"></span>
-
-              <div class="item-cf-text">
-
-                  <h3>
-                      Instalación del dispositivo
-                  </h3>
-
-                  <p>
-                      Se instala un dispositivo ESP32 con GPS, sensores y módulo SIM en la unidad para comenzar el monitoreo.
-                  </p>
-              </div>
-          </div>
-
-          <div class="list-cf-item">
-              <span class="item-cf-number">02</span>
-              <span class="item-cf-line"></span>
-
-              <div class="item-cf-text">
-
-                  <h3>
-                      Detección de eventos
-                  </h3>
-
-                  <p>
-                      Los sensores detectan aperturas de puertas, vibraciones inusuales o la activación del botón de pánico.
-                  </p>
-              </div>
-          </div>
-
-          <div class="list-cf-item">
-
-              <span class="item-cf-number">03</span>
-              <span class="item-cf-line"></span>
-
-              <div class="item-cf-text">
-                  <h3>
-                      Ubicación en tiempo real
-                  </h3>
-
-                  <p>
-                      El módulo GPS obtiene la posición exacta del vehículo y actualiza constantemente su recorrido.
-                  </p>
-              </div>
-          </div>
-
-          <div class="list-cf-item">
-
-              <span class="item-cf-number">04</span>
-              <span class="item-cf-line"></span>
-
-              <div class="item-cf-text">
-
-                  <h3>
-                      Envío de información
-                  </h3>
-
-                  <p>
-                      Los datos se transmiten al servidor mediante la red móvil para ser procesados y almacenados de forma segura.
-                  </p>
-              </div>
-          </div>
-
-          <div class="list-cf-item">
-              <span class="item-cf-number">05</span>
-              <span class="item-cf-line"></span>
-
-              <div class="item-cf-text">
-
-                  <h3>
-                      Monitoreo y alertas
-                  </h3>
-
-                  <p>
-                      El administrador visualiza la ubicación de cada unidad, consulta el historial y recibe alertas en tiempo real desde el dashboard.
-                  </p>
-              </div>
-          </div>
-      </div>
-    </section>
-
-    <!-- Dashboard -->
-
-    <section class="dashboard-section" id="dashboard">
-
-        <div class="dashboard-header">
-            <div class="dashboard-header-text">
-                <span class="eyebrow">Dashboard</span>
-                <h2>Toda la información de tu flota, en un solo lugar</h2>
-            </div>
-
-            <div class="dashboard-selector" id="dashboardSelector">
-                <!-- Las 6 vistas se generan dinámicamente con JS -->
-            </div>
-        </div>
-
-        <!-- CAPTURA PRINCIPAL -->
-        <div class="dashboard-preview-col">
-
-            <div class="dashboard-card">
-                <img
-                    src="{{ url_for('static',filename='img/public/dashboard/monitoreo-general.png') }}"
-                    alt="Dashboard principal TecTrack Security"
-                    class="dashboard-main"
-                    id="dashboardMain"
-                >
-
-                <div class="dashboard-overlay">
-                    <div class="dashboard-title-block">
-                        <h2 id="dashboardTitle">Monitoreo general</h2>
-                        <p id="dashboardSubtitle">
-                            Visualiza el estado general de tu flota en tiempo real
-                        </p>
-                    </div>
-
-                    <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}" alt="Logo" class="logo-img">
-                </div>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- Beneficios -->
-
-    <section class="benefits">
-      <div class="benefits-header">
-        <span class="benefits-eyebrow">Beneficios</span>
-        <h2 class="benefits-title">Diseñado para todos los que mueven tu flota</h2>
-      </div>
-    
-      <div class="benefits-wrapper">
-    
-        <!-- BOTONES IZQUIERDA -->
-        <div class="benefits-tabs">
-          <button class="tab-btn active" data-target="owners">
-            <span class="tab-icon">
-              <i class="fa-solid fa-user-tie"></i>
+        <!-- Problemas -->
+        <section class="problems">
+
+            <span class="badge">
+                Problemas que resolvemos
             </span>
-            <span class="tab-text">
-              <strong>Para dueños de flota</strong>
-              <small>Control y visibilidad total</small>
-            </span>
-          </button>
-    
-          <button class="tab-btn" data-target="drivers">
-            <span class="tab-icon">
-              <i class="fa-solid fa-user"></i>
-            </span>
-            <span class="tab-text">
-              <strong>Para choferes</strong>
-              <small>Seguridad en cada ruta</small>
-            </span>
-          </button>
-        </div>
-    
-        <!-- PANEL DERECHA -->
-        <div class="benefits-panel">
-    
-          <!-- PANEL: DUEÑOS DE FLOTA -->
-          <div class="panel-content active" id="owners">
-            <div class="panel-image">
-              <img src="{{ url_for('static',filename='img/public/benefits/owner.jpg') }}" alt="Dueños de flota">
-            </div>
-            <div class="panel-info">
-              <h3>Para dueños de flota</h3>
-              <ul class="benefit-list">
-                <li>
-                  <span class="benefit-icon"><i class="fa-solid fa-gear"></i></span>
-                  <div>
-                    <h4>Mayor control</h4>
-                    <p>Supervisa cada unidad en tiempo real desde un solo panel.</p>
-                  </div>
-                </li>
-                <li>
-                  <span class="benefit-icon"><i class="fa-solid fa-coins"></i></span>
-                  <div>
-                    <h4>Menos pérdidas</h4>
-                    <p>Reduce robos, desvíos y gastos innecesarios con alertas oportunas.</p>
-                  </div>
-                </li>
-                <li>
-                  <span class="benefit-icon"><i class="fa-solid fa-book-bookmark"></i></span>
-                  <div>
-                    <h4>Información centralizada</h4>
-                    <p>Toda la data de tu flota en un solo lugar, lista para decidir mejor.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-    
-          <!-- PANEL: CHOFERES -->
-          <div class="panel-content" id="drivers">
-            <div class="panel-image">
-              <img src="{{ url_for('static',filename='img/public/benefits/driver.jpg') }}" alt="Choferes">
-            </div>
-            <div class="panel-info">
-              <h3>Para choferes</h3>
-              <ul class="benefit-list">
-                <li>
-                  <span class="benefit-icon"><i class="fa-solid fa-circle-dot"></i></span>
-                  <div>
-                    <h4>Botón de pánico</h4>
-                    <p>Activa una alerta inmediata ante cualquier situación de riesgo.</p>
-                  </div>
-                </li>
-                <li>
-                  <span class="benefit-icon"><i class="fa-solid fa-file-circle-check"></i></span>
-                  <div>
-                    <h4>Evidencias de incidentes</h4>
-                    <p>Registra y respalda automáticamente lo que ocurre durante la ruta.</p>
-                  </div>
-                </li>
-                <li>
-                  <span class="benefit-icon"><i class="fa-solid fa-shield-halved"></i></span>
-                  <div>
-                    <h4>Mayor seguridad durante las rutas</h4>
-                    <p>Viaja respaldado con monitoreo constante y respuesta rápida.</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-    
-        </div>
-    </section>
 
-    <!-- Tecnologías -->
-
-    <section class="tecnologias" id="tecnologias">
-      <div class="tech-left">
-        <span class="tech-eyebrow">Stack</span>
-        <h2 class="tech-title">
-          Tecnologías detrás<br>
-          de la plataforma
-        </h2>
-        <p class="tech-desc">
-          Combinamos hardware embebido, un backend robusto y tecnologías
-          web modernas para ofrecer monitoreo de flotas en tiempo real,
-          seguro y confiable.
-        </p>
-    
-        <div class="orbit-legend">
-          <span><i class="dot dot-1"></i> Hardware</span>
-          <span><i class="dot dot-2"></i> Backend</span>
-          <span><i class="dot dot-3"></i> Frontend &amp; Conectividad</span>
-        </div>
-      </div>
-    
-        <div class="tech-right">
-            <div class="orbit-container">
-        
-            <!-- CENTRO -->
-            <div class="orbit-center">
-                <img src="{{ url_for('static',filename='img/public/hero/logo.png') }}">
-            </div>
-        
-            <!-- ANILLOS GUÍA (visuales) -->
-            <div class="orbit-ring ring-1"></div>
-            <div class="orbit-ring ring-2"></div>
-            <div class="orbit-ring ring-3"></div>
-        
-            <!-- ANILLO 1: HARDWARE (interno) -->
-            <div class="orbit orbit-1">
-                <div class="orbit-icon" style="--i:0; --total:3;">
-                    <div class="icon-inner">
-                        <div class="icon-spin">
-                            <i class="fa-solid fa-microchip"></i>
-                            <span>ESP32</span>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="orbit-icon" style="--i:1; --total:3;">
-                    <div class="icon-inner">
-                        <div class="icon-spin">
-                            <i class="fa-solid fa-satellite"></i>
-                            <span>GPS</span>
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="orbit-icon" style="--i:2; --total:3;">
-                    <div class="icon-inner">
-                        <div class="icon-spin">
-                            <i class="fa-solid fa-sim-card"></i>
-                            <span>Módulo SIM</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-                <!-- ANILLO 2: BACKEND (medio) -->
-                <div class="orbit orbit-2">
-                    <div class="orbit-icon" style="--i:0; --total:3;">
-                        <div class="icon-inner">
-                            <div class="icon-spin">
-                                <i class="fa-brands fa-python"></i>
-                                <span>Flask</span>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="orbit-icon" style="--i:1; --total:3;">
-                        <div class="icon-inner">
-                            <div class="icon-spin">
-                                <i class="fa-solid fa-database"></i>
-                                <span>MySQL</span>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="orbit-icon" style="--i:2; --total:3;">
-                        <div class="icon-inner">
-                            <div class="icon-spin">
-                                <i class="fa-solid fa-globe"></i>
-                                <span>Railway</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
-                <!-- ANILLO 3: FRONTEND + CONECTIVIDAD (externo) -->
-                <div class="orbit orbit-3">
-                    <div class="orbit-icon" style="--i:0; --total:4;">
-                        <div class="icon-inner">
-                            <div class="icon-spin">
-                                <i class="fa-brands fa-html5"></i>
-                                <span>HTML</span>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="orbit-icon" style="--i:1; --total:4;">
-                        <div class="icon-inner">
-                            <div class="icon-spin">
-                                <i class="fa-brands fa-css"></i>
-                                <span>CSS</span>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="orbit-icon" style="--i:2; --total:4;">
-                        <div class="icon-inner">
-                            <div class="icon-spin">
-                                <i class="fa-brands fa-js"></i>
-                                <span>JavaScript</span>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <div class="orbit-icon" style="--i:3; --total:4;">
-                        <div class="icon-inner">
-                            <div class="icon-spin">
-                                <i class="fa-brands fa-bluetooth"></i>
-                                <span>Bluetooth</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Casos de uso -->
-    <section class="use-cases" id="casos_de_uso">
-        <span class="eyebrow">
-            Casos de uso
-        </span>
-        <div class="bento-header">
-            <h1 class="bento-title">
-            Una plataforma preparada para<br>
-            cualquier operación logística
+            <h1 class="section-title">
+                Protege tu flota, reduce riesgos y mantén el control en todo momento
             </h1>
-            <p class="bento-desc">
-            Desde empresas de paquetería hasta transporte de carga de alto valor,
-            TecTrack se adapta a distintos escenarios para ofrecer seguridad. 
+
+            <p class="section-desc">
+                TecTrack ayuda a las empresas de transporte a prevenir incidentes, monitorear sus unidades en tiempo real y reaccionar rápidamente ante cualquier situación. Todo desde una sola plataforma diseñada para brindar mayor seguridad y control operativo.
             </p>
-        </div>
-        
-        <div class="bento-grid">
-        
-            <!-- CARD: COMMUNITY VOICE (alta, columna izquierda) -->
-            <div class="bento-card card-voice">
-            <div class="card-visual">
-                <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-parqueteria.svg') }}" alt="">
-            </div>
-            <div class="card-text">
-                <h3>Empresas de paquetería</h3>
-                <p>
-                    Supervisa entregas, conoce la ubicación de cada unidad y responde
-                    rápidamente ante cualquier incidencia durante la ruta.
-                </p>
-            </div>
-            </div>
-        
-            <!-- CARD: FUEL YOUR HUSTLE (ancha, arriba derecha) -->
-            <div class="bento-card card-fuel">
-            <div class="card-text">
-                <h3>Transporte de mercancías</h3>
-                <p>
-                    Protege la carga con monitoreo GPS, alertas por apertura de puertas
-                    y detección de vibraciones sospechosas.
-                </p>
-            </div>
-            <div class="card-visual">
-                <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-mercancias.svg') }}" alt="">
-            </div>
-            </div>
-        
-            <!-- CARD: SOUND OF THE STREETS -->
-            <div class="bento-card card-sound">
-            <div class="card-text">
-                <h3>Logística empresarial</h3>
-                <p>
-                    Administra toda la flota desde un único dashboard con información
-                    centralizada y actualizada.
-                </p>
-            </div>
-            <div class="card-visual">
-                <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-logistica.svg') }}" alt="">
-            </div>
-            </div>
-        
-            <!-- CARD: WORK MEETS STREET -->
-            <div class="bento-card card-work">
-            <div class="card-text">
-                <h3>Distribución regional</h3>
-                <p>
-                    Da seguimiento a recorridos entre ciudades y optimiza tiempos
-                    de entrega.
-                </p>
-            </div>
-            <div class="card-visual">
-                <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-distribucion.svg') }}" alt="">
-            </div>
-            </div>
-        
-            <!-- CARD: STEP UP YOUR GAME (ancha, abajo izquierda) -->
-            <div class="bento-card card-step">
-            <div class="card-text">
-                <h3>Flotillas empresariales</h3>
-                <p>
-                    Controla múltiples vehículos, consulta historiales y mantén
-                    toda la operación bajo una sola plataforma.
-                </p>
-            </div>
-            <div class="card-visual">
-                <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-flotillas.svg') }}" alt="">
-            </div>
-            </div>
-        
-            <!-- CARD: READY FOR ANYWHERE (abajo derecha) -->
-            <div class="bento-card card-ready">
-            <div class="card-text">
-                <h3>Seguridad para operadores</h3>
-                <p>
-                    El botón de pánico y las alertas en tiempo real ayudan a
-                    proteger al conductor ante situaciones de riesgo.
-                </p>
-            </div>
-            <div class="card-visual">
-                <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-seguridad.svg') }}" alt="">
-            </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Precios y Paquetes -->
-    <section class="pricing" id="paquetes">
+            <div class="content-wrapper">
 
-        <div class="pricing-header">
+                <!-- IMAGEN PRINCIPAL -->
+                <div class="visual-box">
+                    <img src="{{ url_for('static',filename='img/public/problems/pexels-tima-miroshnichenko-6169859.jpg') }}" alt="Monitoreo de flotas" class="visual-img">
+                </div>
 
+                <!-- LISTA DE PROBLEMAS -->
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <i class="fa-solid fa-people-robbery"></i>
+
+                        <div class="benefit-text">
+                            <h3>
+                                Robo de mercancía
+                            </h3>
+
+                            <p>
+                                La pérdida de mercancía durante los trayectos representa uno de los mayores riesgos para las empresas de transporte y genera importantes pérdidas económicas.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <i class="fa-solid fa-door-open"></i>
+
+                        <div class="benefit-text">
+                            <h3>
+                                Apertura no autorizada de puertas
+                            </h3>
+
+                            <p>
+                                Detecta de inmediato cualquier apertura fuera de los puntos autorizados y recibe una alerta para actuar antes de que ocurra un incidente.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <div class="benefit-text">
+                            <h3>
+                                Pérdida de ubicación de unidades
+                            </h3>
+
+                            <p>
+                                Mantén siempre visible la ubicación de cada vehículo mediante monitoreo GPS en tiempo real y consulta sus recorridos cuando lo necesites.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <i class="fa-solid fa-display"></i>
+
+                        <div class="benefit-text">
+                            <h3>
+                                Falta de monitoreo en tiempo real
+                            </h3>
+
+                            <p>
+                                Supervisa toda tu flota desde un solo panel y conoce el estado de cada unidad en cualquier momento y desde cualquier lugar.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <div class="benefit-text">
+                            <h3>
+                                Respuesta tardía ante emergencias
+                            </h3>
+
+                            <p>
+                                Recibe notificaciones instantáneas ante eventos críticos para reducir el tiempo de respuesta y mejorar la seguridad del conductor y la carga.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Características -->
+        <section class="caracteristicas" id="caracteristicas">
             <span class="eyebrow">
-                Planes
+                Características
             </span>
 
-            <h1>
-                Soluciones adaptadas a tu flota
+            <h1 class="section-title">
+                Una plataforma completa para el monitoreo inteligente
             </h1>
 
-            <p>
-                Elige el plan que mejor se adapte al tamaño de tu operación y
-                mantén tus unidades siempre monitoreadas.
-            </p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="icon-circle">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
 
-        </div>
-
-
-        <div class="pricing-grid">
-
-
-            <!-- PLAN: STARTER -->
-            <div class="pricing-card">
-
-                <div class="price-row">
-                    <span class="price">
-                        $299
-                    </span>
-
-                    <span class="period">
-                        /mes
-                    </span>
+                    <h3>Monitoreo GPS en tiempo real</h3>
+                    <p>Visualiza la ubicación exacta y los recorridos de cada unidad.</p>
                 </div>
 
+                <div class="service-card">
+                    <div class="icon-circle">
+                        <i class="fa-solid fa-person-circle-exclamation"></i>
+                    </div>
 
-                <h3>
-                    Starter
-                </h3>
+                    <h3>Alertas instantáneas</h3>
+                    <p>Recibe notificaciones por apertura de puertas, vibraciones sospechosas y botón de pánico.</p>
+                </div>
 
+                <div class="service-card">
+                    <div class="icon-circle">
+                        <i class="fa-solid fa-calendar"></i>
+                    </div>
 
-                <p class="plan-desc">
-                    Ideal para pequeñas empresas que buscan comenzar a monitorear sus unidades.
-                </p>
+                    <h3>Historial de eventos</h3>
+                    <p>Consulta eventos anteriores con fecha, hora, duración y ubicación.</p>
+                </div>
 
+                <div class="service-card">
+                    <div class="icon-circle">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
 
-                <ul class="feature-list">
+                    <h3>Gestión de flotas</h3>
+                    <p>Administra múltiples vehículos desde un único dashboard.</p>
+                </div>
 
-                    <li>
-                        <span class="check">✓</span>
-                        Monitoreo GPS en tiempo real
-                    </li>
+                <div class="service-card">
+                    <div class="icon-circle">
+                        <i class="fa-brands fa-bluetooth-b"></i>
+                    </div>
 
-                    <li>
-                        <span class="check">✓</span>
-                        Ubicación de unidades
-                    </li>
+                    <h3>Configuración mediante bluetooth</h3>
+                    <p>Configura rápidamente los dispositivos desde la aplicación móvil sin necesidad de herramientas adicionales.</p>
+                </div>
 
-                    <li>
-                        <span class="check">✓</span>
-                        Historial básico de recorridos
-                    </li>
+                <div class="service-card-img">
+                    <a href="#como_funciona"><img src="{{ url_for('static',filename='img/public/como-funciona/pexels-tima-miroshnichenko-6169129.jpg') }}" alt=""></a>
+                </div>
+            </div>
+        </section>
 
-                    <li>
-                        <span class="check">✓</span>
-                        Configuración mediante Bluetooth
-                    </li>
+        <!-- ¿Cómo funciona? -->
 
-                    <li>
-                        <span class="check">✓</span>
-                        Soporte técnico
-                    </li>
-
-                </ul>
-
-
-                <a href="{{ url_for('paquetes') }}" class="btn-plan btn-outline">
-                    Mas información
-                </a>
-
+        <section class="como-funciona" id="como_funciona">
+            <!-- COLUMNA IZQUIERDA -->
+            <div class="como-funciona-col">
+                <span class="como-funciona-label">¿Cómo funciona?</span>
+                <h2 class="como-funciona-title">Desde la instalación del dispositivo hasta el monitoreo en tiempo real de toda tu flota.</h2>
+            
+                <div class="como-funciona-image">
+                    <img src="{{ url_for('static',filename='img/public/como-funciona/pexels-introspectivedsgn-9966011.jpg') }}" alt="Sistema de monitoreo de flotas">
+                </div>
             </div>
 
+            <!-- COLUMNA DERECHA -->
+            <div class="list-cf-col">
+                <div class="list-cf-item">
+                    <span class="item-cf-number">01</span>
+                    <span class="item-cf-line"></span>
 
-
-            <!-- PLAN: PROFESSIONAL -->
-            <div class="pricing-card pricing-card-highlight">
-
-                <span class="badge-popular">
-                    Más popular
-                </span>
-
-
-                <div class="price-row">
-
-                    <span class="price">
-                        $599
-                    </span>
-
-                    <span class="period">
-                        /mes
-                    </span>
-
+                    <div class="item-cf-text">
+                        <h3>Instalación del dispositivo</h3>
+                        <p>Se instala un dispositivo ESP32 con GPS, sensores y módulo SIM en la unidad para comenzar el monitoreo.</p>
+                    </div>
                 </div>
 
+                <div class="list-cf-item">
+                    <span class="item-cf-number">02</span>
+                    <span class="item-cf-line"></span>
 
-                <h3>
-                    Professional
-                </h3>
+                    <div class="item-cf-text">
+                        <h3>Detección de eventos</h3>
+                        <p>Los sensores detectan aperturas de puertas, vibraciones inusuales o la activación del botón de pánico.</p>
+                    </div>
+                </div>
 
+                <div class="list-cf-item">
+                    <span class="item-cf-number">03</span>
+                    <span class="item-cf-line"></span>
 
-                <p class="plan-desc">
-                    Para empresas que necesitan mayor seguridad y control operativo.
-                </p>
+                    <div class="item-cf-text">
+                        <h3>Ubicación en tiempo real</h3>
+                        <p>El módulo GPS obtiene la posición exacta del vehículo y actualiza constantemente su recorrido.</p>
+                    </div>
+                </div>
 
+                <div class="list-cf-item">
+                    <span class="item-cf-number">04</span>
+                    <span class="item-cf-line"></span>
 
-                <ul class="feature-list">
+                    <div class="item-cf-text">
 
-                    <li>
-                        <span class="check">✓</span>
-                        Todo lo incluido en Starter
-                    </li>
+                        <h3>Envío de información</h3>
+                        <p>Los datos se transmiten al servidor mediante la red móvil para ser procesados y almacenados de forma segura.</p>
+                    </div>
+                </div>
 
-                    <li>
-                        <span class="check">✓</span>
-                        Alertas instantáneas
-                    </li>
+                <div class="list-cf-item">
+                    <span class="item-cf-number">05</span>
+                    <span class="item-cf-line"></span>
 
-                    <li>
-                        <span class="check">✓</span>
-                        Detección de apertura y vibraciones
-                    </li>
+                    <div class="item-cf-text">
 
-                    <li>
-                        <span class="check">✓</span>
-                        Dashboard completo
-                    </li>
+                        <h3>Monitoreo y alertas</h3>
+                        <p>desde el dashboard.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                    <li>
-                        <span class="check">✓</span>
-                        Gestión de múltiples unidades
-                    </li>
+        <!-- Dashboard -->
+        <section class="dashboard-section" id="dashboard">
 
-                </ul>
+            <div class="dashboard-header">
+                <div class="dashboard-header-text">
+                    <span class="eyebrow">Dashboard</span>
+                    <h2>Toda la información de tu flota, en un solo lugar</h2>
+                </div>
 
-
-                <a href="{{ url_for('paquetes') }}" class="btn-plan btn-solid">
-                    Mas información
-                </a>
-
-
+                <div class="dashboard-selector" id="dashboardSelector">
+                    <!-- Las 6 vistas se generan dinámicamente con JS -->
+                </div>
             </div>
 
+            <!-- CAPTURA PRINCIPAL -->
+            <div class="dashboard-preview-col">
 
+                <div class="dashboard-card">
+                    <img
+                        src="{{ url_for('static',filename='img/public/dashboard/monitoreo-general.png') }}"
+                        alt="Dashboard principal TecTrack Security"
+                        class="dashboard-main"
+                        id="dashboardMain"
+                    >
 
-            <!-- PLAN: ENTERPRISE -->
-            <div class="pricing-card">
+                    <div class="dashboard-overlay">
+                        <div class="dashboard-title-block">
+                            <h2 id="dashboardTitle">Monitoreo general</h2>
+                            <p id="dashboardSubtitle">
+                                Visualiza el estado general de tu flota en tiempo real
+                            </p>
+                        </div>
 
-
-                <div class="price-row">
-
-                    <span class="price">
-                        Personalizado
-                    </span>
-
+                        <img src="{{ url_for('static',filename='img/public/logo/logo.png') }}" alt="Logo" class="logo-img">
+                    </div>
                 </div>
-
-
-                <h3>
-                    Enterprise
-                </h3>
-
-
-                <p class="plan-desc">
-                    Soluciones completas para grandes flotillas y operaciones críticas.
-                </p>
-
-
-                <ul class="feature-list">
-
-                    <li>
-                        <span class="check">✓</span>
-                        Flotas de gran escala
-                    </li>
-
-                    <li>
-                        <span class="check">✓</span>
-                        Configuración personalizada
-                    </li>
-
-                    <li>
-                        <span class="check">✓</span>
-                        Integración con sistemas externos
-                    </li>
-
-                    <li>
-                        <span class="check">✓</span>
-                        Reportes avanzados
-                    </li>
-
-                    <li>
-                        <span class="check">✓</span>
-                        Atención prioritaria
-                    </li>
-
-                </ul>
-
-
-                <a href="#contacto" class="btn-plan btn-outline">
-                    Hablemos
-                </a>
-
-
             </div>
 
+            <!-- Boton para modal tipo carrusel -->
+            <div class="dashboard-galeria-cta">
+                <button type="button" class="btn-galeria" id="btnAbrirGaleria">
+                    <i class="fa-solid fa-images"></i>
+                    App TrackSecurity
+                </button>
+            </div>
+        </section>
 
-        </div>
+        <!-- ================= MODAL GALERÍA ================= -->
+        <div class="galeria-modal" id="galeriaModal" aria-hidden="true">
 
-    </section>
+            <div class="galeria-modal__backdrop" id="galeriaBackdrop"></div>
 
-    <!-- Demo -->
-    {% include "components/demo.html" %}
-
-    <!-- Contáctanos -->
-    <section class="contact-section" id="contacto">
-
-        <span class="eyebrow">Contáctanos</span>
-        <div class="contact-header">
-            <h1>Hablemos de tu flota</h1>
-            <p>
-                Cuéntanos sobre tu operación y descubre cómo TecTrack puede ayudarte
-                a mejorar la seguridad y monitoreo de tus unidades.
-            </p>
-        </div>
-
-        <div class="contact-wrapper">
-
-            <!-- FORMULARIO -->
-            <form class="contact-form">
-
-                <div class="form-row">
-
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" placeholder="Tu nombre completo">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Correo electrónico</label>
-                        <input type="email" placeholder="correo@empresa.com">
-                    </div>
-
-                </div>
-
-
-                <div class="form-row">
-
-                    <div class="form-group">
-                        <label>Teléfono</label>
-                        <input type="tel" placeholder="+52 961 000 0000">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Tipo de operación</label>
-
-                        <select>
-                            <option value="" selected disabled>
-                                Selecciona una opción...
-                            </option>
-
-                            <option>
-                                Transporte de carga
-                            </option>
-
-                            <option>
-                                Empresas de paquetería
-                            </option>
-
-                            <option>
-                                Distribución y logística
-                            </option>
-
-                            <option>
-                                Flotilla empresarial
-                            </option>
-
-                        </select>
-                    </div>
-                </div>
-
-
-                <div class="form-row">
-
-                    <div class="form-group">
-                        <label>Número de vehículos</label>
-
-                        <select>
-                            <option value="" selected disabled>
-                                Selecciona cantidad...
-                            </option>
-
-                            <option>
-                                1 - 10 unidades
-                            </option>
-
-                            <option>
-                                11 - 50 unidades
-                            </option>
-
-                            <option>
-                                Más de 50 unidades
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-                        <label>Servicio de interés</label>
-
-                        <select>
-
-                            <option value="" selected disabled>
-                                Selecciona un servicio...
-                            </option>
-
-                            <option>
-                                Monitoreo GPS
-                            </option>
-
-                            <option>
-                                Alertas de seguridad
-                            </option>
-
-                            <option>
-                                Gestión de flotas
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-
-                <div class="form-group full-width">
-
-                    <label>
-                        Mensaje
-                    </label>
-
-                    <textarea placeholder="Cuéntanos sobre tus necesidades..."></textarea>
-
-                </div>
-
-
-                <button type="submit" class="submit-btn">
-
-                    Enviar
-
-                    <span class="btn-arrow">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </span>
-
+            <div
+                class="galeria-modal__contenido"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="galeriaTitulo"
+            >
+                <button type="button" class="galeria-modal__cerrar" id="galeriaCerrar" aria-label="Cerrar">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
 
+                <div class="galeria-modal__header">
+                    <h3 id="galeriaTitulo">App TrackSecurity</h3>
+                    <span class="galeria-modal__contador" id="galeriaContador">1 / 6</span>
+                </div>
 
-            </form>
+                <div class="galeria-modal__visor" id="galeriaVisor">
+                    <button type="button" class="galeria-modal__flecha galeria-modal__flecha--izq" id="galeriaAnterior" aria-label="Anterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
 
+                    <div class="galeria-modal__viewport" id="galeriaViewport">
+                        <div class="galeria-modal__track" id="galeriaTrack">
+                            <!-- Slides generados dinámicamente vía JS -->
+                        </div>
+                    </div>
 
-            <!-- IMAGEN -->
-            <div class="contact-visual">
-                <img 
-                    src="{{ url_for('static',filename='img/public/hero/pexels-psingh-31780878.jpg') }}" 
-                    alt="Monitoreo de flotas">
+                    <button type="button" class="galeria-modal__flecha galeria-modal__flecha--der" id="galeriaSiguiente" aria-label="Siguiente">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
 
-                <span class="visual-badge">
-                    TecTrack Security
-                </span>
+                <p class="galeria-modal__descripcion" id="galeriaDescripcion"></p>
             </div>
         </div>
-    </section>
+
+        <!-- Beneficios -->
+
+        <section class="benefits">
+            <div class="benefits-header">
+                <span class="benefits-eyebrow">Beneficios</span>
+                <h2 class="benefits-title">Diseñado para todos los que mueven tu flota</h2>
+            </div>
+        
+            <div class="benefits-wrapper">
+        
+                <!-- BOTONES IZQUIERDA -->
+                <div class="benefits-tabs">
+                <button class="tab-btn active" data-target="owners">
+                    <span class="tab-icon">
+                    <i class="fa-solid fa-user-tie"></i>
+                    </span>
+                    <span class="tab-text">
+                    <strong>Para dueños de flota</strong>
+                    <small>Control y visibilidad total</small>
+                    </span>
+                </button>
+            
+                <button class="tab-btn" data-target="drivers">
+                    <span class="tab-icon">
+                    <i class="fa-solid fa-user"></i>
+                    </span>
+                    <span class="tab-text">
+                    <strong>Para choferes</strong>
+                    <small>Seguridad en cada ruta</small>
+                    </span>
+                </button>
+            </div>
+        
+            <!-- PANEL DERECHA -->
+            <div class="benefits-panel">
+        
+                <!-- PANEL: DUEÑOS DE FLOTA -->
+                <div class="panel-content active" id="owners">
+                    <div class="panel-image">
+                    <img src="{{ url_for('static',filename='img/public/benefits/owner.jpg') }}" alt="Dueños de flota">
+                    </div>
+                    <div class="panel-info">
+                    <h3>Para dueños de flota</h3>
+                    <ul class="benefit-list">
+                        <li>
+                        <span class="benefit-icon"><i class="fa-solid fa-gear"></i></span>
+                        <div>
+                            <h4>Mayor control</h4>
+                            <p>Supervisa cada unidad en tiempo real desde un solo panel.</p>
+                        </div>
+                        </li>
+                        <li>
+                        <span class="benefit-icon"><i class="fa-solid fa-coins"></i></span>
+                        <div>
+                            <h4>Menos pérdidas</h4>
+                            <p>Reduce robos, desvíos y gastos innecesarios con alertas oportunas.</p>
+                        </div>
+                        </li>
+                        <li>
+                        <span class="benefit-icon"><i class="fa-solid fa-book-bookmark"></i></span>
+                        <div>
+                            <h4>Información centralizada</h4>
+                            <p>Toda la data de tu flota en un solo lugar, lista para decidir mejor.</p>
+                        </div>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+        
+                <!-- PANEL: CHOFERES -->
+                <div class="panel-content" id="drivers">
+                    <div class="panel-image">
+                    <img src="{{ url_for('static',filename='img/public/benefits/driver.jpg') }}" alt="Choferes">
+                    </div>
+                    <div class="panel-info">
+                    <h3>Para choferes</h3>
+                    <ul class="benefit-list">
+                        <li>
+                        <span class="benefit-icon"><i class="fa-solid fa-circle-dot"></i></span>
+                        <div>
+                            <h4>Botón de pánico</h4>
+                            <p>Activa una alerta inmediata ante cualquier situación de riesgo.</p>
+                        </div>
+                        </li>
+                        <li>
+                        <span class="benefit-icon"><i class="fa-solid fa-file-circle-check"></i></span>
+                        <div>
+                            <h4>Evidencias de incidentes</h4>
+                            <p>Registra y respalda automáticamente lo que ocurre durante la ruta.</p>
+                        </div>
+                        </li>
+                        <li>
+                        <span class="benefit-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                        <div>
+                            <h4>Mayor seguridad durante las rutas</h4>
+                            <p>Viaja respaldado con monitoreo constante y respuesta rápida.</p>
+                        </div>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tecnologías -->
+
+        <section class="tecnologias" id="tecnologias">
+            <div class="tech-left">
+                <span class="tech-eyebrow">Stack</span>
+                <h2 class="tech-title"> Tecnologías detrás<br> de la plataforma</h2>
+                <p class="tech-desc">
+                    Combinamos hardware embebido, un backend robusto y tecnologías
+                    web modernas para ofrecer monitoreo de flotas en tiempo real,
+                    seguro y confiable.
+                </p>
+                
+                <div class="orbit-legend">
+                    <span><i class="dot dot-1"></i> Hardware</span>
+                    <span><i class="dot dot-2"></i> Backend</span>
+                    <span><i class="dot dot-3"></i> Frontend &amp; Conectividad</span>
+                </div>
+            </div>
+        
+            <div class="tech-right">
+                <div class="orbit-container">
+            
+                    <!-- CENTRO -->
+                    <div class="orbit-center">
+                        <img src="{{ url_for('static',filename='img/public/logo/logo.png') }}">
+                    </div>
+                
+                    <!-- ANILLOS GUÍA (visuales) -->
+                    <div class="orbit-ring ring-1"></div>
+                    <div class="orbit-ring ring-2"></div>
+                    <div class="orbit-ring ring-3"></div>
+                
+                    <!-- ANILLO 1: HARDWARE (interno) -->
+                    <div class="orbit orbit-1">
+                        <div class="orbit-icon" style="--i:0; --total:3;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-solid fa-microchip"></i>
+                                    <span>ESP32</span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="orbit-icon" style="--i:1; --total:3;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-solid fa-satellite"></i>
+                                    <span>GPS</span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="orbit-icon" style="--i:2; --total:3;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-solid fa-sim-card"></i>
+                                    <span>Módulo SIM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ANILLO 2: BACKEND (medio) -->
+                    <div class="orbit orbit-2">
+                        <div class="orbit-icon" style="--i:0; --total:3;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-brands fa-python"></i>
+                                    <span>Flask</span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="orbit-icon" style="--i:1; --total:3;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-solid fa-database"></i>
+                                    <span>MySQL</span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="orbit-icon" style="--i:2; --total:3;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-solid fa-globe"></i>
+                                    <span>Railway</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ANILLO 3: FRONTEND + CONECTIVIDAD (externo) -->
+                    <div class="orbit orbit-3">
+                        <div class="orbit-icon" style="--i:0; --total:4;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-brands fa-html5"></i>
+                                    <span>HTML</span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="orbit-icon" style="--i:1; --total:4;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-brands fa-css"></i>
+                                    <span>CSS</span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="orbit-icon" style="--i:2; --total:4;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-brands fa-js"></i>
+                                    <span>JavaScript</span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="orbit-icon" style="--i:3; --total:4;">
+                            <div class="icon-inner">
+                                <div class="icon-spin">
+                                    <i class="fa-brands fa-bluetooth"></i>
+                                    <span>Bluetooth</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Casos de uso -->
+        <section class="use-cases" id="casos_de_uso">
+            <span class="eyebrow">
+                Casos de uso
+            </span>
+            <div class="bento-header">
+                <h1 class="bento-title">
+                Una plataforma preparada para<br>
+                cualquier operación logística
+                </h1>
+                <p class="bento-desc">
+                Desde empresas de paquetería hasta transporte de carga de alto valor,
+                TecTrack se adapta a distintos escenarios para ofrecer seguridad. 
+                </p>
+            </div>
+            
+            <div class="bento-grid">
+            
+                <!-- CARD: COMMUNITY VOICE (alta, columna izquierda) -->
+                <div class="bento-card card-voice">
+                <div class="card-visual">
+                    <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-parqueteria.svg') }}" alt="">
+                </div>
+                <div class="card-text">
+                    <h3>Empresas de paquetería</h3>
+                    <p>
+                        Supervisa entregas, conoce la ubicación de cada unidad y responde
+                        rápidamente ante cualquier incidencia durante la ruta.
+                    </p>
+                </div>
+                </div>
+            
+                <!-- CARD: FUEL YOUR HUSTLE (ancha, arriba derecha) -->
+                <div class="bento-card card-fuel">
+                <div class="card-text">
+                    <h3>Transporte de mercancías</h3>
+                    <p>
+                        Protege la carga con monitoreo GPS, alertas por apertura de puertas
+                        y detección de vibraciones sospechosas.
+                    </p>
+                </div>
+                <div class="card-visual">
+                    <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-mercancias.svg') }}" alt="">
+                </div>
+                </div>
+            
+                <!-- CARD: SOUND OF THE STREETS -->
+                <div class="bento-card card-sound">
+                <div class="card-text">
+                    <h3>Logística empresarial</h3>
+                    <p>
+                        Administra toda la flota desde un único dashboard con información
+                        centralizada y actualizada.
+                    </p>
+                </div>
+                <div class="card-visual">
+                    <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-logistica.svg') }}" alt="">
+                </div>
+                </div>
+            
+                <!-- CARD: WORK MEETS STREET -->
+                <div class="bento-card card-work">
+                <div class="card-text">
+                    <h3>Distribución regional</h3>
+                    <p>
+                        Da seguimiento a recorridos entre ciudades y optimiza tiempos
+                        de entrega.
+                    </p>
+                </div>
+                <div class="card-visual">
+                    <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-distribucion.svg') }}" alt="">
+                </div>
+                </div>
+            
+                <!-- CARD: STEP UP YOUR GAME (ancha, abajo izquierda) -->
+                <div class="bento-card card-step">
+                <div class="card-text">
+                    <h3>Flotillas empresariales</h3>
+                    <p>
+                        Controla múltiples vehículos, consulta historiales y mantén
+                        toda la operación bajo una sola plataforma.
+                    </p>
+                </div>
+                <div class="card-visual">
+                    <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-flotillas.svg') }}" alt="">
+                </div>
+                </div>
+            
+                <!-- CARD: READY FOR ANYWHERE (abajo derecha) -->
+                <div class="bento-card card-ready">
+                <div class="card-text">
+                    <h3>Seguridad para operadores</h3>
+                    <p>
+                        El botón de pánico y las alertas en tiempo real ayudan a
+                        proteger al conductor ante situaciones de riesgo.
+                    </p>
+                </div>
+                <div class="card-visual">
+                    <img src="{{ url_for('static',filename='img/public/casos-de-uso/visual-seguridad.svg') }}" alt="">
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Precios y Paquetes -->
+        <section class="pricing" id="paquetes">
+
+            <div class="pricing-header">
+
+                <span class="eyebrow">
+                    Planes
+                </span>
+
+                <h1>
+                    Soluciones adaptadas a tu flota
+                </h1>
+
+                <p>
+                    Elige el plan que mejor se adapte al tamaño de tu operación y
+                    mantén tus unidades siempre monitoreadas.
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+
+                <!-- PLAN: Básico -->
+                <div class="pricing-card">
+
+                    <div class="price-row">
+                        <span class="price">
+                            Básico
+                        </span>
+
+                        <!-- <span class="period">
+                            /mes
+                        </span> -->
+                    </div>
+
+                    <!-- <h3>Básico</h3> -->
+
+                    <p class="plan-desc">
+                        Ideal para pequeñas empresas que buscan comenzar a monitorear sus unidades.
+                    </p>
+
+
+                    <ul class="feature-list">
+
+                        <li>
+                            <span class="check">✓</span>
+                            Monitoreo GPS en tiempo real
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Ubicación de unidades
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Historial básico de recorridos
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Configuración mediante Bluetooth
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Soporte técnico
+                        </li>
+
+                    </ul>
+
+
+                    <a href="{{ url_for('paquetes') }}?plan=basico" class="btn-plan btn-outline">
+                        Mas información
+                    </a>
+
+                </div>
+
+                <!-- PLAN: PROFESSIONAL -->
+                <div class="pricing-card pricing-card-highlight">
+
+                    <span class="badge-popular">
+                        Más popular
+                    </span>
+
+
+                    <div class="price-row">
+
+                        <span class="price">Profesional</span>
+
+                        <!-- <span class="period">/mes</span> -->
+
+                    </div>
+
+
+                    <!-- <h3>
+                        Profesional
+                    </h3> -->
+
+
+                    <p class="plan-desc">Para empresas que necesitan mayor seguridad y control operativo.</p>
+
+
+                    <ul class="feature-list">
+
+                        <li>
+                            <span class="check">✓</span>
+                            Todo lo incluido en Básico
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Alertas instantáneas
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Detección de apertura y vibraciones
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Dashboard completo
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Gestión de múltiples unidades
+                        </li>
+
+                    </ul>
+
+
+                    <a href="{{ url_for('paquetes') }}?plan=profesional" class="btn-plan btn-solid">
+                        Mas información
+                    </a>
+
+
+                </div>
+
+
+
+                <!-- PLAN: ENTERPRISE -->
+                <div class="pricing-card">
+
+
+                    <div class="price-row">
+
+                        <span class="price">
+                            Premium
+                        </span>
+
+                        <!-- <span class="period">
+                            /mes
+                        </span> -->
+
+                    </div>
+
+
+                    <!-- <h3>
+                        Premium
+                    </h3> -->
+
+
+                    <p class="plan-desc">
+                        Soluciones completas para grandes flotillas y operaciones críticas.
+                    </p>
+
+
+                    <ul class="feature-list">
+
+                        <li>
+                            <span class="check">✓</span>
+                            Flotas de gran escala
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Configuración personalizada
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Integración con sistemas externos
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Reportes avanzados
+                        </li>
+
+                        <li>
+                            <span class="check">✓</span>
+                            Atención prioritaria
+                        </li>
+
+                    </ul>
+
+
+                    <a href="{{ url_for('paquetes') }}?plan=premium" class="btn-plan btn-outline">
+                        Mas información
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <!-- Demo -->
+        {% include "components/demo.html" %}
+
+        <!-- Contáctanos -->
+        <section class="contact-section" id="contacto">
+
+            <span class="eyebrow">Contáctanos</span>
+            <div class="contact-header">
+                <h1>Hablemos de tu flota</h1>
+                <p>
+                    Cuéntanos sobre tu operación y descubre cómo TecTrack puede ayudarte
+                    a mejorar la seguridad y monitoreo de tus unidades.
+                </p>
+            </div>
+
+            <div class="contact-wrapper">
+
+                <!-- FORMULARIO -->
+                <form class="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" placeholder="Tu nombre completo">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Correo electrónico</label>
+                            <input type="email" placeholder="correo@empresa.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" placeholder="+52 961 000 0000">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tipo de operación</label>
+
+                            <select>
+                                <option value="" selected disabled>
+                                    Selecciona una opción...
+                                </option>
+
+                                <option>
+                                    Transporte de carga
+                                </option>
+
+                                <option>
+                                    Empresas de paquetería
+                                </option>
+
+                                <option>
+                                    Distribución y logística
+                                </option>
+
+                                <option>
+                                    Flotilla empresarial
+                                </option>
+
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+                            <label>Número de vehículos</label>
+
+                            <select>
+                                <option value="" selected disabled>
+                                    Selecciona cantidad...
+                                </option>
+
+                                <option>
+                                    1 - 10 unidades
+                                </option>
+
+                                <option>
+                                    11 - 50 unidades
+                                </option>
+
+                                <option>
+                                    Más de 50 unidades
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Servicio de interés</label>
+
+                            <select>
+
+                                <option value="" selected disabled>
+                                    Selecciona un servicio...
+                                </option>
+
+                                <option>
+                                    Monitoreo GPS
+                                </option>
+
+                                <option>
+                                    Alertas de seguridad
+                                </option>
+
+                                <option>
+                                    Gestión de flotas
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label>
+                            Mensaje
+                        </label>
+
+                        <textarea placeholder="Cuéntanos sobre tus necesidades..."></textarea>
+
+                    </div>
+
+
+                    <button type="submit" class="submit-btn">
+
+                        Enviar
+
+                        <span class="btn-arrow">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </span>
+
+                    </button>
+
+
+                </form>
+
+
+                <!-- IMAGEN -->
+                <div class="contact-visual">
+                    <img 
+                        src="{{ url_for('static',filename='img/public/contacto/contacto.jpg') }}" 
+                        alt="Monitoreo de flotas">
+
+                    <span class="visual-badge">
+                        TecTrack Security
+                    </span>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- ================= FOOTER ================= -->
@@ -1167,6 +1136,7 @@
     <script src="{{ url_for( 'static', filename='js/public/benefits.js') }}"></script>
     <script src="{{ url_for('static', filename='js/public/caracteristicas.js') }}"></script>
     <script src="{{ url_for('static', filename='js/public/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/galeria.js') }}"></script>
     <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
 </body>
 </html>

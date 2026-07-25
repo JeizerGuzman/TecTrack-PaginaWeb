@@ -25,6 +25,35 @@
 
     }
 
+    // --- NUEVO: normaliza texto para comparar sin acentos/mayúsculas ---
+    function normalizar(texto) {
+
+        return texto
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .trim();
+
+    }
+
+    // --- NUEVO: busca el índice del plan indicado en la URL (?plan=basico) ---
+    function obtenerIndiceInicial(planes) {
+
+        const params = new URLSearchParams(window.location.search);
+        const planParam = params.get("plan");
+
+        if (!planParam) {
+            return 0;
+        }
+
+        const indice = planes.findIndex(
+            (p) => normalizar(p.nombre) === normalizar(planParam)
+        );
+
+        return indice !== -1 ? indice : 0;
+
+    }
+
     function inicializarPlanes() {
 
         const planes = PLANES;
@@ -34,6 +63,9 @@
         }
 
         const indiceRecomendado = planes.length >= 3 ? 1 : -1;
+
+        // --- NUEVO: índice con el que arrancamos la página ---
+        const indiceInicial = obtenerIndiceInicial(planes);
 
         const selectorTrack = document.getElementById("selector-track");
         selectorTrack.innerHTML = `
@@ -54,7 +86,7 @@
             btn.type = "button";
             btn.className =
                 "selector__opcion" +
-                (i === 0 ? " is-active" : "");
+                (i === indiceInicial ? " is-active" : ""); // <-- cambiado
 
             btn.dataset.index = i;
 
@@ -88,7 +120,7 @@
 
         const elMiniPlanes = document.getElementById("mini-planes");
 
-        let indiceActual = 0;
+        let indiceActual = indiceInicial; // <-- cambiado
 
         function textoRetencion(dias) {
 
@@ -106,20 +138,9 @@
 
             const items = [
 
-                {
-                    label: "GPS",
-                    valor: retenciones.gps
-                },
-
-                {
-                    label: "Alertas",
-                    valor: retenciones.alertas
-                },
-
-                {
-                    label: "Evidencias",
-                    valor: retenciones.evidencias
-                }
+                { label: "GPS", valor: retenciones.gps },
+                { label: "Alertas", valor: retenciones.alertas },
+                { label: "Evidencias", valor: retenciones.evidencias }
 
             ];
 
@@ -178,37 +199,18 @@
         function renderMiniPlanes(indiceSeleccionado) {
 
             const otros = planes
-                .map((p, i) => ({
-                    ...p,
-                    indice: i
-                }))
+                .map((p, i) => ({ ...p, indice: i }))
                 .filter(p => p.indice !== indiceSeleccionado);
 
             elMiniPlanes.innerHTML = otros.map(p => `
 
-                <div class="mini-plan"
+                <div class="mini-plan" data-index="${p.indice}" tabindex="0">
 
-                    data-index="${p.indice}"
+                    <p class="mini-plan__nombre">${p.nombre}</p>
 
-                    tabindex="0">
+                    <p class="mini-plan__descripcion">${p.descripcion}</p>
 
-                    <p class="mini-plan__nombre">
-
-                        ${p.nombre}
-
-                    </p>
-
-                    <p class="mini-plan__descripcion">
-
-                        ${p.descripcion}
-
-                    </p>
-
-                    <span class="mini-plan__cambiar">
-
-                        Ver este plan
-
-                    </span>
+                    <span class="mini-plan__cambiar">Ver este plan</span>
 
                 </div>
 
@@ -217,42 +219,31 @@
             elMiniPlanes
                 .querySelectorAll(".mini-plan")
                 .forEach(card => {
-
                     card.onclick = () =>
                         seleccionarPlan(Number(card.dataset.index));
-
                 });
 
         }
 
         function moverIndicador(indice) {
 
-            indicator.style.transform =
-                `translateX(${indice * 100}%)`;
+            indicator.style.transform = `translateX(${indice * 100}%)`;
 
         }
 
         function renderTarjetaPrincipal(plan, indice) {
 
-            elBadge.hidden =
-                indice !== indiceRecomendado;
+            elBadge.hidden = indice !== indiceRecomendado;
 
-            elNombre.textContent =
-                plan.nombre;
+            elNombre.textContent = plan.nombre;
 
-            elDescripcion.textContent =
-                plan.descripcion;
+            elDescripcion.textContent = plan.descripcion;
 
-            renderCaracteristicas(
-                plan.caracteristicas
-            );
+            renderCaracteristicas(plan.caracteristicas);
 
-            renderRetenciones(
-                plan.retenciones
-            );
+            renderRetenciones(plan.retenciones);
 
-            elCta.dataset.planId =
-                plan.id;
+            elCta.dataset.planId = plan.id;
 
             elCta.innerHTML =
                 `Solicitar ${plan.nombre}
@@ -267,26 +258,16 @@
             moverIndicador(indice);
 
             opciones.forEach((btn, i) => {
-
-                btn.classList.toggle(
-                    "is-active",
-                    i === indice
-                );
-
+                btn.classList.toggle("is-active", i === indice);
             });
 
             tarjeta.classList.add("is-cambiando");
 
             setTimeout(() => {
 
-                renderTarjetaPrincipal(
-                    planes[indice],
-                    indice
-                );
+                renderTarjetaPrincipal(planes[indice], indice);
 
-                tarjeta.classList.remove(
-                    "is-cambiando"
-                );
+                tarjeta.classList.remove("is-cambiando");
 
             }, 180);
 
@@ -294,20 +275,15 @@
 
         }
 
-        moverIndicador(0);
+        // --- cambiado: arrancamos en indiceInicial en vez de 0 ---
+        moverIndicador(indiceInicial);
 
-        renderTarjetaPrincipal(
-            planes[0],
-            0
-        );
+        renderTarjetaPrincipal(planes[indiceInicial], indiceInicial);
 
-        renderMiniPlanes(0);
+        renderMiniPlanes(indiceInicial);
 
     }
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        cargarPlanes
-    );
+    document.addEventListener("DOMContentLoaded", cargarPlanes);
 
 })();

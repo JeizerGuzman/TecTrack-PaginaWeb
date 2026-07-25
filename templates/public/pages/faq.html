@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Frecuentes | TrackSecurity</title>
+
+<!-- CSS Links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/faq.css') }}">
+
+<!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- Navbar -->
+    {% include "components/navbar.html" %}
+
+    <main class="faq-page">
+
+        <section class="faq" id="faq" aria-labelledby="faq-titulo">
+
+            <div class="faq__card">
+
+                <div class="faq__intro">
+
+                    <span class="faq__eyebrow">
+                        <i class="fa-solid fa-circle"></i> FAQ
+                    </span>
+
+                    <h1 id="faq-titulo" class="faq__titulo">
+                        Preguntas frecuentes
+                    </h1>
+
+                    <div class="faq__contacto">
+
+                        <p class="faq__contacto-titulo">
+                            ¿Aún tienes dudas?
+                        </p>
+
+                        <p class="faq__contacto-texto">
+                            No te preocupes, escríbenos y con gusto te ayudamos
+                            a resolverlas.
+                        </p>
+
+                        <a href="{{ url_for('home') }}#contacto" class="faq__btn-contacto">
+                            Contáctanos
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="faq__lista" id="faq-lista">
+                    <!-- Se genera dinámicamente vía JS a partir de PREGUNTAS_FAQ -->
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+<!-- ================= FOOTER ================= -->
+    {% include "components/footer.html" %}
+
+<!-- JS -->
+    <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/faq.js') }}"></script>
+</body>
+</html>
