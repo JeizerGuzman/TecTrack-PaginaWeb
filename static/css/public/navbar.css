@@ -344,7 +344,6 @@
    (la clase la agrega el JS sobre <body>) */
 body.mobile-menu-open{
     overflow:hidden;
-    position: fixed;
 }
 
 /* ==========================================
