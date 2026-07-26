@@ -8,7 +8,7 @@
     <!-- CSS Links -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/sobre-nosotros.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/nosotros.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/demo.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
@@ -247,6 +247,75 @@
                 </div>
             </div>
         </section>
+
+        <!-- ===================== SECCIÓN 4: EQUIPO ===================== -->
+        <section class="equipo">
+            <div class="equipo__top">
+                <div>
+                <span class="equipo__eyebrow">+ Equipo</span>
+                <h2 class="equipo__titulo">Equipo pequeño.<br><span>Monitoreo sin descanso.</span></h2>
+                </div>
+                <p class="equipo__desc">
+                Especialistas en GPS, IoT y seguridad vehicular trabajando de cerca para que tu flota nunca quede fuera de vista.
+                </p>
+            </div>
+
+            <div class="equipo__grid">
+
+                <!-- Persona 1 -->
+                <article class="persona">
+                <div class="persona__foto-wrap">
+                    <img class="persona__foto" src="https://i.pravatar.cc/500?img=47" alt="Retrato de Camila Reyes">
+                </div>
+                <h3 class="persona__nombre">Jeizer Oswaldo Guzmán Chablé</h3>
+                <p class="persona__rol">Fundador · TecTrack</p>
+                </article>
+
+                <!-- Persona 2 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img class="persona__foto" src="https://upload.wikimedia.org/wikipedia/commons/6/60/Jude_Bellingham_England_v_Panama_27_June_26-160_%28cropped%29.jpg" alt="Retrato de Diego Fuentes">
+                    </div>
+                    <h3 class="persona__nombre">Fernando de Jesús Sánchez Villanueva</h3>
+                    <p class="persona__rol">Líder de Ingeniería GPS</p>
+                </article>
+
+                <!-- Persona 3 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img class="persona__foto" src="https://i.pravatar.cc/500?img=45" alt="Retrato de Valentina Ruiz">
+                    </div>
+                    <h3 class="persona__nombre">Brayam Alexis Ríos García</h3>
+                    <p class="persona__rol">Diseño de Producto</p>
+                </article>
+
+                <!-- Persona 4 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img class="persona__foto" src="https://i.pravatar.cc/500?img=52" alt="Retrato de Mateo Salinas">
+                    </div>
+                    <h3 class="persona__nombre">Chava de gestion</h3>
+                    <p class="persona__rol">Desarrollo IoT</p>
+                </article>
+
+                <!-- Persona 5 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img class="persona__foto" src="https://i.pravatar.cc/500?img=52" alt="Retrato de Mateo Salinas">
+                    </div>
+                    <h3 class="persona__nombre">Rodrigo González López</h3>
+                    <p class="persona__rol">Desarrollo IoT</p>
+                </article>
+
+            </div>
+
+            <div class="equipo__footer">
+                <div class="equipo__footer-row">
+                <p class="equipo__frase">Detrás de cada unidad monitoreada hay <strong>un equipo que cuida cada detalle.</strong></p>
+                </div>
+            </div>
+
+            </section>
 
         <!-- Demo -->
         {% include "components/demo.html" %}
