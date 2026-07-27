@@ -10,16 +10,16 @@
     box-sizing:border-box !important;
 }
 
-html, body {
+/* html, body {
     overflow-x: hidden;
-}
+} */
 
 html {
     scroll-behavior: smooth;
 }
 
 section[id] {
-    scroll-margin-top: 90px; /* antes 90px, ahora deja más espacio arriba */
+    scroll-margin-top: 65px; /* antes 90px, ahora deja más espacio arriba */
 }
 
 /* ==============================

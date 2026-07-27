@@ -1,0 +1,214 @@
+/* Quito estilo global solo para esta página */
+
+section{
+    margin-bottom: 20px !important;
+}
+
+.navbar{
+    background-color: transparent;
+}
+
+/* ============================================
+   TERMS & CONDITIONS PAGE
+   ============================================ */
+
+.tc-hero {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    padding: 100px 20px 60px;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 12px;
+}
+
+.tc-hero__container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.tc-hero__icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    opacity: 0.9;
+}
+
+.tc-hero h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.tc-hero__updated {
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+
+/* ============ CONTENT LAYOUT ============ */
+
+.tc-content {
+    background: #f5f7fb;
+    padding: 60px 20px 100px;
+    border-radius: 12px;
+}
+
+.tc-content__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* ============ TABLE OF CONTENTS ============ */
+
+.tc-toc {
+    position: sticky;
+    top: 100px;
+    background: #ffffff;
+    border: 1px solid #dde3ee;
+    border-radius: 12px;
+    padding: 20px;
+    min-width: 0;
+}
+
+.tc-toc__title {
+    font-size: 1rem;
+    color: #1e3a8a;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tc-toc__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tc-toc__list a {
+    color: #5b6b85;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+.tc-toc__list a:hover {
+    color: #2563eb;
+}
+
+/* ============ ARTICLE CONTENT ============ */
+
+.tc-article {
+    background: #ffffff;
+    border: 1px solid #dde3ee;
+    border-radius: 12px;
+    padding: 40px;
+    min-width: 0;
+}
+
+.tc-section {
+    margin-bottom: 36px;
+    scroll-margin-top: 100px;
+}
+
+.tc-section:last-of-type {
+    margin-bottom: 0;
+}
+
+.tc-section h2 {
+    font-size: 1.3rem;
+    color: #1e3a8a;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #dde3ee;
+}
+
+.tc-section p {
+    color: #333d4d;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.tc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.tc-list li {
+    color: #333d4d;
+    line-height: 1.6;
+    padding-left: 24px;
+    position: relative;
+}
+
+.tc-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #2563eb;
+}
+
+.tc-list li i {
+    color: #2563eb;
+    margin-right: 8px;
+    width: 16px;
+}
+
+/* Variant for prohibited-use list */
+.tc-list--warning li::before {
+    background: #d64545;
+}
+
+.tc-section a {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.tc-footer-note {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #dde3ee;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #2563eb;
+    font-style: italic;
+}
+
+.tc-footer-note i {
+    font-size: 1.3rem;
+}
+
+/* ============ RESPONSIVE ============ */
+
+@media (max-width: 900px) {
+    .tc-content__container {
+        grid-template-columns: 1fr;
+    }
+
+    .tc-toc {
+        position: static;
+    }
+
+    .tc-article {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 500px) {
+    .tc-hero {
+        padding: 80px 16px 40px;
+    }
+
+    .tc-hero h1 {
+        font-size: 1.6rem;
+    }
+}

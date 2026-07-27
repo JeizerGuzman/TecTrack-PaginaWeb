@@ -19,7 +19,7 @@
   background: linear-gradient(120deg, #10204a 0%, var(--blue-dark) 45%, var(--blue-primary) 100%);
 }
 
-.eyebrow{
+.cta-content .eyebrow{
   color: #FFF;
   margin-bottom: 12px;
 }
@@ -157,7 +157,7 @@
 /* Pin de unidad, pulsando */
 .phone__pin{
   position:absolute;
-  top:52%;
+  top:36%;
   left:58%;
   width:12px;
   height:12px;

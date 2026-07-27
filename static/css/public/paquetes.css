@@ -18,7 +18,7 @@
    HEADER
 ========================================== */
 
-.pricing-header h1 {
+.pricing-header h3 {
   font-size: 36px;
   font-weight: 800;
   color: var(--text-main);
