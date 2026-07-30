@@ -252,11 +252,18 @@
         <section class="equipo">
             <div class="equipo__top">
                 <div>
-                <span class="equipo__eyebrow">+ Equipo</span>
-                <h2 class="equipo__titulo">Equipo comprometido.<br><span>Monitoreo sin descanso.</span></h2>
+                    <span class="equipo__eyebrow">+ Equipo</span>
+
+                    <h2 class="equipo__titulo">
+                        Tecnología que conecta.<br>
+                        <span>Control que permanece.</span>
+                    </h2>
                 </div>
+
                 <p class="equipo__desc">
-                Especialistas en GPS, IoT y seguridad vehicular trabajando de cerca para que tu flota nunca quede fuera de vista.
+                    Somos un equipo enfocado en GPS, IoT y seguridad vehicular,
+                    desarrollando soluciones que permiten a nuestros clientes
+                    conocer, gestionar y proteger sus unidades en todo momento.
                 </p>
             </div>
 
@@ -264,58 +271,111 @@
 
                 <!-- Persona 1 -->
                 <article class="persona">
-                <div class="persona__foto-wrap">
-                    <img class="persona__foto" src="https://i.pravatar.cc/500?img=47" alt="Retrato de Camila Reyes">
-                </div>
-                <h3 class="persona__nombre">Jeizer Oswaldo Guzmán Chablé</h3>
-                <p class="persona__rol">Fundador · TecTrack</p>
+                    <div class="persona__foto-wrap">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/oswaldo.jpeg') }}"
+                            alt="Retrato de Jeizer Oswaldo Guzmán Chablé"
+                        >
+                    </div>
+
+                    <h3 class="persona__nombre">
+                        Jeizer Oswaldo Guzmán Chablé
+                    </h3>
+
+                    <p class="persona__rol">
+                        Líder Técnico · Integración General
+
+                    </p>
                 </article>
 
                 <!-- Persona 2 -->
                 <article class="persona">
                     <div class="persona__foto-wrap">
-                        <img class="persona__foto" src="https://upload.wikimedia.org/wikipedia/commons/6/60/Jude_Bellingham_England_v_Panama_27_June_26-160_%28cropped%29.jpg" alt="Retrato de Diego Fuentes">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/fernando.png') }}"
+                            alt="Retrato de Fernando de Jesús Sánchez Villanueva"
+                        >
                     </div>
-                    <h3 class="persona__nombre">Fernando de Jesús Sánchez Villanueva</h3>
-                    <p class="persona__rol">Líder de Ingeniería GPS</p>
+
+                    <h3 class="persona__nombre">
+                        Fernando de Jesús Sánchez Villanueva
+                    </h3>
+
+                    <p class="persona__rol">
+                        Responsable de Negocio e Investigación
+                    </p>
                 </article>
 
                 <!-- Persona 3 -->
                 <article class="persona">
                     <div class="persona__foto-wrap">
-                        <img class="persona__foto" src="https://i.pravatar.cc/500?img=45" alt="Retrato de Valentina Ruiz">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/brayam.jpeg') }}"
+                            alt="Retrato de Brayam Alexis Ríos García"
+                        >
                     </div>
-                    <h3 class="persona__nombre">Brayam Alexis Ríos García</h3>
-                    <p class="persona__rol">Diseño de Producto</p>
+
+                    <h3 class="persona__nombre">
+                        Brayam Alexis Ríos García
+                    </h3>
+
+                    <p class="persona__rol">
+                        Responsable de Hardware y Componentes
+                    </p>
                 </article>
 
                 <!-- Persona 4 -->
                 <article class="persona">
                     <div class="persona__foto-wrap">
-                        <img class="persona__foto" src="https://i.pravatar.cc/500?img=52" alt="Retrato de Mateo Salinas">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/monserrat.jpeg') }}"
+                            alt="Retrato de Monserrat Moreno Montero"
+                        >
                     </div>
-                    <h3 class="persona__nombre">Chava de gestion</h3>
-                    <p class="persona__rol">Desarrollo IoT</p>
+
+                    <h3 class="persona__nombre">
+                        Montserrat Moreno Montero
+                    </h3>
+
+                    <p class="persona__rol">
+                        Responsable de Negocio e Investigación
+                    </p>
                 </article>
 
                 <!-- Persona 5 -->
                 <article class="persona">
                     <div class="persona__foto-wrap">
-                        <img class="persona__foto" src="https://i.pravatar.cc/500?img=52" alt="Retrato de Mateo Salinas">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/rodrigo.jpeg') }}"
+                            alt="Retrato de Rodrigo González López"
+                        >
                     </div>
-                    <h3 class="persona__nombre">Rodrigo González López</h3>
-                    <p class="persona__rol">Desarrollo IoT</p>
+
+                    <h3 class="persona__nombre">
+                        Rodrigo González López
+                    </h3>
+
+                    <p class="persona__rol">
+                        Desarrollador Web Full-Stack
+                    </p>
                 </article>
 
             </div>
 
             <div class="equipo__footer">
                 <div class="equipo__footer-row">
-                <p class="equipo__frase">Detrás de cada unidad monitoreada hay <strong>un equipo que cuida cada detalle.</strong></p>
+                    <p class="equipo__frase">
+                        Detrás de cada unidad conectada hay
+                        <strong>tecnología diseñada para mantener el control.</strong>
+                    </p>
                 </div>
             </div>
-
-            </section>
+        </section>
 
         <!-- Demo -->
         {% include "components/demo.html" %}
