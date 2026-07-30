@@ -1,177 +1,239 @@
-:root {
-  --bg-page: #ffffff;
-  --card-bg: #ececec;
-  --text-main: #1a1a1a;
-  --text-muted: #9a9a9a;
-  --dark-btn: #1a1a1a;
+:root{
+  --blue-primary:#2563eb;
+  --blue-dark:#1e3a8a;
+  --blue-mid:#3b82f6;
 }
 
-.cta-wrapper {
-  width: 100%;
+.section-demo{
+  max-width:1200px; 
+  margin:0 auto;
 }
 
-/* ==========================================
-   TARJETA PRINCIPAL
-========================================== */
-
-.cta-card {
-  position: relative;
-  background: var(--card-bg);
-  border-radius: 24px;
-  padding: 70px 40px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
+.cta-card{
+  position:relative;
+  border-radius:24px;
+  overflow:hidden;
+  min-height:340px;
+  display:flex;
+  align-items:center;
+  background: linear-gradient(120deg, #10204a 0%, var(--blue-dark) 45%, var(--blue-primary) 100%);
 }
 
-/* Efecto de brillo diagonal en la esquina superior izquierda */
-.cta-card::before {
-  content: "";
-  position: absolute;
-  top: -60%;
-  left: -30%;
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 65%);
-  pointer-events: none;
+.cta-content .eyebrow{
+  color: #FFF;
+  margin-bottom: 12px;
 }
 
-/* ==========================================
-   CUADROS DECORATIVOS
-========================================== */
-
-.deco-square {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 8px;
+/* Brillo diagonal, como en tu versión original */
+.cta-card::before{
+  content:"";
+  position:absolute;
+  top:-60%;
+  left:-20%;
+  width:520px;
+  height:520px;
+  background: radial-gradient(circle, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 65%);
+  pointer-events:none;
 }
 
-.sq-1 {
-  width: 40px;
-  height: 40px;
-  top: 34%;
-  left: 14%;
+.cta-inner{
+  position:relative;
+  z-index:2;
+  width:100%;
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  align-items:center;
+  gap:24px;
+  padding:64px 56px;
 }
 
-.sq-2 {
-  width: 34px;
-  height: 34px;
-  top: 56%;
-  left: 8%;
+.cta-content{ max-width:460px; }
+
+.cta-content h2{
+  font-family:var(--font-display);
+  font-size:clamp(28px, 3.4vw, 40px);
+  font-weight:700;
+  line-height:1.15;
+  color:#fff;
+  margin:0 0 16px;
 }
 
-.sq-3 {
-  width: 30px;
-  height: 30px;
-  bottom: 14%;
-  left: 20%;
+.cta-content p{
+  font-size:14.5px;
+  line-height:1.65;
+  color:rgba(226,232,255,.78);
+  margin:0 0 30px;
 }
 
-/* ==========================================
-   CONTENIDO
-========================================== */
+.cta-buttons{ display:flex; gap:14px; flex-wrap:wrap; }
 
-.cta-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 480px;
+.btn-white{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:14px 26px; border-radius:12px;
+  background:#FFF;
+  color:#0f1c3d; font-size:14px; font-weight:600;
+  text-decoration:none;
+  box-shadow:0 10px 24px -8px rgba(0,0,0,.5);
+  transition:transform .25s ease;
+}
+.btn-white:hover{ transform:translateY(-2px); }
+
+.btn-outline-demo{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:14px 26px; border-radius:12px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.3);
+  color:#fff; font-size:14px; font-weight:600;
+  text-decoration:none;
+  transition:transform .25s ease, background .25s ease;
+}
+.btn-outline-demo:hover{ transform:translateY(-2px); background:rgba(255,255,255,.16); }
+
+/* ---------- Mockup de teléfono flotando en 3D ---------- */
+.cta-visual{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  perspective:900px;
 }
 
-.cta-content h2 {
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--text-main);
-  margin: 0 0 16px;
+.phone{
+  position:relative;
+  width:170px;
+  height:340px;
+  border-radius:28px;
+  background:#0b1330;
+  border:6px solid #131c3d;
+  box-shadow:
+    0 40px 60px -20px rgba(0,0,0,.55),
+    0 0 0 1px rgba(255,255,255,.06);
+  transform: rotateY(-18deg) rotateX(6deg) rotate(-2deg);
+  animation: float-phone 5s ease-in-out infinite;
 }
 
-.cta-content p {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.6;
-  color: var(--text-muted);
-  margin: 0 0 32px;
+@keyframes float-phone{
+  0%, 100%{ transform: rotateY(-18deg) rotateX(6deg) rotate(-2deg) translateY(0); }
+  50%{ transform: rotateY(-18deg) rotateX(6deg) rotate(-2deg) translateY(-14px); }
 }
 
-/* ==========================================
-   BOTONES
-========================================== */
-
-.cta-buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
+.phone__screen{
+  position:absolute;
+  inset:0;
+  border-radius:22px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(56,189,248,.25), transparent 55%),
+    linear-gradient(160deg, #101b3d, #0c1430);
 }
 
-.btn-dark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 13px 26px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, var(--blue-primary), var(--blue-dark));
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+/* Líneas tipo calles del mapa */
+.phone__map{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(148,180,255,.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148,180,255,.14) 1px, transparent 1px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(circle at 50% 55%, #000 45%, transparent 78%);
+  mask-image: radial-gradient(circle at 50% 55%, #000 45%, transparent 78%);
 }
 
-.btn-dark:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+/* Ruta punteada */
+.phone__route{
+  position:absolute;
+  inset:0;
+}
+.phone__route svg{ width:100%; height:100%; }
+.phone__route path{
+  fill:none;
+  stroke: rgba(56,189,248,.55);
+  stroke-width:2.5;
+  stroke-dasharray:5 7;
+  stroke-linecap:round;
 }
 
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 13px 26px;
-  border-radius: 30px;
-  background: #ffffff;
-  color: var(--text-main);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+/* Pin de unidad, pulsando */
+.phone__pin{
+  position:absolute;
+  top:36%;
+  left:58%;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#38bdf8;
+  box-shadow:0 0 0 0 rgba(56,189,248,.7);
+  animation: pin-pulse 2.2s ease-out infinite;
+}
+@keyframes pin-pulse{
+  0%{ box-shadow:0 0 0 0 rgba(56,189,248,.55); }
+  70%{ box-shadow:0 0 0 16px rgba(56,189,248,0); }
+  100%{ box-shadow:0 0 0 0 rgba(56,189,248,0); }
 }
 
-.btn-outline:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+/* Tarjetita flotando frente al teléfono, tipo notificación */
+.phone__card{
+  position:absolute;
+  left:-38px;
+  bottom:46px;
+  width:150px;
+  background:#fff;
+  border-radius:12px;
+  padding:10px 12px;
+  box-shadow:0 20px 34px -14px rgba(0,0,0,.4);
+  transform: translateZ(40px);
+}
+.phone__card strong{
+  display:block;
+  font-size:11.5px;
+  color:#0f172a;
+  font-weight:700;
+}
+.phone__card span{
+  display:block;
+  font-size:10px;
+  color:#64748b;
+  margin-top:2px;
+}
+.phone__card::before{
+  content:"";
+  position:absolute;
+  top:11px; left:11px;
+  width:7px; height:7px;
+  border-radius:50%;
+  background:#22d3a5;
+}
+.phone__card strong, .phone__card span{ margin-left:18px; }
+
+/* Sombra elíptica en el "piso" */
+.cta-visual::after{
+  content:"";
+  position:absolute;
+  bottom:10px;
+  width:170px;
+  height:26px;
+  background:radial-gradient(ellipse, rgba(0,0,0,.35), transparent 70%);
+  filter:blur(2px);
 }
 
-.btn-outline span {
-  font-size: 15px;
-  line-height: 1;
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
-@media (max-width: 560px) {
-  .cta-card {
-    padding: 50px 24px;
+@media (max-width:860px){
+  .cta-inner{
+    grid-template-columns:1fr;
+    text-align:center;
+    padding:56px 32px;
   }
+  .cta-content{ max-width:100%; margin:0 auto; }
+  .cta-buttons{ justify-content:center; }
+  .cta-visual{ margin-top:50px; height:260px; }
+}
 
-  .cta-content h2 {
-    font-size: 24px;
-  }
+@media (max-width:560px){
+  .cta-buttons{ flex-direction:column; width:100%; }
+  .btn-dark, .btn-outline{ width:100%; justify-content:center; }
+}
 
-  .cta-buttons {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .btn-dark,
-  .btn-outline {
-    width: 100%;
-  }
+@media (prefers-reduced-motion: reduce){
+  .phone{ animation:none; }
+  .phone__pin{ animation:none; }
 }

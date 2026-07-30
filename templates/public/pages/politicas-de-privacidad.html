@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSecurity - Políticas de Privacidad</title>
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/faq.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/politicas-de-privacidad.css') }}">
+
+    <!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    {% include "components/navbar.html" %}
+
+    <main>
+        <section class="legal-hero">
+            <div class="legal-hero__container">
+                <i class="fa-solid fa-shield-halved legal-hero__icon"></i>
+                <h1>Políticas de Privacidad</h1>
+                <p class="legal-hero__updated">Última actualización: 26 de julio de 2026</p>
+            </div>
+        </section>
+
+        <section class="legal-content">
+            <div class="legal-content__container">
+
+                <!-- Índice -->
+                <nav class="legal-toc" aria-label="Índice de contenido">
+                    <h2 class="legal-toc__title"><i class="fa-solid fa-list"></i> Contenido</h2>
+                    <ol class="legal-toc__list">
+                        <li><a href="#introduccion">1. Introducción</a></li>
+                        <li><a href="#quienes-somos">2. ¿Quiénes somos?</a></li>
+                        <li><a href="#informacion">3. Información que recopilamos</a></li>
+                        <li><a href="#obtencion">4. ¿Cómo obtenemos la información?</a></li>
+                        <li><a href="#finalidad">5. Finalidad del tratamiento de los datos</a></li>
+                        <li><a href="#ubicacion">6. Información de ubicación GPS</a></li>
+                        <li><a href="#comparticion">7. Compartición de información</a></li>
+                        <li><a href="#seguridad">8. Seguridad de la información</a></li>
+                        <li><a href="#conservacion">9. Conservación de la información</a></li>
+                        <li><a href="#derechos">10. Derechos del usuario</a></li>
+                        <li><a href="#cookies">11. Uso de cookies</a></li>
+                        <li><a href="#menores">12. Privacidad de menores</a></li>
+                        <li><a href="#transferencias">13. Transferencias de información</a></li>
+                        <li><a href="#cambios">14. Cambios a esta Política</a></li>
+                        <li><a href="#contacto">15. Contacto</a></li>
+                        <li><a href="#aceptacion">16. Aceptación</a></li>
+                    </ol>
+                </nav>
+
+                <article class="legal-article">
+
+                    <section id="introduccion" class="legal-section">
+                        <h2>1. Introducción</h2>
+                        <p>En TecTrack Security valoramos la privacidad y la seguridad de la información de nuestros usuarios. Esta Política de Privacidad explica cómo recopilamos, utilizamos, almacenamos, protegemos y, en su caso, compartimos la información que obtenemos a través de nuestro sitio web, aplicación móvil y servicios de monitoreo vehicular.</p>
+                        <p>Al utilizar nuestros servicios, el usuario reconoce haber leído y comprendido esta Política de Privacidad y acepta el tratamiento de su información conforme a lo aquí establecido.</p>
+                    </section>
+
+                    <section id="quienes-somos" class="legal-section">
+                        <h2>2. ¿Quiénes somos?</h2>
+                        <p>TecTrack Security es una plataforma tecnológica dedicada al monitoreo inteligente de vehículos mediante dispositivos GPS, permitiendo a los usuarios visualizar la ubicación de sus unidades, recibir alertas, consultar recorridos y administrar su flota desde una aplicación móvil y un sitio web.</p>
+                        <p>Para cualquier consulta relacionada con esta política, puede contactarnos a través de:</p>
+                        <ul class="legal-list">
+                            <li><i class="fa-solid fa-envelope"></i> Correo electrónico: <a href="mailto:correo@tectrack.com">correo@tectrack.com</a></li>
+                            <li><i class="fa-solid fa-phone"></i> Teléfono: [Teléfono de contacto]</li>
+                            <li><i class="fa-solid fa-location-dot"></i> Dirección: [Dirección de la empresa]</li>
+                        </ul>
+                    </section>
+
+                    <section id="informacion" class="legal-section">
+                        <h2>3. Información que recopilamos</h2>
+                        <p>Dependiendo del uso de nuestros servicios, podemos recopilar la siguiente información:</p>
+
+                        <h3>Información personal</h3>
+                        <ul class="legal-list">
+                            <li>Nombre completo.</li>
+                            <li>Dirección de correo electrónico.</li>
+                            <li>Número telefónico.</li>
+                            <li>Información de inicio de sesión.</li>
+                            <li>Datos necesarios para la creación y administración de la cuenta.</li>
+                        </ul>
+
+                        <h3>Información del vehículo</h3>
+                        <ul class="legal-list">
+                            <li>Nombre o alias del vehículo.</li>
+                            <li>Marca.</li>
+                            <li>Modelo.</li>
+                            <li>Año.</li>
+                            <li>Placas (cuando el usuario las proporcione).</li>
+                            <li>Información asociada al dispositivo GPS instalado.</li>
+                        </ul>
+
+                        <h3>Información de ubicación</h3>
+                        <p>Nuestros servicios recopilan información geográfica enviada por los dispositivos GPS asociados al vehículo, incluyendo:</p>
+                        <ul class="legal-list">
+                            <li>Ubicación en tiempo real.</li>
+                            <li>Historial de recorridos.</li>
+                            <li>Fecha y hora de cada registro.</li>
+                            <li>Velocidad estimada.</li>
+                            <li>Eventos relacionados con el movimiento del vehículo.</li>
+                        </ul>
+
+                        <h3>Información técnica</h3>
+                        <p>Cuando utiliza nuestra plataforma podemos registrar automáticamente:</p>
+                        <ul class="legal-list">
+                            <li>Dirección IP.</li>
+                            <li>Tipo de navegador.</li>
+                            <li>Sistema operativo.</li>
+                            <li>Modelo del dispositivo.</li>
+                            <li>Identificadores técnicos.</li>
+                            <li>Fecha y hora de acceso.</li>
+                            <li>Registros de actividad del sistema.</li>
+                        </ul>
+                    </section>
+
+                    <section id="obtencion" class="legal-section">
+                        <h2>4. ¿Cómo obtenemos la información?</h2>
+                        <p>La información puede obtenerse cuando:</p>
+                        <ul class="legal-list">
+                            <li>El usuario crea una cuenta.</li>
+                            <li>Registra uno o varios vehículos.</li>
+                            <li>Utiliza la aplicación móvil.</li>
+                            <li>Accede al sitio web.</li>
+                            <li>El dispositivo GPS transmite información.</li>
+                            <li>Se comunica con nuestro equipo de soporte.</li>
+                            <li>Navega por nuestro sitio mediante cookies y tecnologías similares.</li>
+                        </ul>
+                    </section>
+
+                    <section id="finalidad" class="legal-section">
+                        <h2>5. Finalidad del tratamiento de los datos</h2>
+                        <p>Utilizamos la información recopilada para:</p>
+                        <ul class="legal-list">
+                            <li>Proporcionar los servicios de monitoreo GPS.</li>
+                            <li>Mostrar la ubicación de los vehículos.</li>
+                            <li>Administrar cuentas de usuario.</li>
+                            <li>Generar alertas de seguridad.</li>
+                            <li>Permitir la consulta del historial de recorridos.</li>
+                            <li>Mejorar el funcionamiento de nuestros servicios.</li>
+                            <li>Resolver incidencias técnicas.</li>
+                            <li>Brindar atención al cliente.</li>
+                            <li>Detectar actividades inusuales o accesos no autorizados.</li>
+                            <li>Cumplir obligaciones legales aplicables.</li>
+                        </ul>
+                        <p>En ningún caso utilizaremos la información personal para fines distintos a los aquí descritos sin el consentimiento correspondiente, salvo cuando la legislación aplicable lo permita.</p>
+                    </section>
+
+                    <section id="ubicacion" class="legal-section">
+                        <h2>6. Información de ubicación GPS</h2>
+                        <p>La ubicación geográfica constituye uno de los elementos esenciales de nuestros servicios.</p>
+                        <p>Los datos de ubicación son utilizados exclusivamente para:</p>
+                        <ul class="legal-list">
+                            <li>Mostrar la posición del vehículo.</li>
+                            <li>Generar alertas configuradas por el usuario.</li>
+                            <li>Consultar recorridos históricos.</li>
+                            <li>Facilitar el monitoreo de las unidades registradas.</li>
+                            <li>Mejorar la seguridad y administración de los vehículos.</li>
+                        </ul>
+                        <p>El acceso a esta información está limitado al titular de la cuenta y a los usuarios autorizados por él.</p>
+                        <p class="legal-highlight"><i class="fa-solid fa-circle-check"></i> TecTrack Security no comercializa la información de ubicación de sus usuarios.</p>
+                    </section>
+
+                    <section id="comparticion" class="legal-section">
+                        <h2>7. Compartición de información</h2>
+                        <p class="legal-highlight"><i class="fa-solid fa-circle-check"></i> TecTrack Security no vende ni alquila datos personales.</p>
+                        <p>La información únicamente podrá compartirse en los siguientes casos:</p>
+                        <ul class="legal-list">
+                            <li>Cuando sea necesario para prestar nuestros servicios mediante proveedores tecnológicos.</li>
+                            <li>Cuando una autoridad competente lo solicite conforme a la legislación aplicable.</li>
+                            <li>Cuando sea necesario proteger los derechos, seguridad o integridad de nuestros usuarios o de TecTrack Security.</li>
+                            <li>Cuando el usuario otorgue su consentimiento.</li>
+                        </ul>
+                        <p>Los terceros que participen en la prestación de nuestros servicios deberán implementar medidas adecuadas para proteger la información.</p>
+                    </section>
+
+                    <section id="seguridad" class="legal-section">
+                        <h2>8. Seguridad de la información</h2>
+                        <p>La seguridad de nuestros usuarios es una prioridad.</p>
+                        <p>Implementamos medidas técnicas y administrativas orientadas a proteger la información contra accesos no autorizados, pérdida, alteración o divulgación indebida, incluyendo:</p>
+                        <ul class="legal-list">
+                            <li>Conexiones cifradas mediante HTTPS.</li>
+                            <li>Almacenamiento seguro de la información.</li>
+                            <li>Cifrado de contraseñas.</li>
+                            <li>Controles de acceso.</li>
+                            <li>Respaldos periódicos.</li>
+                            <li>Monitoreo de incidentes de seguridad.</li>
+                            <li>Actualizaciones constantes de la plataforma.</li>
+                        </ul>
+                        <p>Aunque implementamos medidas razonables de seguridad, ningún sistema conectado a Internet puede garantizar una protección absoluta frente a todos los riesgos.</p>
+                    </section>
+
+                    <section id="conservacion" class="legal-section">
+                        <h2>9. Conservación de la información</h2>
+                        <p>La información será conservada durante el tiempo necesario para:</p>
+                        <ul class="legal-list">
+                            <li>Mantener activa la cuenta del usuario.</li>
+                            <li>Prestar los servicios contratados.</li>
+                            <li>Cumplir obligaciones legales.</li>
+                            <li>Resolver controversias.</li>
+                            <li>Hacer cumplir nuestros términos y condiciones.</li>
+                        </ul>
+                        <p>Una vez concluido el periodo de conservación correspondiente, los datos serán eliminados o anonimizados conforme a nuestros procedimientos internos.</p>
+                    </section>
+
+                    <section id="derechos" class="legal-section">
+                        <h2>10. Derechos del usuario</h2>
+                        <p>El usuario podrá solicitar, conforme a la legislación aplicable:</p>
+                        <ul class="legal-list">
+                            <li>Acceder a sus datos personales.</li>
+                            <li>Solicitar la corrección de información inexacta.</li>
+                            <li>Solicitar la eliminación de sus datos cuando proceda.</li>
+                            <li>Oponerse a determinados tratamientos.</li>
+                            <li>Revocar el consentimiento otorgado cuando sea legalmente posible.</li>
+                        </ul>
+                        <p>Las solicitudes podrán enviarse al correo: <a href="mailto:correo@tectrack.com">correo@tectrack.com</a></p>
+                    </section>
+
+                    <section id="cookies" class="legal-section">
+                        <h2>11. Uso de cookies</h2>
+                        <p>Nuestro sitio web puede utilizar cookies y tecnologías similares para:</p>
+                        <ul class="legal-list">
+                            <li>Recordar preferencias del usuario.</li>
+                            <li>Mejorar la experiencia de navegación.</li>
+                            <li>Analizar el funcionamiento del sitio.</li>
+                            <li>Obtener estadísticas de uso.</li>
+                        </ul>
+                        <p>Para obtener más información, consulte nuestra Política de Cookies.</p>
+                    </section>
+
+                    <section id="menores" class="legal-section">
+                        <h2>12. Privacidad de menores</h2>
+                        <p>Nuestros servicios están dirigidos a personas mayores de edad y empresas.</p>
+                        <p>No recopilamos de forma intencional información personal de menores de edad. Si detectamos que se ha recopilado información de un menor sin la autorización correspondiente, procederemos a eliminarla en un plazo razonable.</p>
+                    </section>
+
+                    <section id="transferencias" class="legal-section">
+                        <h2>13. Transferencias de información</h2>
+                        <p>Dependiendo de la infraestructura tecnológica utilizada, cierta información podrá almacenarse en servidores operados por proveedores especializados ubicados dentro o fuera de México.</p>
+                        <p>En todos los casos procuraremos que dichos proveedores implementen medidas de seguridad adecuadas para proteger la información.</p>
+                    </section>
+
+                    <section id="cambios" class="legal-section">
+                        <h2>14. Cambios a esta Política de Privacidad</h2>
+                        <p>TecTrack Security podrá modificar esta Política de Privacidad cuando resulte necesario por cambios legales, tecnológicos o en la prestación de nuestros servicios.</p>
+                        <p>Las modificaciones serán publicadas en nuestro sitio web indicando la fecha de la última actualización.</p>
+                        <p>El uso continuo de nuestros servicios después de dichas modificaciones implicará la aceptación de la versión vigente.</p>
+                    </section>
+
+                    <section id="contacto" class="legal-section">
+                        <h2>15. Contacto</h2>
+                        <p>Si tiene preguntas relacionadas con esta Política de Privacidad o desea ejercer sus derechos respecto al tratamiento de sus datos personales, puede comunicarse con nosotros mediante:</p>
+                        <ul class="legal-list">
+                            <li><i class="fa-solid fa-envelope"></i> Correo electrónico: <a href="mailto:correo@tectrack.com">correo@tectrack.com</a></li>
+                            <li><i class="fa-solid fa-phone"></i> Teléfono: [Número de contacto]</li>
+                            <li><i class="fa-solid fa-location-dot"></i> Dirección: [Dirección de la empresa]</li>
+                        </ul>
+                        <p>Nuestro equipo atenderá su solicitud dentro de un plazo razonable conforme a la legislación aplicable.</p>
+                    </section>
+
+                    <section id="aceptacion" class="legal-section">
+                        <h2>16. Aceptación</h2>
+                        <p>Al acceder o utilizar el sitio web, la aplicación móvil o cualquiera de los servicios proporcionados por TecTrack Security, el usuario manifiesta haber leído, comprendido y aceptado esta Política de Privacidad.</p>
+                    </section>
+
+                    <div class="legal-footer-note">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <p>TecTrack Security — Protegiendo tus vehículos mediante tecnología inteligente de monitoreo y localización GPS.</p>
+                    </div>
+
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    {% include "components/footer.html" %}
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/faq.js') }}"></script>
+</body>
+</html>

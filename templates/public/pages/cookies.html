@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSecurity - Cookies</title>
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/faq.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/cookies.css') }}">
+
+    <!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    {% include "components/navbar.html" %}
+
+    <main>
+        <section class="ck-hero">
+            <div class="ck-hero__container">
+                <i class="fa-solid fa-cookie-bite ck-hero__icon"></i>
+                <h1>Política de Cookies</h1>
+                <p class="ck-hero__updated">Última actualización: 27 de julio de 2026</p>
+            </div>
+        </section>
+
+        <section class="ck-content">
+            <div class="ck-content__container">
+
+                <!-- Índice -->
+                <nav class="ck-toc" aria-label="Índice de contenido">
+                    <h2 class="ck-toc__title"><i class="fa-solid fa-list"></i> Contenido</h2>
+                    <ol class="ck-toc__list">
+                        <li><a href="#introduccion">1. Introducción</a></li>
+                        <li><a href="#que-son">2. ¿Qué son las cookies?</a></li>
+                        <li><a href="#por-que">3. ¿Por qué utilizamos cookies?</a></li>
+                        <li><a href="#tipos">4. Tipos de cookies que utilizamos</a></li>
+                        <li><a href="#terceros">5. Cookies de terceros</a></li>
+                        <li><a href="#duracion">6. Duración de las cookies</a></li>
+                        <li><a href="#administrar">7. ¿Cómo administrar las cookies?</a></li>
+                        <li><a href="#desactivar">8. ¿Qué ocurre si desactiva las cookies?</a></li>
+                        <li><a href="#proteccion">9. Protección de su información</a></li>
+                        <li><a href="#cambios">10. Cambios a esta Política</a></li>
+                        <li><a href="#contacto">11. Contacto</a></li>
+                        <li><a href="#aceptacion">12. Aceptación de la Política</a></li>
+                    </ol>
+                </nav>
+
+                <article class="ck-article">
+
+                    <section id="introduccion" class="ck-section">
+                        <h2>1. Introducción</h2>
+                        <p>En TecTrack Security utilizamos cookies y tecnologías similares para mejorar la experiencia de navegación de nuestros usuarios, optimizar el funcionamiento de nuestro sitio web y comprender cómo interactúan los visitantes con nuestros servicios.</p>
+                        <p>La presente Política de Cookies explica qué son las cookies, qué tipos utilizamos, con qué finalidad las empleamos y cómo puede administrarlas.</p>
+                        <p>Al continuar navegando por nuestro sitio web, usted acepta el uso de cookies conforme a esta política, salvo que las haya deshabilitado desde la configuración de su navegador.</p>
+                    </section>
+
+                    <section id="que-son" class="ck-section">
+                        <h2>2. ¿Qué son las cookies?</h2>
+                        <p>Las cookies son pequeños archivos de texto que un sitio web almacena en su dispositivo (computadora, teléfono móvil o tableta) cuando lo visita.</p>
+                        <p>Estos archivos permiten que el sitio recuerde cierta información sobre su visita, como sus preferencias, configuración o sesión de usuario, facilitando una experiencia de navegación más rápida y personalizada.</p>
+                        <p>Las cookies no suelen contener información que identifique directamente a una persona; sin embargo, algunos datos almacenados pueden asociarse con información personal cuando el usuario inicia sesión o utiliza determinados servicios.</p>
+                    </section>
+
+                    <section id="por-que" class="ck-section">
+                        <h2>3. ¿Por qué utilizamos cookies?</h2>
+                        <p>En TecTrack Security utilizamos cookies con diferentes finalidades, entre ellas:</p>
+                        <ul class="ck-list">
+                            <li>Garantizar el correcto funcionamiento del sitio web.</li>
+                            <li>Mantener la sesión iniciada cuando el usuario accede a su cuenta.</li>
+                            <li>Recordar configuraciones y preferencias.</li>
+                            <li>Mejorar la velocidad y estabilidad de la plataforma.</li>
+                            <li>Analizar el uso del sitio para identificar oportunidades de mejora.</li>
+                            <li>Detectar posibles problemas técnicos o de seguridad.</li>
+                            <li>Ofrecer una experiencia de navegación más eficiente.</li>
+                        </ul>
+                        <p class="ck-highlight"><i class="fa-solid fa-circle-check"></i> No utilizamos cookies para vender información personal ni para realizar perfiles comerciales sin el consentimiento correspondiente.</p>
+                    </section>
+
+                    <section id="tipos" class="ck-section">
+                        <h2>4. Tipos de cookies que utilizamos</h2>
+
+                        <h3>Cookies esenciales</h3>
+                        <p>Estas cookies son necesarias para el funcionamiento del sitio web y no pueden deshabilitarse sin afectar algunas funciones.</p>
+                        <p>Permiten, por ejemplo:</p>
+                        <ul class="ck-list">
+                            <li>Iniciar sesión de forma segura.</li>
+                            <li>Mantener la sesión activa.</li>
+                            <li>Acceder a áreas protegidas.</li>
+                            <li>Recordar configuraciones básicas de seguridad.</li>
+                            <li>Garantizar el correcto funcionamiento de la plataforma.</li>
+                        </ul>
+                        <p>Sin estas cookies, algunos servicios podrían no estar disponibles.</p>
+
+                        <h3>Cookies funcionales</h3>
+                        <p>Las cookies funcionales permiten recordar determinadas preferencias del usuario para ofrecer una experiencia más personalizada.</p>
+                        <p>Entre otras funciones, pueden utilizarse para recordar:</p>
+                        <ul class="ck-list">
+                            <li>Idioma seleccionado.</li>
+                            <li>Preferencias de visualización.</li>
+                            <li>Configuración del sitio.</li>
+                            <li>Opciones previamente elegidas por el usuario.</li>
+                        </ul>
+                        <p>Estas cookies mejoran la comodidad durante la navegación, aunque no son estrictamente necesarias para el funcionamiento básico del sitio.</p>
+
+                        <h3>Cookies analíticas</h3>
+                        <p>Las cookies analíticas recopilan información estadística sobre el uso del sitio web.</p>
+                        <p>La información obtenida puede ayudarnos a conocer:</p>
+                        <ul class="ck-list">
+                            <li>Número de visitantes.</li>
+                            <li>Páginas más consultadas.</li>
+                            <li>Tiempo de permanencia.</li>
+                            <li>Navegación entre secciones.</li>
+                            <li>Rendimiento general del sitio.</li>
+                        </ul>
+                        <p>Estos datos se utilizan de forma agregada para mejorar continuamente nuestros servicios y la experiencia del usuario.</p>
+
+                        <h3>Cookies de rendimiento</h3>
+                        <p>Este tipo de cookies nos permite conocer cómo responde el sitio web en diferentes dispositivos y navegadores.</p>
+                        <p>Gracias a ellas podemos:</p>
+                        <ul class="ck-list">
+                            <li>Detectar errores técnicos.</li>
+                            <li>Optimizar tiempos de carga.</li>
+                            <li>Mejorar la estabilidad del sistema.</li>
+                            <li>Identificar posibles problemas de funcionamiento.</li>
+                        </ul>
+                        <p>La información recopilada se utiliza exclusivamente con fines de mejora técnica.</p>
+
+                        <h3>Cookies de seguridad</h3>
+                        <p>En algunos casos utilizamos cookies relacionadas con la seguridad de la plataforma.</p>
+                        <p>Estas cookies pueden ayudar a:</p>
+                        <ul class="ck-list">
+                            <li>Proteger las sesiones activas.</li>
+                            <li>Detectar accesos sospechosos.</li>
+                            <li>Reducir riesgos de fraude.</li>
+                            <li>Validar solicitudes realizadas por el usuario.</li>
+                            <li>Fortalecer la protección frente a ataques automatizados.</li>
+                        </ul>
+                        <p>Estas cookies contribuyen a mantener un entorno más seguro para todos los usuarios.</p>
+                    </section>
+
+                    <section id="terceros" class="ck-section">
+                        <h2>5. Cookies de terceros</h2>
+                        <p>Nuestro sitio web puede integrar servicios proporcionados por terceros que, de forma independiente, utilizan sus propias cookies para ofrecer determinadas funcionalidades.</p>
+                        <p>Entre estos servicios pueden encontrarse herramientas de análisis, mapas, reproducción de contenido multimedia o servicios de autenticación.</p>
+                        <p>Cada proveedor administra sus propias políticas de privacidad y cookies, por lo que recomendamos consultar la documentación correspondiente cuando utilice dichos servicios.</p>
+                    </section>
+
+                    <section id="duracion" class="ck-section">
+                        <h2>6. Duración de las cookies</h2>
+                        <p>Las cookies pueden permanecer almacenadas durante distintos periodos de tiempo según su finalidad.</p>
+                        <p>Generalmente se clasifican como:</p>
+                        <ul class="ck-list">
+                            <li>Cookies de sesión: se eliminan automáticamente al cerrar el navegador.</li>
+                            <li>Cookies persistentes: permanecen almacenadas durante un periodo determinado o hasta que el usuario las elimine manualmente.</li>
+                        </ul>
+                        <p>La duración específica puede variar dependiendo de la función que desempeñe cada cookie.</p>
+                    </section>
+
+                    <section id="administrar" class="ck-section">
+                        <h2>7. ¿Cómo administrar las cookies?</h2>
+                        <p>La mayoría de los navegadores permiten al usuario administrar las cookies de acuerdo con sus preferencias.</p>
+                        <p>Entre las acciones disponibles se encuentran:</p>
+                        <ul class="ck-list">
+                            <li>Aceptar todas las cookies.</li>
+                            <li>Bloquear determinadas categorías.</li>
+                            <li>Eliminar cookies almacenadas.</li>
+                            <li>Configurar notificaciones antes de guardar nuevas cookies.</li>
+                            <li>Deshabilitar completamente el uso de cookies.</li>
+                        </ul>
+                        <p>Estas opciones pueden encontrarse en la sección de configuración o privacidad del navegador utilizado.</p>
+                    </section>
+
+                    <section id="desactivar" class="ck-section">
+                        <h2>8. ¿Qué ocurre si desactiva las cookies?</h2>
+                        <p>Si decide deshabilitar algunas o todas las cookies, es posible que determinadas funciones del sitio web no operen correctamente.</p>
+                        <p>Entre los efectos posibles se encuentran:</p>
+                        <ul class="ck-list">
+                            <li>Necesidad de iniciar sesión con mayor frecuencia.</li>
+                            <li>Pérdida de preferencias guardadas.</li>
+                            <li>Funcionamiento limitado de algunas herramientas.</li>
+                            <li>Menor personalización de la experiencia.</li>
+                            <li>Posibles dificultades para acceder a ciertas funciones protegidas.</li>
+                        </ul>
+                        <p>Las cookies esenciales son necesarias para garantizar el funcionamiento básico de la plataforma.</p>
+                    </section>
+
+                    <section id="proteccion" class="ck-section">
+                        <h2>9. Protección de su información</h2>
+                        <p>El uso de cookies forma parte de nuestro compromiso por ofrecer una experiencia segura y eficiente.</p>
+                        <p>La información obtenida mediante cookies se trata conforme a nuestra Política de Privacidad y se utilizan medidas razonables para proteger los datos recopilados.</p>
+                    </section>
+
+                    <section id="cambios" class="ck-section">
+                        <h2>10. Cambios a esta Política de Cookies</h2>
+                        <p>TecTrack Security podrá modificar la presente Política de Cookies cuando sea necesario debido a cambios legales, tecnológicos o relacionados con nuestros servicios.</p>
+                        <p>Cualquier modificación será publicada en esta misma página indicando la fecha de la última actualización.</p>
+                        <p>Le recomendamos revisar periódicamente esta política para mantenerse informado sobre la forma en que utilizamos las cookies.</p>
+                    </section>
+
+                    <section id="contacto" class="ck-section">
+                        <h2>11. Contacto</h2>
+                        <p>Si tiene preguntas relacionadas con esta Política de Cookies o desea obtener más información sobre el uso de cookies en nuestros servicios, puede comunicarse con nosotros a través de los siguientes medios:</p>
+                        <ul class="ck-list">
+                            <li><i class="fa-solid fa-envelope"></i> Correo electrónico: <a href="mailto:correo@tectrack.com">correo@tectrack.com</a></li>
+                            <li><i class="fa-solid fa-phone"></i> Teléfono: [Número de contacto]</li>
+                            <li><i class="fa-solid fa-location-dot"></i> Dirección: [Dirección de la empresa]</li>
+                        </ul>
+                    </section>
+
+                    <section id="aceptacion" class="ck-section">
+                        <h2>12. Aceptación de la Política de Cookies</h2>
+                        <p>Al continuar utilizando el sitio web de TecTrack Security, usted reconoce haber leído esta Política de Cookies y acepta el uso de cookies de conformidad con lo aquí establecido, salvo que haya configurado su navegador para rechazarlas o administrarlas de otra manera.</p>
+                        <p>Agradecemos su confianza y reiteramos nuestro compromiso de ofrecer una plataforma segura, transparente y orientada a brindar la mejor experiencia posible a nuestros usuarios.</p>
+                    </section>
+
+                    <div class="ck-footer-note">
+                        <i class="fa-solid fa-cookie-bite"></i>
+                        <p>TecTrack Security — Protegiendo tus vehículos mediante tecnología inteligente de monitoreo y localización GPS.</p>
+                    </div>
+
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    {% include "components/footer.html" %}
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/faq.js') }}"></script>
+</body>
+</html>

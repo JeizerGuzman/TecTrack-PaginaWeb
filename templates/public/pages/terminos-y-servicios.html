@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSecurity - Términos y Servicios</title>
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/faq.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/terminos-y-servicios.css') }}">
+
+    <!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    {% include "components/navbar.html" %}
+
+    <main>
+        <section class="tc-hero">
+            <div class="tc-hero__container">
+                <i class="fa-solid fa-file-contract tc-hero__icon"></i>
+                <h1>Términos y Condiciones del Servicio</h1>
+                <p class="tc-hero__updated">Última actualización: 27 de julio de 2026</p>
+            </div>
+        </section>
+
+        <section class="tc-content">
+            <div class="tc-content__container">
+
+                <!-- Índice -->
+                <nav class="tc-toc" aria-label="Índice de contenido">
+                    <h2 class="tc-toc__title"><i class="fa-solid fa-list"></i> Contenido</h2>
+                    <ol class="tc-toc__list">
+                        <li><a href="#introduccion">1. Introducción</a></li>
+                        <li><a href="#descripcion">2. Descripción del servicio</a></li>
+                        <li><a href="#registro">3. Registro de usuarios</a></li>
+                        <li><a href="#responsabilidades">4. Responsabilidades del usuario</a></li>
+                        <li><a href="#uso-permitido">5. Uso permitido</a></li>
+                        <li><a href="#uso-prohibido">6. Uso prohibido</a></li>
+                        <li><a href="#disponibilidad">7. Disponibilidad del servicio</a></li>
+                        <li><a href="#gps">8. Dispositivos GPS y conectividad</a></li>
+                        <li><a href="#propiedad">9. Propiedad intelectual</a></li>
+                        <li><a href="#proteccion">10. Protección de la información</a></li>
+                        <li><a href="#limitacion">11. Limitación de responsabilidad</a></li>
+                        <li><a href="#suspension">12. Suspensión o cancelación de cuentas</a></li>
+                        <li><a href="#actualizaciones">13. Actualizaciones del servicio</a></li>
+                        <li><a href="#modificaciones">14. Modificaciones a los términos</a></li>
+                        <li><a href="#legislacion">15. Legislación aplicable</a></li>
+                        <li><a href="#contacto">16. Contacto</a></li>
+                        <li><a href="#aceptacion">17. Aceptación de los términos</a></li>
+                    </ol>
+                </nav>
+
+                <article class="tc-article">
+
+                    <section id="introduccion" class="tc-section">
+                        <h2>1. Introducción</h2>
+                        <p>Bienvenido a TecTrack Security. Los presentes Términos y Condiciones regulan el acceso y uso de nuestro sitio web, aplicación móvil y servicios de monitoreo y gestión de vehículos mediante tecnología GPS.</p>
+                        <p>Al registrarse, acceder o utilizar cualquiera de nuestros servicios, el usuario declara haber leído, comprendido y aceptado estos términos en su totalidad. Si no está de acuerdo con alguna de las disposiciones aquí establecidas, deberá abstenerse de utilizar nuestros servicios.</p>
+                    </section>
+
+                    <section id="descripcion" class="tc-section">
+                        <h2>2. Descripción del servicio</h2>
+                        <p>TecTrack Security es una plataforma tecnológica diseñada para facilitar el monitoreo y la administración de vehículos mediante dispositivos de rastreo GPS.</p>
+                        <p>Entre las funciones disponibles se encuentran:</p>
+                        <ul class="tc-list">
+                            <li>Localización de vehículos en tiempo real.</li>
+                            <li>Consulta del historial de recorridos.</li>
+                            <li>Configuración de geocercas.</li>
+                            <li>Recepción de alertas y notificaciones.</li>
+                            <li>Administración de múltiples vehículos.</li>
+                            <li>Gestión de usuarios autorizados.</li>
+                            <li>Acceso desde aplicación móvil y sitio web.</li>
+                        </ul>
+                        <p>Las funcionalidades disponibles pueden variar de acuerdo con el plan contratado o con futuras actualizaciones del servicio.</p>
+                    </section>
+
+                    <section id="registro" class="tc-section">
+                        <h2>3. Registro de usuarios</h2>
+                        <p>Para utilizar determinadas funciones de la plataforma será necesario crear una cuenta proporcionando información veraz, completa y actualizada.</p>
+                        <p>El usuario es responsable de mantener la confidencialidad de sus credenciales de acceso y de todas las actividades realizadas desde su cuenta.</p>
+                        <p>TecTrack Security podrá solicitar información adicional cuando sea necesaria para verificar la identidad del usuario o proteger la seguridad de la plataforma.</p>
+                    </section>
+
+                    <section id="responsabilidades" class="tc-section">
+                        <h2>4. Responsabilidades del usuario</h2>
+                        <p>Al utilizar nuestros servicios, el usuario se compromete a:</p>
+                        <ul class="tc-list">
+                            <li>Proporcionar información verdadera y actualizada.</li>
+                            <li>Mantener segura su contraseña y credenciales de acceso.</li>
+                            <li>Utilizar la plataforma únicamente para fines legales.</li>
+                            <li>Notificar cualquier acceso no autorizado a su cuenta.</li>
+                            <li>Mantener actualizada la información de los vehículos registrados.</li>
+                            <li>Respetar los derechos de otros usuarios y terceros.</li>
+                        </ul>
+                        <p>El usuario será responsable de las acciones realizadas desde su cuenta cuando estas deriven del uso negligente de sus credenciales.</p>
+                    </section>
+
+                    <section id="uso-permitido" class="tc-section">
+                        <h2>5. Uso permitido</h2>
+                        <p>Los servicios de TecTrack Security podrán utilizarse exclusivamente para fines legítimos relacionados con la administración, localización y monitoreo de vehículos.</p>
+                        <p>Entre los usos permitidos se incluyen:</p>
+                        <ul class="tc-list">
+                            <li>Supervisar vehículos propios o cuya administración haya sido autorizada.</li>
+                            <li>Gestionar flotillas empresariales.</li>
+                            <li>Consultar información histórica de recorridos.</li>
+                            <li>Configurar alertas relacionadas con la operación de los vehículos.</li>
+                            <li>Compartir información únicamente con usuarios autorizados.</li>
+                        </ul>
+                    </section>
+
+                    <section id="uso-prohibido" class="tc-section">
+                        <h2>6. Uso prohibido</h2>
+                        <p>Queda estrictamente prohibido:</p>
+                        <ul class="tc-list tc-list--warning">
+                            <li>Utilizar la plataforma para actividades ilícitas.</li>
+                            <li>Intentar acceder a cuentas ajenas sin autorización.</li>
+                            <li>Manipular, modificar o alterar el funcionamiento del sistema.</li>
+                            <li>Intentar vulnerar la seguridad de la plataforma.</li>
+                            <li>Distribuir software malicioso o realizar ataques informáticos.</li>
+                            <li>Utilizar la información obtenida para fines distintos a los autorizados.</li>
+                            <li>Suplantar la identidad de otros usuarios.</li>
+                            <li>Copiar, reproducir o distribuir cualquier parte del software sin autorización expresa.</li>
+                        </ul>
+                        <p>TecTrack Security podrá suspender o cancelar inmediatamente las cuentas que incumplan estas disposiciones.</p>
+                    </section>
+
+                    <section id="disponibilidad" class="tc-section">
+                        <h2>7. Disponibilidad del servicio</h2>
+                        <p>Trabajamos para mantener nuestros servicios disponibles de forma continua; sin embargo, la plataforma puede experimentar interrupciones temporales debido a:</p>
+                        <ul class="tc-list">
+                            <li>Mantenimiento preventivo o correctivo.</li>
+                            <li>Actualizaciones del sistema.</li>
+                            <li>Fallas en servicios de terceros.</li>
+                            <li>Problemas de conectividad.</li>
+                            <li>Eventos fuera de nuestro control razonable.</li>
+                        </ul>
+                        <p>TecTrack Security no garantiza una disponibilidad ininterrumpida del servicio, aunque procurará restablecer su funcionamiento en el menor tiempo posible.</p>
+                    </section>
+
+                    <section id="gps" class="tc-section">
+                        <h2>8. Dispositivos GPS y conectividad</h2>
+                        <p>El funcionamiento del servicio depende, entre otros factores, del correcto desempeño del dispositivo GPS instalado, de la cobertura de las redes de comunicación y de la disponibilidad de servicios de terceros.</p>
+                        <p>La precisión de la ubicación puede verse afectada por condiciones ambientales, obstáculos físicos, fallas de señal o limitaciones propias de la tecnología utilizada.</p>
+                    </section>
+
+                    <section id="propiedad" class="tc-section">
+                        <h2>9. Propiedad intelectual</h2>
+                        <p>Todo el contenido de TecTrack Security, incluyendo de manera enunciativa más no limitativa:</p>
+                        <ul class="tc-list">
+                            <li>Software.</li>
+                            <li>Diseño de la plataforma.</li>
+                            <li>Interfaces.</li>
+                            <li>Logotipos.</li>
+                            <li>Marcas.</li>
+                            <li>Textos.</li>
+                            <li>Imágenes.</li>
+                            <li>Iconografía.</li>
+                            <li>Bases de datos.</li>
+                            <li>Código fuente.</li>
+                        </ul>
+                        <p>es propiedad de TecTrack Security o de sus respectivos titulares y se encuentra protegido por la legislación aplicable en materia de propiedad intelectual.</p>
+                        <p>El uso de nuestros servicios no concede al usuario ningún derecho de propiedad sobre dichos elementos.</p>
+                    </section>
+
+                    <section id="proteccion" class="tc-section">
+                        <h2>10. Protección de la información</h2>
+                        <p>TecTrack Security implementa medidas razonables de seguridad para proteger la información almacenada dentro de la plataforma.</p>
+                        <p>No obstante, ningún sistema conectado a Internet puede garantizar un nivel absoluto de seguridad, por lo que el usuario reconoce que siempre existe un riesgo inherente al intercambio de información mediante medios electrónicos.</p>
+                    </section>
+
+                    <section id="limitacion" class="tc-section">
+                        <h2>11. Limitación de responsabilidad</h2>
+                        <p>TecTrack Security proporciona una plataforma tecnológica para facilitar el monitoreo de vehículos.</p>
+                        <p>En la medida permitida por la legislación aplicable, no será responsable por:</p>
+                        <ul class="tc-list">
+                            <li>Pérdidas derivadas de interrupciones temporales del servicio.</li>
+                            <li>Daños ocasionados por fallas en redes de telecomunicaciones.</li>
+                            <li>Errores provocados por información incorrecta proporcionada por el usuario.</li>
+                            <li>Problemas derivados del uso inadecuado de la plataforma.</li>
+                            <li>Fallas atribuibles a dispositivos GPS, proveedores de internet o terceros.</li>
+                            <li>Eventos de fuerza mayor o caso fortuito.</li>
+                        </ul>
+                        <p>El usuario reconoce que la plataforma constituye una herramienta de apoyo para el monitoreo vehicular y no reemplaza otras medidas de seguridad que puedan resultar necesarias.</p>
+                    </section>
+
+                    <section id="suspension" class="tc-section">
+                        <h2>12. Suspensión o cancelación de cuentas</h2>
+                        <p>TecTrack Security podrá suspender temporal o definitivamente una cuenta cuando:</p>
+                        <ul class="tc-list">
+                            <li>Se detecten actividades fraudulentas.</li>
+                            <li>Exista un incumplimiento de estos Términos y Condiciones.</li>
+                            <li>Se haga un uso indebido de la plataforma.</li>
+                            <li>Sea necesario proteger la seguridad del sistema o de otros usuarios.</li>
+                            <li>Lo requiera una autoridad competente conforme a la legislación aplicable.</li>
+                        </ul>
+                        <p>Cuando sea posible, se notificará previamente al usuario sobre la suspensión o cancelación de su cuenta.</p>
+                    </section>
+
+                    <section id="actualizaciones" class="tc-section">
+                        <h2>13. Actualizaciones y modificaciones del servicio</h2>
+                        <p>Con el objetivo de mejorar continuamente la plataforma, TecTrack Security podrá agregar, modificar o eliminar funcionalidades, así como realizar actualizaciones técnicas y de seguridad.</p>
+                        <p>Estas modificaciones podrán implementarse sin previo aviso cuando sean necesarias para proteger la estabilidad, integridad o seguridad del servicio.</p>
+                    </section>
+
+                    <section id="modificaciones" class="tc-section">
+                        <h2>14. Modificaciones a los presentes términos</h2>
+                        <p>TecTrack Security podrá actualizar estos Términos y Condiciones en cualquier momento para reflejar cambios legales, operativos o tecnológicos.</p>
+                        <p>Las modificaciones serán publicadas en el sitio web indicando la fecha de la última actualización.</p>
+                        <p>El uso continuo de la plataforma después de la publicación de dichas modificaciones implicará la aceptación de la versión vigente.</p>
+                    </section>
+
+                    <section id="legislacion" class="tc-section">
+                        <h2>15. Legislación aplicable</h2>
+                        <p>Estos Términos y Condiciones se regirán e interpretarán de conformidad con las leyes vigentes de los Estados Unidos Mexicanos.</p>
+                        <p>Cualquier controversia relacionada con la interpretación, cumplimiento o ejecución de estos términos será resuelta por las autoridades competentes conforme a la legislación aplicable, salvo que las partes acuerden un mecanismo alternativo de solución de controversias.</p>
+                    </section>
+
+                    <section id="contacto" class="tc-section">
+                        <h2>16. Contacto</h2>
+                        <p>Si tiene dudas respecto a estos Términos y Condiciones o requiere asistencia relacionada con nuestros servicios, puede comunicarse con nosotros a través de:</p>
+                        <ul class="tc-list">
+                            <li><i class="fa-solid fa-envelope"></i> Correo electrónico: <a href="mailto:correo@tectrack.com">correo@tectrack.com</a></li>
+                            <li><i class="fa-solid fa-phone"></i> Teléfono: [Número de contacto]</li>
+                            <li><i class="fa-solid fa-location-dot"></i> Dirección: [Dirección de la empresa]</li>
+                        </ul>
+                    </section>
+
+                    <section id="aceptacion" class="tc-section">
+                        <h2>17. Aceptación de los términos</h2>
+                        <p>Al crear una cuenta, acceder al sitio web, utilizar la aplicación móvil o hacer uso de cualquiera de los servicios ofrecidos por TecTrack Security, el usuario manifiesta haber leído, comprendido y aceptado los presentes Términos y Condiciones del Servicio.</p>
+                        <p>Agradecemos la confianza depositada en TecTrack Security y reiteramos nuestro compromiso de ofrecer una plataforma confiable, segura y orientada a la protección y administración inteligente de vehículos.</p>
+                    </section>
+
+                    <div class="tc-footer-note">
+                        <i class="fa-solid fa-file-contract"></i>
+                        <p>TecTrack Security — Protegiendo tus vehículos mediante tecnología inteligente de monitoreo y localización GPS.</p>
+                    </div>
+
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    {% include "components/footer.html" %}
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/faq.js') }}"></script>
+</body>
+</html>

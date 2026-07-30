@@ -8,7 +8,7 @@
     <!-- CSS Links -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/sobre-nosotros.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/nosotros.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/demo.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
@@ -244,6 +244,135 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================== SECCIÓN 4: EQUIPO ===================== -->
+        <section class="equipo">
+            <div class="equipo__top">
+                <div>
+                    <span class="equipo__eyebrow">+ Equipo</span>
+
+                    <h2 class="equipo__titulo">
+                        Tecnología que conecta.<br>
+                        <span>Control que permanece.</span>
+                    </h2>
+                </div>
+
+                <p class="equipo__desc">
+                    Somos un equipo enfocado en GPS, IoT y seguridad vehicular,
+                    desarrollando soluciones que permiten a nuestros clientes
+                    conocer, gestionar y proteger sus unidades en todo momento.
+                </p>
+            </div>
+
+            <div class="equipo__grid">
+
+                <!-- Persona 1 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/oswaldo.jpeg') }}"
+                            alt="Retrato de Jeizer Oswaldo Guzmán Chablé"
+                        >
+                    </div>
+
+                    <h3 class="persona__nombre">
+                        Jeizer Oswaldo Guzmán Chablé
+                    </h3>
+
+                    <p class="persona__rol">
+                        Líder Técnico · Integración General
+
+                    </p>
+                </article>
+
+                <!-- Persona 2 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/fernando.png') }}"
+                            alt="Retrato de Fernando de Jesús Sánchez Villanueva"
+                        >
+                    </div>
+
+                    <h3 class="persona__nombre">
+                        Fernando de Jesús Sánchez Villanueva
+                    </h3>
+
+                    <p class="persona__rol">
+                        Responsable de Negocio e Investigación
+                    </p>
+                </article>
+
+                <!-- Persona 3 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/brayam.jpeg') }}"
+                            alt="Retrato de Brayam Alexis Ríos García"
+                        >
+                    </div>
+
+                    <h3 class="persona__nombre">
+                        Brayam Alexis Ríos García
+                    </h3>
+
+                    <p class="persona__rol">
+                        Responsable de Hardware y Componentes
+                    </p>
+                </article>
+
+                <!-- Persona 4 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/monserrat.jpeg') }}"
+                            alt="Retrato de Monserrat Moreno Montero"
+                        >
+                    </div>
+
+                    <h3 class="persona__nombre">
+                        Montserrat Moreno Montero
+                    </h3>
+
+                    <p class="persona__rol">
+                        Responsable de Negocio e Investigación
+                    </p>
+                </article>
+
+                <!-- Persona 5 -->
+                <article class="persona">
+                    <div class="persona__foto-wrap">
+                        <img
+                            class="persona__foto"
+                            src="{{ url_for('static', filename='img/public/sobre-nosotros/equipo/rodrigo.jpeg') }}"
+                            alt="Retrato de Rodrigo González López"
+                        >
+                    </div>
+
+                    <h3 class="persona__nombre">
+                        Rodrigo González López
+                    </h3>
+
+                    <p class="persona__rol">
+                        Desarrollador Web Full-Stack
+                    </p>
+                </article>
+
+            </div>
+
+            <div class="equipo__footer">
+                <div class="equipo__footer-row">
+                    <p class="equipo__frase">
+                        Detrás de cada unidad conectada hay
+                        <strong>tecnología diseñada para mantener el control.</strong>
+                    </p>
                 </div>
             </div>
         </section>

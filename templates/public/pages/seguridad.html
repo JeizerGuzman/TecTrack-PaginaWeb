@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackSecurity - Seguridad</title>
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/faq.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/public/seguridad.css') }}">
+
+    <!-- Fontawesome Kit -->
+    <script src="https://kit.fontawesome.com/b9621dfde7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    {% include "components/navbar.html" %}
+
+    <main>
+        <section class="sec-hero">
+            <div class="sec-hero__container">
+                <i class="fa-solid fa-lock sec-hero__icon"></i>
+                <h1>Seguridad</h1>
+                <p class="sec-hero__updated">Última actualización: 27 de julio de 2026</p>
+            </div>
+        </section>
+
+        <section class="sec-content">
+            <div class="sec-content__container">
+
+                <!-- Índice -->
+                <nav class="sec-toc" aria-label="Índice de contenido">
+                    <h2 class="sec-toc__title"><i class="fa-solid fa-list"></i> Contenido</h2>
+                    <ol class="sec-toc__list">
+                        <li><a href="#compromiso">Nuestro compromiso con la seguridad</a></li>
+                        <li><a href="#proteccion">Protección de la información</a></li>
+                        <li><a href="#cifrado">Cifrado de datos</a></li>
+                        <li><a href="#control-acceso">Control de acceso</a></li>
+                        <li><a href="#autenticacion">Autenticación de usuarios</a></li>
+                        <li><a href="#infraestructura">Seguridad de la infraestructura</a></li>
+                        <li><a href="#ubicacion">Protección de la información de ubicación</a></li>
+                        <li><a href="#monitoreo">Monitoreo y detección de incidentes</a></li>
+                        <li><a href="#respaldo">Respaldo de la información</a></li>
+                        <li><a href="#actualizaciones">Actualizaciones de seguridad</a></li>
+                        <li><a href="#buenas-practicas">Buenas prácticas para nuestros usuarios</a></li>
+                        <li><a href="#vulnerabilidades">Reporte de vulnerabilidades</a></li>
+                        <li><a href="#responsabilidad">Responsabilidad compartida</a></li>
+                        <li><a href="#mejoras">Mejoras continuas</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                        <li><a href="#compromiso-final">Nuestro compromiso</a></li>
+                    </ol>
+                </nav>
+
+                <article class="sec-article">
+
+                    <section id="compromiso" class="sec-section">
+                        <h2>Nuestro compromiso con la seguridad</h2>
+                        <p>En TecTrack Security, la seguridad de la información es uno de los pilares fundamentales de nuestros servicios. Entendemos que nuestros usuarios depositan su confianza en nosotros para administrar información relacionada con sus vehículos, cuentas y datos de ubicación, por lo que trabajamos continuamente para proteger dicha información mediante buenas prácticas de seguridad y procesos orientados a reducir riesgos.</p>
+                        <p>Nuestro objetivo es ofrecer una plataforma confiable, estable y segura que permita a nuestros clientes administrar sus vehículos con tranquilidad.</p>
+                    </section>
+
+                    <section id="proteccion" class="sec-section">
+                        <h2>Protección de la información</h2>
+                        <p>Aplicamos medidas técnicas y administrativas para proteger la información que procesamos contra accesos no autorizados, alteraciones, pérdidas accidentales o divulgaciones indebidas.</p>
+                        <p>Estas medidas buscan garantizar la confidencialidad, integridad y disponibilidad de la información utilizada dentro de nuestra plataforma.</p>
+                        <p>La protección de los datos es una responsabilidad compartida entre TecTrack Security y nuestros usuarios, por lo que también promovemos buenas prácticas de seguridad durante el uso de nuestros servicios.</p>
+                    </section>
+
+                    <section id="cifrado" class="sec-section">
+                        <h2>Cifrado de datos</h2>
+                        <p>Siempre que es posible, la comunicación entre nuestros usuarios y la plataforma se realiza mediante conexiones seguras utilizando protocolos de cifrado ampliamente aceptados en la industria.</p>
+                        <p>El cifrado ayuda a proteger la información durante su transmisión y reduce el riesgo de que terceros puedan interceptarla o modificarla.</p>
+                        <p>Asimismo, las contraseñas de los usuarios no se almacenan en texto plano y son procesadas mediante mecanismos diseñados para protegerlas frente a accesos no autorizados.</p>
+                    </section>
+
+                    <section id="control-acceso" class="sec-section">
+                        <h2>Control de acceso</h2>
+                        <p>El acceso a la información se encuentra restringido de acuerdo con los permisos correspondientes de cada usuario.</p>
+                        <p>Cada cuenta dispone de credenciales individuales que permiten identificar quién accede a la plataforma y qué acciones puede realizar.</p>
+                        <p>Los usuarios son responsables de mantener la confidencialidad de sus credenciales y de no compartirlas con personas no autorizadas.</p>
+                    </section>
+
+                    <section id="autenticacion" class="sec-section">
+                        <h2>Autenticación de usuarios</h2>
+                        <p>Para acceder a la plataforma es necesario iniciar sesión mediante una cuenta registrada.</p>
+                        <p>Recomendamos utilizar contraseñas seguras que combinen letras mayúsculas, letras minúsculas, números y caracteres especiales.</p>
+                        <p>Asimismo, aconsejamos cambiar la contraseña periódicamente y evitar reutilizar la misma contraseña en otros servicios.</p>
+                    </section>
+
+                    <section id="infraestructura" class="sec-section">
+                        <h2>Seguridad de la infraestructura</h2>
+                        <p>Nuestra plataforma se ejecuta sobre infraestructura tecnológica diseñada para proporcionar estabilidad y confiabilidad.</p>
+                        <p>Dependiendo de la infraestructura utilizada, podemos implementar medidas como:</p>
+                        <ul class="sec-list">
+                            <li>Comunicaciones cifradas mediante HTTPS.</li>
+                            <li>Restricciones de acceso a servidores.</li>
+                            <li>Monitoreo de disponibilidad.</li>
+                            <li>Actualizaciones periódicas del software.</li>
+                            <li>Protección frente a accesos no autorizados.</li>
+                        </ul>
+                        <p>Estas medidas pueden evolucionar conforme se incorporen nuevas tecnologías o mejores prácticas de seguridad.</p>
+                    </section>
+
+                    <section id="ubicacion" class="sec-section">
+                        <h2>Protección de la información de ubicación</h2>
+                        <p>Los datos de ubicación GPS constituyen uno de los activos más importantes dentro de TecTrack Security.</p>
+                        <p>Por ello, procuramos que únicamente el propietario de la cuenta y las personas autorizadas por él puedan consultar la información relacionada con la localización de sus vehículos.</p>
+                        <p class="sec-highlight"><i class="fa-solid fa-circle-check"></i> No utilizamos la información de ubicación para fines comerciales ajenos a la prestación del servicio ni la comercializamos con terceros.</p>
+                    </section>
+
+                    <section id="monitoreo" class="sec-section">
+                        <h2>Monitoreo y detección de incidentes</h2>
+                        <p>Realizamos actividades destinadas a detectar comportamientos inusuales que puedan representar riesgos para la seguridad de la plataforma.</p>
+                        <p>Cuando se identifica una posible actividad sospechosa, podremos implementar acciones preventivas para proteger tanto la información de nuestros usuarios como la continuidad del servicio.</p>
+                        <p>Estas acciones pueden incluir revisiones internas, restricciones temporales de acceso o investigaciones técnicas cuando resulte necesario.</p>
+                    </section>
+
+                    <section id="respaldo" class="sec-section">
+                        <h2>Respaldo de la información</h2>
+                        <p>Con el objetivo de reducir el impacto de posibles incidentes, procuramos realizar respaldos periódicos de la información necesaria para la operación de nuestros servicios.</p>
+                        <p>Los procedimientos de respaldo buscan facilitar la recuperación de información en caso de fallas técnicas, errores operativos o eventos imprevistos.</p>
+                    </section>
+
+                    <section id="actualizaciones" class="sec-section">
+                        <h2>Actualizaciones de seguridad</h2>
+                        <p>La seguridad es un proceso continuo.</p>
+                        <p>Por ello, mantenemos un compromiso permanente con la mejora de nuestra plataforma mediante actualizaciones destinadas a corregir errores, fortalecer la protección de la información y mejorar el rendimiento general del sistema.</p>
+                        <p>Recomendamos a nuestros usuarios mantener siempre actualizada la aplicación para aprovechar las mejoras de seguridad disponibles.</p>
+                    </section>
+
+                    <section id="buenas-practicas" class="sec-section">
+                        <h2>Buenas prácticas para nuestros usuarios</h2>
+                        <p>La seguridad también depende de las acciones de cada usuario. Por ello recomendamos:</p>
+                        <ul class="sec-list">
+                            <li>Utilizar contraseñas fuertes y únicas.</li>
+                            <li>No compartir las credenciales de acceso.</li>
+                            <li>Cerrar sesión al utilizar equipos compartidos.</li>
+                            <li>Mantener actualizado el sistema operativo del dispositivo.</li>
+                            <li>Instalar las versiones más recientes de nuestra aplicación.</li>
+                            <li>Evitar acceder desde redes Wi-Fi públicas cuando sea posible.</li>
+                            <li>Revisar periódicamente la información de los vehículos registrados.</li>
+                            <li>Reportar inmediatamente cualquier actividad sospechosa.</li>
+                        </ul>
+                        <p>Estas recomendaciones ayudan a disminuir significativamente el riesgo de accesos no autorizados.</p>
+                    </section>
+
+                    <section id="vulnerabilidades" class="sec-section">
+                        <h2>Reporte de vulnerabilidades</h2>
+                        <p>Valoramos la colaboración de nuestra comunidad para mejorar continuamente la seguridad de nuestros servicios.</p>
+                        <p>Si identifica una posible vulnerabilidad, comportamiento inesperado o incidente relacionado con la seguridad de nuestra plataforma, le invitamos a comunicarse con nosotros proporcionando la mayor cantidad de información posible.</p>
+                        <p>Nuestro equipo analizará el reporte y, cuando corresponda, tomará las medidas necesarias para corregir el problema en el menor tiempo posible.</p>
+                        <p>Correo de contacto: <a href="mailto:correo@tectrack.com">correo@tectrack.com</a></p>
+                    </section>
+
+                    <section id="responsabilidad" class="sec-section">
+                        <h2>Responsabilidad compartida</h2>
+                        <p>Aunque TecTrack Security implementa medidas razonables para proteger la información de sus usuarios, ningún sistema informático conectado a Internet puede garantizar una seguridad absoluta.</p>
+                        <p>Por ello, la protección de la información es una responsabilidad compartida entre nuestra empresa y cada usuario, quienes deben utilizar la plataforma de forma responsable y adoptar buenas prácticas de seguridad digital.</p>
+                    </section>
+
+                    <section id="mejoras" class="sec-section">
+                        <h2>Mejoras continuas</h2>
+                        <p>La tecnología evoluciona constantemente y, con ella, también los desafíos relacionados con la ciberseguridad.</p>
+                        <p>TecTrack Security mantiene el compromiso de revisar y fortalecer periódicamente sus procesos, herramientas y medidas de protección con el propósito de ofrecer un servicio cada vez más seguro y confiable.</p>
+                    </section>
+
+                    <section id="contacto" class="sec-section">
+                        <h2>Contacto</h2>
+                        <p>Si tiene preguntas relacionadas con la seguridad de nuestros servicios o desea reportar un incidente, puede comunicarse con nosotros a través de los siguientes medios:</p>
+                        <ul class="sec-list">
+                            <li><i class="fa-solid fa-envelope"></i> Correo electrónico: <a href="mailto:correo@tectrack.com">correo@tectrack.com</a></li>
+                            <li><i class="fa-solid fa-phone"></i> Teléfono: [Número de contacto]</li>
+                            <li><i class="fa-solid fa-location-dot"></i> Dirección: [Dirección de la empresa]</li>
+                        </ul>
+                    </section>
+
+                    <section id="compromiso-final" class="sec-section">
+                        <h2>Nuestro compromiso</h2>
+                        <p>En TecTrack Security creemos que la confianza se construye mediante la transparencia, la responsabilidad y la mejora continua. Seguiremos trabajando para ofrecer una plataforma que ayude a nuestros usuarios a monitorear y administrar sus vehículos con un alto nivel de confiabilidad, procurando siempre proteger la información que nos confían.</p>
+                    </section>
+
+                    <div class="sec-footer-note">
+                        <i class="fa-solid fa-lock"></i>
+                        <p>TecTrack Security — Protegiendo tus vehículos mediante tecnología inteligente de monitoreo y localización GPS.</p>
+                    </div>
+
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    {% include "components/footer.html" %}
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/public/navbar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/public/faq.js') }}"></script>
+</body>
+</html>

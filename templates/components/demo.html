@@ -1,41 +1,38 @@
 <section class="section-demo">
     <div class="cta-card">
+        <div class="cta-inner">
 
-        <!-- Decoración -->
-        <span class="deco-square sq-1"></span>
-        <span class="deco-square sq-2"></span>
-        <span class="deco-square sq-3"></span>
-
-        <div class="cta-content">
-
-            <span class="eyebrow">
-                ¿Listo para comenzar?
-            </span>
-
-            <h2>
-                Protege tu flota con monitoreo inteligente
-            </h2>
-
-            <p>
-                Solicita una demostración y conoce cómo TecTrack puede ayudarte a
-                monitorear tus unidades, recibir alertas en tiempo real y mantener
-                tu mercancía siempre bajo control.
-            </p>
-
-            <div class="cta-buttons">
-
-                <!-- Comentado por ahora -->
-                <!-- <a href="#" class="btn-dark">
-                    Solicitar demostración
-                </a> -->
-
-                <a href="{{ url_for('home') }}#contacto" class="btn-outline">
-                    Contactar con un asesor
-                </a>
-
+            <div class="cta-content">
+                <span class="eyebrow">¿Listo para comenzar?</span>
+                <h2>Protege tu flota con monitoreo inteligente</h2>
+                <p>
+                    Solicita una demostración y conoce cómo TecTrack puede ayudarte a monitorear
+                    tus unidades, recibir alertas en tiempo real y mantener tu mercancía siempre
+                    bajo control.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn-white">Solicitar demostración</a>
+                    <a href="{{ url_for('home') }}#contacto" class="btn-outline-demo">Contactar con un asesor</a>
+                </div>
             </div>
 
+            <div class="cta-visual">
+                <div class="phone">
+                    <div class="phone__screen">
+                        <div class="phone__map"></div>
+                        <div class="phone__route">
+                            <svg viewBox="0 0 170 340" preserveAspectRatio="none">
+                            <path d="M 20,280 C 60,220 40,160 90,140 C 130,120 110,80 140,50" />
+                            </svg>
+                        </div>
+                        <span class="phone__pin"></span>
+                    </div>
+                        <div class="phone__card">
+                        <strong>Unidad 04</strong>
+                        <span>En ruta · 12 min</span>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 </section>

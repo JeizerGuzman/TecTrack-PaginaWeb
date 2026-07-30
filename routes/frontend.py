@@ -155,6 +155,33 @@ def registrar_frontend_routes(app):
         return render_template(
             "public/pages/faq.html"
         )    
+        
+    # Página de políticas de privacidad
+    @app.get("/politicas-de-privacidad")
+    def politicas_de_privacidad():
+        return render_template(
+            "public/pages/politicas-de-privacidad.html"
+        )   
+    
+    # Página de preguntas frecuentes
+    @app.get("/terminos-y-servicios")
+    def terminos_y_servicios():
+        return render_template(
+            "public/pages/terminos-y-servicios.html"
+        )        
+    # Página de seguridad
+    @app.get("/seguridad")
+    def seguridad():
+        return render_template(
+            "public/pages/seguridad.html"
+        )  
+        
+    # Página de cookies
+    @app.get("/cookies")
+    def cookies():
+        return render_template(
+            "public/pages/cookies.html"
+        )     
     
     # ========================================================
     # VISTAS SUPERVISOR
