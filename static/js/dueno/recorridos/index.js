@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let capaRuta = null;
     let capaAlertas = L.layerGroup();
 
+    let recorridoActivoId = null;
+    let recorridoActivoEstado = null;
+
     // Referencias DOM
     const contenedorRecorridos = document.getElementById('contenedor-recorridos');
     const filtroEstado = document.getElementById('filtro-estado');
@@ -54,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function renderizarLista(recorridos) {
+function renderizarLista(recorridos) {
         contenedorRecorridos.innerHTML = '';
         if (recorridos.length === 0) {
             contenedorRecorridos.innerHTML = '<div class="loading-texto">Sin registros.</div>';
@@ -74,6 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'item-recorrido';
             
+            // 🌟 EL FIX: Si esta tarjeta es la que estábamos viendo, le ponemos la clase activo desde que nace
+            if (r.id === recorridoActivoId) {
+                div.classList.add('activo');
+            }
+            
             // Estructura HTML idéntica a tu imagen de referencia
             div.innerHTML = `
                 <div class="status-dot dot-${r.estado}">${icono}</div>
@@ -91,6 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
             div.addEventListener('click', () => {
                 document.querySelectorAll('.item-recorrido').forEach(el => el.classList.remove('activo'));
                 div.classList.add('activo');
+                
+                // Guardamos qué viaje se está viendo para autorefrescarlo
+                recorridoActivoId = r.id;
+                recorridoActivoEstado = r.estado;
+                
                 dibujarRutaEnMapa(r.id, r.estado);
             });
 
@@ -211,4 +224,26 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(error);
         }
     }
+
+    // ==========================================
+    // AUTO-REFRESCO (CADA 30 SEGUNDOS)
+    // ==========================================
+    setInterval(() => {
+        // 1. Refrescar la lista silenciosamente (sin poner el texto de "Cargando...")
+        // Usamos TrackAPI directo en lugar de cargarRecorridos() para no borrar la pantalla
+        TrackAPI.obtenerRecorridosAdmin(paginaActual, limite, filtroEstado.value)
+            .then(data => {
+                if (data.success) {
+                    renderizarLista(data.recorridos);
+                    actualizarPaginacion(data.paginacion);
+                }
+            })
+            .catch(err => console.error("Error en auto-refresco de lista:", err));
+
+        // 2. Refrescar el mapa silenciosamente (solo si el viaje sigue en curso)
+        if (recorridoActivoId && recorridoActivoEstado === 'en_curso') {
+            dibujarRutaEnMapa(recorridoActivoId, recorridoActivoEstado);
+        }
+    }, 5000); // 30000 milisegundos = 30 segundos
+
 });

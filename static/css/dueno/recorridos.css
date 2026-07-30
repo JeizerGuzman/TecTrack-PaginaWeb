@@ -192,3 +192,56 @@
 .badge-estado { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
 
 .oculto { display: none !important; }
+
+
+/* =========================================
+   RESPONSIVO PARA MÓVILES Y TABLETS
+========================================= */
+@media (max-width: 992px) {
+    .vista-flota-container {
+        /* Cambiamos de lado a lado, a uno arriba del otro. 
+           column-reverse pone el mapa arriba y la lista abajo */
+        flex-direction: column-reverse; 
+        
+        /* Ajustamos el alto para evitar desbordes con la barra de navegación del celular */
+        height: calc(100vh - 60px); 
+    }
+
+    .panel-lateral {
+        width: 100%;
+        min-width: 100%;
+        /* La lista tomará exactamente la mitad de la pantalla */
+        height: 50%; 
+        border-right: none;
+        border-top: 1px solid #d1d5db;
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.05); /* Sombra hacia arriba */
+        z-index: 10;
+    }
+
+    .panel-mapa {
+        width: 100%;
+        /* El mapa tomará la otra mitad superior */
+        height: 50%; 
+        flex: none; /* Quitamos el flex: 1 para forzar el 50% */
+    }
+
+    /* Reducimos un poco los márgenes para aprovechar el espacio en pantallas pequeñas */
+    .panel-header {
+        padding: 12px;
+    }
+
+    .item-recorrido {
+        padding: 10px 12px;
+    }
+
+    /* Movemos la tarjeta flotante de info del viaje a la parte inferior del mapa 
+       para que no estorbe con los botones de zoom de Leaflet */
+    .info-flotante {
+        top: auto;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        text-align: center;
+        padding: 8px 12px;
+    }
+}
