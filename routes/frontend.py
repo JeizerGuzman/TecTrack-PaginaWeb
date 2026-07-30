@@ -57,6 +57,11 @@ def registrar_frontend_routes(app):
     def dueno_dashboard():
         return render_template("dueno/dashboard/index.html")
 
+    # === NUEVA PANTALLA DE RECORRIDOS ===
+    @app.get("/dueno/recorridos")
+    def dueno_recorridos():
+        return render_template("dueno/recorridos/index.html")
+
     # Listado de vehículos.
     @app.get("/dueno/vehiculos")
     def dueno_vehiculos():
@@ -317,3 +322,6 @@ def registrar_frontend_routes(app):
     @app.get("/admin/configuracion")
     def admin_configuracion():
         return render_template("admin/configuracion/index.html")
+    
+    
+    

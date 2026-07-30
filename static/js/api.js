@@ -814,4 +814,25 @@ window.TrackAPI = {
         );
     },
 
+    atenderAlerta(alertaId) {
+        return this.request(`/api/alertas/${alertaId}/atender`, {
+            method: "PUT"
+        });
+    }, // <-- Asegúrate de que esta coma esté aquí
+
+    // ==========================================
+    // NUEVAS RUTAS PARA RECORRIDOS (DUEÑO/SUPERVISOR)
+    // ==========================================
+    obtenerRecorridosAdmin(page = 1, perPage = 15, estado = "") {
+        let url = `/api/admin/recorridos?page=${page}&per_page=${perPage}`;
+        if (estado) {
+            url += `&estado=${estado}`;
+        }
+        return this.request(url);
+    },
+
+    obtenerDetalleRecorrido(recorridoId) {
+        return this.request(`/api/admin/recorridos/${recorridoId}/detalle`);
+    }
+    
 };

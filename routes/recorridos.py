@@ -194,3 +194,131 @@ def registrar_recorridos_routes(app):
             return jsonify({"success": True, "historial": resultado}), 200
         except Exception as e:
             return jsonify({"success": False, "mensaje": f"Error al cargar historial: {str(e)}"}), 500
+        
+    
+    # ========================================================
+    # PANEL WEB (ADMIN): OBTENER RECORRIDOS PAGINADOS
+    # ========================================================
+    @app.route('/api/admin/recorridos', methods=['GET'])
+    @jwt_required()
+    def admin_obtener_recorridos_paginados():
+        try:
+            # Recibimos parámetros de la URL (Query Params)
+            page = request.args.get('page', 1, type=int)
+            per_page = request.args.get('per_page', 15, type=int)
+            estado = request.args.get('estado', None)
+            vehiculo_id = request.args.get('vehiculo_id', None)
+
+            # Iniciamos la consulta base
+            query = Recorrido.query
+
+            # Aplicamos filtros si el administrador los seleccionó
+            if estado:
+                query = query.filter_by(estado=estado)
+            if vehiculo_id:
+                query = query.filter_by(vehiculo_id=vehiculo_id)
+
+            # Ordenamos del más reciente al más antiguo y paginamos
+            paginacion = query.order_by(Recorrido.fecha_inicio.desc()).paginate(
+                page=page, per_page=per_page, error_out=False
+            )
+
+            resultado = []
+            for r in paginacion.items:
+                resultado.append({
+                    "id": r.id,
+                    "vehiculo_id": r.vehiculo_id,
+                    "chofer_id": r.chofer_id,
+                    "origen_nombre": r.origen_nombre,
+                    "destino_nombre": r.destino_nombre,
+                    "estado": r.estado,
+                    "fecha_inicio": r.fecha_inicio,
+                    "fecha_fin": r.fecha_fin,
+                    "distancia_estimada": r.distancia_estimada,
+                    "duracion_real": r.duracion_real,
+                    "motivo_cancelacion": r.motivo_cancelacion
+                })
+
+            return jsonify({
+                "success": True,
+                "recorridos": resultado,
+                "paginacion": {
+                    "total_registros": paginacion.total,
+                    "paginas_totales": paginacion.pages,
+                    "pagina_actual": paginacion.page,
+                    "tiene_siguiente": paginacion.has_next,
+                    "tiene_anterior": paginacion.has_prev
+                }
+            }), 200
+
+        except Exception as e:
+            return jsonify({"success": False, "mensaje": f"Error al cargar recorridos: {str(e)}"}), 500
+
+
+    # ========================================================
+    # PANEL WEB (ADMIN): DETALLE Y RUTA PARA EL MAPA (REPLAY)
+    # ========================================================
+    @app.route('/api/admin/recorridos/<int:recorrido_id>/detalle', methods=['GET'])
+    @jwt_required()
+    def admin_detalle_recorrido(recorrido_id):
+        # NOTA: Asegúrate de importar HistorialGPS y Alerta al principio de este archivo
+        from models import HistorialGPS, Alerta 
+        
+        try:
+            recorrido = Recorrido.query.get(recorrido_id)
+            if not recorrido:
+                return jsonify({"success": False, "mensaje": "Recorrido no encontrado"}), 404
+
+            # 1. Obtenemos todos los puntos trazados en este viaje ordenados por tiempo
+            puntos_gps = HistorialGPS.query.filter_by(recorrido_id=recorrido.id).order_by(HistorialGPS.timestamp.asc()).all()
+            
+            ruta_trazada = []
+            for p in puntos_gps:
+                if p.lat and p.lng: # Solo agregamos si hay coordenadas válidas
+                    ruta_trazada.append({
+                        "lat": p.lat,
+                        "lng": p.lng,
+                        "velocidad": p.velocidad,
+                        "timestamp": p.timestamp
+                    })
+
+            # 2. Obtenemos las alertas que ocurrieron en la misma ventana de tiempo del viaje
+            limite_tiempo_fin = recorrido.fecha_fin if recorrido.fecha_fin else timestamp_actual()
+            
+            alertas = Alerta.query.filter(
+                Alerta.vehiculo_id == recorrido.vehiculo_id,
+                Alerta.timestamp >= recorrido.fecha_inicio,
+                Alerta.timestamp <= limite_tiempo_fin
+            ).all()
+
+            alertas_viaje = []
+            for a in alertas:
+                alertas_viaje.append({
+                    "id": a.id,
+                    "tipo": a.tipo,
+                    "descripcion": a.descripcion,
+                    "lat": a.lat,
+                    "lng": a.lng,
+                    "timestamp": a.timestamp,
+                    "atendida": a.atendida
+                })
+
+            return jsonify({
+                "success": True,
+                "recorrido": {
+                    "id": recorrido.id,
+                    "estado": recorrido.estado,
+                    "origen_nombre": recorrido.origen_nombre,
+                    "origen_coordenadas": recorrido.origen_coordenadas, # <--- AGREGAR ESTO
+                    "destino_nombre": recorrido.destino_nombre,
+                    "destino_coordenadas": recorrido.destino_coordenadas, # <--- AGREGAR ESTO
+                    "fecha_inicio": recorrido.fecha_inicio,
+                    "fecha_fin": recorrido.fecha_fin,
+                    "ruta_planeada": json.loads(recorrido.ruta_planeada) if recorrido.ruta_planeada else None
+                },
+                "ruta_trazada": ruta_trazada,
+                "alertas": alertas_viaje
+            }), 200
+
+        except Exception as e:
+            return jsonify({"success": False, "mensaje": f"Error al cargar detalle: {str(e)}"}), 500
