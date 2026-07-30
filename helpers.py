@@ -1401,7 +1401,6 @@ def guardar_historial_gps(
         True
     )
 
-
     if gps_valido is False:
 
         print(
@@ -1410,7 +1409,6 @@ def guardar_historial_gps(
         )
 
         return None
-
 
     if (
         motivo == "intervalo"
@@ -1425,7 +1423,6 @@ def guardar_historial_gps(
 
         return None
 
-
     if lat is None or lng is None:
 
         print(
@@ -1436,9 +1433,34 @@ def guardar_historial_gps(
         return None
 
 
+    # ====================================================
+    # FASE 4: VINCULAR CON RECORRIDO ACTIVO
+    # Buscamos si el vehículo está realizando un viaje.
+    # Usamos import local para evitar dependencias circulares.
+    # ====================================================
+    from models import Recorrido
+
+    recorrido_activo = (
+        Recorrido.query
+        .filter_by(
+            vehiculo_id=vehiculo_id,
+            estado='en_curso'
+        )
+        .first()
+    )
+
+    recorrido_id_actual = (
+        recorrido_activo.id 
+        if recorrido_activo 
+        else None
+    )
+    # ====================================================
+
+
     punto = HistorialGPS(
         vehiculo_id=vehiculo_id,
         dispositivo_id=dispositivo_id,
+        recorrido_id=recorrido_id_actual,  # <-- SE ASIGNA EL RECORRIDO AQUÍ
         lat=lat,
         lng=lng,
         velocidad=data.get(
@@ -1453,6 +1475,7 @@ def guardar_historial_gps(
     print(
         "🗺️ HISTORIAL GPS GUARDADO -> "
         f"vehiculo_id: {vehiculo_id} | "
+        f"recorrido_id: {recorrido_id_actual} | "
         f"motivo: {motivo}"
     )
 

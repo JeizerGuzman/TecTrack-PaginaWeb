@@ -618,6 +618,12 @@ class HistorialGPS(db.Model):
         db.ForeignKey('dispositivos.id'),
         nullable=True
     )
+    
+    recorrido_id = db.Column(
+        db.Integer,
+        db.ForeignKey('recorridos.id'),
+        nullable=True
+    )
 
     lat = db.Column(db.Float, nullable=True)
     lng = db.Column(db.Float, nullable=True)
@@ -1005,4 +1011,74 @@ class ConfiguracionSistema(db.Model):
         db.Integer,
         nullable=False,
         default=timestamp_actual
+    )
+
+
+# ============================================================
+# RECORRIDOS (RUTAS)
+# Guarda la planeación y ejecución de una ruta asignada a un chofer
+# ============================================================
+
+class Recorrido(db.Model):
+    __tablename__ = 'recorridos'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    vehiculo_id = db.Column(
+        db.Integer,
+        db.ForeignKey('vehiculos.id'),
+        nullable=False
+    )
+
+    chofer_id = db.Column(
+        db.Integer,
+        db.ForeignKey('usuarios.id'),
+        nullable=False
+    )
+
+    # --- ORIGEN ---
+    origen_nombre = db.Column(db.String(255), nullable=False)
+    origen_coordenadas = db.Column(db.String(100), nullable=False)
+
+    # --- DESTINO ---
+    destino_nombre = db.Column(db.String(255), nullable=False)
+    destino_coordenadas = db.Column(db.String(100), nullable=False)
+
+    ruta_planeada = db.Column(db.Text, nullable=True)
+    # JSON / GeoJSON de la ruta arrojada por Mapbox
+    
+    distancia_estimada = db.Column(db.Float, nullable=True)
+    duracion_estimada = db.Column(db.Float, nullable=True)
+    
+    # === NUEVAS COLUMNAS ===
+    distancia_real = db.Column(db.Float, nullable=True)
+    # Lo guardamos en metros, igual que el ESP32
+
+    duracion_real = db.Column(db.Integer, nullable=True)
+    # Lo guardamos en segundos
+    # =======================
+    
+    # === NUEVA COLUMNA ===
+    coordenadas_fin = db.Column(db.String(100), nullable=True)
+
+    estado = db.Column(
+        db.String(20),
+        default='en_curso'
+    )
+    # en_curso / finalizado / cancelado
+
+    # === NUEVA COLUMNA ===
+    motivo_cancelacion = db.Column(
+        db.String(255), 
+        nullable=True
+    )
+
+    fecha_inicio = db.Column(
+        db.Integer,
+        default=timestamp_actual
+    )
+
+    fecha_fin = db.Column(
+        db.Integer,
+        nullable=True
     )
