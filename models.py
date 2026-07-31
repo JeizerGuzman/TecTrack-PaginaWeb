@@ -1061,6 +1061,9 @@ class Recorrido(db.Model):
     # === NUEVA COLUMNA ===
     coordenadas_fin = db.Column(db.String(100), nullable=True)
 
+    # === RUTAS MAP MATCHING ===
+    ruta_corregida = db.Column(db.Text, nullable=True) # Guardará el arreglo JSON de OSRM
+
     estado = db.Column(
         db.String(20),
         default='en_curso'

@@ -134,32 +134,71 @@ function renderizarLista(recorridos) {
                 badgeMapa.textContent = estado.replace('_', ' ').toUpperCase();
                 badgeMapa.style.color = estado === 'en_curso' ? '#10b981' : (estado === 'cancelado' ? '#ef4444' : '#6b7280');
 
-                // Limpiar mapa
                 if (capaRuta) mapa.removeLayer(capaRuta);
                 capaAlertas.clearLayers();
 
                 // 1. Extraer coordenadas del Historial GPS
                 let latlngs = data.ruta_trazada.map(p => [p.lat, p.lng]);
 
-                // 🌟 EL FIX: Si no hay historial GPS, usamos el punto de origen del Recorrido
+                // Si no hay historial, intentamos usar el origen
                 if (latlngs.length === 0 && data.recorrido.origen_coordenadas) {
-                    // Asumimos que viene como "latitud,longitud" (ej. "16.75,-93.11")
                     const partes = data.recorrido.origen_coordenadas.split(',');
                     if (partes.length === 2) {
                         latlngs.push([parseFloat(partes[0]), parseFloat(partes[1])]);
                     }
                 }
 
-                // 2. Dibujar la línea SOLO si hay 2 o más puntos
-                if (latlngs.length > 1) {
-                    capaRuta = L.polyline(latlngs, {color: '#2563eb', weight: 4, opacity: 0.8}).addTo(mapa);
+                // ==============================================================
+                // 2. DIBUJO DE RUTA (Estrategia Híbrida)
+                // ==============================================================
+                
+                // A. Si el viaje terminó y ya tenemos la ruta corregida desde la BD
+                if (estado !== 'en_curso' && data.recorrido.ruta_corregida) {
+                    // La usamos directamente (es ultrarrápido)
+                    capaRuta = L.polyline(data.recorrido.ruta_corregida, {color: '#2563eb', weight: 4, opacity: 0.8}).addTo(mapa);
                     mapa.fitBounds(capaRuta.getBounds(), { padding: [50, 50] });
+
+                // B. Si el viaje está activo (en_curso) y hay más de 1 punto, pedimos a OSRM en vivo
+                } else if (latlngs.length > 1) {
+                    tituloMapa.textContent = `Ajustando ruta a las calles...`;
+                    
+                    let puntosAProcesar = latlngs;
+                    if (latlngs.length > 90) {
+                        const factor = Math.ceil(latlngs.length / 90);
+                        puntosAProcesar = latlngs.filter((_, index) => index % factor === 0);
+                        if (puntosAProcesar[puntosAProcesar.length - 1] !== latlngs[latlngs.length - 1]) {
+                            puntosAProcesar.push(latlngs[latlngs.length - 1]);
+                        }
+                    }
+
+                    const coordsOSRM = puntosAProcesar.map(p => `${p[1]},${p[0]}`).join(';');
+                    
+                    try {
+                        const response = await fetch(`https://router.project-osrm.org/match/v1/driving/${coordsOSRM}?geometries=geojson&overview=full`);
+                        const osrmData = await response.json();
+
+                        if (osrmData.code === 'Ok' && osrmData.matchings.length > 0) {
+                            const rutaAjustada = osrmData.matchings[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+                            capaRuta = L.polyline(rutaAjustada, {color: '#2563eb', weight: 4, opacity: 0.8}).addTo(mapa);
+                        } else {
+                            throw new Error("No hubo match");
+                        }
+                    } catch (error) {
+                        console.warn("Fallo OSRM en vivo, usando línea cruda.");
+                        capaRuta = L.polyline(latlngs, {color: '#2563eb', weight: 4, opacity: 0.8}).addTo(mapa);
+                    }
+
+                    mapa.fitBounds(capaRuta.getBounds(), { padding: [50, 50] });
+                    tituloMapa.textContent = `Viaje #${recorridoId}`;
+                
+                // C. Si solo tiene 1 punto, centramos la cámara
                 } else if (latlngs.length === 1) {
-                    // Si solo hay 1 punto, centramos la cámara ahí con buen zoom
-                    mapa.setView(latlngs[0], 15);
+                    mapa.setView(latlngs[0], 16);
                 }
 
-                // 3. Colocar Pines de Inicio y Fin
+                // ==============================================================
+                // 3. PINES DE INICIO / FIN Y ALERTAS
+                // ==============================================================
                 if (latlngs.length > 0) {
                     const iconoInicio = L.icon({
                         iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
@@ -167,14 +206,10 @@ function renderizarLista(recorridos) {
                         iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
                     });
                     
-                    // Preparamos el texto del globito (Popup)
                     let textoPopup = `<b>📍 Origen:</b><br>${data.recorrido.origen_nombre}`;
                     
-                    // Si el viaje no avanzó (1 punto) y ya NO está en curso, actualizamos el texto
                     if (latlngs.length === 1 && estado !== 'en_curso') {
                         textoPopup = `<b>📍🏁 Inicio y Fin (Sin avance):</b><br>${data.recorrido.origen_nombre}`;
-                        
-                        // Opcional: Si quieres que el pin cambie de color a gris cuando se canceló sin moverse
                         if(estado === 'cancelado') {
                             iconoInicio.options.iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png';
                         }
@@ -184,7 +219,6 @@ function renderizarLista(recorridos) {
                         .bindPopup(textoPopup)
                         .addTo(capaAlertas);
 
-                    // Pin Azul para el FIN real (Solo si avanzó de lugar y hay más de 1 punto)
                     if (latlngs.length > 1) {
                         const iconoFin = L.icon({
                             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
@@ -197,7 +231,6 @@ function renderizarLista(recorridos) {
                     }
                 }
 
-                // 4. Dibujar Alertas
                 const iconoAlerta = L.icon({
                     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
                     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',

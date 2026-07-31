@@ -12,6 +12,9 @@ from config import db
 from models import Recorrido
 from helpers import timestamp_actual
 
+import requests
+import math
+
 def registrar_recorridos_routes(app):
 
     # ========================================================
@@ -80,15 +83,17 @@ def registrar_recorridos_routes(app):
     @app.route('/api/recorridos/<int:recorrido_id>/terminar', methods=['PUT'])
     @jwt_required()
     def terminar_recorrido(recorrido_id):
+        from models import HistorialGPS # Importación local para evitar dependencias circulares
+        import requests
+        import math
+
         usuario_id = get_jwt_identity()
         data = request.get_json(silent=True) or {}
         
-        # Datos recibidos desde Flutter
-        estado_final = data.get('estado', 'finalizado') # 'finalizado' o 'cancelado'
+        estado_final = data.get('estado', 'finalizado') 
         motivo_cancelacion = data.get('motivo_cancelacion', None)
-        coordenadas_fin = data.get('coordenadas_fin', None) # <--- Agrega esta línea
+        coordenadas_fin = data.get('coordenadas_fin', None) 
         
-        # MODO OFFLINE: Respetar la hora exacta en la que se presionó el botón
         fecha_fin_app = data.get('fecha_fin')
         fecha_fin_real = fecha_fin_app if fecha_fin_app else timestamp_actual()
         
@@ -107,20 +112,41 @@ def registrar_recorridos_routes(app):
             recorrido.estado = estado_final
             recorrido.fecha_fin = fecha_fin_real
             
-            # === CÁLCULO AUTOMÁTICO DE DURACIÓN REAL ===
             if recorrido.fecha_inicio:
                 recorrido.duracion_real = fecha_fin_real - recorrido.fecha_inicio
             
-            # La distancia_real se llenará posteriormente sumando
-            # los puntos del HistorialGPS asociados a este recorrido_id.
-            # ===========================================
-
             if estado_final == 'cancelado' and motivo_cancelacion:
                 recorrido.motivo_cancelacion = motivo_cancelacion
             
-            # Guardamos la coordenada final si existe
             if coordenadas_fin:
                 recorrido.coordenadas_fin = coordenadas_fin
+
+            # ============================================================
+            # MAP MATCHING: Guardar la ruta perfecta al finalizar
+            # ============================================================
+            puntos_gps = HistorialGPS.query.filter_by(recorrido_id=recorrido_id).order_by(HistorialGPS.timestamp.asc()).all()
+            
+            if len(puntos_gps) > 1:
+                if len(puntos_gps) > 90:
+                    factor = math.ceil(len(puntos_gps) / 90)
+                    puntos_procesar = puntos_gps[::factor]
+                    if puntos_procesar[-1] != puntos_gps[-1]:
+                        puntos_procesar.append(puntos_gps[-1])
+                else:
+                    puntos_procesar = puntos_gps
+
+                coords_str = ";".join([f"{p.lng},{p.lat}" for p in puntos_procesar if p.lat and p.lng])
+                
+                if coords_str:
+                    osrm_url = f"https://router.project-osrm.org/match/v1/driving/{coords_str}?geometries=geojson&overview=full"
+                    try:
+                        response = requests.get(osrm_url, timeout=5)
+                        osrm_data = response.json()
+                        if osrm_data.get('code') == 'Ok':
+                            ruta_ajustada = [[c[1], c[0]] for c in osrm_data['matchings'][0]['geometry']['coordinates']]
+                            recorrido.ruta_corregida = json.dumps(ruta_ajustada)
+                    except Exception as e:
+                        print(f"Error OSRM en backend: {e}")
 
             db.session.commit()
 
@@ -132,6 +158,74 @@ def registrar_recorridos_routes(app):
         except Exception as e:
             db.session.rollback()
             return jsonify({"success": False, "mensaje": f"Error interno: {str(e)}"}), 500
+
+
+    # ========================================================
+    # PANEL WEB (ADMIN): DETALLE Y RUTA PARA EL MAPA (REPLAY)
+    # ========================================================
+    @app.route('/api/admin/recorridos/<int:recorrido_id>/detalle', methods=['GET'])
+    @jwt_required()
+    def admin_detalle_recorrido(recorrido_id):
+        from models import HistorialGPS, Alerta 
+        
+        try:
+            recorrido = Recorrido.query.get(recorrido_id)
+            if not recorrido:
+                return jsonify({"success": False, "mensaje": "Recorrido no encontrado"}), 404
+
+            puntos_gps = HistorialGPS.query.filter_by(recorrido_id=recorrido.id).order_by(HistorialGPS.timestamp.asc()).all()
+            
+            ruta_trazada = []
+            for p in puntos_gps:
+                if p.lat and p.lng: 
+                    ruta_trazada.append({
+                        "lat": p.lat,
+                        "lng": p.lng,
+                        "velocidad": p.velocidad,
+                        "timestamp": p.timestamp
+                    })
+
+            limite_tiempo_fin = recorrido.fecha_fin if recorrido.fecha_fin else timestamp_actual()
+            
+            alertas = Alerta.query.filter(
+                Alerta.vehiculo_id == recorrido.vehiculo_id,
+                Alerta.timestamp >= recorrido.fecha_inicio,
+                Alerta.timestamp <= limite_tiempo_fin
+            ).all()
+
+            alertas_viaje = []
+            for a in alertas:
+                alertas_viaje.append({
+                    "id": a.id,
+                    "tipo": a.tipo,
+                    "descripcion": a.descripcion,
+                    "lat": a.lat,
+                    "lng": a.lng,
+                    "timestamp": a.timestamp,
+                    "atendida": a.atendida
+                })
+
+            return jsonify({
+                "success": True,
+                "recorrido": {
+                    "id": recorrido.id,
+                    "estado": recorrido.estado,
+                    "origen_nombre": recorrido.origen_nombre,
+                    "origen_coordenadas": recorrido.origen_coordenadas, 
+                    "destino_nombre": recorrido.destino_nombre,
+                    "destino_coordenadas": recorrido.destino_coordenadas, 
+                    "fecha_inicio": recorrido.fecha_inicio,
+                    "fecha_fin": recorrido.fecha_fin,
+                    "ruta_planeada": json.loads(recorrido.ruta_planeada) if recorrido.ruta_planeada else None,
+                    # Devolvemos la ruta ya parseada como JSON (arreglo)
+                    "ruta_corregida": json.loads(recorrido.ruta_corregida) if recorrido.ruta_corregida else None
+                },
+                "ruta_trazada": ruta_trazada,
+                "alertas": alertas_viaje
+            }), 200
+
+        except Exception as e:
+            return jsonify({"success": False, "mensaje": f"Error al cargar detalle: {str(e)}"}), 500
         
         
     # ========================================================
@@ -254,71 +348,3 @@ def registrar_recorridos_routes(app):
         except Exception as e:
             return jsonify({"success": False, "mensaje": f"Error al cargar recorridos: {str(e)}"}), 500
 
-
-    # ========================================================
-    # PANEL WEB (ADMIN): DETALLE Y RUTA PARA EL MAPA (REPLAY)
-    # ========================================================
-    @app.route('/api/admin/recorridos/<int:recorrido_id>/detalle', methods=['GET'])
-    @jwt_required()
-    def admin_detalle_recorrido(recorrido_id):
-        # NOTA: Asegúrate de importar HistorialGPS y Alerta al principio de este archivo
-        from models import HistorialGPS, Alerta 
-        
-        try:
-            recorrido = Recorrido.query.get(recorrido_id)
-            if not recorrido:
-                return jsonify({"success": False, "mensaje": "Recorrido no encontrado"}), 404
-
-            # 1. Obtenemos todos los puntos trazados en este viaje ordenados por tiempo
-            puntos_gps = HistorialGPS.query.filter_by(recorrido_id=recorrido.id).order_by(HistorialGPS.timestamp.asc()).all()
-            
-            ruta_trazada = []
-            for p in puntos_gps:
-                if p.lat and p.lng: # Solo agregamos si hay coordenadas válidas
-                    ruta_trazada.append({
-                        "lat": p.lat,
-                        "lng": p.lng,
-                        "velocidad": p.velocidad,
-                        "timestamp": p.timestamp
-                    })
-
-            # 2. Obtenemos las alertas que ocurrieron en la misma ventana de tiempo del viaje
-            limite_tiempo_fin = recorrido.fecha_fin if recorrido.fecha_fin else timestamp_actual()
-            
-            alertas = Alerta.query.filter(
-                Alerta.vehiculo_id == recorrido.vehiculo_id,
-                Alerta.timestamp >= recorrido.fecha_inicio,
-                Alerta.timestamp <= limite_tiempo_fin
-            ).all()
-
-            alertas_viaje = []
-            for a in alertas:
-                alertas_viaje.append({
-                    "id": a.id,
-                    "tipo": a.tipo,
-                    "descripcion": a.descripcion,
-                    "lat": a.lat,
-                    "lng": a.lng,
-                    "timestamp": a.timestamp,
-                    "atendida": a.atendida
-                })
-
-            return jsonify({
-                "success": True,
-                "recorrido": {
-                    "id": recorrido.id,
-                    "estado": recorrido.estado,
-                    "origen_nombre": recorrido.origen_nombre,
-                    "origen_coordenadas": recorrido.origen_coordenadas, # <--- AGREGAR ESTO
-                    "destino_nombre": recorrido.destino_nombre,
-                    "destino_coordenadas": recorrido.destino_coordenadas, # <--- AGREGAR ESTO
-                    "fecha_inicio": recorrido.fecha_inicio,
-                    "fecha_fin": recorrido.fecha_fin,
-                    "ruta_planeada": json.loads(recorrido.ruta_planeada) if recorrido.ruta_planeada else None
-                },
-                "ruta_trazada": ruta_trazada,
-                "alertas": alertas_viaje
-            }), 200
-
-        except Exception as e:
-            return jsonify({"success": False, "mensaje": f"Error al cargar detalle: {str(e)}"}), 500
