@@ -301,7 +301,7 @@
 .servicios-empty-state svg {
     width: 46px;
     height: 46px;
-    margin-bottom: 12px;
+    margin: 0 auto 12px;
     color: #94a3b8;
 }
 
