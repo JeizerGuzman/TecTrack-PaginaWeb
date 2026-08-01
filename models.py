@@ -805,7 +805,13 @@ class PushSubscripcion(db.Model):
         default=timestamp_actual
     )
 
-
+# 🌟 NUEVA TABLA PARA NOTIFICACIONES MÓVILES (FIREBASE)
+class FCMToken(db.Model):
+    __tablename__ = 'fcm_tokens'
+    id = db.Column(db.Integer, primary_key=True)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    token = db.Column(db.String(500), unique=True, nullable=False)
+    created_at = db.Column(db.Integer, default=timestamp_actual)
 
 class ConfiguracionSistema(db.Model):
     __tablename__ = "configuracion_sistema"

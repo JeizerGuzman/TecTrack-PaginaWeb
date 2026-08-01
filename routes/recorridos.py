@@ -87,6 +87,27 @@ def registrar_recorridos_routes(app):
         import requests
         import math
 
+        # 🌟 NUEVO: Función de respaldo por si falla OSRM
+        def calcular_distancia_manual(puntos):
+            distancia_total = 0.0
+            if len(puntos) < 2:
+                return 0.0
+                
+            for i in range(len(puntos) - 1):
+                p1, p2 = puntos[i], puntos[i+1]
+                if not (p1.lat and p1.lng and p2.lat and p2.lng):
+                    continue
+                    
+                R = 6371000.0 # Radio de la Tierra en metros
+                d_lat = math.radians(p2.lat - p1.lat)
+                d_lng = math.radians(p2.lng - p1.lng)
+                
+                a = math.sin(d_lat / 2)**2 + math.cos(math.radians(p1.lat)) * math.cos(math.radians(p2.lat)) * math.sin(d_lng / 2)**2
+                c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+                distancia_total += R * c
+                
+            return distancia_total
+
         usuario_id = get_jwt_identity()
         data = request.get_json(silent=True) or {}
         
@@ -112,8 +133,11 @@ def registrar_recorridos_routes(app):
             recorrido.estado = estado_final
             recorrido.fecha_fin = fecha_fin_real
             
+            # 🌟 Calculamos la Duración Real (en segundos)
+            duracion_calculada = 0
             if recorrido.fecha_inicio:
-                recorrido.duracion_real = fecha_fin_real - recorrido.fecha_inicio
+                duracion_calculada = fecha_fin_real - recorrido.fecha_inicio
+                recorrido.duracion_real = duracion_calculada
             
             if estado_final == 'cancelado' and motivo_cancelacion:
                 recorrido.motivo_cancelacion = motivo_cancelacion
@@ -122,9 +146,10 @@ def registrar_recorridos_routes(app):
                 recorrido.coordenadas_fin = coordenadas_fin
 
             # ============================================================
-            # MAP MATCHING: Guardar la ruta perfecta al finalizar
+            # MAP MATCHING Y CÁLCULO DE DISTANCIA
             # ============================================================
             puntos_gps = HistorialGPS.query.filter_by(recorrido_id=recorrido_id).order_by(HistorialGPS.timestamp.asc()).all()
+            distancia_calculada = 0.0 # Variable para guardar los metros reales
             
             if len(puntos_gps) > 1:
                 if len(puntos_gps) > 90:
@@ -145,20 +170,35 @@ def registrar_recorridos_routes(app):
                         if osrm_data.get('code') == 'Ok':
                             ruta_ajustada = [[c[1], c[0]] for c in osrm_data['matchings'][0]['geometry']['coordinates']]
                             recorrido.ruta_corregida = json.dumps(ruta_ajustada)
+                            
+                            # 🌟 Extraemos la distancia oficial de OSRM
+                            distancia_calculada = osrm_data['matchings'][0]['distance']
+                        else:
+                            # 🌟 Si OSRM responde pero no encuentra calles, usamos el respaldo manual
+                            distancia_calculada = calcular_distancia_manual(puntos_gps)
                     except Exception as e:
                         print(f"Error OSRM en backend: {e}")
-
+                        # 🌟 Si OSRM se cae por completo, usamos el respaldo manual
+                        distancia_calculada = calcular_distancia_manual(puntos_gps)
+            
+            # Guardamos la distancia en la base de datos (asumiendo que tu modelo Recorrido tiene distancia_real)
+            recorrido.distancia_real = distancia_calculada
+            
             db.session.commit()
 
+            # 🌟 MODIFICADO: Ahora devolvemos los datos calculados a Flutter
             return jsonify({
                 "success": True, 
-                "mensaje": f"Recorrido {estado_final} correctamente"
+                "mensaje": f"Recorrido {estado_final} correctamente",
+                "resultados_reales": {
+                    "duracion_real": duracion_calculada,
+                    "distancia_real": distancia_calculada
+                }
             }), 200
 
         except Exception as e:
             db.session.rollback()
             return jsonify({"success": False, "mensaje": f"Error interno: {str(e)}"}), 500
-
 
     # ========================================================
     # PANEL WEB (ADMIN): DETALLE Y RUTA PARA EL MAPA (REPLAY)
