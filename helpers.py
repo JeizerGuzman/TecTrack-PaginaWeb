@@ -32,6 +32,7 @@ from models import (
     UbicacionActual,
     HistorialGPS,
     ConfiguracionSistema,
+    FCMToken
 )
 
 
@@ -857,6 +858,14 @@ def imprimir_log_datos_esp32(data):
 # - POST /datos cuando ESP32 reporta pánico, puerta abierta,
 #   vibración o alerta general.
 # ------------------------------------------------------------
+
+# 🌟 IMPORTACIONES NUEVAS
+import firebase_admin
+from firebase_admin import credentials, messaging
+
+# ------------------------------------------------------------
+# Crea una alerta en la base de datos y lanza Push Notification
+# ------------------------------------------------------------
 def crear_alerta(
     vehiculo_id,
     tipo,
@@ -874,28 +883,58 @@ def crear_alerta(
         descripcion=descripcion,
         lat=lat,
         lng=lng,
-
-        # Nueva alerta administrativa.
         atendida=False,
-
-        # La condición física acaba de detectarse,
-        # por lo tanto está activa.
         condicion_activa=True,
-
         timestamp=ahora,
         ultima_actualizacion=ahora,
     )
 
     db.session.add(alerta)
+    db.session.commit() # Importante hacer commit antes de notificar
 
-    print(
-        f"🚨 ALERTA CREADA -> "
-        f"tipo: {tipo} | "
-        f"nivel: {nivel} | "
-        f"vehiculo_id: {vehiculo_id}"
-    )
+    print(f"🚨 ALERTA CREADA -> tipo: {tipo} | nivel: {nivel} | vehiculo_id: {vehiculo_id}")
 
-    return alerta
+
+    # ==========================================
+    # 🌟 DISPARO DE LA NOTIFICACIÓN A FIREBASE
+    # ==========================================
+    try:
+        import os
+        
+        # 1. Seguro: Si Firebase está apagado, lo encendemos
+        if not firebase_admin._apps:
+            directorio_actual = os.path.dirname(os.path.abspath(__file__))
+            ruta_credenciales = os.path.join(directorio_actual, "firebase-adminsdk.json")
+            cred = credentials.Certificate(ruta_credenciales)
+            firebase_admin.initialize_app(cred)
+
+        # 2. 🌟 BUSCAR TODOS LOS TOKENS EN LA BASE DE DATOS
+        # Aquí puedes filtrar más adelante si solo quieres avisarle al dueño del vehículo.
+        # Por ahora, buscaremos todos los celulares que hayan iniciado sesión.
+        tokens_guardados = FCMToken.query.all()
+        
+        if not tokens_guardados:
+            print("⚠️ No hay celulares registrados en la base de datos para enviar la alerta.")
+        else:
+            for registro in tokens_guardados:
+                try:
+                    # 3. Armamos el mensaje para cada celular
+                    mensaje = messaging.Message(
+                        notification=messaging.Notification(
+                            title=f"ALERTA: {tipo.upper()}",
+                            body=descripcion,
+                        ),
+                        token=registro.token, # Usamos el token dinámico de la base de datos
+                    )
+                    
+                    # 4. Enviar el mensaje a Firebase
+                    response = messaging.send(mensaje)
+                    print(f"✅ Push enviada al usuario {registro.usuario_id}: {response}")
+                except Exception as e:
+                    print(f"❌ Error al enviar al token {registro.token}: {e}")
+                    
+    except Exception as e:
+        print(f"❌ Error general en Notificación Push: {e}")
 
 
 # ------------------------------------------------------------

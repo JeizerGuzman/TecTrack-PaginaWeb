@@ -38,20 +38,18 @@
             <nav class="sidebar-nav">
                 <a href="/dueno/dashboard" class="nav-link {% if request.path.startswith('/dueno/dashboard') %}active{% endif %}" title="Dashboard" data-tooltip="Dashboard">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 10.5 12 3l9 7.5"></path>
                             <path d="M5 9.5V20h14V9.5"></path>
                             <path d="M9 20v-6h6v6"></path>
                         </svg>
                     </span>
                     <span class="nav-text">Dashboard</span>
-                </a></a>
+                </a>
 
                 <a href="/dueno/vehiculos" class="nav-link {% if request.path.startswith('/dueno/vehiculos') %}active{% endif %}" title="Vehículos" data-tooltip="Vehículos">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 16V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path>
                             <path d="M2 16h20"></path>
                             <path d="M6 16v3"></path>
@@ -62,36 +60,45 @@
                         </svg>
                     </span>
                     <span class="nav-text">Vehículos</span>
-                </a></a>
+                </a>
 
                 <a href="/dueno/alertas" class="nav-link {% if request.path.startswith('/dueno/alertas') %}active{% endif %}" title="Alertas" data-tooltip="Alertas">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3l-8.47-14.14a2 2 0 0 0-3.42 0Z"></path>
                             <path d="M12 9v4"></path>
                             <path d="M12 17h.01"></path>
                         </svg>
                     </span>
                     <span class="nav-text">Alertas</span>
-                </a></a>
+                </a>
 
                 <a href="/dueno/historial" class="nav-link {% if request.path.startswith('/dueno/historial') %}active{% endif %}" title="Historial" data-tooltip="Historial">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 12a9 9 0 1 0 3-6.7"></path>
                             <path d="M3 3v6h6"></path>
                             <path d="M12 7v5l3 3"></path>
                         </svg>
                     </span>
                     <span class="nav-text">Historial</span>
-                </a></a>
+                </a>
+
+                <!-- === NUEVO BOTÓN DE RECORRIDOS === -->
+                <a href="/dueno/recorridos" class="nav-link {% if request.path.startswith('/dueno/recorridos') %}active{% endif %}" title="Recorridos" data-tooltip="Recorridos">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+                            <line x1="9" y1="3" x2="9" y2="18"></line>
+                            <line x1="15" y1="6" x2="15" y2="21"></line>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Recorridos</span>
+                </a>
 
                 <a href="/dueno/reportes" class="nav-link {% if request.path.startswith('/dueno/reportes') %}active{% endif %}" title="Reportes" data-tooltip="Reportes">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 3v18h18"></path>
                             <path d="M7 15v-4"></path>
                             <path d="M12 15V7"></path>
@@ -99,12 +106,11 @@
                         </svg>
                     </span>
                     <span class="nav-text">Reportes</span>
-                </a></a>
+                </a>
 
                 <a href="/dueno/usuarios" class="nav-link {% if request.path.startswith('/dueno/usuarios') %}active{% endif %}" title="Usuarios" data-tooltip="Usuarios">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                             <circle cx="9" cy="7" r="4"></circle>
                             <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -112,18 +118,17 @@
                         </svg>
                     </span>
                     <span class="nav-text">Usuarios</span>
-                </a></a>
+                </a>
 
                 <a href="/dueno/configuracion" class="nav-link {% if request.path.startswith('/dueno/configuracion') %}active{% endif %}" title="Configuración" data-tooltip="Configuración">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3"></circle>
                             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"></path>
                         </svg>
                     </span>
                     <span class="nav-text">Configuración</span>
-                </a></a>
+                </a>
             </nav>
             <div class="sidebar-footer">
                 <div class="sidebar-session">
@@ -258,7 +263,7 @@
                     TrackAuth.logout();
                 });
             }
-        });s
+        });
     </script>
 
     {% block extra_js %}{% endblock %}

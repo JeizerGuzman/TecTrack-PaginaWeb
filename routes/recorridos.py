@@ -12,6 +12,9 @@ from config import db
 from models import Recorrido
 from helpers import timestamp_actual
 
+import requests
+import math
+
 def registrar_recorridos_routes(app):
 
     # ========================================================
@@ -80,15 +83,38 @@ def registrar_recorridos_routes(app):
     @app.route('/api/recorridos/<int:recorrido_id>/terminar', methods=['PUT'])
     @jwt_required()
     def terminar_recorrido(recorrido_id):
+        from models import HistorialGPS # Importación local para evitar dependencias circulares
+        import requests
+        import math
+
+        # 🌟 NUEVO: Función de respaldo por si falla OSRM
+        def calcular_distancia_manual(puntos):
+            distancia_total = 0.0
+            if len(puntos) < 2:
+                return 0.0
+                
+            for i in range(len(puntos) - 1):
+                p1, p2 = puntos[i], puntos[i+1]
+                if not (p1.lat and p1.lng and p2.lat and p2.lng):
+                    continue
+                    
+                R = 6371000.0 # Radio de la Tierra en metros
+                d_lat = math.radians(p2.lat - p1.lat)
+                d_lng = math.radians(p2.lng - p1.lng)
+                
+                a = math.sin(d_lat / 2)**2 + math.cos(math.radians(p1.lat)) * math.cos(math.radians(p2.lat)) * math.sin(d_lng / 2)**2
+                c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+                distancia_total += R * c
+                
+            return distancia_total
+
         usuario_id = get_jwt_identity()
         data = request.get_json(silent=True) or {}
         
-        # Datos recibidos desde Flutter
-        estado_final = data.get('estado', 'finalizado') # 'finalizado' o 'cancelado'
+        estado_final = data.get('estado', 'finalizado') 
         motivo_cancelacion = data.get('motivo_cancelacion', None)
-        coordenadas_fin = data.get('coordenadas_fin', None) # <--- Agrega esta línea
+        coordenadas_fin = data.get('coordenadas_fin', None) 
         
-        # MODO OFFLINE: Respetar la hora exacta en la que se presionó el botón
         fecha_fin_app = data.get('fecha_fin')
         fecha_fin_real = fecha_fin_app if fecha_fin_app else timestamp_actual()
         
@@ -107,31 +133,139 @@ def registrar_recorridos_routes(app):
             recorrido.estado = estado_final
             recorrido.fecha_fin = fecha_fin_real
             
-            # === CÁLCULO AUTOMÁTICO DE DURACIÓN REAL ===
+            # 🌟 Calculamos la Duración Real (en segundos)
+            duracion_calculada = 0
             if recorrido.fecha_inicio:
-                recorrido.duracion_real = fecha_fin_real - recorrido.fecha_inicio
+                duracion_calculada = fecha_fin_real - recorrido.fecha_inicio
+                recorrido.duracion_real = duracion_calculada
             
-            # La distancia_real se llenará posteriormente sumando
-            # los puntos del HistorialGPS asociados a este recorrido_id.
-            # ===========================================
-
             if estado_final == 'cancelado' and motivo_cancelacion:
                 recorrido.motivo_cancelacion = motivo_cancelacion
             
-            # Guardamos la coordenada final si existe
             if coordenadas_fin:
                 recorrido.coordenadas_fin = coordenadas_fin
 
+            # ============================================================
+            # MAP MATCHING Y CÁLCULO DE DISTANCIA
+            # ============================================================
+            puntos_gps = HistorialGPS.query.filter_by(recorrido_id=recorrido_id).order_by(HistorialGPS.timestamp.asc()).all()
+            distancia_calculada = 0.0 # Variable para guardar los metros reales
+            
+            if len(puntos_gps) > 1:
+                if len(puntos_gps) > 90:
+                    factor = math.ceil(len(puntos_gps) / 90)
+                    puntos_procesar = puntos_gps[::factor]
+                    if puntos_procesar[-1] != puntos_gps[-1]:
+                        puntos_procesar.append(puntos_gps[-1])
+                else:
+                    puntos_procesar = puntos_gps
+
+                coords_str = ";".join([f"{p.lng},{p.lat}" for p in puntos_procesar if p.lat and p.lng])
+                
+                if coords_str:
+                    osrm_url = f"https://router.project-osrm.org/match/v1/driving/{coords_str}?geometries=geojson&overview=full"
+                    try:
+                        response = requests.get(osrm_url, timeout=5)
+                        osrm_data = response.json()
+                        if osrm_data.get('code') == 'Ok':
+                            ruta_ajustada = [[c[1], c[0]] for c in osrm_data['matchings'][0]['geometry']['coordinates']]
+                            recorrido.ruta_corregida = json.dumps(ruta_ajustada)
+                            
+                            # 🌟 Extraemos la distancia oficial de OSRM
+                            distancia_calculada = osrm_data['matchings'][0]['distance']
+                        else:
+                            # 🌟 Si OSRM responde pero no encuentra calles, usamos el respaldo manual
+                            distancia_calculada = calcular_distancia_manual(puntos_gps)
+                    except Exception as e:
+                        print(f"Error OSRM en backend: {e}")
+                        # 🌟 Si OSRM se cae por completo, usamos el respaldo manual
+                        distancia_calculada = calcular_distancia_manual(puntos_gps)
+            
+            # Guardamos la distancia en la base de datos (asumiendo que tu modelo Recorrido tiene distancia_real)
+            recorrido.distancia_real = distancia_calculada
+            
             db.session.commit()
 
+            # 🌟 MODIFICADO: Ahora devolvemos los datos calculados a Flutter
             return jsonify({
                 "success": True, 
-                "mensaje": f"Recorrido {estado_final} correctamente"
+                "mensaje": f"Recorrido {estado_final} correctamente",
+                "resultados_reales": {
+                    "duracion_real": duracion_calculada,
+                    "distancia_real": distancia_calculada
+                }
             }), 200
 
         except Exception as e:
             db.session.rollback()
             return jsonify({"success": False, "mensaje": f"Error interno: {str(e)}"}), 500
+
+    # ========================================================
+    # PANEL WEB (ADMIN): DETALLE Y RUTA PARA EL MAPA (REPLAY)
+    # ========================================================
+    @app.route('/api/admin/recorridos/<int:recorrido_id>/detalle', methods=['GET'])
+    @jwt_required()
+    def admin_detalle_recorrido(recorrido_id):
+        from models import HistorialGPS, Alerta 
+        
+        try:
+            recorrido = Recorrido.query.get(recorrido_id)
+            if not recorrido:
+                return jsonify({"success": False, "mensaje": "Recorrido no encontrado"}), 404
+
+            puntos_gps = HistorialGPS.query.filter_by(recorrido_id=recorrido.id).order_by(HistorialGPS.timestamp.asc()).all()
+            
+            ruta_trazada = []
+            for p in puntos_gps:
+                if p.lat and p.lng: 
+                    ruta_trazada.append({
+                        "lat": p.lat,
+                        "lng": p.lng,
+                        "velocidad": p.velocidad,
+                        "timestamp": p.timestamp
+                    })
+
+            limite_tiempo_fin = recorrido.fecha_fin if recorrido.fecha_fin else timestamp_actual()
+            
+            alertas = Alerta.query.filter(
+                Alerta.vehiculo_id == recorrido.vehiculo_id,
+                Alerta.timestamp >= recorrido.fecha_inicio,
+                Alerta.timestamp <= limite_tiempo_fin
+            ).all()
+
+            alertas_viaje = []
+            for a in alertas:
+                alertas_viaje.append({
+                    "id": a.id,
+                    "tipo": a.tipo,
+                    "descripcion": a.descripcion,
+                    "lat": a.lat,
+                    "lng": a.lng,
+                    "timestamp": a.timestamp,
+                    "atendida": a.atendida
+                })
+
+            return jsonify({
+                "success": True,
+                "recorrido": {
+                    "id": recorrido.id,
+                    "estado": recorrido.estado,
+                    "origen_nombre": recorrido.origen_nombre,
+                    "origen_coordenadas": recorrido.origen_coordenadas, 
+                    "destino_nombre": recorrido.destino_nombre,
+                    "destino_coordenadas": recorrido.destino_coordenadas, 
+                    "fecha_inicio": recorrido.fecha_inicio,
+                    "fecha_fin": recorrido.fecha_fin,
+                    "ruta_planeada": json.loads(recorrido.ruta_planeada) if recorrido.ruta_planeada else None,
+                    # Devolvemos la ruta ya parseada como JSON (arreglo)
+                    "ruta_corregida": json.loads(recorrido.ruta_corregida) if recorrido.ruta_corregida else None
+                },
+                "ruta_trazada": ruta_trazada,
+                "alertas": alertas_viaje
+            }), 200
+
+        except Exception as e:
+            return jsonify({"success": False, "mensaje": f"Error al cargar detalle: {str(e)}"}), 500
         
         
     # ========================================================
@@ -194,3 +328,63 @@ def registrar_recorridos_routes(app):
             return jsonify({"success": True, "historial": resultado}), 200
         except Exception as e:
             return jsonify({"success": False, "mensaje": f"Error al cargar historial: {str(e)}"}), 500
+        
+    
+    # ========================================================
+    # PANEL WEB (ADMIN): OBTENER RECORRIDOS PAGINADOS
+    # ========================================================
+    @app.route('/api/admin/recorridos', methods=['GET'])
+    @jwt_required()
+    def admin_obtener_recorridos_paginados():
+        try:
+            # Recibimos parámetros de la URL (Query Params)
+            page = request.args.get('page', 1, type=int)
+            per_page = request.args.get('per_page', 15, type=int)
+            estado = request.args.get('estado', None)
+            vehiculo_id = request.args.get('vehiculo_id', None)
+
+            # Iniciamos la consulta base
+            query = Recorrido.query
+
+            # Aplicamos filtros si el administrador los seleccionó
+            if estado:
+                query = query.filter_by(estado=estado)
+            if vehiculo_id:
+                query = query.filter_by(vehiculo_id=vehiculo_id)
+
+            # Ordenamos del más reciente al más antiguo y paginamos
+            paginacion = query.order_by(Recorrido.fecha_inicio.desc()).paginate(
+                page=page, per_page=per_page, error_out=False
+            )
+
+            resultado = []
+            for r in paginacion.items:
+                resultado.append({
+                    "id": r.id,
+                    "vehiculo_id": r.vehiculo_id,
+                    "chofer_id": r.chofer_id,
+                    "origen_nombre": r.origen_nombre,
+                    "destino_nombre": r.destino_nombre,
+                    "estado": r.estado,
+                    "fecha_inicio": r.fecha_inicio,
+                    "fecha_fin": r.fecha_fin,
+                    "distancia_estimada": r.distancia_estimada,
+                    "duracion_real": r.duracion_real,
+                    "motivo_cancelacion": r.motivo_cancelacion
+                })
+
+            return jsonify({
+                "success": True,
+                "recorridos": resultado,
+                "paginacion": {
+                    "total_registros": paginacion.total,
+                    "paginas_totales": paginacion.pages,
+                    "pagina_actual": paginacion.page,
+                    "tiene_siguiente": paginacion.has_next,
+                    "tiene_anterior": paginacion.has_prev
+                }
+            }), 200
+
+        except Exception as e:
+            return jsonify({"success": False, "mensaje": f"Error al cargar recorridos: {str(e)}"}), 500
+
