@@ -64,15 +64,15 @@ class Config:
     # =========================
     # EVIDENCIAS / IMÁGENES
     # =========================
-    BASE_DIR = Path(__file__).resolve().parent
-
-    UPLOAD_FOLDER = os.getenv(
-        "UPLOAD_FOLDER",
-        str(BASE_DIR / "static" / "uploads" / "evidencias")
-    )
 
     MAX_CONTENT_LENGTH = 8 * 1024 * 1024  # 8 MB por imagen
 
+    # --- NUEVAS VARIABLES DE CLOUDINARY ---
+    CLOUDINARY_CLOUD_NAME = os.getenv("CLOUDINARY_CLOUD_NAME")
+    CLOUDINARY_API_KEY = os.getenv("CLOUDINARY_API_KEY")
+    CLOUDINARY_API_SECRET = os.getenv("CLOUDINARY_API_SECRET")
+    
+    
     # =========================
     # WEB PUSH / NOTIFICACIONES
     # =========================

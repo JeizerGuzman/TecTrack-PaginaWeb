@@ -26,6 +26,11 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
+# 🌟 IMPORTACIONES DE CLOUDINARY
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 from config import db, Config
 from seeders.datos_iniciales import (
     crear_datos_iniciales
@@ -39,6 +44,17 @@ from routes import registrar_rutas
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+# ==================================================================
+# 🌟 INICIALIZAR CLOUDINARY
+# ==================================================================
+# Toma las llaves desde config.py (que a su vez las lee del .env o de Railway)
+if app.config.get('CLOUDINARY_CLOUD_NAME'):
+    cloudinary.config(
+        cloud_name = app.config['CLOUDINARY_CLOUD_NAME'],
+        api_key = app.config['CLOUDINARY_API_KEY'],
+        api_secret = app.config['CLOUDINARY_API_SECRET']
+    )
 
 # Clave secreta para firmar JWT.
 # En producción conviene configurarla en variables de entorno.

@@ -8,3 +8,4 @@ __pycache__/
 instance/
 *.db
 firebase-adminsdk.json
+static/uploads/evidencias/
