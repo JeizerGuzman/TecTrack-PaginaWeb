@@ -61,6 +61,11 @@ def registrar_frontend_routes(app):
     @app.get("/dueno/recorridos")
     def dueno_recorridos():
         return render_template("dueno/recorridos/index.html")
+    
+    @app.route('/supervisor/recorridos')
+    def vista_supervisor_recorridos():
+        # El HTML de recorridos del supervisor que creamos en el mensaje anterior
+        return render_template('supervisor/recorridos/index.html')
 
     # Listado de vehículos.
     @app.get("/dueno/vehiculos")

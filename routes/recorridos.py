@@ -9,7 +9,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 import json
 
 from config import db
-from models import Recorrido
+from models import Recorrido,Vehiculo,Usuario
 from helpers import timestamp_actual
 
 import requests
@@ -245,19 +245,43 @@ def registrar_recorridos_routes(app):
                     "atendida": a.atendida
                 })
 
+            # 1. Buscamos los datos del vehículo y del chofer vinculados a este recorrido
+            vehiculo = Vehiculo.query.get(recorrido.vehiculo_id)
+            chofer = Usuario.query.get(recorrido.chofer_id)
+
+            # 2. Convertimos los valores para el frontend (si existen)
+            # Convertimos metros a kilómetros (redondeado a 2 decimales)
+            distancia_est_km = round(recorrido.distancia_estimada / 1000, 2) if recorrido.distancia_estimada else None
+            distancia_real_km = round(recorrido.distancia_real / 1000, 2) if recorrido.distancia_real else None
+            
+            # Convertimos segundos a minutos (redondeado al entero más cercano)
+            tiempo_est_mins = round(recorrido.duracion_estimada / 60) if recorrido.duracion_estimada else None
+            tiempo_real_mins = round(recorrido.duracion_real / 60) if recorrido.duracion_real else None
+
+            # 3. Retornamos el JSON armado para el modal
             return jsonify({
                 "success": True,
                 "recorrido": {
                     "id": recorrido.id,
+                    "vehiculo_nombre": vehiculo.nombre if vehiculo else "Vehículo desconocido",
+                    "vehiculo_placas": vehiculo.placa if vehiculo and vehiculo.placa else "Sin placas",
+                    "chofer_nombre": chofer.nombre if chofer else "Sin chofer asig.",
                     "estado": recorrido.estado,
+                    
+                    "distancia_estimada_km": distancia_est_km,
+                    "distancia_real_km": distancia_real_km,
+                    
+                    "tiempo_estimado_mins": tiempo_est_mins,
+                    "tiempo_real_mins": tiempo_real_mins,
+                    
                     "origen_nombre": recorrido.origen_nombre,
                     "origen_coordenadas": recorrido.origen_coordenadas, 
                     "destino_nombre": recorrido.destino_nombre,
                     "destino_coordenadas": recorrido.destino_coordenadas, 
                     "fecha_inicio": recorrido.fecha_inicio,
                     "fecha_fin": recorrido.fecha_fin,
+                    
                     "ruta_planeada": json.loads(recorrido.ruta_planeada) if recorrido.ruta_planeada else None,
-                    # Devolvemos la ruta ya parseada como JSON (arreglo)
                     "ruta_corregida": json.loads(recorrido.ruta_corregida) if recorrido.ruta_corregida else None
                 },
                 "ruta_trazada": ruta_trazada,
@@ -359,10 +383,17 @@ def registrar_recorridos_routes(app):
 
             resultado = []
             for r in paginacion.items:
+                # 1. Buscamos el vehículo y el chofer
+                vehiculo = Vehiculo.query.get(r.vehiculo_id)
+                chofer = Usuario.query.get(r.chofer_id) if r.chofer_id else None
+
+                # 2. Agregamos sus nombres al diccionario
                 resultado.append({
                     "id": r.id,
                     "vehiculo_id": r.vehiculo_id,
+                    "vehiculo_nombre": vehiculo.nombre if vehiculo else f"Vehículo {r.vehiculo_id}", # 🌟 AQUI ENVIAMOS EL NOMBRE
                     "chofer_id": r.chofer_id,
+                    "chofer_nombre": chofer.nombre if chofer else "Sin chofer asig.",              # 🌟 AQUI ENVIAMOS EL CHOFER
                     "origen_nombre": r.origen_nombre,
                     "destino_nombre": r.destino_nombre,
                     "estado": r.estado,

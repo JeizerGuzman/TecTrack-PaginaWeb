@@ -1,9 +1,10 @@
-{% extends "base/base.html" %}<!-- Usa tu base correcta -->
+{% extends "supervisor/base_supervisor.html" %}
 
-{% block title %}Vista de Flota | TecTrack{% endblock %}
+{% block title %}Vista de Flota | Supervisor{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Reutilizamos el CSS del dueño (DRY) -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/recorridos.css') }}">
 {% endblock %}
 
@@ -40,7 +41,7 @@
     <div class="panel-mapa">
         <div id="mapa-recorrido"></div>
         
-        <!-- Tarjeta flotante sobre el mapa (opcional, para info del viaje seleccionado) -->
+        <!-- Tarjeta flotante sobre el mapa -->
         <div id="info-viaje-flotante" class="info-flotante oculto">
             <h4 id="titulo-mapa-viaje">Selecciona un viaje</h4>
             <span id="badge-estado-mapa" class="badge-estado"></span>
@@ -49,7 +50,7 @@
 
 </div>
 
-<!-- MODAL DE DETALLES DEL VIAJE (ACTUALIZADO) -->
+<!-- MODAL DE DETALLES DEL VIAJE -->
 <div class="modal-backdrop" id="modalDetalleViaje">
     <div class="modal-card" style="max-width: 650px;">
         <div class="modal-header">
@@ -75,7 +76,7 @@
                     <strong id="mdlChofer">Cargando...</strong>
                 </div>
                 <div class="vehiculo-info">
-                    <span class="label">PlacaS</span>
+                    <span class="label">Placas</span>
                     <strong id="mdlPlacasYVel">-</strong>
                 </div>
             </div>
@@ -101,7 +102,6 @@
                         <span class="divider">/</span>
                         <strong id="mdlTiempoReal" class="real-val">0 min</strong>
                     </div>
-                    <!-- Aquí irá el badge de retraso generado por JS -->
                     <div id="mdlRetrasoBadge" style="margin-top: 6px;"></div>
                 </div>
             </div>
@@ -151,5 +151,6 @@
 
 {% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Reutilizamos el JavaScript del dueño (DRY) -->
 <script src="{{ url_for('static', filename='js/dueno/recorridos/index.js') }}"></script>
 {% endblock %}

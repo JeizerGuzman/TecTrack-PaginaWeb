@@ -228,8 +228,48 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL VER QR DISPOSITIVO -->
+<div class="modal-backdrop" id="modalQrDispositivo">
+    <div class="modal-card modal-card-small" style="text-align: center;">
+        <div class="modal-header">
+            <div style="text-align: left;">
+                <h3>Código QR de Instalación</h3>
+                <p id="modalQrSubtitulo">Escanea este código desde la app TecTrack.</p>
+            </div>
+            <button type="button" class="modal-close" id="btnCerrarModalQr">×</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Contenedor del QR -->
+            <div id="qrVisibleContainer" style="display: flex; justify-content: center; align-items: center; margin: 15px 0; padding: 20px; background: #fff; border-radius: 16px; border: 1px solid #E5E7EB; min-height: 240px;">
+                <!-- El QR se dibujará aquí dinámicamente -->
+            </div>
+
+            <!-- Datos en texto -->
+            <div class="form-group" style="text-align: left; margin-bottom: 20px;">
+                <label style="font-size: 12px; color: #6B7280;">Datos crudos (JSON)</label>
+                <div style="background: #F3F4F6; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 13px; color: #111827; word-break: break-all;" id="textoDatosQr">
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="modal-actions" style="justify-content: center; gap: 12px;">
+                <button type="button" class="btn btn-outline" id="btnCopiarDatosQr" style="flex: 1;">
+                    Copiar Texto
+                </button>
+                <button type="button" class="btn btn-primary" id="btnDescargarQr" style="flex: 1;">
+                    Descargar QR
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
+<!-- Librería para generar el QR en segundo plano -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="{{ url_for('static', filename='js/admin/dispositivos/index.js') }}"></script>
 {% endblock %}

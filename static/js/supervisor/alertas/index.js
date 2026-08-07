@@ -227,7 +227,7 @@ function renderAlertas(alertas) {
                 </div>
 
                 <div class="alerta-actions">
-                    <a class="btn btn-outline btn-sm" href="/dueno/vehiculos/${alerta.vehiculo_id}">
+                    <a class="btn btn-outline btn-sm" href="/supervisor/vehiculos/${alerta.vehiculo_id}">
                         Ver vehículo
                     </a>
 

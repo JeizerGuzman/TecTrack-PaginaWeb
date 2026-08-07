@@ -9,71 +9,28 @@
 
 {% block content %}
 <section class="vehiculos-page">
-
-    <!-- ========================================================= -->
-    <!-- CABECERA DEL MÓDULO                                       -->
-    <!-- Aquí se muestra el título de la pantalla y el botón para  -->
-    <!-- crear un nuevo vehículo.                                  -->
-    <!-- ========================================================= -->
-    <section class="vehiculos-header">
-        <div>
+    <header class="vehiculos-header">
+        <div class="vehiculos-heading">
             <p class="section-kicker">Flota del dueño</p>
             <h2>Gestión de vehículos</h2>
-            <p>
-                Consulta las unidades registradas, revisa su estado y accede al detalle
-                de cada vehículo para ver telemetría, alertas y datos operativos.
-            </p>
+            <p>Administra unidades, conductores y estado operativo desde una sola pantalla.</p>
         </div>
+        <button type="button" class="btn btn-primary" id="btnAbrirModalNuevoVehiculo">+ Agregar vehículo</button>
+    </header>
 
-        <div class="vehiculos-header-actions">
-            <a href="{{ url_for('dueno_vehiculo_nuevo') }}" class="btn btn-primary">
-                + Agregar vehículo
-            </a>
-        </div>
+    <section class="vehiculos-stats-grid" aria-label="Resumen de vehículos">
+        <article class="card stat-card"><p>Total</p><strong id="statVehiculosTotal">0</strong></article>
+        <article class="card stat-card"><p>Activos</p><strong id="statVehiculosActivos">0</strong></article>
+        <article class="card stat-card"><p>Alertas</p><strong id="statVehiculosAlerta">0</strong></article>
+        <article class="card stat-card"><p>Pendientes</p><strong id="statVehiculosPendientes">0</strong></article>
     </section>
 
-    <!-- ========================================================= -->
-    <!-- TARJETAS RESUMEN                                           -->
-    <!-- Estas tarjetas se llenarán con JavaScript a partir de la   -->
-    <!-- lista de vehículos devuelta por el backend.                -->
-    <!-- ========================================================= -->
-    <section class="vehiculos-stats-grid">
-        <article class="card stat-card">
-            <p>Total registrados</p>
-            <strong id="statVehiculosTotal">0</strong>
-        </article>
-
-        <article class="card stat-card">
-            <p>Activos / en línea</p>
-            <strong id="statVehiculosActivos">0</strong>
-        </article>
-
-        <article class="card stat-card">
-            <p>Con alerta</p>
-            <strong id="statVehiculosAlerta">0</strong>
-        </article>
-
-        <article class="card stat-card">
-            <p>Sin dispositivo / sin señal</p>
-            <strong id="statVehiculosPendientes">0</strong>
-        </article>
-    </section>
-
-    <!-- ========================================================= -->
-    <!-- FILTROS Y BUSCADOR                                         -->
-    <!-- Estos controles ayudan a filtrar la lista en frontend.     -->
-    <!-- ========================================================= -->
     <section class="card filtros-card">
         <div class="filtros-grid">
-            <div class="form-group">
-                <label for="buscarVehiculo">Buscar vehículo</label>
-                <input
-                    type="text"
-                    id="buscarVehiculo"
-                    placeholder="Buscar por nombre, placa o identificador"
-                >
+            <div class="form-group form-group-search">
+                <label for="buscarVehiculo">Buscar</label>
+                <input type="search" id="buscarVehiculo" placeholder="Nombre, placa, identificador o chofer">
             </div>
-
             <div class="form-group">
                 <label for="filtroEstadoVehiculo">Estado</label>
                 <select id="filtroEstadoVehiculo">
@@ -88,93 +45,93 @@
         </div>
     </section>
 
-    <!-- ========================================================= -->
-    <!-- LISTADO DE VEHÍCULOS                                       -->
-    <!-- Aquí JavaScript insertará dinámicamente las tarjetas de    -->
-    <!-- vehículos del dueño.                                       -->
-    <!-- ========================================================= -->
     <section class="card lista-vehiculos-card">
         <div class="card-header card-header-row">
-            <div>
-                <h3>Vehículos registrados</h3>
-                <p>Unidades disponibles para la empresa del dueño.</p>
-            </div>
+            <div><h3>Vehículos registrados</h3></div>
         </div>
-
         <div class="card-body">
             <div id="vehiculosListado" class="vehiculos-listado">
-                <div class="empty-state">
-                    <strong>Cargando vehículos...</strong>
-                    <p>Espera mientras se consulta la flota registrada.</p>
-                </div>
+                <div class="empty-state"><strong>Cargando vehículos...</strong><p>Consultando la flota registrada.</p></div>
             </div>
         </div>
     </section>
-
-
 </section>
 
-<div id="modalDesactivarVehiculo" class="modal-vehiculo-overlay">
-    <div class="modal-vehiculo">
-        <div class="modal-vehiculo-header">
-            <h3>Desactivar vehículo</h3>
-            <button type="button" id="btnCerrarModalVehiculo" class="modal-vehiculo-close">×</button>
-        </div>
-
-        <div class="modal-vehiculo-body">
-            <p>Vas a desactivar este vehículo:</p>
-
-            <div class="modal-vehiculo-info">
-                <strong id="modalVehiculoNombre">Vehículo</strong>
-                <span id="modalVehiculoPlaca">Placa no registrada</span>
+<!-- MODAL: NUEVO -->
+<div id="modalNuevoVehiculo" class="modal-vehiculo-overlay" aria-hidden="true">
+    <section class="modal-vehiculo modal-vehiculo-form" role="dialog" aria-modal="true" aria-labelledby="tituloModalNuevoVehiculo">
+        <header class="modal-vehiculo-header">
+            <div><span class="modal-eyebrow">Nueva unidad</span><h3 id="tituloModalNuevoVehiculo">Agregar vehículo</h3><p>Captura los datos administrativos de la unidad.</p></div>
+            <button type="button" class="modal-vehiculo-close" data-close-modal="modalNuevoVehiculo" aria-label="Cerrar">×</button>
+        </header>
+        <form id="formNuevoVehiculo" class="vehiculo-form" autocomplete="off">
+            <div class="modal-vehiculo-body">
+                <div class="form-grid">
+                    <div class="form-group"><label for="nuevo_nombre">Nombre *</label><input id="nuevo_nombre" name="nombre" required placeholder="Ej. Camión Norte"></div>
+                    <div class="form-group"><label for="nuevo_identificador">Identificador *</label><input id="nuevo_identificador" name="identificador" required placeholder="Ej. CAMION_01"></div>
+                    <div class="form-group"><label for="nuevo_placa">Placa</label><input id="nuevo_placa" name="placa" placeholder="Ej. 12-AB-9C"></div>
+                    <div class="form-group"><label for="nuevo_marca">Marca</label><input id="nuevo_marca" name="marca" placeholder="Ej. Freightliner"></div>
+                    <div class="form-group"><label for="nuevo_modelo">Modelo</label><input id="nuevo_modelo" name="modelo" placeholder="Ej. Cascadia"></div>
+                    <div class="form-group"><label for="nuevo_anio">Año</label><input type="number" id="nuevo_anio" name="anio" min="1990" max="2100" placeholder="2026"></div>
+                    <div class="form-group form-group-full"><label for="nuevo_chofer_id">Chofer asignado</label><select id="nuevo_chofer_id" name="chofer_id"><option value="">Sin asignar</option></select></div>
+                </div>
+                <div id="mensajeVehiculoNuevo" class="form-message" role="status"></div>
             </div>
-
-            <p class="modal-vehiculo-note">
-                El vehículo dejará de aparecer como unidad activa, pero se conservarán sus datos.
-            </p>
-        </div>
-
-        <div class="modal-vehiculo-actions">
-            <button type="button" id="btnCancelarDesactivarVehiculo" class="btn btn-outline">
-                Cancelar
-            </button>
-
-            <button type="button" id="btnConfirmarDesactivarVehiculo" class="btn btn-danger">
-                Desactivar vehículo
-            </button>
-        </div>
-    </div>
+            <footer class="modal-vehiculo-actions">
+                <button type="button" class="btn btn-outline" data-close-modal="modalNuevoVehiculo">Cancelar</button>
+                <button type="submit" class="btn btn-primary" id="btnGuardarVehiculo">Guardar vehículo</button>
+            </footer>
+        </form>
+    </section>
 </div>
-<div id="modalReactivarVehiculo" class="modal-vehiculo-overlay">
-    <div class="modal-vehiculo">
-        <div class="modal-vehiculo-header">
-            <h3>Reactivar vehículo</h3>
-            <button type="button" id="btnCerrarModalReactivarVehiculo" class="modal-vehiculo-close">×</button>
-        </div>
 
-        <div class="modal-vehiculo-body">
-            <p>Vas a reactivar este vehículo:</p>
-
-            <div class="modal-vehiculo-info">
-                <strong id="modalReactivarVehiculoNombre">Vehículo</strong>
-                <span id="modalReactivarVehiculoPlaca">Placa no registrada</span>
+<!-- MODAL: EDITAR -->
+<div id="modalEditarVehiculo" class="modal-vehiculo-overlay" aria-hidden="true">
+    <section class="modal-vehiculo modal-vehiculo-form" role="dialog" aria-modal="true" aria-labelledby="tituloModalEditarVehiculo">
+        <header class="modal-vehiculo-header">
+            <div><span class="modal-eyebrow">Edición</span><h3 id="tituloModalEditarVehiculo">Editar vehículo</h3><p>Actualiza únicamente la información administrativa.</p></div>
+            <button type="button" class="modal-vehiculo-close" data-close-modal="modalEditarVehiculo" aria-label="Cerrar">×</button>
+        </header>
+        <form id="formEditarVehiculo" class="vehiculo-form" autocomplete="off">
+            <input type="hidden" id="editar_vehiculo_id">
+            <div class="modal-vehiculo-body">
+                <div class="form-grid">
+                    <div class="form-group"><label for="editar_nombre">Nombre *</label><input id="editar_nombre" name="nombre" required></div>
+                    <div class="form-group"><label for="editar_identificador">Identificador *</label><input id="editar_identificador" name="identificador" required></div>
+                    <div class="form-group"><label for="editar_placa">Placa</label><input id="editar_placa" name="placa"></div>
+                    <div class="form-group"><label for="editar_marca">Marca</label><input id="editar_marca" name="marca"></div>
+                    <div class="form-group"><label for="editar_modelo">Modelo</label><input id="editar_modelo" name="modelo"></div>
+                    <div class="form-group"><label for="editar_anio">Año</label><input type="number" id="editar_anio" name="anio" min="1990" max="2100"></div>
+                    <div class="form-group form-group-full"><label for="editar_chofer_id">Chofer asignado</label><select id="editar_chofer_id" name="chofer_id"><option value="">Sin asignar</option></select></div>
+                </div>
+                <div id="mensajeVehiculoEditar" class="form-message" role="status"></div>
             </div>
+            <footer class="modal-vehiculo-actions">
+                <a id="btnDetalleDesdeEditar" href="#" class="btn btn-ghost">Ver detalle</a>
+                <span class="modal-actions-spacer"></span>
+                <button type="button" class="btn btn-outline" data-close-modal="modalEditarVehiculo">Cancelar</button>
+                <button type="submit" class="btn btn-primary" id="btnGuardarCambiosVehiculo">Guardar cambios</button>
+            </footer>
+        </form>
+    </section>
+</div>
 
-            <p class="modal-vehiculo-note">
-                El vehículo volverá a aparecer como unidad disponible para operación.
-            </p>
-        </div>
+<!-- MODAL: DESACTIVAR -->
+<div id="modalDesactivarVehiculo" class="modal-vehiculo-overlay" aria-hidden="true">
+    <section class="modal-vehiculo modal-vehiculo-confirm" role="dialog" aria-modal="true">
+        <header class="modal-vehiculo-header"><div><span class="modal-eyebrow modal-eyebrow-danger">Confirmación</span><h3>Desactivar vehículo</h3></div><button type="button" class="modal-vehiculo-close" data-close-modal="modalDesactivarVehiculo">×</button></header>
+        <div class="modal-vehiculo-body"><p>La unidad dejará de mostrarse como activa, pero conservará todos sus datos.</p><div class="modal-vehiculo-info"><strong id="modalVehiculoNombre">Vehículo</strong><span id="modalVehiculoPlaca">Placa no registrada</span></div></div>
+        <footer class="modal-vehiculo-actions"><button type="button" class="btn btn-outline" data-close-modal="modalDesactivarVehiculo">Cancelar</button><button type="button" id="btnConfirmarDesactivarVehiculo" class="btn btn-danger">Desactivar</button></footer>
+    </section>
+</div>
 
-        <div class="modal-vehiculo-actions">
-            <button type="button" id="btnCancelarReactivarVehiculo" class="btn btn-outline">
-                Cancelar
-            </button>
-
-            <button type="button" id="btnConfirmarReactivarVehiculo" class="btn btn-primary">
-                Reactivar vehículo
-            </button>
-        </div>
-    </div>
+<!-- MODAL: REACTIVAR -->
+<div id="modalReactivarVehiculo" class="modal-vehiculo-overlay" aria-hidden="true">
+    <section class="modal-vehiculo modal-vehiculo-confirm" role="dialog" aria-modal="true">
+        <header class="modal-vehiculo-header"><div><span class="modal-eyebrow">Confirmación</span><h3>Reactivar vehículo</h3></div><button type="button" class="modal-vehiculo-close" data-close-modal="modalReactivarVehiculo">×</button></header>
+        <div class="modal-vehiculo-body"><p>La unidad volverá a estar disponible para la operación.</p><div class="modal-vehiculo-info"><strong id="modalReactivarVehiculoNombre">Vehículo</strong><span id="modalReactivarVehiculoPlaca">Placa no registrada</span></div></div>
+        <footer class="modal-vehiculo-actions"><button type="button" class="btn btn-outline" data-close-modal="modalReactivarVehiculo">Cancelar</button><button type="button" id="btnConfirmarReactivarVehiculo" class="btn btn-primary">Reactivar</button></footer>
+    </section>
 </div>
 {% endblock %}
 

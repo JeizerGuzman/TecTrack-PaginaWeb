@@ -5,45 +5,25 @@ let dispositivosCargando = false;
 let dispositivoEditandoId = null;
 let dispositivoEstadoSeleccionado = null;
 
-
 document.addEventListener("DOMContentLoaded", async () => {
-
     if (window.TrackGuards?.requireAuth) {
         const autorizado = await TrackGuards.requireAuth("admin");
-
         if (!autorizado) {
             return;
         }
     }
 
-
     configurarEventosDispositivos();
-
-
     await cargarPlanesModelo();
-
     await cargarDispositivos();
 
-
-    const intervaloMs =
-        await TrackConfig.obtenerAdminMs(
-            "dispositivos",
-            10
-        );
-
+    const intervaloMs = await TrackConfig.obtenerAdminMs("dispositivos", 10);
 
     if (dispositivosTimer) {
-        clearInterval(
-            dispositivosTimer
-        );
+        clearInterval(dispositivosTimer);
     }
 
-
-    dispositivosTimer = setInterval(
-        cargarDispositivos,
-        intervaloMs
-    );
-
+    dispositivosTimer = setInterval(cargarDispositivos, intervaloMs);
 });
 
 function configurarEventosDispositivos() {
@@ -60,9 +40,9 @@ function configurarEventosDispositivos() {
     document.getElementById("btnCancelarEstadoDispositivo")?.addEventListener("click", cerrarModalEstadoDispositivo);
     document.getElementById("btnConfirmarEstadoDispositivo")?.addEventListener("click", confirmarCambioEstadoDispositivo);
 
-    // Importante:
-    // No agregamos evento al backdrop.
-    // El modal NO debe cerrarse al hacer clic fuera.
+    document.getElementById("btnCerrarModalQr")?.addEventListener("click", cerrarModalQr);
+    document.getElementById("btnDescargarQr")?.addEventListener("click", descargarImagenQr);
+    document.getElementById("btnCopiarDatosQr")?.addEventListener("click", copiarDatosQrString);
 }
 
 async function cargarPlanesModelo() {
@@ -71,13 +51,10 @@ async function cargarPlanesModelo() {
 
     try {
         const data = await TrackAPI.obtenerAdminPlanesOpciones();
-
         planesModelo = data.planes || [];
 
         if (!planesModelo.length) {
-            select.innerHTML = `
-                <option value="">No hay planes disponibles</option>
-            `;
+            select.innerHTML = `<option value="">No hay planes disponibles</option>`;
             return;
         }
 
@@ -89,40 +66,27 @@ async function cargarPlanesModelo() {
                 </option>
             `).join("")}
         `;
-
     } catch (error) {
         console.error("Error cargando planes/modelos:", error);
-
-        select.innerHTML = `
-            <option value="">Error al cargar modelos</option>
-        `;
-
-        mostrarToastDispositivos(
-            "No se pudieron cargar los modelos desde planes.",
-            "error"
-        );
+        select.innerHTML = `<option value="">Error al cargar modelos</option>`;
+        mostrarToastDispositivos("No se pudieron cargar los modelos desde planes.", "error");
     }
 }
 
 async function cargarDispositivos() {
     if (dispositivosCargando) return;
-
     dispositivosCargando = true;
 
     try {
         const data = await TrackAPI.obtenerAdminDispositivos();
-
         dispositivosOriginales = data.dispositivos || [];
 
         actualizarStatsDispositivos(dispositivosOriginales);
         aplicarFiltrosDispositivos();
         actualizarTextoActualizacion();
-
     } catch (error) {
         console.error("Error cargando dispositivos:", error);
-
         const listado = document.getElementById("dispositivosListado");
-
         if (listado) {
             listado.innerHTML = `
                 <div class="empty-state">
@@ -138,13 +102,10 @@ async function cargarDispositivos() {
 
 function actualizarStatsDispositivos(dispositivos) {
     const total = dispositivos.length;
-
     const disponibles = dispositivos.filter(d => d.estado === "disponible").length;
-
     const instalados = dispositivos.filter(d => {
         return d.estado === "activo" || d.estado === "instalado";
     }).length;
-
     const mantenimiento = dispositivos.filter(d => d.estado === "mantenimiento").length;
 
     setText("statDispositivosTotal", total);
@@ -171,7 +132,6 @@ function aplicarFiltrosDispositivos() {
                 dispositivo.vehiculo_nombre,
                 dispositivo.vehiculo_identificador
             ].join(" "));
-
             return base.includes(texto);
         });
     }
@@ -229,6 +189,19 @@ function renderDispositivos(dispositivos) {
                 </div>
 
                 <div class="dispositivo-actions">
+                    <button type="button" class="btn btn-outline btn-sm btn-qr-dispositivo" data-id="${dispositivo.id}">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;">
+                            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                            <path d="M7 7h.01"></path>
+                            <path d="M17 7h.01"></path>
+                            <path d="M17 17h.01"></path>
+                            <path d="M7 17h.01"></path>
+                        </svg>
+                    </button>
+
                     <button type="button" class="btn btn-outline btn-sm btn-editar-dispositivo" data-id="${dispositivo.id}">
                         Editar
                     </button>
@@ -245,6 +218,12 @@ function renderDispositivos(dispositivos) {
 }
 
 function bindAccionesDispositivos() {
+    document.querySelectorAll(".btn-qr-dispositivo").forEach(btn => {
+        btn.addEventListener("click", () => {
+            abrirModalQrDispositivo(Number(btn.dataset.id));
+        });
+    });
+
     document.querySelectorAll(".btn-editar-dispositivo").forEach(btn => {
         btn.addEventListener("click", () => {
             abrirModalEditarDispositivo(Number(btn.dataset.id));
@@ -306,7 +285,6 @@ function abrirModalEditarDispositivo(dispositivoId) {
     document.getElementById("dispositivoFirmware").value = dispositivo.firmware || "";
     document.getElementById("dispositivoImei").value = dispositivo.imei || "";
 
-    // La serie no se edita para evitar inconsistencias con ESP32.
     document.getElementById("dispositivoSerie").disabled = true;
     document.getElementById("btnRegenerarDatosDispositivo").style.display = "none";
 
@@ -318,10 +296,8 @@ async function generarDatosDispositivo() {
 
     try {
         const data = await TrackAPI.generarAdminDispositivo();
-
         document.getElementById("dispositivoSerie").value = data.serie || "";
         document.getElementById("dispositivoPin").value = data.pin_activacion || "";
-
     } catch (error) {
         console.error("Error generando datos:", error);
         mostrarToastDispositivos(error.message || "No se pudieron generar serie y PIN.", "error");
@@ -389,7 +365,6 @@ async function guardarDispositivo(event) {
 
         cerrarModalDispositivo();
         await cargarDispositivos();
-
     } catch (error) {
         console.error("Error guardando dispositivo:", error);
         mostrarToastDispositivos(error.message || "No se pudo guardar el dispositivo.", "error");
@@ -451,7 +426,6 @@ async function confirmarCambioEstadoDispositivo() {
 
         cerrarModalEstadoDispositivo();
         await cargarDispositivos();
-
     } catch (error) {
         console.error("Error cambiando estado:", error);
         mostrarToastDispositivos(error.message || "No se pudo cambiar el estado.", "error");
@@ -463,7 +437,6 @@ async function confirmarCambioEstadoDispositivo() {
 
 function actualizarTextoActualizacion() {
     const ahora = new Date();
-
     setText("dispositivosActualizacion", `Actualizado ${ahora.toLocaleTimeString("es-MX", {
         hour: "2-digit",
         minute: "2-digit",
@@ -476,7 +449,6 @@ function claseBadgeEstado(estado) {
     if (estado === "activo" || estado === "instalado") return "badge-primary";
     if (estado === "mantenimiento") return "badge-warning";
     if (estado === "desactivado") return "badge-muted";
-
     return "badge-muted";
 }
 
@@ -489,7 +461,6 @@ function formatearEstadoDispositivo(estado) {
         desactivado: "Desactivado",
         sin_estado: "Sin estado",
     };
-
     return mapa[estado] || "Sin estado";
 }
 
@@ -538,3 +509,106 @@ window.addEventListener("beforeunload", () => {
         clearInterval(dispositivosTimer);
     }
 });
+
+// =======================================================
+// LÓGICA DEL MODAL VISUAL PARA QR
+// =======================================================
+
+let qrActualSerie = "";
+
+function abrirModalQrDispositivo(dispositivoId) {
+    const dispositivo = dispositivosOriginales.find(d => Number(d.id) === Number(dispositivoId));
+    if (!dispositivo) return;
+
+    qrActualSerie = dispositivo.serie;
+    
+    // 1. Preparamos los datos
+    const jsonStr = JSON.stringify({
+        serie: dispositivo.serie,
+        pin: String(dispositivo.pin_activacion)
+    });
+
+    // 2. Llenamos los textos del modal
+    document.getElementById("textoDatosQr").textContent = jsonStr;
+    document.getElementById("modalQrSubtitulo").textContent = `Hardware Serie: ${dispositivo.serie}`;
+
+    // 3. Generamos el dibujo del QR
+    const container = document.getElementById("qrVisibleContainer");
+    container.innerHTML = ""; // Limpia el QR del dispositivo anterior
+
+    new QRCode(container, {
+        text: jsonStr,
+        width: 200,
+        height: 200,
+        colorDark: "#0F172A",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+    });
+
+    // 4. Mostramos el modal
+    document.getElementById("modalQrDispositivo")?.classList.add("visible");
+}
+
+function cerrarModalQr() {
+    document.getElementById("modalQrDispositivo")?.classList.remove("visible");
+    qrActualSerie = "";
+}
+
+function descargarImagenQr() {
+    const container = document.getElementById("qrVisibleContainer");
+    const canvas = container.querySelector("canvas");
+    
+    if (!canvas) {
+        mostrarToastDispositivos("El QR aún no se ha renderizado.", "warning");
+        return;
+    }
+
+    // Convertimos el canvas en una URL descargable
+    const link = document.createElement("a");
+    link.download = `QR_TecTrack_${qrActualSerie}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    
+    mostrarToastDispositivos("Descarga iniciada.", "success");
+}
+
+function copiarDatosQrString() {
+    const texto = document.getElementById("textoDatosQr").textContent;
+    
+    // Método 1: Intentar con la API moderna (Requiere HTTPS o localhost)
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(texto).then(() => {
+            mostrarToastDispositivos("Datos copiados al portapapeles.", "success");
+        }).catch(() => {
+            mostrarToastDispositivos("Error al copiar automáticamente.", "error");
+        });
+    } else {
+        // Método 2: "Fallback" para entornos HTTP (como IPs locales en desarrollo)
+        try {
+            // Creamos un textarea invisible
+            const textArea = document.createElement("textarea");
+            textArea.value = texto;
+            textArea.style.position = "fixed";  // Evitar scroll
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            
+            // Seleccionamos y copiamos
+            textArea.focus();
+            textArea.select();
+            const exitoso = document.execCommand('copy');
+            
+            // Limpiamos
+            textArea.remove();
+            
+            if (exitoso) {
+                mostrarToastDispositivos("Datos copiados al portapapeles.", "success");
+            } else {
+                throw new Error("Comando de copia falló");
+            }
+        } catch (error) {
+            console.error("Error en Fallback de copia:", error);
+            mostrarToastDispositivos("Tu navegador bloqueó el copiado automático.", "error");
+        }
+    }
+}

@@ -4,70 +4,32 @@
 {% block page_title %}Vehículos{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/supervisor/vehiculos.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/vehiculos.css') }}">
 {% endblock %}
 
 {% block content %}
 <section class="vehiculos-page">
-
-    <!-- ========================================================= -->
-    <!-- CABECERA DEL MÓDULO                                       -->
-    <!-- Aquí se muestra el título de la pantalla y el botón para  -->
-    <!-- crear un nuevo vehículo.                                  -->
-    <!-- ========================================================= -->
-    <section class="vehiculos-header">
-        <div>
+    <header class="vehiculos-header">
+        <div class="vehiculos-heading">
             <p class="section-kicker">Flota del dueño</p>
             <h2>Gestión de vehículos</h2>
-            <p>
-                Consulta las unidades registradas, revisa su estado y accede al detalle
-                de cada vehículo para ver telemetría, alertas y datos operativos.
-            </p>
+            <p>Administra unidades, conductores y estado operativo desde una sola pantalla.</p>
         </div>
+    </header>
+
+    <section class="vehiculos-stats-grid" aria-label="Resumen de vehículos">
+        <article class="card stat-card"><p>Total</p><strong id="statVehiculosTotal">0</strong></article>
+        <article class="card stat-card"><p>Activos</p><strong id="statVehiculosActivos">0</strong></article>
+        <article class="card stat-card"><p>Alertas</p><strong id="statVehiculosAlerta">0</strong></article>
+        <article class="card stat-card"><p>Pendientes</p><strong id="statVehiculosPendientes">0</strong></article>
     </section>
 
-    <!-- ========================================================= -->
-    <!-- TARJETAS RESUMEN                                           -->
-    <!-- Estas tarjetas se llenarán con JavaScript a partir de la   -->
-    <!-- lista de vehículos devuelta por el backend.                -->
-    <!-- ========================================================= -->
-    <section class="vehiculos-stats-grid">
-        <article class="card stat-card">
-            <p>Total registrados</p>
-            <strong id="statVehiculosTotal">0</strong>
-        </article>
-
-        <article class="card stat-card">
-            <p>Activos / en línea</p>
-            <strong id="statVehiculosActivos">0</strong>
-        </article>
-
-        <article class="card stat-card">
-            <p>Con alerta</p>
-            <strong id="statVehiculosAlerta">0</strong>
-        </article>
-
-        <article class="card stat-card">
-            <p>Sin dispositivo / sin señal</p>
-            <strong id="statVehiculosPendientes">0</strong>
-        </article>
-    </section>
-
-    <!-- ========================================================= -->
-    <!-- FILTROS Y BUSCADOR                                         -->
-    <!-- Estos controles ayudan a filtrar la lista en frontend.     -->
-    <!-- ========================================================= -->
     <section class="card filtros-card">
         <div class="filtros-grid">
-            <div class="form-group">
-                <label for="buscarVehiculo">Buscar vehículo</label>
-                <input
-                    type="text"
-                    id="buscarVehiculo"
-                    placeholder="Buscar por nombre, placa o identificador"
-                >
+            <div class="form-group form-group-search">
+                <label for="buscarVehiculo">Buscar</label>
+                <input type="search" id="buscarVehiculo" placeholder="Nombre, placa, identificador o chofer">
             </div>
-
             <div class="form-group">
                 <label for="filtroEstadoVehiculo">Estado</label>
                 <select id="filtroEstadoVehiculo">
@@ -76,37 +38,42 @@
                     <option value="alerta">Con alerta</option>
                     <option value="sin_senal">Sin señal</option>
                     <option value="sin_dispositivo">Sin dispositivo</option>
+                    <option value="desactivado">Desactivado</option>
                 </select>
             </div>
         </div>
     </section>
 
-    <!-- ========================================================= -->
-    <!-- LISTADO DE VEHÍCULOS                                       -->
-    <!-- Aquí JavaScript insertará dinámicamente las tarjetas de    -->
-    <!-- vehículos del dueño.                                       -->
-    <!-- ========================================================= -->
     <section class="card lista-vehiculos-card">
         <div class="card-header card-header-row">
-            <div>
-                <h3>Vehículos registrados</h3>
-                <p>Unidades disponibles para la empresa del dueño.</p>
-            </div>
+            <div><h3>Vehículos registrados</h3></div>
         </div>
-
         <div class="card-body">
             <div id="vehiculosListado" class="vehiculos-listado">
-                <div class="empty-state">
-                    <strong>Cargando vehículos...</strong>
-                    <p>Espera mientras se consulta la flota registrada.</p>
-                </div>
+                <div class="empty-state"><strong>Cargando vehículos...</strong><p>Consultando la flota registrada.</p></div>
             </div>
         </div>
     </section>
-
-
 </section>
 
+
+<!-- MODAL: DESACTIVAR -->
+<div id="modalDesactivarVehiculo" class="modal-vehiculo-overlay" aria-hidden="true">
+    <section class="modal-vehiculo modal-vehiculo-confirm" role="dialog" aria-modal="true">
+        <header class="modal-vehiculo-header"><div><span class="modal-eyebrow modal-eyebrow-danger">Confirmación</span><h3>Desactivar vehículo</h3></div><button type="button" class="modal-vehiculo-close" data-close-modal="modalDesactivarVehiculo">×</button></header>
+        <div class="modal-vehiculo-body"><p>La unidad dejará de mostrarse como activa, pero conservará todos sus datos.</p><div class="modal-vehiculo-info"><strong id="modalVehiculoNombre">Vehículo</strong><span id="modalVehiculoPlaca">Placa no registrada</span></div></div>
+        <footer class="modal-vehiculo-actions"><button type="button" class="btn btn-outline" data-close-modal="modalDesactivarVehiculo">Cancelar</button><button type="button" id="btnConfirmarDesactivarVehiculo" class="btn btn-danger">Desactivar</button></footer>
+    </section>
+</div>
+
+<!-- MODAL: REACTIVAR -->
+<div id="modalReactivarVehiculo" class="modal-vehiculo-overlay" aria-hidden="true">
+    <section class="modal-vehiculo modal-vehiculo-confirm" role="dialog" aria-modal="true">
+        <header class="modal-vehiculo-header"><div><span class="modal-eyebrow">Confirmación</span><h3>Reactivar vehículo</h3></div><button type="button" class="modal-vehiculo-close" data-close-modal="modalReactivarVehiculo">×</button></header>
+        <div class="modal-vehiculo-body"><p>La unidad volverá a estar disponible para la operación.</p><div class="modal-vehiculo-info"><strong id="modalReactivarVehiculoNombre">Vehículo</strong><span id="modalReactivarVehiculoPlaca">Placa no registrada</span></div></div>
+        <footer class="modal-vehiculo-actions"><button type="button" class="btn btn-outline" data-close-modal="modalReactivarVehiculo">Cancelar</button><button type="button" id="btnConfirmarReactivarVehiculo" class="btn btn-primary">Reactivar</button></footer>
+    </section>
+</div>
 {% endblock %}
 
 {% block extra_js %}

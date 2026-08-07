@@ -35,54 +35,30 @@
             </button>
 
             <nav class="sidebar-nav">
-                <a
-                    href="/supervisor/dashboard"
-                    class="nav-link {% if request.path.startswith('/supervisor/dashboard') %}active{% endif %}"
-                 title="Dashboard" data-tooltip="Dashboard">
+                <a href="/supervisor/dashboard" class="nav-link {% if request.path.startswith('/supervisor/dashboard') %}active{% endif %}" title="Dashboard" data-tooltip="Dashboard">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 10.5 12 3l9 7.5"></path>
                             <path d="M5 9.5V20h14V9.5"></path>
                             <path d="M9 20v-6h6v6"></path>
                         </svg>
                     </span>
                     <span class="nav-text">Dashboard</span>
-                </a></a>
+                </a>
 
-                <a
-                    href="/supervisor/monitoreo"
-                    class="nav-link {% if request.path.startswith('/supervisor/monitoreo') %}active{% endif %}"
-                 title="Monitoreo" data-tooltip="Monitoreo">
-                    <span
-                        class="nav-icon"
-                        aria-hidden="true"
-                    >
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
+                <a href="/supervisor/monitoreo" class="nav-link {% if request.path.startswith('/supervisor/monitoreo') %}active{% endif %}" title="Monitoreo" data-tooltip="Monitoreo">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3"></circle>
                             <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
                         </svg>
                     </span>
+                    <span class="nav-text">Monitoreo</span>
+                </a>
 
-                    <span class="nav-text">
-                        Monitoreo
-                    </span>
-                </a></a>
-
-                <a
-                    href="/supervisor/vehiculos"
-                    class="nav-link {% if request.path.startswith('/supervisor/vehiculos') %}active{% endif %}"
-                 title="Vehículos" data-tooltip="Vehículos">
+                <a href="/supervisor/vehiculos" class="nav-link {% if request.path.startswith('/supervisor/vehiculos') %}active{% endif %}" title="Vehículos" data-tooltip="Vehículos">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 16V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7"></path>
                             <path d="M2 16h20"></path>
                             <path d="M6 16v3"></path>
@@ -93,45 +69,45 @@
                         </svg>
                     </span>
                     <span class="nav-text">Vehículos</span>
-                </a></a>
+                </a>
 
-                <a
-                    href="/supervisor/alertas"
-                    class="nav-link {% if request.path.startswith('/supervisor/alertas') %}active{% endif %}"
-                 title="Alertas" data-tooltip="Alertas">
+                <!-- 🌟 NUEVO BOTÓN DE RECORRIDOS -->
+                <a href="/supervisor/recorridos" class="nav-link {% if request.path.startswith('/supervisor/recorridos') %}active{% endif %}" title="Recorridos" data-tooltip="Recorridos">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="6" cy="19" r="3"></circle>
+                            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path>
+                            <circle cx="18" cy="5" r="3"></circle>
+                        </svg>
+                    </span>
+                    <span class="nav-text">Recorridos</span>
+                </a>
+
+                <a href="/supervisor/alertas" class="nav-link {% if request.path.startswith('/supervisor/alertas') %}active{% endif %}" title="Alertas" data-tooltip="Alertas">
+                    <span class="nav-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3l-8.47-14.14a2 2 0 0 0-3.42 0Z"></path>
                             <path d="M12 9v4"></path>
                             <path d="M12 17h.01"></path>
                         </svg>
                     </span>
                     <span class="nav-text">Alertas</span>
-                </a></a>
+                </a>
 
-                <a
-                    href="/supervisor/historial"
-                    class="nav-link {% if request.path.startswith('/supervisor/historial') %}active{% endif %}"
-                 title="Historial" data-tooltip="Historial">
+                <a href="/supervisor/historial" class="nav-link {% if request.path.startswith('/supervisor/historial') %}active{% endif %}" title="Historial" data-tooltip="Historial">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 12a9 9 0 1 0 3-6.7"></path>
                             <path d="M3 3v6h6"></path>
                             <path d="M12 7v5l3 3"></path>
                         </svg>
                     </span>
                     <span class="nav-text">Historial</span>
-                </a></a>
+                </a>
 
-                <a
-                    href="/supervisor/reportes"
-                    class="nav-link {% if request.path.startswith('/supervisor/reportes') %}active{% endif %}"
-                 title="Reportes" data-tooltip="Reportes">
+                <a href="/supervisor/reportes" class="nav-link {% if request.path.startswith('/supervisor/reportes') %}active{% endif %}" title="Reportes" data-tooltip="Reportes">
                     <span class="nav-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M3 3v18h18"></path>
                             <path d="M7 15v-4"></path>
                             <path d="M12 15V7"></path>
@@ -139,8 +115,7 @@
                         </svg>
                     </span>
                     <span class="nav-text">Reportes</span>
-                </a></a>
-                
+                </a>    
             </nav>
             <div class="sidebar-footer">
                 <div class="sidebar-session">

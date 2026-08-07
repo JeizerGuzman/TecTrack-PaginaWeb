@@ -1,508 +1,999 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    if (window.TrackGuards?.requireAuth) {
-        const ok = await window.TrackGuards.requireAuth();
-        if (!ok) return;
+    if (
+        window.TrackGuards?.requireAuth &&
+        !(await window.TrackGuards.requireAuth())
+    ) {
+        return;
     }
 
-    const listado = document.getElementById("vehiculosListado");
-    const buscarInput = document.getElementById("buscarVehiculo");
-    const filtroEstado = document.getElementById("filtroEstadoVehiculo");
+    const $ = (id) => document.getElementById(id);
 
-    const statVehiculosTotal = document.getElementById("statVehiculosTotal");
-    const statVehiculosActivos = document.getElementById("statVehiculosActivos");
-    const statVehiculosAlerta = document.getElementById("statVehiculosAlerta");
-    const statVehiculosPendientes = document.getElementById("statVehiculosPendientes");
+    const listado = $("vehiculosListado");
+    const buscarInput = $("buscarVehiculo");
+    const filtroEstado = $("filtroEstadoVehiculo");
 
-    let vehiculosOriginales = [];
-    let vehiculoSeleccionadoDesactivar = null;
-    let vehiculoSeleccionadoReactivar = null;
-    let intervaloActualizacionVehiculos = null;
-    let cargandoVehiculos = false;
+    let vehiculos = [];
+    let seleccionadoDesactivar = null;
+    let seleccionadoReactivar = null;
+    let cargando = false;
+    let intervalo = null;
 
-    await cargarVehiculos(false);
-
-    configurarModalDesactivarVehiculo();
-    configurarModalReactivarVehiculo();
-
-    await iniciarActualizacionAutomatica();
+    configurarModales();
+    configurarFormularios();
 
     buscarInput?.addEventListener("input", aplicarFiltros);
     filtroEstado?.addEventListener("change", aplicarFiltros);
 
-    // ============================================================
-    // Carga vehículos desde el backend.
-    //
-    // Se usa actualmente en:
-    // - Al entrar a /dueno/vehiculos
-    // - Al desactivar un vehículo
-    // - Actualización automática cada 3 segundos
-    //
-    // esActualizacionAutomatica evita mostrar errores o parpadeos
-    // molestos durante el refresco silencioso.
-    // ============================================================
-    async function cargarVehiculos(esActualizacionAutomatica = false) {
-        if (cargandoVehiculos) return;
+    $("btnAbrirModalNuevoVehiculo")?.addEventListener(
+        "click",
+        abrirModalNuevo
+    );
 
-        cargandoVehiculos = true;
+    $("btnConfirmarDesactivarVehiculo")?.addEventListener(
+        "click",
+        confirmarDesactivar
+    );
+
+    $("btnConfirmarReactivarVehiculo")?.addEventListener(
+        "click",
+        confirmarReactivar
+    );
+
+    await cargarVehiculos();
+
+    abrirModalDesdeURL();
+    iniciarActualizacion();
+
+    // ============================================================
+    // CARGAR VEHÍCULOS
+    // ============================================================
+
+    async function cargarVehiculos(silencioso = false) {
+        if (cargando) return;
+
+        cargando = true;
 
         try {
             const response = await TrackAPI.obtenerVehiculos({
                 incluirDesactivados: true
             });
-            vehiculosOriginales = response.vehiculos || [];
 
-            renderStats(vehiculosOriginales);
+            vehiculos = response.vehiculos || [];
+
+            renderStats();
             aplicarFiltros();
-
         } catch (error) {
             console.error("Error cargando vehículos:", error);
 
-            // En actualización automática no reemplazamos la pantalla,
-            // para no borrar la lista si solo falló una consulta temporal.
-            if (!esActualizacionAutomatica && listado) {
-                listado.innerHTML = `
-                    <div class="empty-state">
-                        <strong>No se pudieron cargar los vehículos</strong>
-                        <p>${escapeHtml(error.message || "Ocurrió un error al consultar la flota.")}</p>
-                    </div>
-                `;
+            if (!silencioso && listado) {
+                listado.innerHTML = estadoVacio(
+                    "No se pudieron cargar los vehículos",
+                    error.message ||
+                        "Ocurrió un error al consultar la flota."
+                );
             }
         } finally {
-            cargandoVehiculos = false;
+            cargando = false;
         }
     }
 
     // ============================================================
-    // Inicia actualización automática del listado.
-    //
-    // Se usa para que el index de vehículos muestre cambios de:
-    // - alerta
-    // - sin señal
-    // - activo
-    // - dispositivo
-    // sin recargar manualmente la página.
+    // FILTROS
     // ============================================================
-    async function iniciarActualizacionAutomatica() {
 
-        const intervaloMs =
-            await TrackConfig.obtenerOperacionMs(
-                "vehiculos",
-                5
-            );
-
-
-        if (intervaloActualizacionVehiculos) {
-
-            clearInterval(
-                intervaloActualizacionVehiculos
-            );
-
-        }
-
-
-        intervaloActualizacionVehiculos =
-            setInterval(
-                async () => {
-
-                    await cargarVehiculos(true);
-
-                },
-                intervaloMs
-            );
-
-    }
-
-    // ============================================================
-    // Aplica búsqueda y filtro por estado usando la lista actual.
-    //
-    // Se usa actualmente en:
-    // - input buscarVehiculo
-    // - select filtroEstadoVehiculo
-    // - después de cada actualización automática
-    // ============================================================
     function aplicarFiltros() {
-        const texto = (buscarInput?.value || "").trim().toLowerCase();
+        const texto = (buscarInput?.value || "")
+            .trim()
+            .toLowerCase();
+
         const estado = filtroEstado?.value || "todos";
 
-        let filtrados = [...vehiculosOriginales];
+        const filtrados = vehiculos.filter((vehiculo) => {
+            const valoresBusqueda = [
+                vehiculo.nombre,
+                vehiculo.identificador,
+                vehiculo.placa,
+                vehiculo.marca,
+                vehiculo.modelo,
+                vehiculo.chofer_nombre
+            ];
 
-        if (texto) {
-            filtrados = filtrados.filter(v => {
-                return [
-                    v.nombre,
-                    v.identificador,
-                    v.placa,
-                    v.marca,
-                    v.modelo,
-                    v.chofer_nombre
-                ].some(valor => String(valor || "").toLowerCase().includes(texto));
-            });
-        }
+            const coincideTexto =
+                !texto ||
+                valoresBusqueda.some((valor) =>
+                    String(valor || "")
+                        .toLowerCase()
+                        .includes(texto)
+                );
 
-        if (estado !== "todos") {
-            filtrados = filtrados.filter(v => normalizarEstadoVehiculo(v) === estado);
-        }
+            const coincideEstado =
+                estado === "todos" ||
+                normalizarEstado(vehiculo) === estado;
+
+            return coincideTexto && coincideEstado;
+        });
 
         renderVehiculos(filtrados);
+
+        const contador = $("contadorVehiculos");
+
+        if (contador) {
+            contador.textContent =
+                `${filtrados.length} de ${vehiculos.length} unidades`;
+        }
     }
 
     // ============================================================
-    // Actualiza las tarjetas estadísticas superiores.
-    //
-    // Se usa actualmente en:
-    // - index de vehículos
+    // ESTADÍSTICAS
     // ============================================================
-    function renderStats(vehiculos) {
+
+    function renderStats() {
         const total = vehiculos.length;
-        const activos = vehiculos.filter(v => normalizarEstadoVehiculo(v) === "activo").length;
-        const alerta = vehiculos.filter(v => normalizarEstadoVehiculo(v) === "alerta").length;
-        const pendientes = vehiculos.filter(v => {
-            const estado = normalizarEstadoVehiculo(v);
-            return estado === "sin_senal" || estado === "sin_dispositivo";
-        }).length;
 
-        if (statVehiculosTotal) statVehiculosTotal.textContent = total;
-        if (statVehiculosActivos) statVehiculosActivos.textContent = activos;
-        if (statVehiculosAlerta) statVehiculosAlerta.textContent = alerta;
-        if (statVehiculosPendientes) statVehiculosPendientes.textContent = pendientes;
+        const activos = vehiculos.filter(
+            (vehiculo) =>
+                normalizarEstado(vehiculo) === "activo"
+        ).length;
+
+        const alertas = vehiculos.filter(
+            (vehiculo) =>
+                normalizarEstado(vehiculo) === "alerta"
+        ).length;
+
+        const pendientes = vehiculos.filter((vehiculo) =>
+            ["sin_senal", "sin_dispositivo"].includes(
+                normalizarEstado(vehiculo)
+            )
+        ).length;
+
+        const statTotal = $("statVehiculosTotal");
+        const statActivos = $("statVehiculosActivos");
+        const statAlertas = $("statVehiculosAlerta");
+        const statPendientes = $("statVehiculosPendientes");
+
+        if (statTotal) statTotal.textContent = total;
+        if (statActivos) statActivos.textContent = activos;
+        if (statAlertas) statAlertas.textContent = alertas;
+        if (statPendientes) statPendientes.textContent = pendientes;
     }
 
     // ============================================================
-    // Renderiza las tarjetas de vehículos.
-    //
-    // Se usa actualmente en:
-    // - listado principal de vehículos
-    //
-    // Cada tarjeta muestra:
-    // - nombre
-    // - identificador
-    // - chofer
-    // - marca/modelo/año
-    // - estado
-    // - botones detalle/editar/desactivar
+    // RENDERIZAR TARJETAS
     // ============================================================
-    function renderVehiculos(vehiculos) {
+
+    function renderVehiculos(items) {
         if (!listado) return;
 
-        if (!vehiculos.length) {
-            listado.innerHTML = `
-                <div class="empty-state">
-                    <strong>No hay vehículos para mostrar</strong>
-                    <p>No se encontraron unidades con los filtros seleccionados.</p>
-                </div>
-            `;
+        if (!items.length) {
+            listado.innerHTML = estadoVacio(
+                "No hay vehículos para mostrar",
+                "Prueba con otros filtros o registra una nueva unidad."
+            );
+
             return;
         }
 
-        listado.innerHTML = vehiculos.map(v => {
-            const estado = normalizarEstadoVehiculo(v);
-            const estadoLabel = formatearEstado(estado);
+        listado.innerHTML = items
+            .map((vehiculo) => {
+                const estado = normalizarEstado(vehiculo);
+                const etiquetaEstado = formatearEstado(estado);
 
-            return `
-                <article class="vehiculo-card">
-                    <div class="vehiculo-card-header">
-                        <div>
-                            <h3>${escapeHtml(v.nombre || "Vehículo sin nombre")}</h3>
-                            <p>
-                                ${escapeHtml(v.identificador || "Sin identificador")} ·
-                                Chofer: ${escapeHtml(v.chofer_nombre || "Sin asignar")}
-                            </p>
+                return `
+                    <article class="vehiculo-card">
+
+                        <div class="vehiculo-card-header">
+                            <div>
+                                <h3>
+                                    ${escapeHtml(
+                                        vehiculo.nombre ||
+                                        "Vehículo sin nombre"
+                                    )}
+                                </h3>
+
+                                <p>
+                                    ${escapeHtml(
+                                        vehiculo.identificador ||
+                                        "Sin identificador"
+                                    )}
+                                    · Chofer:
+                                    ${escapeHtml(
+                                        vehiculo.chofer_nombre ||
+                                        "Sin asignar"
+                                    )}
+                                </p>
+                            </div>
+
+                            <span class="badge badge-${estado}">
+                                ${etiquetaEstado}
+                            </span>
                         </div>
 
-                        <span class="badge badge-${estado}">
-                            ${estadoLabel}
-                        </span>
-                    </div>
+                        <div class="vehiculo-card-body">
+                            ${crearDatoVehiculo(
+                                "Marca",
+                                vehiculo.marca || "Sin registrar"
+                            )}
 
-                    <div class="vehiculo-card-body">
-                        <div class="vehiculo-info">
-                            <span>Marca</span>
-                            <strong>${escapeHtml(v.marca || "Sin registrar")}</strong>
+                            ${crearDatoVehiculo(
+                                "Modelo",
+                                vehiculo.modelo || "Sin registrar"
+                            )}
+
+                            ${crearDatoVehiculo(
+                                "Año",
+                                vehiculo.anio || "—"
+                            )}
+
+                            ${crearDatoVehiculo(
+                                "Placa",
+                                vehiculo.placa || "Sin placa"
+                            )}
                         </div>
 
-                        <div class="vehiculo-info">
-                            <span>Modelo</span>
-                            <strong>${escapeHtml(v.modelo || "Sin registrar")}</strong>
+                        <div class="vehiculo-card-footer">
+
+                            <a
+                                class="btn btn-outline btn-sm"
+                                href="/dueno/vehiculos/${encodeURIComponent(
+                                    vehiculo.id
+                                )}"
+                            >
+                                Ver detalle
+                            </a>
+
+                            <button
+                                type="button"
+                                class="btn btn-outline btn-sm btn-editar"
+                                data-action="editar"
+                                data-id="${escapeHtml(vehiculo.id)}"
+                            >
+                                Editar
+                            </button>
+
+                            ${
+                                vehiculo.activo === false
+                                    ? `
+                                        <button
+                                            type="button"
+                                            class="btn btn-primary btn-sm btn-reactivar-vehiculo"
+                                            data-action="reactivar"
+                                            data-id="${escapeHtml(
+                                                vehiculo.id
+                                            )}"
+                                        >
+                                            Reactivar
+                                        </button>
+                                    `
+                                    : `
+                                        <button
+                                            type="button"
+                                            class="btn btn-danger-outline btn-sm btn-desactivar-vehiculo"
+                                            data-action="desactivar"
+                                            data-id="${escapeHtml(
+                                                vehiculo.id
+                                            )}"
+                                        >
+                                            Desactivar
+                                        </button>
+                                    `
+                            }
+
                         </div>
+                    </article>
+                `;
+            })
+            .join("");
 
-                        <div class="vehiculo-info">
-                            <span>Año</span>
-                            <strong>${v.anio || "—"}</strong>
-                        </div>
+        configurarEventosTarjetas();
+    }
 
-                        <div class="vehiculo-info">
-                            <span>Placa</span>
-                            <strong>${escapeHtml(v.placa || "Sin placa")}</strong>
-                        </div>
-                    </div>
+    function configurarEventosTarjetas() {
+        listado
+            .querySelectorAll("[data-action]")
+            .forEach((boton) => {
+                boton.addEventListener("click", () => {
+                    const vehiculoId = Number(boton.dataset.id);
 
-                    <div class="vehiculo-card-footer">
-                        <a class="btn btn-outline btn-sm" href="/dueno/vehiculos/${v.id}">
-                            Ver detalle
-                        </a>
+                    const vehiculo = vehiculos.find(
+                        (item) =>
+                            Number(item.id) === vehiculoId
+                    );
 
-                        <button class="btn btn-outline btn-sm btn-editar" data-id="${v.id}">
-                            Editar
-                        </button>
+                    if (!vehiculo) {
+                        mostrarToast(
+                            "No se encontró el vehículo seleccionado.",
+                            "error"
+                        );
 
-                        ${
-                            v.activo === false
-                                ? `
-                                    <button class="btn btn-primary btn-sm btn-reactivar-vehiculo" data-id="${v.id}">
-                                        Reactivar
-                                    </button>
-                                `
-                                : `
-                                    <button class="btn btn-danger-outline btn-sm btn-desactivar-vehiculo" data-id="${v.id}">
-                                        Desactivar
-                                    </button>
-                                `
-                        }
-                    </div>
-                </article>
-            `;
-        }).join("");
+                        return;
+                    }
 
-        bindEventosTarjetas();
+                    const accion = boton.dataset.action;
+
+                    if (accion === "editar") {
+                        abrirModalEditar(vehiculo.id);
+                        return;
+                    }
+
+                    if (accion === "desactivar") {
+                        abrirConfirmacionDesactivar(vehiculo);
+                        return;
+                    }
+
+                    if (accion === "reactivar") {
+                        abrirConfirmacionReactivar(vehiculo);
+                    }
+                });
+            });
     }
 
     // ============================================================
-    // Conecta los botones de cada tarjeta.
-    //
-    // Se usa actualmente en:
-    // - botón Editar
-    // - botón Desactivar
+    // CONFIGURACIÓN DE MODALES
     // ============================================================
-    function bindEventosTarjetas() {
-        document.querySelectorAll(".btn-editar").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const vehiculoId = btn.dataset.id;
-                window.location.href = `/dueno/vehiculos/${vehiculoId}/editar`;
+
+    function configurarModales() {
+        document
+            .querySelectorAll("[data-close-modal]")
+            .forEach((boton) => {
+                boton.addEventListener("click", () => {
+                    cerrarModal(boton.dataset.closeModal);
+                });
             });
+
+        document
+            .querySelectorAll(".modal-vehiculo-overlay")
+            .forEach((modal) => {
+                modal.addEventListener("mousedown", (evento) => {
+                    if (evento.target === modal) {
+                        cerrarModal(modal.id);
+                    }
+                });
+            });
+
+        document.addEventListener("keydown", (evento) => {
+            if (evento.key !== "Escape") return;
+
+            document
+                .querySelectorAll(
+                    ".modal-vehiculo-overlay.visible"
+                )
+                .forEach((modal) => {
+                    cerrarModal(modal.id);
+                });
         });
+    }
 
-        document.querySelectorAll(".btn-desactivar-vehiculo").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const vehiculoId = Number(btn.dataset.id);
-                const vehiculo = vehiculosOriginales.find(v => Number(v.id) === vehiculoId);
+    function abrirModal(id) {
+        const modal = $(id);
 
-                if (!vehiculo) {
-                    mostrarToastVehiculo("No se encontró el vehículo seleccionado.", "error");
+        if (!modal) return;
+
+        modal.classList.add("visible");
+        modal.setAttribute("aria-hidden", "false");
+
+        document.body.classList.add("modal-open");
+
+        setTimeout(() => {
+            modal
+                .querySelector(
+                    "input:not([type='hidden']), select, textarea, button"
+                )
+                ?.focus();
+        }, 30);
+    }
+
+    function cerrarModal(id) {
+        const modal = $(id);
+
+        if (!modal) return;
+
+        modal.classList.remove("visible");
+        modal.setAttribute("aria-hidden", "true");
+
+        const existenModalesAbiertos = document.querySelector(
+            ".modal-vehiculo-overlay.visible"
+        );
+
+        if (!existenModalesAbiertos) {
+            document.body.classList.remove("modal-open");
+        }
+
+        limpiarQueryModal();
+    }
+
+    // ============================================================
+    // MODAL NUEVO VEHÍCULO
+    // ============================================================
+
+    async function abrirModalNuevo() {
+        const formulario = $("formNuevoVehiculo");
+
+        formulario?.reset();
+
+        establecerMensaje(
+            "mensajeVehiculoNuevo",
+            "",
+            ""
+        );
+
+        await cargarChoferes(
+            $("nuevo_chofer_id")
+        );
+
+        abrirModal("modalNuevoVehiculo");
+    }
+
+    // ============================================================
+    // MODAL EDITAR VEHÍCULO
+    // ============================================================
+
+    async function abrirModalEditar(id) {
+        const formulario = $("formEditarVehiculo");
+
+        formulario?.reset();
+
+        establecerMensaje(
+            "mensajeVehiculoEditar",
+            "Cargando información...",
+            ""
+        );
+
+        abrirModal("modalEditarVehiculo");
+
+        try {
+            const response =
+                await TrackAPI.obtenerVehiculoDetalle(id);
+
+            const vehiculo = response.vehiculo || {};
+
+            const campoId = $("editar_vehiculo_id");
+
+            if (campoId) {
+                campoId.value = id;
+            }
+
+            const campos = [
+                "nombre",
+                "identificador",
+                "placa",
+                "marca",
+                "modelo",
+                "anio"
+            ];
+
+            campos.forEach((campo) => {
+                const input = $(`editar_${campo}`);
+
+                if (input) {
+                    input.value =
+                        vehiculo[campo] ?? "";
+                }
+            });
+
+            await cargarChoferes(
+                $("editar_chofer_id"),
+                vehiculo.chofer_id,
+                id
+            );
+
+            const botonDetalle =
+                $("btnDetalleDesdeEditar");
+
+            if (botonDetalle) {
+                botonDetalle.href =
+                    `/dueno/vehiculos/${id}`;
+            }
+
+            establecerMensaje(
+                "mensajeVehiculoEditar",
+                "",
+                ""
+            );
+        } catch (error) {
+            console.error(
+                "Error cargando vehículo:",
+                error
+            );
+
+            establecerMensaje(
+                "mensajeVehiculoEditar",
+                error.message ||
+                    "No se pudo cargar el vehículo.",
+                "error"
+            );
+        }
+    }
+
+    // ============================================================
+    // FORMULARIOS
+    // ============================================================
+
+    function configurarFormularios() {
+        $("formNuevoVehiculo")?.addEventListener(
+            "submit",
+            async (evento) => {
+                evento.preventDefault();
+
+                const boton = $("btnGuardarVehiculo");
+
+                bloquearBoton(
+                    boton,
+                    true,
+                    "Guardando..."
+                );
+
+                establecerMensaje(
+                    "mensajeVehiculoNuevo",
+                    "",
+                    ""
+                );
+
+                try {
+                    await TrackAPI.crearVehiculo(
+                        crearPayload("nuevo")
+                    );
+
+                    cerrarModal(
+                        "modalNuevoVehiculo"
+                    );
+
+                    await cargarVehiculos();
+
+                    mostrarToast(
+                        "Vehículo creado correctamente.",
+                        "success"
+                    );
+                } catch (error) {
+                    console.error(
+                        "Error creando vehículo:",
+                        error
+                    );
+
+                    establecerMensaje(
+                        "mensajeVehiculoNuevo",
+                        error.message ||
+                            "No se pudo crear el vehículo.",
+                        "error"
+                    );
+                } finally {
+                    bloquearBoton(
+                        boton,
+                        false,
+                        "Guardar vehículo"
+                    );
+                }
+            }
+        );
+
+        $("formEditarVehiculo")?.addEventListener(
+            "submit",
+            async (evento) => {
+                evento.preventDefault();
+
+                const id = Number(
+                    $("editar_vehiculo_id")?.value
+                );
+
+                const boton =
+                    $("btnGuardarCambiosVehiculo");
+
+                if (!id) {
+                    establecerMensaje(
+                        "mensajeVehiculoEditar",
+                        "No se encontró el identificador del vehículo.",
+                        "error"
+                    );
+
                     return;
                 }
 
-                abrirModalDesactivarVehiculo(vehiculo);
-            });
-        });
+                bloquearBoton(
+                    boton,
+                    true,
+                    "Guardando..."
+                );
 
-        document.querySelectorAll(".btn-reactivar-vehiculo").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const vehiculoId = Number(btn.dataset.id);
-                const vehiculo = vehiculosOriginales.find(v => Number(v.id) === vehiculoId);
+                establecerMensaje(
+                    "mensajeVehiculoEditar",
+                    "",
+                    ""
+                );
 
-                if (!vehiculo) {
-                    mostrarToastVehiculo("No se encontró el vehículo seleccionado.", "error");
-                    return;
+                try {
+                    await TrackAPI.editarVehiculo(
+                        id,
+                        crearPayload("editar")
+                    );
+
+                    cerrarModal(
+                        "modalEditarVehiculo"
+                    );
+
+                    await cargarVehiculos();
+
+                    mostrarToast(
+                        "Vehículo actualizado correctamente.",
+                        "success"
+                    );
+                } catch (error) {
+                    console.error(
+                        "Error editando vehículo:",
+                        error
+                    );
+
+                    establecerMensaje(
+                        "mensajeVehiculoEditar",
+                        error.message ||
+                            "No se pudo actualizar el vehículo.",
+                        "error"
+                    );
+                } finally {
+                    bloquearBoton(
+                        boton,
+                        false,
+                        "Guardar cambios"
+                    );
                 }
+            }
+        );
+    }
 
-                abrirModalReactivarVehiculo(vehiculo);
+    function crearPayload(prefijo) {
+        const obtenerValor = (campo) => {
+            return $(`${prefijo}_${campo}`)
+                ?.value
+                ?.trim() || "";
+        };
+
+        const anio = parseInt(
+            obtenerValor("anio") || "0",
+            10
+        );
+
+        const choferId = parseInt(
+            obtenerValor("chofer_id") || "0",
+            10
+        );
+
+        return {
+            nombre: obtenerValor("nombre"),
+            identificador:
+                obtenerValor("identificador"),
+            placa: obtenerValor("placa"),
+            marca: obtenerValor("marca"),
+            modelo: obtenerValor("modelo"),
+            anio: anio || null,
+            chofer_id: choferId || null
+        };
+    }
+
+    // ============================================================
+    // CHOFERES
+    // ============================================================
+
+    async function cargarChoferes(
+        select,
+        seleccionado = null,
+        vehiculoId = null
+    ) {
+        if (!select) return;
+
+        select.innerHTML =
+            '<option value="">Sin asignar</option>';
+
+        if (!TrackAPI.obtenerChoferes) {
+            return;
+        }
+
+        try {
+            const response =
+                await TrackAPI.obtenerChoferes(
+                    vehiculoId
+                );
+
+            const choferes =
+                response.choferes || [];
+
+            choferes.forEach((chofer) => {
+                const option =
+                    document.createElement("option");
+
+                option.value = chofer.id;
+
+                option.textContent =
+                    chofer.correo
+                        ? `${chofer.nombre} · ${chofer.correo}`
+                        : chofer.nombre;
+
+                option.selected =
+                    Number(chofer.id) ===
+                    Number(seleccionado);
+
+                select.appendChild(option);
             });
-        });
-    }
+        } catch (error) {
+            console.error(
+                "Error cargando choferes:",
+                error
+            );
 
-    // ============================================================
-    // Configura eventos del modal de desactivar vehículo.
-    //
-    // Se usa actualmente en:
-    // - modalDesactivarVehiculo del HTML
-    // ============================================================
-    function configurarModalDesactivarVehiculo() {
-        document.getElementById("btnCerrarModalVehiculo")?.addEventListener("click", cerrarModalDesactivarVehiculo);
-        document.getElementById("btnCancelarDesactivarVehiculo")?.addEventListener("click", cerrarModalDesactivarVehiculo);
-        document.getElementById("btnConfirmarDesactivarVehiculo")?.addEventListener("click", confirmarDesactivarVehiculo);
-    }
-
-    function configurarModalReactivarVehiculo() {
-        document.getElementById("btnCerrarModalReactivarVehiculo")?.addEventListener("click", cerrarModalReactivarVehiculo);
-        document.getElementById("btnCancelarReactivarVehiculo")?.addEventListener("click", cerrarModalReactivarVehiculo);
-        document.getElementById("btnConfirmarReactivarVehiculo")?.addEventListener("click", confirmarReactivarVehiculo);
-    }
-
-    // ============================================================
-    // Abre el modal para confirmar desactivación.
-    //
-    // Se usa cuando el usuario presiona:
-    // - Desactivar
-    // ============================================================
-    function abrirModalDesactivarVehiculo(vehiculo) {
-        vehiculoSeleccionadoDesactivar = vehiculo;
-
-        const nombre = document.getElementById("modalVehiculoNombre");
-        const placa = document.getElementById("modalVehiculoPlaca");
-        const modal = document.getElementById("modalDesactivarVehiculo");
-
-        if (nombre) nombre.textContent = vehiculo.nombre || "Vehículo sin nombre";
-        if (placa) placa.textContent = vehiculo.placa || "Placa no registrada";
-        if (modal) modal.classList.add("visible");
-    }
-
-    // ============================================================
-    // Cierra y limpia el modal de desactivar vehículo.
-    //
-    // Se usa en:
-    // - cancelar
-    // - cerrar
-    // - después de desactivar correctamente
-    // ============================================================
-    function cerrarModalDesactivarVehiculo() {
-        vehiculoSeleccionadoDesactivar = null;
-
-        const modal = document.getElementById("modalDesactivarVehiculo");
-        const btn = document.getElementById("btnConfirmarDesactivarVehiculo");
-
-        if (modal) modal.classList.remove("visible");
-
-        if (btn) {
-            btn.disabled = false;
-            btn.textContent = "Desactivar vehículo";
-        }
-    }
-
-
-    function abrirModalReactivarVehiculo(vehiculo) {
-        vehiculoSeleccionadoReactivar = vehiculo;
-
-        const nombre = document.getElementById("modalReactivarVehiculoNombre");
-        const placa = document.getElementById("modalReactivarVehiculoPlaca");
-        const modal = document.getElementById("modalReactivarVehiculo");
-
-        if (nombre) nombre.textContent = vehiculo.nombre || "Vehículo sin nombre";
-        if (placa) placa.textContent = vehiculo.placa || "Placa no registrada";
-        if (modal) modal.classList.add("visible");
-    }
-
-
-    function cerrarModalReactivarVehiculo() {
-        vehiculoSeleccionadoReactivar = null;
-
-        const modal = document.getElementById("modalReactivarVehiculo");
-        const btn = document.getElementById("btnConfirmarReactivarVehiculo");
-
-        if (modal) modal.classList.remove("visible");
-
-        if (btn) {
-            btn.disabled = false;
-            btn.textContent = "Reactivar vehículo";
+            select.innerHTML =
+                '<option value="">No disponibles</option>';
         }
     }
 
     // ============================================================
-    // Desactiva el vehículo seleccionado.
-    //
-    // Se usa actualmente en:
-    // - botón confirmar del modal
-    //
-    // Después de desactivar, vuelve a cargar la lista.
+    // DESACTIVAR VEHÍCULO
     // ============================================================
-    async function confirmarDesactivarVehiculo() {
-        if (!vehiculoSeleccionadoDesactivar) return;
 
-        const btn = document.getElementById("btnConfirmarDesactivarVehiculo");
+    function abrirConfirmacionDesactivar(vehiculo) {
+        seleccionadoDesactivar = vehiculo;
 
-        if (btn) {
-            btn.disabled = true;
-            btn.textContent = "Desactivando...";
+        const nombre = $("modalVehiculoNombre");
+        const placa = $("modalVehiculoPlaca");
+
+        if (nombre) {
+            nombre.textContent =
+                vehiculo.nombre || "Vehículo";
         }
+
+        if (placa) {
+            placa.textContent =
+                vehiculo.placa ||
+                "Placa no registrada";
+        }
+
+        abrirModal("modalDesactivarVehiculo");
+    }
+
+    async function confirmarDesactivar() {
+        if (!seleccionadoDesactivar) return;
+
+        const boton =
+            $("btnConfirmarDesactivarVehiculo");
+
+        bloquearBoton(
+            boton,
+            true,
+            "Desactivando..."
+        );
 
         try {
-            await TrackAPI.desactivarVehiculo(vehiculoSeleccionadoDesactivar.id);
+            await TrackAPI.desactivarVehiculo(
+                seleccionadoDesactivar.id
+            );
 
-            cerrarModalDesactivarVehiculo();
-            await cargarVehiculos(false);
+            cerrarModal(
+                "modalDesactivarVehiculo"
+            );
 
-            mostrarToastVehiculo("Vehículo desactivado correctamente.", "success");
+            seleccionadoDesactivar = null;
 
+            await cargarVehiculos();
+
+            mostrarToast(
+                "Vehículo desactivado.",
+                "success"
+            );
         } catch (error) {
-            console.error("Error desactivando vehículo:", error);
-            mostrarToastVehiculo(error.message || "No se pudo desactivar el vehículo.", "error");
+            console.error(
+                "Error desactivando vehículo:",
+                error
+            );
 
-            if (btn) {
-                btn.disabled = false;
-                btn.textContent = "Desactivar vehículo";
-            }
+            mostrarToast(
+                error.message ||
+                    "No se pudo desactivar.",
+                "error"
+            );
+        } finally {
+            bloquearBoton(
+                boton,
+                false,
+                "Desactivar"
+            );
         }
     }
 
-    async function confirmarReactivarVehiculo() {
-        if (!vehiculoSeleccionadoReactivar) return;
+    // ============================================================
+    // REACTIVAR VEHÍCULO
+    // ============================================================
 
-        const btn = document.getElementById("btnConfirmarReactivarVehiculo");
+    function abrirConfirmacionReactivar(vehiculo) {
+        seleccionadoReactivar = vehiculo;
 
-        if (btn) {
-            btn.disabled = true;
-            btn.textContent = "Reactivando...";
+        const nombre =
+            $("modalReactivarVehiculoNombre");
+
+        const placa =
+            $("modalReactivarVehiculoPlaca");
+
+        if (nombre) {
+            nombre.textContent =
+                vehiculo.nombre || "Vehículo";
         }
+
+        if (placa) {
+            placa.textContent =
+                vehiculo.placa ||
+                "Placa no registrada";
+        }
+
+        abrirModal("modalReactivarVehiculo");
+    }
+
+    async function confirmarReactivar() {
+        if (!seleccionadoReactivar) return;
+
+        const boton =
+            $("btnConfirmarReactivarVehiculo");
+
+        bloquearBoton(
+            boton,
+            true,
+            "Reactivando..."
+        );
 
         try {
-            await TrackAPI.reactivarVehiculo(vehiculoSeleccionadoReactivar.id);
+            await TrackAPI.reactivarVehiculo(
+                seleccionadoReactivar.id
+            );
 
-            cerrarModalReactivarVehiculo();
-            await cargarVehiculos(false);
+            cerrarModal(
+                "modalReactivarVehiculo"
+            );
 
-            mostrarToastVehiculo("Vehículo reactivado correctamente.", "success");
+            seleccionadoReactivar = null;
 
+            await cargarVehiculos();
+
+            mostrarToast(
+                "Vehículo reactivado.",
+                "success"
+            );
         } catch (error) {
-            console.error("Error reactivando vehículo:", error);
-            mostrarToastVehiculo(error.message || "No se pudo reactivar el vehículo.", "error");
+            console.error(
+                "Error reactivando vehículo:",
+                error
+            );
 
-            if (btn) {
-                btn.disabled = false;
-                btn.textContent = "Reactivar vehículo";
-            }
+            mostrarToast(
+                error.message ||
+                    "No se pudo reactivar.",
+                "error"
+            );
+        } finally {
+            bloquearBoton(
+                boton,
+                false,
+                "Reactivar"
+            );
         }
     }
+
     // ============================================================
-    // Normaliza el estado recibido del backend.
-    //
-    // Se usa para:
-    // - badges
-    // - estadísticas
-    // - filtros
-    //
-    // Devuelve:
-    // - activo
-    // - alerta
-    // - sin_senal
-    // - sin_dispositivo
+    // MODALES MEDIANTE URL
     // ============================================================
-    function normalizarEstadoVehiculo(v) {
-        if (v.activo === false) return "desactivado";
-        
-        if (!v.dispositivo_id && !v.dispositivo_serie) return "sin_dispositivo";
 
-        const estado = String(v.estado || "").toLowerCase();
-        const alerta = Number(v.alerta || 0);
-        const vibracion = Number(v.vibracion || 0);
-        const puerta = String(v.puerta || "").toLowerCase();
+    function abrirModalDesdeURL() {
+        const parametros =
+            new URLSearchParams(
+                window.location.search
+            );
 
-        if (alerta === 1) return "alerta";
-        if (vibracion === 1) return "alerta";
-        if (puerta === "abierta") return "alerta";
+        if (parametros.get("nuevo") === "1") {
+            abrirModalNuevo();
+        }
 
-        if (estado.includes("alert")) return "alerta";
-        if (estado.includes("panic")) return "alerta";
-        if (estado.includes("panico")) return "alerta";
-        if (estado.includes("sin")) return "sin_senal";
-        if (estado.includes("off")) return "sin_senal";
+        const editarId =
+            Number(parametros.get("editar"));
+
+        if (editarId) {
+            abrirModalEditar(editarId);
+        }
+    }
+
+    function limpiarQueryModal() {
+        if (!window.location.search) return;
+
+        window.history.replaceState(
+            {},
+            "",
+            window.location.pathname
+        );
+    }
+
+    // ============================================================
+    // ACTUALIZACIÓN AUTOMÁTICA
+    // ============================================================
+
+    async function iniciarActualizacion() {
+        let intervaloMs = 5000;
+
+        try {
+            if (
+                window.TrackConfig
+                    ?.obtenerOperacionMs
+            ) {
+                intervaloMs =
+                    await TrackConfig.obtenerOperacionMs(
+                        "vehiculos",
+                        5
+                    );
+            }
+        } catch (error) {
+            console.warn(
+                "No se pudo obtener el intervalo de actualización:",
+                error
+            );
+        }
+
+        clearInterval(intervalo);
+
+        intervalo = setInterval(() => {
+            const modalAbierto =
+                document.querySelector(
+                    ".modal-vehiculo-overlay.visible"
+                );
+
+            if (!modalAbierto) {
+                cargarVehiculos(true);
+            }
+        }, intervaloMs);
+    }
+
+    // ============================================================
+    // ESTADOS
+    // ============================================================
+
+    function normalizarEstado(vehiculo) {
+        if (vehiculo.activo === false) {
+            return "desactivado";
+        }
+
+        if (
+            !vehiculo.dispositivo_id &&
+            !vehiculo.dispositivo_serie
+        ) {
+            return "sin_dispositivo";
+        }
+
+        const estado = String(
+            vehiculo.estado || ""
+        ).toLowerCase();
+
+        const tieneAlerta =
+            Number(vehiculo.alerta) === 1;
+
+        const tieneVibracion =
+            Number(vehiculo.vibracion) === 1;
+
+        const puertaAbierta =
+            String(
+                vehiculo.puerta || ""
+            ).toLowerCase() === "abierta";
+
+        const estadoAlerta =
+            /alert|panic|panico/.test(estado);
+
+        if (
+            tieneAlerta ||
+            tieneVibracion ||
+            puertaAbierta ||
+            estadoAlerta
+        ) {
+            return "alerta";
+        }
+
+        if (/sin|off/.test(estado)) {
+            return "sin_senal";
+        }
 
         return "activo";
     }
 
-    // ============================================================
-    // Convierte estado interno en texto visible.
-    // ============================================================
     function formatearEstado(estado) {
-        const mapa = {
+        const estados = {
             activo: "Activo",
             alerta: "Con alerta",
             sin_senal: "Sin señal",
@@ -510,54 +1001,129 @@ document.addEventListener("DOMContentLoaded", async () => {
             desactivado: "Desactivado"
         };
 
-        return mapa[estado] || "Activo";
+        return estados[estado] || "Activo";
     }
 
     // ============================================================
-    // Muestra un mensaje flotante.
-    //
-    // Se usa actualmente en:
-    // - errores
-    // - confirmaciones
+    // ELEMENTOS HTML AUXILIARES
     // ============================================================
-    function mostrarToastVehiculo(mensaje, tipo = "info") {
-        let toast = document.getElementById("vehiculosToast");
 
-        if (!toast) {
-            toast = document.createElement("div");
-            toast.id = "vehiculosToast";
-            toast.className = "vehiculos-toast";
-            document.body.appendChild(toast);
-        }
+    function crearDatoVehiculo(
+        etiqueta,
+        valor
+    ) {
+        return `
+            <div class="vehiculo-info">
+                <span>${escapeHtml(etiqueta)}</span>
 
-        toast.textContent = mensaje;
-        toast.className = `vehiculos-toast ${tipo} visible`;
+                <strong>
+                    ${escapeHtml(String(valor))}
+                </strong>
+            </div>
+        `;
+    }
+
+    function estadoVacio(titulo, mensaje) {
+        return `
+            <div class="empty-state">
+                <strong>
+                    ${escapeHtml(titulo)}
+                </strong>
+
+                <p>
+                    ${escapeHtml(mensaje)}
+                </p>
+            </div>
+        `;
+    }
+
+    function bloquearBoton(
+        boton,
+        bloqueado,
+        texto
+    ) {
+        if (!boton) return;
+
+        boton.disabled = bloqueado;
+        boton.textContent = texto;
+    }
+
+    function establecerMensaje(
+        id,
+        texto,
+        tipo
+    ) {
+        const elemento = $(id);
+
+        if (!elemento) return;
+
+        elemento.textContent = texto;
+
+        elemento.className =
+            `form-message${tipo ? ` ${tipo}` : ""}`;
+    }
+
+    function mostrarToast(
+        texto,
+        tipo = "info"
+    ) {
+        const toast =
+            document.createElement("div");
+
+        /*
+         * Se colocan las dos clases para mantener
+         * compatibilidad con ambas versiones del CSS.
+         */
+        toast.className =
+            `vehiculo-toast vehiculos-toast ${tipo}`;
+
+        toast.textContent = texto;
+
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.classList.add("visible");
+        });
 
         setTimeout(() => {
             toast.classList.remove("visible");
-        }, 3000);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 220);
+        }, 2600);
+    }
+
+    function escapeHtml(valor) {
+        const elemento =
+            document.createElement("div");
+
+        elemento.textContent =
+            valor ?? "";
+
+        return elemento.innerHTML;
     }
 
     // ============================================================
-    // Limpia texto antes de insertarlo en HTML.
-    //
-    // Ayuda a evitar que texto raro rompa la interfaz.
+    // FUNCIONES GLOBALES
     // ============================================================
-    function escapeHtml(value) {
-        return String(value ?? "")
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
-    }
+
+    window.abrirModalVehiculo =
+        abrirModalNuevo;
+
+    window.abrirModalEditarVehiculo =
+        abrirModalEditar;
 
     // ============================================================
-    // Limpia el intervalo si el usuario sale de la página.
+    // LIMPIEZA
     // ============================================================
-    window.addEventListener("beforeunload", () => {
-        if (intervaloActualizacionVehiculos) {
-            clearInterval(intervaloActualizacionVehiculos);
+
+    window.addEventListener(
+        "beforeunload",
+        () => {
+            if (intervalo) {
+                clearInterval(intervalo);
+            }
         }
-    });
+    );
 });

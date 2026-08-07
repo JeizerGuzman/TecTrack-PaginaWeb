@@ -8,6 +8,7 @@ let detalleTimer = null;
 let mapaVehiculo = null;
 let marcadorVehiculo = null;
 
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     if (window.TrackGuards?.requireAuth) {
@@ -438,6 +439,7 @@ function renderAlertas(alertas, alertasListado) {
     `).join("");
 }
 
+// 🌟 YA NO NECESITAMOS VARIABLE DE ÍNDICE GLOBAL
 function renderEvidencias(evidencias, plan, evidenciasBox) {
     if (!evidenciasBox) return;
 
@@ -447,19 +449,16 @@ function renderEvidencias(evidencias, plan, evidenciasBox) {
         evidenciasBox.innerHTML = `
             <div class="premium-lock">
                 <strong>Evidencia fotográfica disponible en Plan Premium</strong>
-                <p>
-                    Este módulo permite consultar capturas automáticas asociadas
-                    a alertas críticas como apertura de puerta, vibración o pánico.
-                </p>
+                <p>Este módulo permite consultar capturas automáticas asociadas a alertas críticas como apertura de puerta, vibración o pánico.</p>
                 <span>Plan actual: ${escapeHtml(plan.nombre || "Sin plan")}</span>
             </div>
         `;
         return;
     }
 
-    if (!evidencias.length) {
+    if (!evidencias || !evidencias.length) {
         evidenciasBox.innerHTML = `
-            <div class="empty-state">
+            <div class="empty-state" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
                 <strong>Sin evidencias registradas</strong>
                 <p>Cuando el dispositivo Premium capture imágenes, aparecerán aquí.</p>
             </div>
@@ -467,18 +466,64 @@ function renderEvidencias(evidencias, plan, evidenciasBox) {
         return;
     }
 
-    evidenciasBox.innerHTML = evidencias.map(ev => `
-        <article class="evidencia-card">
-            <div class="evidencia-img">
-                <img src="${escapeHtml(ev.url_imagen)}" alt="Evidencia del vehículo">
+    // EVITAR PARPADEO Y RECARGA: Si el carrusel ya tiene la misma cantidad de fotos, no hacemos nada
+    const trackExiste = document.getElementById('carruselTrack');
+    if (trackExiste && trackExiste.children.length === evidencias.length) {
+        return;
+    }
+
+    // Le decimos a CSS si hay suficientes fotos para mostrar en formato "doble"
+    const multiClase = evidencias.length > 1 ? 'multi-slide' : 'single-slide';
+
+    // Generamos las tarjetas para cada foto
+    const slidesHTML = evidencias.map((ev, index) => {
+        const fechaObj = new Date(Number(ev.timestamp) * 1000);
+        const fechaExacta = fechaObj.toLocaleString("es-MX", {
+            day: "2-digit", month: "short", year: "numeric",
+            hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
+        });
+
+        return `
+            <div class="carrusel-slide">
+                <div class="carrusel-imagen-container">
+                    <img src="${escapeHtml(ev.url_imagen)}" alt="Evidencia">
+                    <span class="carrusel-contador-slide">${index + 1} / ${evidencias.length}</span>
+                </div>
+                <div class="carrusel-info">
+                    <strong>${escapeHtml(ev.descripcion || "Evidencia fotográfica")}</strong>
+                    <div class="carrusel-meta">
+                        <span class="carrusel-fecha">${fechaExacta}</span>
+                        <span class="badge-relativo">${tiempoRelativo(ev.timestamp)}</span>
+                    </div>
+                </div>
             </div>
-            <div>
-                <strong>${escapeHtml(ev.descripcion || "Evidencia fotográfica")}</strong>
-                <small>${tiempoRelativo(ev.timestamp)}</small>
+        `;
+    }).join('');
+
+    // Inyectamos el carril con sus flechas
+    evidenciasBox.innerHTML = `
+        <div class="carrusel-evidencias-wrapper">
+            <button class="btn-carrusel prev" onclick="window.scrollCarrusel(-1)" ${evidencias.length <= 1 ? 'style="display:none"' : ''}>&#10094;</button>
+            <div class="carrusel-track ${multiClase}" id="carruselTrack">
+                ${slidesHTML}
             </div>
-        </article>
-    `).join("");
+            <button class="btn-carrusel next" onclick="window.scrollCarrusel(1)" ${evidencias.length <= 1 ? 'style="display:none"' : ''}>&#10095;</button>
+        </div>
+    `;
 }
+
+// 🌟 NUEVA FUNCIÓN DE NAVEGACIÓN: Desplaza el scroll en lugar de cambiar la variable
+window.scrollCarrusel = function(direccion) {
+    const track = document.getElementById('carruselTrack');
+    if (!track) return;
+    
+    // Calculamos el ancho de un elemento para saber exactamente cuánto mover el carrusel
+    const slide = track.querySelector('.carrusel-slide');
+    if (!slide) return;
+    
+    const scrollAmount = slide.offsetWidth + 10; // ancho del contenedor + gap
+    track.scrollBy({ left: direccion * scrollAmount, behavior: 'smooth' });
+};
 
 function aplicarEstadoCarga(mostrar) {
     const page = document.querySelector(".vehiculo-detalle-page");
@@ -755,6 +800,7 @@ function actualizarMapaVehiculo(vehiculo) {
     `);
 
 }
+
 
 function volverPaginaAnterior() {
     if (document.referrer && document.referrer !== window.location.href) {

@@ -1,1083 +1,1367 @@
+/* VEHÍCULOS · CSS original consolidado. Sin selectores duplicados dentro del mismo contexto. */
+.vehiculos-page{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.vehiculo-form-page{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.vehiculo-detalle-page{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.vehiculos-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:14px;
+}
+.vehiculos-header h2{
+  margin:0 0 4px;
+  font-size:1.35rem;
+  font-weight:900;
+  color:var(--color-texto);
+  letter-spacing:-0.03em;
+}
+.vehiculos-header p{
+  margin:0;
+  color:var(--color-texto-secundario);
+  line-height:1.4;
+  font-size:0.9rem;
+  max-width:640px;
+}
+.vehiculos-header-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.vehiculos-stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:12px;
+}
+.stat-card{
+  padding:14px 16px;
+  border-radius:16px!important;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 4px 12px rgba(15, 23, 42, 0.04)!important;
+}
+.stat-card::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:var(--color-primario);
+}
+.stat-card p{
+  margin:0 0 6px;
+  font-size:0.7rem;
+  color:var(--color-texto-secundario);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  font-weight:800;
+}
+.stat-card strong{
+  font-size:1.5rem;
+  font-weight:900;
+  color:var(--color-texto);
+  line-height:1;
+}
+.filtros-card{
+  padding:18px;
+  border-radius:20px!important;
+}
+.filtros-card .card-body{
+  padding:18px;
+  border-radius:20px!important;
+}
+.filtros-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:14px;
+}
+.vehiculos-listado{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.vehiculo-card{
+  border:1px solid var(--color-borde-suave);
+  border-radius:22px;
+  padding:18px;
+  background:#ffffff;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  box-shadow:0 10px 26px rgba(15, 23, 42, 0.055);
+  transition:transform 0.16s ease, box-shadow 0.16s ease;
+}
+.vehiculo-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 36px rgba(15, 23, 42, 0.08);
+}
+.vehiculo-card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+.vehiculo-card-header h3{
+  margin:0 0 4px;
+  font-size:1.04rem;
+  font-weight:900;
+  color:var(--color-texto);
+}
+.vehiculo-card-header p{
+  margin:0;
+  color:var(--color-texto-secundario);
+  font-size:0.84rem;
+}
+.vehiculo-card-body{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:12px;
+}
+.vehiculo-info{
+  background:#fafbfd;
+  border:1px solid var(--color-borde-suave);
+  border-radius:16px;
+  padding:13px;
+}
+.vehiculo-info span{
+  display:block;
+  font-size:0.7rem;
+  color:var(--color-texto-muted);
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  margin-bottom:5px;
+  font-weight:800;
+}
+.vehiculo-info strong{
+  font-size:0.92rem;
+  color:var(--color-texto);
+  font-weight:800;
+}
+.vehiculo-card-footer{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.btn-sm{
+  min-height:36px;
+  padding:0 14px;
+  font-size:0.82rem;
+  border-radius:12px;
+  font-weight:800;
+}
+.btn-danger-outline{
+  border:1.5px solid #ef4444;
+  color:#dc2626;
+  background:#ffffff;
+  border-radius:12px;
+  min-height:40px;
+  padding:0 16px;
+  cursor:pointer;
+  font-weight:800;
+}
+.btn-danger-outline:hover{
+  background:#fef2f2;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:30px;
+  padding:0 13px;
+  border-radius:999px;
+  font-size:0.74rem;
+  font-weight:900;
+  white-space:nowrap;
+}
+.badge-activo{
+  background:#dcfce7;
+  color:#166534;
+}
+.badge-alerta{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+.badge-sin_senal{
+  background:#f1f5f9;
+  color:#475569;
+}
+.badge-sin_dispositivo{
+  background:#fff7ed;
+  color:#c2410c;
+}
+.form-card .card-body{
+  padding:24px;
+}
+.vehiculo-form{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:16px;
+}
+.form-group-full{
+  grid-column:1 / -1;
+}
+.form-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.form-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.form-message{
+  font-weight:800;
+  font-size:0.9rem;
+}
+.form-message.success{
+  color:#15803d;
+}
+.form-message.error{
+  color:#dc2626;
+}
+
+.detalle-grid{
+  flex:1;
+  align-content:start;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:10px;
+}
+.vehiculo-detalle-page .stat-card.vehiculo-info{
+  background:#ffffff;
+}
+.vehiculo-detalle-page .stat-card.vehiculo-info p{
+  margin:0 0 8px;
+  font-size:0.72rem;
+  color:var(--color-texto-secundario);
+  text-transform:uppercase;
+  font-weight:800;
+}
+.vehiculo-detalle-page .stat-card.vehiculo-info strong{
+  font-size:1.25rem;
+  font-weight:900;
+  color:var(--color-texto);
+}
+.vehiculo-detalle-page .detalle-item{
+  min-height:82px;
+  border:1px solid var(--color-borde-suave);
+  border-radius:12px;
+  padding:10px 14px;
+  background:#fafbfd;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:2px;
+}
+.vehiculo-detalle-page .detalle-item span{
+  font-size:0.65rem;
+  color:var(--color-texto-muted);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  font-weight:800;
+}
+.vehiculo-detalle-page .detalle-item strong{
+  color:var(--color-texto);
+  font-size:0.9rem;
+  font-weight:900;
+}
+.sensores-grid{
+  flex:1;
+  align-content:start;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:10px;
+  height:100%;
+}
+.sensor-card{
+  min-height:84px;
+  position:relative;
+  border:1px solid var(--color-borde-suave);
+  border-radius:14px;
+  padding:12px 14px;
+  background:#ffffff;
+  box-shadow:0 4px 12px rgba(15, 23, 42, 0.03);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.sensor-card::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:#16a34a;
+}
+.sensor-card span{
+  display:block;
+  font-size:0.65rem;
+  color:var(--color-texto-muted);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  font-weight:900;
+  margin-bottom:4px;
+}
+.sensor-card strong{
+  display:block;
+  font-size:0.9rem;
+  color:var(--color-texto);
+  font-weight:900;
+  margin-bottom:2px;
+  line-height:1.2;
+}
+.sensor-card small{
+  color:var(--color-texto-secundario);
+  font-size:0.72rem;
+  font-weight:700;
+}
+.sensor-ok::before{
+  background:#16a34a;
+}
+.sensor-alerta{
+  background:#fffafa;
+  border-color:#fecaca;
+}
+.sensor-alerta::before{
+  background:#dc2626;
+}
+.sensor-desconectado::before{
+  background:#94a3b8;
+}
+.alertas-vehiculo-listado{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.vehiculo-detalle-page .alerta-item{
+  position:relative;
+  border:1px solid var(--color-borde-suave);
+  border-radius:18px;
+  padding:15px 16px 15px 20px;
+  background:#ffffff;
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  align-items:flex-start;
+  box-shadow:0 8px 20px rgba(15, 23, 42, 0.045);
+  overflow:hidden;
+}
+.vehiculo-detalle-page .alerta-item::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:5px;
+  background:#ef4444;
+}
+.vehiculo-detalle-page .alerta-item strong{
+  display:block;
+  margin-bottom:5px;
+  color:var(--color-texto);
+  font-weight:900;
+}
+.vehiculo-detalle-page .alerta-item p{
+  margin:0;
+  color:var(--color-texto-secundario);
+  font-size:0.86rem;
+  line-height:1.45;
+}
+.vehiculo-detalle-page .alerta-item span{
+  flex-shrink:0;
+  color:#dc2626;
+  background:#fee2e2;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:0.74rem;
+  font-weight:900;
+}
+.vehiculo-detalle-page .alerta-item > span{
+  flex-shrink:0;
+  color:#dc2626;
+  background:#fee2e2;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:0.74rem;
+  font-weight:900;
+}
+.evidencias-grid{
+  gap:14px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+.premium-lock{
+  border:1.5px dashed #f59e0b;
+  border-radius:18px;
+  background:linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);
+  padding:18px;
+  color:#92400e;
+  flex:1;
+}
+.premium-lock strong{
+  display:block;
+  font-size:0.98rem;
+  font-weight:900;
+  margin-bottom:8px;
+}
+.premium-lock p{
+  margin:0 0 10px;
+  font-size:0.84rem;
+  line-height:1.5;
+}
+.premium-lock span{
+  display:inline-flex;
+  border-radius:999px;
+  background:#fef3c7;
+  padding:6px 12px;
+  font-size:0.75rem;
+  font-weight:900;
+}
+.carrusel-evidencias{
+  box-shadow:0 8px 20px rgba(15, 23, 42, 0.045);
+  display:flex;
+  flex-direction:column;
+  border:1px solid var(--color-borde-suave);
+  border-radius:14px;
+  overflow:hidden;
+  background:#ffffff;
+  height:100%;
+}
+.carrusel-imagen-container{
+  position:relative;
+  height:170px;
+  background:#0f172a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.carrusel-imagen-container img{
+  transition:opacity 0.3s ease;
+  max-width:100%;
+  max-height:100%;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+.btn-carrusel{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:rgba(15, 23, 42, 0.7);
+  color:#ffffff;
+  border:none;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1rem;
+  transition:background 0.2s, transform 0.2s;
+  z-index:10;
+  backdrop-filter:blur(4px);
+}
+.btn-carrusel:hover{
+  background:rgba(15, 23, 42, 0.95);
+  transform:translateY(-50%) scale(1.1);
+}
+.btn-carrusel.prev{
+  left:16px;
+}
+.btn-carrusel.next{
+  right:16px;
+}
+.carrusel-contador{
+  backdrop-filter:blur(4px);
+  position:absolute;
+  top:8px;
+  right:8px;
+  background:rgba(0, 0, 0, 0.7);
+  color:#ffffff;
+  padding:4px 10px;
+  border-radius:8px;
+  font-size:0.7rem;
+  font-weight:800;
+  z-index:10;
+}
+.carrusel-info{
+  background:#fafbfd;
+  padding:10px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  flex:1;
+}
+.carrusel-info strong{
+  font-size:0.85rem;
+  font-weight:900;
+  color:var(--color-texto);
+  line-height:1.25;
+}
+.carrusel-meta{
+  flex-wrap:wrap;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-top:auto;
+}
+#carruselEvidenciaFecha{
+  color:var(--color-texto-secundario);
+  font-size:0.78rem;
+  font-weight:700;
+}
+.badge-relativo{
+  background:#e2e8f0;
+  color:#475569;
+  padding:3px 8px;
+  border-radius:6px;
+  font-size:0.7rem;
+  font-weight:800;
+}
+.eventos-vehiculo-listado{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.evento-item{
+  box-shadow:0 8px 20px rgba(15, 23, 42, 0.045);
+  border:1px solid var(--color-borde-suave);
+  border-radius:12px;
+  padding:12px 14px 12px 16px;
+  background:#ffffff;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+  position:relative;
+  overflow:hidden;
+}
+.evento-item::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:var(--color-primario);
+}
+.evento-item strong{
+  font-weight:900;
+  display:block;
+  margin-bottom:3px;
+  font-size:0.9rem;
+  color:var(--color-texto);
+}
+.evento-item p{
+  line-height:1.45;
+  margin:0;
+  font-size:0.8rem;
+  color:var(--color-texto-secundario);
+}
+.evento-item small{
+  display:block;
+  margin-top:6px;
+  color:var(--color-texto-muted);
+  font-size:0.76rem;
+  font-weight:700;
+}
+.evento-item > span{
+  align-self:flex-start;
+  flex-shrink:0;
+  border-radius:6px;
+  padding:4px 8px;
+  font-size:0.7rem;
+  font-weight:800;
+  color:var(--color-primario);
+  background:rgba(37, 99, 235, 0.10);
+}
+.vehiculo-map-card{
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  height:100%;
+}
+.mapa-vehiculo{
+  overflow:hidden;
+  box-shadow:0 10px 26px rgba(15, 23, 42, 0.055);
+  min-height:320px;
+  width:100%;
+  height:180px;
+  border-radius:14px;
+  border:1px solid var(--color-borde-suave);
+  background:#f1f5f9;
+}
+.mapa-info{
+  box-shadow:0 8px 20px rgba(15, 23, 42, 0.045);
+  min-height:150px;
+  border:1px solid var(--color-borde-suave);
+  border-radius:14px;
+  background:#fafbfd;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  flex:1;
+}
+#detalleDireccionVehiculo{
+  display:block;
+  max-height:76px;
+  overflow:hidden;
+  font-size:0.9rem;
+  font-weight:900;
+  color:var(--color-texto);
+  line-height:1.3;
+}
+#detalleUbicacionTexto{
+  line-height:1.4;
+  margin:0;
+  color:var(--color-texto-secundario);
+  font-size:0.8rem;
+}
+.mapa-info .btn{
+  margin-top:auto;
+  align-self:flex-start;
+}
+.leaflet-popup-content{
+  font-family:inherit;
+  font-size:0.85rem;
+}
+.is-loading-soft{
+  opacity:0.96;
+  transition:opacity 0.2s ease;
+}
+.detalle-ultima-carga{
+  display:inline-flex;
+  align-items:center;
+  min-height:36px;
+  padding:0 13px;
+  border-radius:999px;
+  background:#f8fafc;
+  border:1px solid var(--color-borde-suave);
+  color:var(--color-texto-secundario);
+  font-size:0.78rem;
+  font-weight:800;
+}
+.vehiculo-detalle-page .card{
+  display:flex;
+  flex-direction:column;
+}
+.vehiculo-detalle-page .card-body{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.evidencia-card{
+  flex:1;
+}
+
+.btn-danger{
+  background:#dc2626;
+  color:#ffffff;
+  border:none;
+}
+.btn-danger:hover{
+  background:#b91c1c;
+}
+.modal-vehiculo-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(15, 23, 42, 0.48);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:20px;
+}
+.modal-vehiculo-overlay.visible{
+  display:flex;
+}
+.modal-vehiculo{
+  width:100%;
+  max-width:480px;
+  background:#ffffff;
+  border-radius:22px;
+  border:1px solid var(--color-borde-suave);
+  box-shadow:0 24px 60px rgba(15, 23, 42, 0.25);
+  overflow:hidden;
+}
+.modal-vehiculo-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 20px;
+  border-bottom:1px solid var(--color-borde-suave);
+}
+.modal-vehiculo-header h3{
+  margin:0;
+  font-size:1.08rem;
+  font-weight:900;
+  color:var(--color-texto);
+}
+.modal-vehiculo-close{
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:999px;
+  background:#f1f5f9;
+  color:var(--color-texto-secundario);
+  font-size:1.2rem;
+  cursor:pointer;
+}
+.modal-vehiculo-body{
+  padding:20px;
+}
+.modal-vehiculo-body p{
+  margin:0 0 14px;
+  color:var(--color-texto-secundario);
+  line-height:1.5;
+}
+.modal-vehiculo-info{
+  border:1px solid var(--color-borde-suave);
+  background:#fafbfd;
+  border-radius:16px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+.modal-vehiculo-info strong{
+  color:var(--color-texto);
+  font-size:0.98rem;
+  font-weight:900;
+}
+.modal-vehiculo-info span{
+  color:var(--color-texto-secundario);
+  font-size:0.86rem;
+}
+.modal-vehiculo-note{
+  margin-top:14px!important;
+  font-size:0.84rem;
+}
+.modal-vehiculo-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  padding:16px 20px;
+  border-top:1px solid var(--color-borde-suave);
+  background:#fafbfd;
+}
+.vehiculos-toast{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  z-index:10000;
+  max-width:360px;
+  padding:14px 18px;
+  border-radius:14px;
+  background:#0f172a;
+  color:#ffffff;
+  font-size:0.92rem;
+  box-shadow:0 18px 45px rgba(15, 23, 42, 0.25);
+  opacity:0;
+  transform:translateY(12px);
+  pointer-events:none;
+  transition:opacity 0.2s ease, transform 0.2s ease;
+}
+.vehiculos-toast.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+.vehiculos-toast.success{
+  background:#16a34a;
+}
+.vehiculos-toast.error{
+  background:#dc2626;
+}
+.sensor-desconectado{
+  border:1px solid #cbd5e1;
+  border-color:#cbd5e1;
+  background:#f8fafc;
+}
+.sensor-desconectado span{
+  color:#64748b;
+}
+.sensor-desconectado strong{
+  color:#475569;
+}
+.sensor-desconectado small{
+  color:#94a3b8;
+}
+.badge-desactivado{
+  background:#e2e8f0;
+  color:#475569;
+}
+.vehiculo-card:has(.badge-desactivado){
+  opacity:0.88;
+}
+.sensor-info{
+  background:#f0f9ff;
+  border-color:#bae6fd;
+}
+.sensor-info::before{
+  background:#0284c7;
+}
+.sensor-info strong{
+  color:#0369a1;
+}
+.sensor-info small{
+  color:#475569;
+}
+.card-header{
+  padding:14px 18px 0px 18px!important;
+  border-bottom:none!important;
+}
+.card-header h3{
+  font-size:1.1rem!important;
+  margin-bottom:2px!important;
+}
+.card-header p{
+  font-size:0.82rem!important;
+}
+.card-body{
+  padding:14px 18px 18px 18px!important;
+}
+.mapa-info .btn-sm{
+  margin-top:auto;
+  align-self:flex-start;
+  padding:0 12px;
+  min-height:32px;
+  font-size:0.75rem;
+}
+.alerta-item{
+  border:1px solid var(--color-borde-suave);
+  border-radius:12px;
+  padding:12px 14px 12px 16px;
+  background:#ffffff;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+  position:relative;
+  overflow:hidden;
+}
+.alerta-item::before{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:4px;
+  background:#ef4444;
+}
+.alerta-item strong{
+  display:block;
+  margin-bottom:3px;
+  font-size:0.9rem;
+  color:var(--color-texto);
+}
+.alerta-item p{
+  margin:0;
+  font-size:0.8rem;
+  color:var(--color-texto-secundario);
+}
+.alerta-item span{
+  flex-shrink:0;
+  border-radius:6px;
+  padding:4px 8px;
+  font-size:0.7rem;
+  font-weight:800;
+  color:#dc2626;
+  background:#fee2e2;
+}
+.carrusel-evidencias-wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+  height:100%;
+  background:#ffffff;
+  border:1px solid var(--color-borde-suave);
+  border-radius:14px;
+  box-shadow:0 4px 12px rgba(15, 23, 42, 0.03);
+  overflow:hidden;
+  container-type:inline-size;
+}
+.carrusel-track{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  width:100%;
+  height:100%;
+  padding:10px;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+}
+.carrusel-track::-webkit-scrollbar{
+  display:none;
+}
+.carrusel-slide{
+  display:flex;
+  flex-direction:column;
+  flex:0 0 100%;
+  scroll-snap-align:start;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid var(--color-borde-suave);
+  background:#fafbfd;
+}
+.carrusel-contador-slide{
+  position:absolute;
+  top:8px;
+  right:8px;
+  background:rgba(0, 0, 0, 0.7);
+  color:#ffffff;
+  padding:4px 8px;
+  border-radius:6px;
+  font-size:0.65rem;
+  font-weight:800;
+  z-index:5;
+  backdrop-filter:blur(2px);
+}
+.carrusel-fecha{
+  color:var(--color-texto-secundario);
+  font-size:0.75rem;
+  font-weight:700;
+}
+@media (max-width: 1100px){
+  .vehiculos-stats-grid{
+    grid-template-columns:repeat(2, 1fr);
+  }
+  .vehiculo-card-body{
+    grid-template-columns:repeat(2, 1fr);
+  }
+
+  .vehiculo-detalle-page .detalle-item{
+    min-height:auto;
+  }
+  .sensor-card{
+    min-height:auto;
+  }
+}
+@media (max-width: 700px){
+  .vehiculos-header{
+    flex-direction:column;
+  }
+  .filtros-grid{
+    grid-template-columns:1fr;
+  }
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+  .detalle-grid{
+    grid-template-columns:1fr;
+  }
+  .vehiculo-card-body{
+    grid-template-columns:1fr;
+  }
+  .vehiculos-stats-grid{
+    grid-template-columns:repeat(2, 1fr);
+  }
+  .sensores-grid{
+    grid-template-columns:1fr;
+  }
+  .form-footer{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .form-actions{
+    width:100%;
+  }
+  .form-actions .btn{
+    flex:1;
+  }
+  .vehiculo-detalle-page .alerta-item{
+    flex-direction:column;
+  }
+  .evento-item{
+    flex-direction:column;
+  }
+  .mapa-vehiculo{
+    height:300px;
+    min-height:300px;
+  }
+  .alerta-item{
+    flex-direction:column;
+  }
+}
+@media (max-width: 520px){
+  .modal-vehiculo-actions{
+    flex-direction:column;
+  }
+  .modal-vehiculo-actions .btn{
+    width:100%;
+  }
+}
+@media (max-width: 800px){
+  .vehiculos-stats-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:12px;
+  }
+  .vehiculos-stats-grid .stat-card{
+    min-height:106px;
+    padding:16px 18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    align-items:flex-start;
+  }
+  .vehiculos-stats-grid .stat-card p{
+    min-height:34px;
+    margin:0;
+    font-size:0.70rem;
+    line-height:1.25;
+  }
+  .vehiculos-stats-grid .stat-card strong{
+    margin-top:auto;
+    font-size:1.75rem;
+    line-height:1;
+  }
+}
+@container (min-width: 550px){
+  .carrusel-track.multi-slide .carrusel-slide{
+    flex:0 0 calc(50% - 5px);
+  }
+}
+
+
 /* ============================================================
-   VEHÍCULOS / DETALLE VEHÍCULO - TrackSecurity
-   Diseño profesional usando las mismas clases e IDs existentes.
+   DETALLE DEL VEHÍCULO
+   Filas independientes y proporciones específicas
    ============================================================ */
 
-.vehiculos-page,
-.vehiculo-form-page,
-.vehiculo-detalle-page {
+.detalle-fila {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    gap: 14px;
+    align-items: stretch;
+}
+
+/*
+ * Primera fila:
+ * Información general 50%
+ * Ubicación 50%
+ */
+.detalle-fila-principal {
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+}
+
+/*
+ * Segunda fila:
+ * Sensores aproximadamente 36%
+ * Evidencias aproximadamente 64%
+ */
+.detalle-fila-operativa {
+    grid-template-columns:
+        minmax(300px, 0.72fr)
+        minmax(480px, 1.28fr);
+}
+
+/* Todas las tarjetas del detalle */
+.detalle-card {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.detalle-card > .card-body {
+    min-width: 0;
+    min-height: 0;
+}
+
+
+/* ============================================================
+   INFORMACIÓN GENERAL
+   ============================================================ */
+
+.detalle-card-info .card-body {
     display: flex;
     flex-direction: column;
-    gap: 22px;
 }
 
-/* ───────────────────────── Header ───────────────────────── */
-
-.vehiculos-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 18px;
-}
-
-.vehiculos-header h2 {
-    margin: 0 0 6px;
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--color-texto);
-    letter-spacing: -0.035em;
-}
-
-.vehiculos-header p {
-    margin: 0;
-    color: var(--color-texto-secundario);
-    line-height: 1.55;
-    max-width: 640px;
-}
-
-.vehiculos-header-actions {
-    display: flex;
+.detalle-card-info .detalle-grid {
+    display: grid;
+    flex: 1;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
     gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
+    align-content: stretch;
 }
 
-/* ───────────────────────── Stats ───────────────────────── */
-
-.vehiculos-stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+/*
+ * Evita que .vehiculo-card-body cambie la información
+ * general a cuatro columnas.
+ */
+.detalle-card-info .vehiculo-card-body {
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 }
 
-.stat-card {
-    padding: 20px;
-    border-radius: 20px !important;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.055) !important;
+.detalle-card-info .detalle-item {
+    min-width: 0;
+    min-height: 70px;
 }
 
-.stat-card::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 4px;
-    background: var(--color-primario);
-}
 
-.stat-card p {
-    margin: 0 0 8px;
-    font-size: 0.72rem;
-    color: var(--color-texto-secundario);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 800;
-}
+/* ============================================================
+   UBICACIÓN Y MAPA
+   ============================================================ */
 
-.stat-card strong {
-    font-size: 1.9rem;
-    font-weight: 900;
-    color: var(--color-texto);
-    line-height: 1;
-}
-
-/* ───────────────────────── Filtros ───────────────────────── */
-
-.filtros-card,
-.filtros-card .card-body {
-    padding: 18px;
-    border-radius: 20px !important;
-}
-
-.filtros-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 14px;
-}
-
-/* ───────────────────── Listado vehículos ─────────────────── */
-
-.vehiculos-listado {
+.detalle-card-mapa .card-body {
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
 
-.vehiculo-card {
-    border: 1px solid var(--color-borde-suave);
-    border-radius: 22px;
-    padding: 18px;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.055);
-    transition: transform 0.16s ease, box-shadow 0.16s ease;
-}
-
-.vehiculo-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-}
-
-.vehiculo-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
-}
-
-.vehiculo-card-header h3 {
-    margin: 0 0 4px;
-    font-size: 1.04rem;
-    font-weight: 900;
-    color: var(--color-texto);
-}
-
-.vehiculo-card-header p {
-    margin: 0;
-    color: var(--color-texto-secundario);
-    font-size: 0.84rem;
-}
-
-.vehiculo-card-body {
+.detalle-card-mapa .vehiculo-map-card {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-}
-
-.vehiculo-info {
-    background: #fafbfd;
-    border: 1px solid var(--color-borde-suave);
-    border-radius: 16px;
-    padding: 13px;
-}
-
-.vehiculo-info span {
-    display: block;
-    font-size: 0.7rem;
-    color: var(--color-texto-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 5px;
-    font-weight: 800;
-}
-
-.vehiculo-info strong {
-    font-size: 0.92rem;
-    color: var(--color-texto);
-    font-weight: 800;
-}
-
-.vehiculo-card-footer {
-    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    flex: 1;
+    grid-template-rows:
+        minmax(250px, 1fr)
+        auto;
     gap: 10px;
-    flex-wrap: wrap;
 }
 
-/* ───────────────────────── Botones ───────────────────────── */
-
-.btn-sm {
-    min-height: 36px;
-    padding: 0 14px;
-    font-size: 0.82rem;
-    border-radius: 12px;
-    font-weight: 800;
-}
-
-.btn-danger-outline {
-    border: 1.5px solid #ef4444;
-    color: #dc2626;
-    background: #ffffff;
-    border-radius: 12px;
-    min-height: 40px;
-    padding: 0 16px;
-    cursor: pointer;
-    font-weight: 800;
-}
-
-.btn-danger-outline:hover {
-    background: #fef2f2;
-}
-
-/* ───────────────────────── Badges ───────────────────────── */
-
-.badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 30px;
-    padding: 0 13px;
-    border-radius: 999px;
-    font-size: 0.74rem;
-    font-weight: 900;
-    white-space: nowrap;
-}
-
-.badge-activo {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.badge-alerta {
-    background: #fee2e2;
-    color: #b91c1c;
-}
-
-.badge-sin_senal {
-    background: #f1f5f9;
-    color: #475569;
-}
-
-.badge-sin_dispositivo {
-    background: #fff7ed;
-    color: #c2410c;
-}
-
-/* ───────────────────────── Formularios ───────────────────── */
-
-.form-card .card-body {
-    padding: 24px;
-}
-
-.vehiculo-form {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
-
-.form-group-full {
-    grid-column: 1 / -1;
-}
-
-.form-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.form-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.form-message {
-    font-weight: 800;
-    font-size: 0.9rem;
-}
-
-.form-message.success {
-    color: #15803d;
-}
-
-.form-message.error {
-    color: #dc2626;
-}
-
-/* ───────────────────── Detalle vehículo ─────────────────── */
-
-.vehiculo-detalle-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
-    gap: 18px;
-    align-items: start;
-}
-
-.detalle-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-}
-
-.vehiculo-detalle-page .stat-card.vehiculo-info {
-    background: #ffffff;
-}
-
-.vehiculo-detalle-page .stat-card.vehiculo-info p {
-    margin: 0 0 8px;
-    font-size: 0.72rem;
-    color: var(--color-texto-secundario);
-    text-transform: uppercase;
-    font-weight: 800;
-}
-
-.vehiculo-detalle-page .stat-card.vehiculo-info strong {
-    font-size: 1.25rem;
-    font-weight: 900;
-    color: var(--color-texto);
-}
-
-.vehiculo-detalle-page .detalle-item {
-    border: 1px solid var(--color-borde-suave);
-    border-radius: 16px;
-    padding: 14px;
-    background: #fafbfd;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.vehiculo-detalle-page .detalle-item span {
-    font-size: 0.7rem;
-    color: var(--color-texto-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 800;
-}
-
-.vehiculo-detalle-page .detalle-item strong {
-    color: var(--color-texto);
-    font-size: 0.94rem;
-    font-weight: 800;
-}
-
-/* ───────────────────────── Sensores ─────────────────────── */
-
-.sensores-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-}
-
-.sensor-card {
-    position: relative;
-    border: 1px solid var(--color-borde-suave);
-    border-radius: 18px;
-    padding: 16px;
-    background: #ffffff;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
-    overflow: hidden;
-}
-
-.sensor-card::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 5px;
-    background: #16a34a;
-}
-
-.sensor-card span {
-    display: block;
-    font-size: 0.7rem;
-    color: var(--color-texto-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    font-weight: 900;
-    margin-bottom: 7px;
-}
-
-.sensor-card strong {
-    display: block;
-    font-size: 1rem;
-    color: var(--color-texto);
-    font-weight: 900;
-    margin-bottom: 5px;
-}
-
-.sensor-card small {
-    color: var(--color-texto-secundario);
-    font-size: 0.76rem;
-    font-weight: 700;
-}
-
-.sensor-ok::before {
-    background: #16a34a;
-}
-
-.sensor-alerta {
-    background: #fffafa;
-}
-
-.sensor-alerta::before {
-    background: #dc2626;
-}
-
-.sensor-desconectado::before {
-    background: #94a3b8;
-}
-
-/* ───────────────────────── Alertas detalle ──────────────── */
-
-.alertas-vehiculo-listado {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.vehiculo-detalle-page .alerta-item {
-    position: relative;
-    border: 1px solid var(--color-borde-suave);
-    border-radius: 18px;
-    padding: 15px 16px 15px 20px;
-    background: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    gap: 14px;
-    align-items: flex-start;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
-    overflow: hidden;
-}
-
-.vehiculo-detalle-page .alerta-item::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 5px;
-    background: #ef4444;
-}
-
-.vehiculo-detalle-page .alerta-item strong {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--color-texto);
-    font-weight: 900;
-}
-
-.vehiculo-detalle-page .alerta-item p {
-    margin: 0;
-    color: var(--color-texto-secundario);
-    font-size: 0.86rem;
-    line-height: 1.45;
-}
-
-.vehiculo-detalle-page .alerta-item span,
-.vehiculo-detalle-page .alerta-item > span {
-    flex-shrink: 0;
-    color: #dc2626;
-    background: #fee2e2;
-    border-radius: 999px;
-    padding: 5px 10px;
-    font-size: 0.74rem;
-    font-weight: 900;
-}
-
-/* ───────────────────────── Evidencias ───────────────────── */
-
-.evidencias-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.premium-lock {
-    border: 1.5px dashed #f59e0b;
-    border-radius: 18px;
-    background: linear-gradient(135deg, #fffbeb 0%, #fff7ed 100%);
-    padding: 18px;
-    color: #92400e;
-}
-
-.premium-lock strong {
-    display: block;
-    font-size: 0.98rem;
-    font-weight: 900;
-    margin-bottom: 8px;
-}
-
-.premium-lock p {
-    margin: 0 0 10px;
-    font-size: 0.84rem;
-    line-height: 1.5;
-}
-
-.premium-lock span {
-    display: inline-flex;
-    border-radius: 999px;
-    background: #fef3c7;
-    padding: 6px 12px;
-    font-size: 0.75rem;
-    font-weight: 900;
-}
-
-.evidencia-card {
-    border: 1px solid var(--color-borde-suave);
-    border-radius: 18px;
-    overflow: hidden;
-    background: #ffffff;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
-}
-
-.evidencia-img {
-    height: 180px;
-    background: #f1f5f9;
-}
-
-.evidencia-img img {
+.detalle-card-mapa .mapa-vehiculo {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    min-height: 250px;
+    max-height: none;
 }
 
-.evidencia-card > div:last-child {
-    padding: 14px;
+.detalle-card-mapa .mapa-info {
+    min-height: 0;
+    flex: 0 0 auto;
 }
 
-.evidencia-card strong {
-    display: block;
-    font-size: 0.92rem;
-    font-weight: 900;
-    margin-bottom: 4px;
+.detalle-card-mapa .mapa-info .btn {
+    margin-top: 8px;
 }
 
-.evidencia-card small {
-    color: var(--color-texto-secundario);
-}
 
-/* ───────────────────────── Eventos ─────────────────────── */
+/* ============================================================
+   ESTADO DE SENSORES
+   ============================================================ */
 
-.eventos-vehiculo-listado {
+.detalle-card-sensores .card-body {
     display: flex;
     flex-direction: column;
-    gap: 12px;
 }
 
-.evento-item {
-    position: relative;
-    border: 1px solid var(--color-borde-suave);
-    border-radius: 18px;
-    padding: 15px 16px 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    gap: 14px;
-    background: #ffffff;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
-    overflow: hidden;
+.detalle-card-sensores .sensores-grid {
+    display: grid;
+    height: 100%;
+    min-height: 0;
+    flex: 1;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    grid-template-rows:
+        repeat(2, minmax(96px, 1fr));
+    gap: 10px;
+    align-content: stretch;
 }
 
-.evento-item::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 5px;
-    background: var(--color-primario);
-}
-
-.evento-item strong {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--color-texto);
-    font-weight: 900;
-}
-
-.evento-item p {
-    margin: 0;
-    color: var(--color-texto-secundario);
-    font-size: 0.86rem;
-    line-height: 1.45;
-}
-
-.evento-item small {
-    display: block;
-    margin-top: 6px;
-    color: var(--color-texto-muted);
-    font-size: 0.76rem;
-    font-weight: 700;
-}
-
-.evento-item > span {
-    flex-shrink: 0;
-    align-self: flex-start;
-    color: var(--color-primario);
-    background: rgba(37, 99, 235, 0.10);
-    border-radius: 999px;
-    padding: 5px 10px;
-    font-size: 0.74rem;
-    font-weight: 900;
-}
-
-/* ───────────────────────── Mapa ────────────────────────── */
-
-.vehiculo-map-card {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.mapa-vehiculo {
+.detalle-card-sensores .sensor-card {
     width: 100%;
-    height: 340px;
-    min-height: 340px;
-    border-radius: 20px;
-    border: 1px solid var(--color-borde-suave);
-    overflow: hidden;
-    background: #f1f5f9;
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.055);
+    min-width: 0;
+    min-height: 96px;
+    height: 100%;
 }
 
-.mapa-info {
-    border: 1px solid var(--color-borde-suave);
-    border-radius: 18px;
-    background: #ffffff;
-    padding: 16px;
-    min-height: 155px;
+
+/* ============================================================
+   EVIDENCIA FOTOGRÁFICA
+   ============================================================ */
+
+.detalle-card-evidencias .card-body {
     display: flex;
+    min-height: 0;
     flex-direction: column;
-    gap: 8px;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.045);
 }
 
-#detalleDireccionVehiculo {
-    display: block;
-    font-weight: 900;
-    color: var(--color-texto);
-    line-height: 1.4;
-    max-height: 76px;
+.detalle-card-evidencias .evidencias-grid {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/*
+ * Los elementos ya no llenan una altura artificial.
+ */
+.detalle-card-evidencias .evidencias-grid > * {
+    min-width: 0;
+    min-height: 0;
+    flex: 0 1 auto;
+}
+
+/*
+ * Compatible con las dos estructuras de carrusel
+ * utilizadas anteriormente.
+ */
+.detalle-card-evidencias .carrusel-evidencias,
+.detalle-card-evidencias .carrusel-evidencias-wrapper {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    flex: 0 1 auto;
+}
+
+.detalle-card-evidencias .carrusel-track {
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    padding: 8px;
+}
+
+/*
+ * En escritorio se muestran dos evidencias.
+ * Esto aprovecha el ancho sin hacer fotografías gigantes.
+ */
+.detalle-card-evidencias .carrusel-slide {
+    min-width: 0;
+    height: auto;
+    flex: 0 0 calc(50% - 5px);
+}
+
+/*
+ * Fotografía ligeramente rectangular.
+ * La altura máxima evita que el carrusel estire la fila.
+ */
+.detalle-card-evidencias .carrusel-imagen-container {
+    position: relative;
+    display: grid;
+    width: 100%;
+    height: auto;
+    min-height: 190px;
+    max-height: 240px;
+    aspect-ratio: 4 / 3;
+    place-items: center;
     overflow: hidden;
+    background: #0f172a;
 }
 
-#detalleUbicacionTexto {
-    margin: 0;
-    color: var(--color-texto-secundario);
-    font-size: 0.84rem;
-    line-height: 1.4;
+.detalle-card-evidencias .carrusel-imagen-container img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
 
-.mapa-info .btn {
-    margin-top: auto;
-    align-self: flex-start;
+.detalle-card-evidencias .carrusel-info {
+    min-height: 0;
+    padding: 10px 12px;
 }
 
-.leaflet-popup-content {
-    font-family: inherit;
-    font-size: 0.85rem;
+
+/* ============================================================
+   ALERTAS Y BITÁCORA
+   ============================================================ */
+
+.detalle-card-ancha {
+    width: 100%;
+    min-width: 0;
 }
 
-/* ───────────────────────── Estados ─────────────────────── */
 
-.is-loading-soft {
-    opacity: 0.96;
-    transition: opacity 0.2s ease;
-}
-
-.detalle-ultima-carga {
-    display: inline-flex;
-    align-items: center;
-    min-height: 36px;
-    padding: 0 13px;
-    border-radius: 999px;
-    background: #f8fafc;
-    border: 1px solid var(--color-borde-suave);
-    color: var(--color-texto-secundario);
-    font-size: 0.78rem;
-    font-weight: 800;
-}
-
-/* ───────────────────────── Responsive ───────────────────── */
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 
 @media (max-width: 1100px) {
-    .vehiculos-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .vehiculo-card-body {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .vehiculo-detalle-grid {
+    .detalle-fila-principal,
+    .detalle-fila-operativa {
         grid-template-columns: 1fr;
+    }
+
+    .detalle-card-mapa .mapa-vehiculo {
+        min-height: 300px;
+    }
+
+    /*
+     * En tablet todavía caben dos evidencias pequeñas.
+     */
+    .detalle-card-evidencias .carrusel-slide {
+        flex-basis: calc(50% - 5px);
     }
 }
 
 @media (max-width: 700px) {
-    .vehiculos-header {
-        flex-direction: column;
+    .detalle-fila {
+        gap: 11px;
     }
 
-    .filtros-grid,
-    .form-grid,
-    .detalle-grid,
-    .vehiculo-card-body,
-    .vehiculos-stats-grid,
-    .sensores-grid {
+    .detalle-card-info .detalle-grid,
+    .detalle-card-info .vehiculo-card-body {
         grid-template-columns: 1fr;
     }
 
-    .form-footer {
-        flex-direction: column;
-        align-items: stretch;
+    .detalle-card-sensores .sensores-grid {
+        height: auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
     }
 
-    .form-actions {
-        width: 100%;
+    .detalle-card-sensores .sensor-card {
+        min-height: 82px;
+        height: auto;
     }
 
-    .form-actions .btn {
-        flex: 1;
+    /*
+     * En teléfono se muestra una evidencia por movimiento.
+     */
+    .detalle-card-evidencias .carrusel-slide {
+        flex-basis: 100%;
     }
 
-    .vehiculo-detalle-page .alerta-item,
-    .evento-item {
-        flex-direction: column;
+    .detalle-card-evidencias .carrusel-imagen-container {
+        min-height: 200px;
+        max-height: none;
+        aspect-ratio: 4 / 3;
     }
 
-    .mapa-vehiculo {
-        height: 300px;
-        min-height: 300px;
+    .detalle-card-mapa .mapa-vehiculo {
+        height: 280px;
+        min-height: 280px;
     }
-}
-
-/* ==========================================================
-   AJUSTE DE ALTURAS PARA DETALLE DEL VEHÍCULO
-   Evita huecos visuales cuando una card tiene poco contenido
-   ========================================================== */
-
-/* Cada card principal del detalle se comporta como columna */
-.vehiculo-detalle-page .card {
-    display: flex;
-    flex-direction: column;
-}
-
-/* El body de cada card crece y reparte mejor el espacio */
-.vehiculo-detalle-page .card-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-/* ==========================================================
-   1) INFORMACIÓN GENERAL
-   La hacemos un poco más alta para equilibrar con el mapa
-   ========================================================== */
-.vehiculo-detalle-page .card:has(.detalle-grid) .card-body {
-    min-height: 360px;
-}
-
-/* El grid interno se estira para ocupar mejor el espacio */
-.detalle-grid {
-    flex: 1;
-    align-content: start;
-}
-
-/* Las cajas internas se ven más “rellenas” */
-.vehiculo-detalle-page .detalle-item {
-    min-height: 82px;
-    justify-content: center;
-}
-
-/* ==========================================================
-   2) BLOQUE DEL MAPA
-   Lo dejamos más consistente
-   ========================================================== */
-.vehiculo-map-card {
-    min-height: 100%;
-}
-
-.mapa-vehiculo {
-    height: 320px;
-    min-height: 320px;
-}
-
-.mapa-info {
-    min-height: 150px;
-}
-
-/* ==========================================================
-   3) ESTADO DE SENSORES
-   ========================================================== */
-.vehiculo-detalle-page .card:has(.sensores-grid) .card-body {
-    min-height: 290px;
-}
-
-.sensores-grid {
-    flex: 1;
-    align-content: start;
-}
-
-.sensor-card {
-    min-height: 84px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* ==========================================================
-   4) EVIDENCIA FOTOGRÁFICA
-   Queremos que no se vea “chaparra” cuando no hay imágenes
-   ========================================================== */
-.vehiculo-detalle-page .card:has(.evidencias-grid) .card-body {
-    min-height: 290px;
-}
-
-/* Cuando NO hay evidencias, este bloque llena la card */
-.evidencias-grid {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.premium-lock,
-.evidencia-card,
-.evidencias-grid > .empty-state,
-.evidencias-grid > .sin-evidencias,
-.evidencias-grid > div {
-    flex: 1;
-}
-
-/* Si tu placeholder de "sin evidencias" es un div simple,
-   esto lo centra bonito y ocupa el alto disponible */
-.evidencias-grid > div:only-child {
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* ==========================================================
-   5) RESPONSIVE
-   En móvil quitamos alturas forzadas para que no estorbe
-   ========================================================== */
-@media (max-width: 1100px) {
-    .vehiculo-detalle-page .card:has(.detalle-grid) .card-body,
-    .vehiculo-detalle-page .card:has(.sensores-grid) .card-body,
-    .vehiculo-detalle-page .card:has(.evidencias-grid) .card-body {
-        min-height: auto;
-    }
-
-    .vehiculo-detalle-page .detalle-item,
-    .sensor-card {
-        min-height: auto;
-    }
-}
-
-
-
-.btn-danger {
-    background: #dc2626;
-    color: #ffffff;
-    border: none;
-}
-
-.btn-danger:hover {
-    background: #b91c1c;
-}
-
-.modal-vehiculo-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.48);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    padding: 20px;
-}
-
-.modal-vehiculo-overlay.visible {
-    display: flex;
-}
-
-.modal-vehiculo {
-    width: 100%;
-    max-width: 480px;
-    background: #ffffff;
-    border-radius: 22px;
-    border: 1px solid var(--color-borde-suave);
-    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
-    overflow: hidden;
-}
-
-.modal-vehiculo-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 20px;
-    border-bottom: 1px solid var(--color-borde-suave);
-}
-
-.modal-vehiculo-header h3 {
-    margin: 0;
-    font-size: 1.08rem;
-    font-weight: 900;
-    color: var(--color-texto);
-}
-
-.modal-vehiculo-close {
-    width: 34px;
-    height: 34px;
-    border: none;
-    border-radius: 999px;
-    background: #f1f5f9;
-    color: var(--color-texto-secundario);
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-.modal-vehiculo-body {
-    padding: 20px;
-}
-
-.modal-vehiculo-body p {
-    margin: 0 0 14px;
-    color: var(--color-texto-secundario);
-    line-height: 1.5;
-}
-
-.modal-vehiculo-info {
-    border: 1px solid var(--color-borde-suave);
-    background: #fafbfd;
-    border-radius: 16px;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.modal-vehiculo-info strong {
-    color: var(--color-texto);
-    font-size: 0.98rem;
-    font-weight: 900;
-}
-
-.modal-vehiculo-info span {
-    color: var(--color-texto-secundario);
-    font-size: 0.86rem;
-}
-
-.modal-vehiculo-note {
-    margin-top: 14px !important;
-    font-size: 0.84rem;
-}
-
-.modal-vehiculo-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding: 16px 20px;
-    border-top: 1px solid var(--color-borde-suave);
-    background: #fafbfd;
-}
-
-.vehiculos-toast {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 10000;
-    max-width: 360px;
-    padding: 14px 18px;
-    border-radius: 14px;
-    background: #0f172a;
-    color: #ffffff;
-    font-size: 0.92rem;
-    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
-    opacity: 0;
-    transform: translateY(12px);
-    pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.vehiculos-toast.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.vehiculos-toast.success {
-    background: #16a34a;
-}
-
-.vehiculos-toast.error {
-    background: #dc2626;
 }
 
 @media (max-width: 520px) {
-    .modal-vehiculo-actions {
-        flex-direction: column;
+    .detalle-card-info .detalle-item {
+        min-height: 64px;
     }
 
-    .modal-vehiculo-actions .btn {
-        width: 100%;
+    .detalle-card-evidencias .carrusel-imagen-container {
+        min-height: 180px;
     }
-}
-
-@media (max-width: 800px) {
-    .vehiculos-stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-    }
-
-    .vehiculos-stats-grid .stat-card {
-        min-height: 106px;
-        padding: 16px 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-
-    .vehiculos-stats-grid .stat-card p {
-        min-height: 34px;
-        margin: 0;
-        font-size: 0.70rem;
-        line-height: 1.25;
-    }
-
-    .vehiculos-stats-grid .stat-card strong {
-        margin-top: auto;
-        font-size: 1.75rem;
-        line-height: 1;
-    }
-}
-
-/* ============================================================
-   SENSOR SIN CONEXIÓN
-   Todos los sensores aparecen en gris cuando el vehículo
-   no tiene señal.
-   ============================================================ */
-
-.sensor-desconectado {
-    border: 1px solid #cbd5e1;
-    background: #f1f5f9;
-}
-
-.sensor-desconectado span {
-    color: #64748b;
-}
-
-.sensor-desconectado strong {
-    color: #475569;
-}
-
-.sensor-desconectado small {
-    color: #94a3b8;
-}
-
-.badge-desactivado {
-    background: #e2e8f0;
-    color: #475569;
-}
-
-
-.vehiculo-card:has(.badge-desactivado) {
-    opacity: 0.88;
-}
-
-/* ============================================================
-   SENSOR INFORMATIVO - MODO MANUAL
-   ============================================================ */
-
-.sensor-info {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-}
-
-.sensor-info::before {
-    background: #2563eb;
-}
-
-.sensor-info strong {
-    color: #1e40af;
-}
-
-.sensor-info small {
-    color: #475569;
 }

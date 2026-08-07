@@ -1068,48 +1068,32 @@ def registrar_esp32_routes(app):
 
                     # =========================================
                     # 4. CREAR NUEVA ALERTA
-                    #
-                    # No existe condición activa anterior y
-                    # ya pasó la ventana de separación.
                     # =========================================
 
                     alerta_nueva = crear_alerta(
-
                         vehiculo.id,
-
                         tipo_alerta,
-
                         nivel_alerta,
-
                         descripcion,
-
                         lat=data.get("lat"),
-
                         lng=data.get("lng")
-
                     )
 
+                    # 🌟 NUEVO: Solo actualizamos si crear_alerta realmente devolvió el objeto
+                    if alerta_nueva is not None:
+                        alerta_nueva.condicion_activa = True
+                        alerta_nueva.ultima_actualizacion = ahora
 
-                    alerta_nueva.condicion_activa = True
+                        alerta_creada = True
+                        tipos_alerta_creados.append(tipo_alerta)
 
-                    alerta_nueva.ultima_actualizacion = (
-                        ahora
-                    )
-
-
-                    alerta_creada = True
-
-
-                    tipos_alerta_creados.append(
-                        tipo_alerta
-                    )
-
-
-                    print(
-                        "🚨 NUEVA ALERTA CREADA -> "
-                        f"tipo: {tipo_alerta} | "
-                        f"vehiculo_id: {vehiculo.id}"
-                    )
+                        print(
+                            "🚨 NUEVA ALERTA CREADA -> "
+                            f"tipo: {tipo_alerta} | "
+                            f"vehiculo_id: {vehiculo.id}"
+                        )
+                    else:
+                        print(f"⚠️ ATENCIÓN: crear_alerta se ejecutó pero devolvió 'None' para {tipo_alerta}")
 
 
             # =================================================
@@ -1262,6 +1246,18 @@ def registrar_esp32_routes(app):
             # RESPUESTA
             # =================================================
 
+            # 🌟 BÚSQUEDA SEGURA DE LA ALERTA ACTIVA
+            alerta_activa_id = None
+            if alerta_creada or alerta_actualizada or alerta_reutilizada:
+                ultima_alerta_obj = Alerta.query.filter_by(
+                    vehiculo_id=vehiculo.id,
+                    condicion_activa=True
+                ).order_by(Alerta.timestamp.desc()).first()
+                
+                # Validamos que el objeto exista antes de leer su .id
+                if ultima_alerta_obj is not None:
+                    alerta_activa_id = ultima_alerta_obj.id
+
             return jsonify({
 
                 "success": True,
@@ -1271,6 +1267,9 @@ def registrar_esp32_routes(app):
 
                 "vehiculo":
                     vehiculo.nombre,
+                
+                "vehiculo_id": vehiculo.id,
+                "alerta_id": alerta_activa_id,
 
                 "modo_manual":
                     modo_manual_actual,
@@ -1312,19 +1311,18 @@ def registrar_esp32_routes(app):
                     motivo_historial,
 
             }), 200
-
-
         except Exception as error:
 
             db.session.rollback()
 
+            # 🌟 NUEVO: Esto imprimirá el error exacto y la línea que falló en tu consola
+            import traceback
+            traceback.print_exc()
 
             print(
                 "❌ ERROR al procesar "
                 f"datos del ESP32: {error}"
             )
-
-
             return jsonify({
 
                 "success": False,
@@ -1332,4 +1330,5 @@ def registrar_esp32_routes(app):
                 "mensaje":
                     "error interno del servidor"
 
+            
             }), 500

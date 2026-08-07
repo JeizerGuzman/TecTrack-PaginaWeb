@@ -935,7 +935,8 @@ def crear_alerta(
                     
     except Exception as e:
         print(f"❌ Error general en Notificación Push: {e}")
-
+        
+    return alerta  # (o el nombre que le hayas puesto a la variable de la alerta)
 
 # ------------------------------------------------------------
 # Construye una dirección corta a partir de la respuesta

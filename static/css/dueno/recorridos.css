@@ -1,173 +1,218 @@
-/* CONTENEDOR PRINCIPAL - Ocupa toda la pantalla bajo el header */
+/* =======================================================
+   DISEÑO: VISTA DE FLOTA (RECORRIDOS Y RUTAS)
+======================================================= */
+
 .vista-flota-container {
     display: flex;
-    height: calc(100vh - 20px); /* Ajusta los 70px según el alto de tu barra superior */
-    background: #f4f5f7;
-    margin: -20px; /* Expande al borde si tu .content tiene padding */
+    height: calc(100vh - 15px); /* Ajusta si tu topbar/navbar mide diferente */
+    background-color: #f3f4f6;
+    overflow: hidden;
+    margin: -24px; /* Quita el padding por defecto del main content para que ocupe todo */
 }
 
-/* PANEL LATERAL (LISTA) */
+/* --------------------------------------
+   PANEL LATERAL (LISTA)
+-------------------------------------- */
 .panel-lateral {
-    width: 380px;
-    min-width: 380px;
+    width: 360px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid #d1d5db;
+    border-right: 1px solid #e5e7eb;
     z-index: 10;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.03);
+    box-shadow: 2px 0 8px rgba(0,0,0,0.03);
 }
 
 .panel-header {
-    padding: 16px;
+    padding: 20px;
     border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
 }
 
 .panel-header h3 {
-    margin: 0 0 12px 0;
-    font-size: 1.1rem;
+    margin: 0 0 14px 0;
     color: #111827;
+    font-size: 18px;
+    font-weight: 800;
 }
 
 .filtros-compactos {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .input-compacto {
     flex: 1;
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 10px 12px;
     border: 1px solid #d1d5db;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-size: 13px;
     outline: none;
     color: #374151;
+    background-color: #f9fafb;
+    transition: border-color 0.2s;
+}
+
+.input-compacto:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
 }
 
 .btn-icon {
-    padding: 6px 12px;
     background: #f3f4f6;
     border: 1px solid #d1d5db;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
+    padding: 0 12px;
+    font-size: 16px;
     color: #4b5563;
+    transition: all 0.2s;
 }
-.btn-icon:hover { background: #e5e7eb; }
 
-/* LISTA SCROLL COMPACTA */
+.btn-icon:hover {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+/* --------------------------------------
+   ITEMS DE LA LISTA
+-------------------------------------- */
 .lista-recorridos {
     flex: 1;
     overflow-y: auto;
-    background: #ffffff;
-}
-
-.loading-texto {
-    padding: 20px;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #6b7280;
-}
-
-/* ITEM COMPACTO (Como en la imagen) */
-.item-recorrido {
-    padding: 12px 16px;
-    border-bottom: 1px solid #e5e7eb;
-    cursor: pointer;
-    display: flex;
-    gap: 12px;
-    transition: background 0.15s;
-    position: relative;
-}
-
-.item-recorrido:hover {
+    padding: 12px;
     background: #f9fafb;
 }
 
+.item-recorrido {
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.item-recorrido:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.08);
+    transform: translateY(-1px);
+}
+
+/* Tarjeta Activa */
 .item-recorrido.activo {
-    background: #f0fdf4; /* Un verde muy sutil o azul claro */
+    border-color: #3b82f6;
+    background: #eff6ff;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
 }
 
-/* La rayita indicadora izquierda cuando está activo */
-.item-recorrido.activo::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: #10b981; 
-}
-
-/* Icono de estado (Puntito) */
 .status-dot {
-    width: 16px;
-    height: 16px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    margin-top: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 10px;
+    font-size: 12px;
+    margin-right: 14px;
     flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 .dot-en_curso { background: #10b981; } /* Verde */
-.dot-finalizado { background: #6b7280; } /* Gris */
+.dot-finalizado { background: #3b82f6; } /* Azul */
 .dot-cancelado { background: #ef4444; } /* Rojo */
 
 .item-info {
     flex: 1;
-    min-width: 0; /* Previene desbordamiento de texto */
+    min-width: 0;
 }
 
 .item-titulo {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #111827;
+    font-weight: 800;
+    font-size: 14px;
+    color: #1f2937;
     margin-bottom: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .item-detalle {
-    font-size: 0.8rem;
-    color: #4b5563;
-    margin-bottom: 2px;
+    font-size: 12px;
+    color: #6b7280;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 1.4;
 }
 
 .item-meta {
     text-align: right;
-    font-size: 0.75rem;
-    color: #6b7280;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
+    margin-left: 12px;
 }
 
-/* PAGINACIÓN COMPACTA */
+.item-meta strong {
+    color: #374151;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.item-meta span {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+/* --------------------------------------
+   PAGINACIÓN
+-------------------------------------- */
 .paginacion-compacta {
-    padding: 10px 16px;
+    padding: 16px;
     border-top: 1px solid #e5e7eb;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    background: #f9fafb;
-    font-size: 0.85rem;
+    gap: 16px;
+    background: #ffffff;
 }
 
 .paginacion-compacta button {
-    border: none; background: none; font-size: 1rem; cursor: pointer; color: #374151; padding: 4px 8px;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #374151;
+    font-weight: bold;
+    transition: background 0.2s;
 }
-.paginacion-compacta button:disabled { color: #d1d5db; cursor: not-allowed; }
 
-/* PANEL DERECHO (MAPA) */
+.paginacion-compacta button:hover:not(:disabled) {
+    background: #e5e7eb;
+}
+
+.paginacion-compacta button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#texto-paginacion {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+/* --------------------------------------
+   PANEL DERECHO (MAPA)
+-------------------------------------- */
 .panel-mapa {
     flex: 1;
     position: relative;
-    background: #e5e7eb;
+    background: #e5e7eb; /* Color de fondo mientras carga el mapa */
 }
 
 #mapa-recorrido {
@@ -176,72 +221,305 @@
     z-index: 1;
 }
 
-/* Tarjetita flotante dentro del mapa */
 .info-flotante {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    background: white;
-    padding: 12px 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    z-index: 1000; /* Sobre Leaflet */
+    top: 24px;
+    left: 24px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    padding: 14px 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid #e5e7eb;
 }
 
-.info-flotante h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: #111827; }
-.badge-estado { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
+.info-flotante h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: #111827;
+}
 
-.oculto { display: none !important; }
+.badge-estado {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
 
+.oculto {
+    display: none !important;
+}
 
-/* =========================================
-   RESPONSIVO PARA MÓVILES Y TABLETS
-========================================= */
-@media (max-width: 992px) {
+.loading-texto {
+    text-align: center;
+    padding: 30px 20px;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* --------------------------------------
+   RESPONSIVO (MÓVILES)
+-------------------------------------- */
+@media (max-width: 768px) {
     .vista-flota-container {
-        /* Cambiamos de lado a lado, a uno arriba del otro. 
-           column-reverse pone el mapa arriba y la lista abajo */
-        flex-direction: column-reverse; 
-        
-        /* Ajustamos el alto para evitar desbordes con la barra de navegación del celular */
-        height: calc(100vh - 60px); 
+        flex-direction: column;
     }
-
+    
     .panel-lateral {
         width: 100%;
-        min-width: 100%;
-        /* La lista tomará exactamente la mitad de la pantalla */
-        height: 50%; 
+        height: 50%; /* Divide la pantalla a la mitad en móviles */
         border-right: none;
-        border-top: 1px solid #d1d5db;
-        box-shadow: 0 -4px 10px rgba(0,0,0,0.05); /* Sombra hacia arriba */
-        z-index: 10;
+        border-bottom: 2px solid #e5e7eb;
     }
-
+    
     .panel-mapa {
-        width: 100%;
-        /* El mapa tomará la otra mitad superior */
-        height: 50%; 
-        flex: none; /* Quitamos el flex: 1 para forzar el 50% */
-    }
-
-    /* Reducimos un poco los márgenes para aprovechar el espacio en pantallas pequeñas */
-    .panel-header {
-        padding: 12px;
-    }
-
-    .item-recorrido {
-        padding: 10px 12px;
-    }
-
-    /* Movemos la tarjeta flotante de info del viaje a la parte inferior del mapa 
-       para que no estorbe con los botones de zoom de Leaflet */
-    .info-flotante {
-        top: auto;
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        text-align: center;
-        padding: 8px 12px;
+        height: 50%;
     }
 }
+
+/* =======================================================
+   MODAL DE DETALLES DEL VIAJE
+======================================================= */
+.btn-info-viaje {
+    background: transparent;
+    border: none;
+    color: #3b82f6;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-top: 4px;
+}
+
+.btn-info-viaje:hover {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.viaje-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.stat-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 12px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 15px;
+    color: #111827;
+    font-weight: 800;
+}
+
+.viaje-info-section {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.viaje-info-section h4 {
+    font-size: 14px;
+    color: #374151;
+    margin: 0 0 10px 0;
+    font-weight: 800;
+}
+
+.viaje-info-row {
+    font-size: 13px;
+    color: #4b5563;
+    line-height: 1.5;
+}
+
+.viaje-info-row strong {
+    color: #111827;
+}
+
+.viaje-alertas-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.viaje-alertas-lista li {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 12.5px;
+    color: #991b1b;
+}
+
+.viaje-alertas-lista li strong {
+    display: block;
+    font-size: 12px;
+    color: #7f1d1d;
+    margin-bottom: 2px;
+}
+
+/* =======================================================
+   ESTRUCTURA BASE DEL MODAL (Evita que el mapa lo tape)
+======================================================= */
+.modal-backdrop {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(17, 24, 39, 0.6);
+    z-index: 9999; /* 🌟 CLAVE: Debe ser mayor al del mapa de Leaflet */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-backdrop.visible {
+    display: flex;
+}
+
+.modal-card {
+    background: #ffffff;
+    border-radius: 16px;
+    width: 90%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 { 
+    margin: 0; 
+    font-size: 18px; 
+    color: #111827; 
+}
+
+.modal-header p { 
+    margin: 4px 0 0 0; 
+    font-size: 13px; 
+    color: #6b7280; 
+}
+
+.modal-close {
+    background: transparent; 
+    border: none; 
+    font-size: 24px;
+    color: #9ca3af; 
+    cursor: pointer; 
+    transition: color 0.2s;
+}
+
+.modal-close:hover { 
+    color: #111827; 
+}
+
+.modal-body { 
+    padding: 24px; 
+}
+
+.modal-actions {
+    padding: 16px 24px; 
+    border-top: 1px solid #e5e7eb;
+    display: flex; 
+    gap: 12px;
+}
+
+/* =======================================================
+   ESTILOS NUEVOS: CHOFER Y COMPARACIÓN
+======================================================= */
+.viaje-chofer-card {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.chofer-avatar {
+    width: 40px;
+    height: 40px;
+    background: #e0e7ff;
+    color: #4f46e5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+}
+
+.chofer-avatar svg { width: 22px; height: 22px; }
+
+.chofer-info, .vehiculo-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.chofer-info { flex: 1; }
+
+.chofer-info .label, .vehiculo-info .label {
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.chofer-info strong, .vehiculo-info strong {
+    font-size: 15px;
+    color: #0f172a;
+}
+
+.vehiculo-info { text-align: right; }
+
+.comparison-values {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.est-val { color: #64748b; font-size: 13px; text-decoration: line-through; }
+.divider { color: #cbd5e1; font-size: 13px; }
+.real-val { color: #0f172a; font-size: 16px; font-weight: 800; }
+
+/* Badges de Tiempo */
+.badge-tiempo {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+.tiempo-ok { background: #dcfce7; color: #166534; }
+.tiempo-retraso { background: #fef9c3; color: #854d0e; }
+.tiempo-tarde { background: #fee2e2; color: #991b1b; }

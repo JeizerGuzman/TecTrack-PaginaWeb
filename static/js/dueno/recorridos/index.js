@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-function renderizarLista(recorridos) {
+    function renderizarLista(recorridos) {
         contenedorRecorridos.innerHTML = '';
         if (recorridos.length === 0) {
             contenedorRecorridos.innerHTML = '<div class="loading-texto">Sin registros.</div>';
@@ -86,16 +86,26 @@ function renderizarLista(recorridos) {
             div.innerHTML = `
                 <div class="status-dot dot-${r.estado}">${icono}</div>
                 <div class="item-info">
-                    <div class="item-titulo">Vehículo ${r.vehiculo_id}</div>
-                    <div class="item-detalle">De: ${r.origen_nombre}</div>
-                    <div class="item-detalle">A: ${r.destino_nombre}</div>
+                    <!-- 🌟 AHORA MUESTRA EL NOMBRE REAL -->
+                    <div class="item-titulo">${escapeHtml(r.vehiculo_nombre || 'Vehículo ' + r.vehiculo_id)}</div>
+                     <div class="item-detalle">De: ${r.origen_nombre}</div>
+                    <div class="item-detalle">A: ${escapeHtml(r.destino_nombre || 'Sin destino')}</div>
                 </div>
                 <div class="item-meta">
                     <strong>${hora}</strong>
                     <span>${fechaCorta}</span>
+                    <button class="btn-info-viaje" data-id="${r.id}" title="Ver detalles completos">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16v-4"></path>
+                            <path d="M12 8h.01"></path>
+                        </svg>
+                    </button>
                 </div>
             `;
+            // IMPORTANTE: Asegúrate de tener una función "escapeHtml" definida en tu JS, si no la tienes, te la dejo abajo.
             
+            // Evento para dibujar en el mapa al hacer clic en la tarjeta
             div.addEventListener('click', () => {
                 document.querySelectorAll('.item-recorrido').forEach(el => el.classList.remove('activo'));
                 div.classList.add('activo');
@@ -105,6 +115,13 @@ function renderizarLista(recorridos) {
                 recorridoActivoEstado = r.estado;
                 
                 dibujarRutaEnMapa(r.id, r.estado);
+            });
+
+            // NUEVO: Evento para abrir el modal (evitando que se active el clic del mapa)
+            const btnInfo = div.querySelector('.btn-info-viaje');
+            btnInfo.addEventListener('click', (e) => {
+                e.stopPropagation(); // Detiene el clic para que no afecte a la tarjeta padre
+                abrirModalDetallesRecorrido(r.id, r.estado);
             });
 
             contenedorRecorridos.appendChild(div);
@@ -277,6 +294,131 @@ function renderizarLista(recorridos) {
         if (recorridoActivoId && recorridoActivoEstado === 'en_curso') {
             dibujarRutaEnMapa(recorridoActivoId, recorridoActivoEstado);
         }
-    }, 5000); // 30000 milisegundos = 30 segundos
+    }, 30000); // Ajustado a 30 segundos (30000 ms)
+
+    // ==========================================
+    // MODAL DE DETALLES DEL RECORRIDO
+    // ==========================================
+    
+    // Configurar cierres del modal
+    document.getElementById('btnCerrarModalDetalle')?.addEventListener('click', cerrarModalDetalle);
+    document.getElementById('btnCerrarModalDetalleAbajo')?.addEventListener('click', cerrarModalDetalle);
+
+    function cerrarModalDetalle() {
+        document.getElementById('modalDetalleViaje')?.classList.remove('visible');
+    }
+
+    async function abrirModalDetallesRecorrido(recorridoId, estado) {
+        // Mostrar modal con estado de carga
+        const modal = document.getElementById('modalDetalleViaje');
+        document.getElementById('modalDetalleTitulo').textContent = `Viaje #${recorridoId}`;
+        document.getElementById('modalDetalleSubtitulo').textContent = "Obteniendo datos del servidor...";
+        
+        // Limpiar datos previos
+        document.getElementById('mdlEstado').textContent = "-";
+        document.getElementById('mdlDistanciaEst').textContent = "-";
+        document.getElementById('mdlTiempoEst').textContent = "-";
+        document.getElementById('mdlTotalAlertas').textContent = "0";
+        document.getElementById('mdlInicio').textContent = "-";
+        document.getElementById('mdlFin').textContent = "-";
+        document.getElementById('mdlOrigen').textContent = "-";
+        document.getElementById('mdlDestino').textContent = "-";
+        document.getElementById('contenedorAlertasModal').style.display = 'none';
+        document.getElementById('listaAlertasModal').innerHTML = "";
+
+        modal.classList.add('visible');
+
+        try {
+            const data = await TrackAPI.obtenerDetalleRecorrido(recorridoId);
+            if (data.success) {
+                const rec = data.recorrido;
+                
+                document.getElementById('modalDetalleTitulo').textContent = `Viaje #${rec.id}`;
+                document.getElementById('modalDetalleSubtitulo').textContent = `${rec.vehiculo_nombre || 'Vehículo ' + rec.vehiculo_id}`;
+                
+                // Chofer y Vehículo
+                document.getElementById('mdlChofer').textContent = rec.chofer_nombre || "No asignado";document.getElementById('mdlPlacasYVel').textContent = rec.vehiculo_placas || 'Sin placas registradas';
+                document.getElementById('mdlPlacasYVel').textContent = rec.vehiculo_placas || 'Sin placas registradas';
+
+                // Estado
+                const estadosVisuales = { 'en_curso': '🟢 En Curso', 'finalizado': '🔵 Finalizado', 'cancelado': '🔴 Cancelado' };
+                document.getElementById('mdlEstado').textContent = estadosVisuales[rec.estado] || rec.estado;
+                
+                // Distancias
+                document.getElementById('mdlDistanciaEst').textContent = rec.distancia_estimada_km ? `${rec.distancia_estimada_km} km` : '-';
+                document.getElementById('mdlDistanciaReal').textContent = rec.distancia_real_km ? `${rec.distancia_real_km} km` : (rec.estado === 'en_curso' ? 'En ruta' : '-');
+                
+                // Tiempos y Cálculo de Retraso (La lógica inteligente)
+                const tEst = rec.tiempo_estimado_mins || 0;
+                let tReal = rec.tiempo_real_mins || 0;
+                
+                // Si el viaje está en curso y no nos envían tiempo_real, lo calculamos al vuelo
+                if (rec.estado === 'en_curso' && rec.fecha_inicio) {
+                    tReal = Math.floor((Date.now() / 1000 - rec.fecha_inicio) / 60);
+                }
+
+                document.getElementById('mdlTiempoEst').textContent = tEst ? `${tEst} min` : '-';
+                document.getElementById('mdlTiempoReal').textContent = tReal ? `${tReal} min` : '-';
+
+                // Lógica de retrasos
+                const badgeRetraso = document.getElementById('mdlRetrasoBadge');
+                badgeRetraso.innerHTML = ""; // Limpiar
+                
+                if (tEst > 0 && tReal > 0) {
+                    const diferencia = tReal - tEst;
+                    
+                    if (diferencia <= 5) { // Margen de gracia de 5 minutos
+                        badgeRetraso.innerHTML = `<span class="badge-tiempo tiempo-ok">A tiempo</span>`;
+                    } else if (diferencia > 5 && diferencia <= 15) {
+                        badgeRetraso.innerHTML = `<span class="badge-tiempo tiempo-retraso">+${diferencia} min (Ligero retraso)</span>`;
+                    } else {
+                        badgeRetraso.innerHTML = `<span class="badge-tiempo tiempo-tarde">+${diferencia} min (Muy tarde)</span>`;
+                    }
+                }
+
+                // Fechas
+                const formatearFecha = (ts) => ts ? new Date(ts * 1000).toLocaleString('es-MX') : 'Pendiente';
+                document.getElementById('mdlInicio').textContent = formatearFecha(rec.fecha_inicio);
+                document.getElementById('mdlFin').textContent = rec.estado === 'en_curso' ? 'En ruta...' : formatearFecha(rec.fecha_fin);
+                
+                // Direcciones
+                document.getElementById('mdlOrigen').textContent = rec.origen_nombre || "Sin especificar";
+                document.getElementById('mdlDestino').textContent = rec.destino_nombre || "Sin especificar";
+
+                // Alertas
+                const totalAlertas = data.alertas ? data.alertas.length : 0;
+                document.getElementById('mdlTotalAlertas').textContent = totalAlertas;
+                
+                if (totalAlertas > 0) {
+                    document.getElementById('contenedorAlertasModal').style.display = 'block';
+                    const lista = document.getElementById('listaAlertasModal');
+                    data.alertas.forEach(alerta => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<strong>${new Date(alerta.timestamp * 1000).toLocaleTimeString()} - ${alerta.tipo.toUpperCase()}</strong> ${alerta.descripcion || 'Sin detalles'}`;
+                        lista.appendChild(li);
+                    });
+                }
+            } else {
+                document.getElementById('modalDetalleSubtitulo').textContent = "Error al obtener datos.";
+            }
+        } catch (error) {
+            console.error("Error abriendo detalles:", error);
+            document.getElementById('modalDetalleSubtitulo').textContent = "Fallo de conexión.";
+        }
+    }
+    
+    // Función de seguridad para evitar que textos extraños rompan el HTML
+    function escapeHtml(texto) {
+        if (!texto) return "";
+        return String(texto).replace(/[&<>"']/g, function(m) {
+            return {
+                '&': '&amp;', 
+                '<': '&lt;', 
+                '>': '&gt;', 
+                '"': '&quot;', 
+                "'": '&#39;'
+            }[m];
+        });
+    }
 
 });
