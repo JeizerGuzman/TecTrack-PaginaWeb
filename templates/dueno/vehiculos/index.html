@@ -18,11 +18,18 @@
         <button type="button" class="btn btn-primary" id="btnAbrirModalNuevoVehiculo">+ Agregar vehículo</button>
     </header>
 
-    <section class="vehiculos-stats-grid" aria-label="Resumen de vehículos">
-        <article class="card stat-card"><p>Total</p><strong id="statVehiculosTotal">0</strong></article>
-        <article class="card stat-card"><p>Activos</p><strong id="statVehiculosActivos">0</strong></article>
-        <article class="card stat-card"><p>Alertas</p><strong id="statVehiculosAlerta">0</strong></article>
-        <article class="card stat-card"><p>Pendientes</p><strong id="statVehiculosPendientes">0</strong></article>
+        <div class="vehiculos-header-actions">
+            <a href="{{ url_for('dueno_vehiculo_nuevo') }}" class="btn btn-primary">
+                + Agregar vehículo
+            </a>
+
+            <button
+                type="button"
+                class="btn btn-outline"
+                data-dueno-tour-trigger="true">
+                Ver recorrido
+            </button>
+        </div>
     </section>
 
     <section class="card filtros-card">

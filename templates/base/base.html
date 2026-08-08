@@ -14,6 +14,10 @@
     </script>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    {% if request.path.startswith('/dueno/') %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.8.0/dist/driver.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dueno/tour.css') }}">
+    {% endif %}
     {% block extra_css %}{% endblock %}
 </head>
 
@@ -182,6 +186,10 @@
     <script src="{{ url_for('static', filename='js/api.js') }}"></script>
     <script src="{{ url_for('static', filename='js/configuracion_sistema.js') }}"></script>
     <script src="{{ url_for('static', filename='js/guards.js') }}"></script>
+    {% if request.path.startswith('/dueno/') %}
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.8.0/dist/driver.js.iife.js"></script>
+    <script src="{{ url_for('static', filename='js/dueno/tour.js') }}"></script>
+    {% endif %}
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
