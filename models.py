@@ -1021,6 +1021,58 @@ class ConfiguracionSistema(db.Model):
 
 
 # ============================================================
+# PROGRESO DE TUTORIALES / RECORRIDOS GUIADOS
+# Guarda qué tutoriales ya completó cada usuario.
+# ============================================================
+
+class TutorialProgreso(db.Model):
+    __tablename__ = "tutoriales_progreso"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    usuario_id = db.Column(
+        db.Integer,
+        db.ForeignKey("usuarios.id"),
+        nullable=False
+    )
+
+    tutorial_clave = db.Column(
+        db.String(60),
+        nullable=False
+    )
+
+    completado = db.Column(
+        db.Boolean,
+        nullable=False,
+        default=False
+    )
+
+    fecha_finalizacion = db.Column(
+        db.Integer,
+        nullable=True
+    )
+
+    fecha_creacion = db.Column(
+        db.Integer,
+        default=timestamp_actual
+    )
+
+    fecha_actualizacion = db.Column(
+        db.Integer,
+        default=timestamp_actual,
+        onupdate=timestamp_actual
+    )
+
+    __table_args__ = (
+        db.UniqueConstraint(
+            "usuario_id",
+            "tutorial_clave",
+            name="uq_tutoriales_progreso_usuario_clave"
+        ),
+    )
+
+
+# ============================================================
 # RECORRIDOS (RUTAS)
 # Guarda la planeación y ejecución de una ruta asignada a un chofer
 # ============================================================

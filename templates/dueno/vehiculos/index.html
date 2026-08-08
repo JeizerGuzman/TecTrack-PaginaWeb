@@ -8,28 +8,15 @@
 {% endblock %}
 
 {% block content %}
-<section class="vehiculos-page">
-    <header class="vehiculos-header">
-        <div class="vehiculos-heading">
-            <p class="section-kicker">Flota del dueño</p>
-            <h2>Gestión de vehículos</h2>
-            <p>Administra unidades, conductores y estado operativo desde una sola pantalla.</p>
-        </div>
-        <button type="button" class="btn btn-primary" id="btnAbrirModalNuevoVehiculo">+ Agregar vehículo</button>
-    </header>
-
-        <div class="vehiculos-header-actions">
-            <a href="{{ url_for('dueno_vehiculo_nuevo') }}" class="btn btn-primary">
-                + Agregar vehículo
-            </a>
-
-            <button
-                type="button"
-                class="btn btn-outline"
-                data-dueno-tour-trigger="true">
-                Ver recorrido
-            </button>
-        </div>
+    <section class="vehiculos-page">
+        <header class="vehiculos-header">
+            <div class="vehiculos-heading">
+                <p class="section-kicker">Flota del dueño</p>
+                <h2>Gestión de vehículos</h2>
+                <p>Administra unidades, conductores y estado operativo desde una sola pantalla.</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnAbrirModalNuevoVehiculo">+ Agregar vehículo</button>
+        </header>
     </section>
 
     <section class="card filtros-card">
