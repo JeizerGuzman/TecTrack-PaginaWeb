@@ -439,7 +439,7 @@ function renderAlertas(alertas, alertasListado) {
     `).join("");
 }
 
-// 🌟 YA NO NECESITAMOS VARIABLE DE ÍNDICE GLOBAL
+// 🌟 CORRECCIÓN: Auto-refresco y conexión con el Modal
 function renderEvidencias(evidencias, plan, evidenciasBox) {
     if (!evidenciasBox) return;
 
@@ -466,31 +466,41 @@ function renderEvidencias(evidencias, plan, evidenciasBox) {
         return;
     }
 
-    // EVITAR PARPADEO Y RECARGA: Si el carrusel ya tiene la misma cantidad de fotos, no hacemos nada
+    // 🌟 CORRECCIÓN DEL AUTO-REFRESCO: 
+    // Ahora verificamos si la URL de la primera imagen cambió, no solo la cantidad total.
     const trackExiste = document.getElementById('carruselTrack');
     if (trackExiste && trackExiste.children.length === evidencias.length) {
-        return;
+        const primeraImagenActual = trackExiste.querySelector('.carrusel-imagen-container img');
+        if (primeraImagenActual && primeraImagenActual.src === evidencias[0].url_imagen) {
+            return; // Solo detenemos el render si la foto más reciente es exactamente la misma
+        }
     }
 
-    // Le decimos a CSS si hay suficientes fotos para mostrar en formato "doble"
     const multiClase = evidencias.length > 1 ? 'multi-slide' : 'single-slide';
 
-    // Generamos las tarjetas para cada foto
     const slidesHTML = evidencias.map((ev, index) => {
         const fechaObj = new Date(Number(ev.timestamp) * 1000);
         const fechaExacta = fechaObj.toLocaleString("es-MX", {
             day: "2-digit", month: "short", year: "numeric",
             hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
         });
+        
+        const descripcionLimpia = escapeHtml(ev.descripcion || "Evidencia fotográfica");
 
         return `
             <div class="carrusel-slide">
                 <div class="carrusel-imagen-container">
-                    <img src="${escapeHtml(ev.url_imagen)}" alt="Evidencia">
+                    <!-- 🌟 NUEVO: Evento onclick para el Modal -->
+                    <img 
+                        src="${escapeHtml(ev.url_imagen)}" 
+                        alt="Evidencia" 
+                        style="cursor: zoom-in;"
+                        onclick="abrirModalEvidencia('${escapeHtml(ev.url_imagen)}', '${descripcionLimpia}', '${fechaExacta}')"
+                    >
                     <span class="carrusel-contador-slide">${index + 1} / ${evidencias.length}</span>
                 </div>
                 <div class="carrusel-info">
-                    <strong>${escapeHtml(ev.descripcion || "Evidencia fotográfica")}</strong>
+                    <strong>${descripcionLimpia}</strong>
                     <div class="carrusel-meta">
                         <span class="carrusel-fecha">${fechaExacta}</span>
                         <span class="badge-relativo">${tiempoRelativo(ev.timestamp)}</span>
@@ -500,7 +510,6 @@ function renderEvidencias(evidencias, plan, evidenciasBox) {
         `;
     }).join('');
 
-    // Inyectamos el carril con sus flechas
     evidenciasBox.innerHTML = `
         <div class="carrusel-evidencias-wrapper">
             <button class="btn-carrusel prev" onclick="window.scrollCarrusel(-1)" ${evidencias.length <= 1 ? 'style="display:none"' : ''}>&#10094;</button>
@@ -809,3 +818,107 @@ function volverPaginaAnterior() {
         window.location.href = "/supervisor/vehiculos";
     }
 }
+
+
+// ============================================================
+// LÓGICA DEL MODAL DE EVIDENCIAS (ZOOM CON RUEDA Y PANEO)
+// ============================================================
+
+// Variables matemáticas para controlar la foto
+let modalEscala = 1;
+let modalTranslateX = 0;
+let modalTranslateY = 0;
+let modalIsDragging = false;
+let modalStartX = 0;
+let modalStartY = 0;
+
+function abrirModalEvidencia(url, descripcion, fecha) {
+    const modal = document.getElementById('modalEvidenciaFotografica');
+    const img = document.getElementById('imagenZoomModal');
+    const texto = document.getElementById('textoDescripcionModal');
+    const btnDescargar = document.getElementById('btnDescargarEvidencia');
+
+    // 🌟 1. BLOQUEAR SCROLL EXTERNO DE LA PÁGINA
+    document.body.classList.add('modal-sin-scroll');
+
+    // 🌟 2. RESETEAR EL ZOOM Y LA POSICIÓN DE LA FOTO CADA QUE SE ABRE
+    modalEscala = 1;
+    modalTranslateX = 0;
+    modalTranslateY = 0;
+    aplicarTransformacionModal(img);
+
+    img.src = url;
+    texto.innerHTML = `<strong>${descripcion}</strong><br><small>${fecha}</small>`;
+
+    // Truco Cloudinary para forzar descarga
+    let urlDescarga = url;
+    if (url.includes('/upload/')) {
+        urlDescarga = url.replace('/upload/', '/upload/fl_attachment/');
+    }
+    btnDescargar.href = urlDescarga;
+
+    modal.classList.add('modal-activo');
+}
+
+function cerrarModalEvidencia() {
+    document.getElementById('modalEvidenciaFotografica').classList.remove('modal-activo');
+    // 🌟 DEVOLVERLE EL SCROLL A LA PÁGINA
+    document.body.classList.remove('modal-sin-scroll');
+}
+
+function aplicarTransformacionModal(imgElement) {
+    imgElement.style.transform = `translate(${modalTranslateX}px, ${modalTranslateY}px) scale(${modalEscala})`;
+}
+
+// 🌟 INYECTAMOS LOS EVENTOS DEL RATÓN CUANDO CARGA LA PÁGINA
+document.addEventListener("DOMContentLoaded", () => {
+    const img = document.getElementById('imagenZoomModal');
+    const visor = document.querySelector('.modal-visor-imagen');
+
+    if (img && visor) {
+        
+        // 1. ZOOM CON LA RUEDA DEL RATÓN
+        visor.addEventListener('wheel', (e) => {
+            e.preventDefault(); // Evita que la página intente scrollear
+
+            const factorZoom = 0.15; // Velocidad del zoom
+            if (e.deltaY < 0) {
+                modalEscala += factorZoom; // Rueda hacia arriba = Acercar
+            } else {
+                modalEscala -= factorZoom; // Rueda hacia abajo = Alejar
+            }
+
+            // Evitar que la foto se haga miniatura (min 0.5x) o demasiado grande (max 8x)
+            modalEscala = Math.max(0.5, Math.min(modalEscala, 8));
+            aplicarTransformacionModal(img);
+        });
+
+        // 2. INICIAR ARRASTRE (Clic Izquierdo Sostenido)
+        img.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // Evita que el navegador intente "descargar" la foto al arrastrar
+            modalIsDragging = true;
+            // Calculamos en qué punto exacto de la pantalla hiciste clic
+            modalStartX = e.clientX - modalTranslateX;
+            modalStartY = e.clientY - modalTranslateY;
+        });
+
+        // 3. MOVER LA FOTO (Mientras mueves el ratón)
+        window.addEventListener('mousemove', (e) => {
+            if (!modalIsDragging) return;
+            // Movemos la imagen restando la posición actual menos donde iniciaste el clic
+            modalTranslateX = e.clientX - modalStartX;
+            modalTranslateY = e.clientY - modalStartY;
+            aplicarTransformacionModal(img);
+        });
+
+        // 4. SOLTAR LA FOTO
+        window.addEventListener('mouseup', () => {
+            modalIsDragging = false;
+        });
+        
+        // Si el ratón sale del área negra, también soltamos la foto
+        visor.addEventListener('mouseleave', () => {
+            modalIsDragging = false;
+        });
+    }
+});

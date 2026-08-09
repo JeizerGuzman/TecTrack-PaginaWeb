@@ -9,78 +9,10 @@ from flask_jwt_extended import jwt_required
 from config import db
 from models import Evidencia
 from helpers import timestamp_actual
+import cloudinary, cloudinary.uploader
 
-# Configuración de la carpeta destino y extensiones válidas
-UPLOAD_FOLDER = 'static/uploads/evidencias'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def registrar_evidencia_routes(app):
-
-    # Aseguramos que la carpeta exista en el sistema al arrancar la app
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-    # ========================================================
-    # 1. SUBIR EVIDENCIA FOTOGRÁFICA (APP MÓVIL / ESP32)
-    # ========================================================
-    @app.route('/api/alertas/<int:alerta_id>/evidencia', methods=['POST'])
-    # @jwt_required()  # <-- Descomenta si obligarás al ESP32 o App a usar token JWT
-    def subir_evidencia(alerta_id):
-        # 1. Validar si viene la foto en la petición
-        if 'foto' not in request.files:
-            return jsonify({"success": False, "mensaje": "No se encontró el archivo de imagen"}), 400
-        
-        file = request.files['foto']
-        
-        if file.filename == '':
-            return jsonify({"success": False, "mensaje": "Archivo vacío"}), 400
-            
-        if file and allowed_file(file.filename):
-            # Obtener datos de texto enviados junto con el archivo (Multipart-form)
-            vehiculo_id = request.form.get('vehiculo_id')
-            descripcion = request.form.get('descripcion', 'Evidencia fotográfica capturada')
-            
-            if not vehiculo_id:
-                return jsonify({"success": False, "mensaje": "El vehiculo_id es requerido"}), 400
-
-            # 2. Generar nombre seguro y único
-            filename = secure_filename(file.filename)
-            nombre_unico = f"alerta_{alerta_id}_{timestamp_actual()}_{filename}"
-            filepath = os.path.join(UPLOAD_FOLDER, nombre_unico)
-            
-            try:
-                # 3. Guardar archivo físicamente en el servidor (Debian)
-                file.save(filepath)
-                
-                # 4. Generar URL relativa (Flask la sirve directo desde la carpeta static)
-                url_publica = f"/{filepath}" 
-                
-                # 5. Guardar el registro en la base de datos
-                nueva_evidencia = Evidencia(
-                    vehiculo_id=vehiculo_id,
-                    alerta_id=alerta_id,
-                    url_imagen=url_publica,
-                    descripcion=descripcion
-                )
-                
-                db.session.add(nueva_evidencia)
-                db.session.commit()
-                
-                return jsonify({
-                    "success": True, 
-                    "mensaje": "Evidencia guardada correctamente", 
-                    "evidencia_id": nueva_evidencia.id,
-                    "url": url_publica
-                }), 201
-
-            except Exception as e:
-                db.session.rollback()
-                return jsonify({"success": False, "mensaje": f"Error interno al guardar: {str(e)}"}), 500
-                
-        return jsonify({"success": False, "mensaje": "Formato de imagen no permitido (.png, .jpg, .jpeg)"}), 400
-
 
     # ========================================================
     # 2. OBTENER EVIDENCIAS (DUEÑO / SUPERVISOR / ADMIN)
@@ -113,3 +45,65 @@ def registrar_evidencia_routes(app):
             })
             
         return jsonify({"success": True, "evidencias": resultado}), 200
+    
+    
+    # ========================================================
+    # 3. SUBIR NUEVA EVIDENCIA (SIMULADOR / ESP32-CAM)
+    # ========================================================
+    @app.route('/api/evidencias', methods=['POST'])
+    def subir_evidencia():
+        try:
+            # 1. Recibir datos del formulario (Multipart)
+            alerta_id = request.form.get('alerta_id')
+            vehiculo_id = request.form.get('vehiculo_id')
+            descripcion = request.form.get('descripcion', 'Evidencia fotográfica')
+            
+            # 2. Validar que la imagen venga en la petición
+            if 'evidencia' not in request.files:
+                return jsonify({"success": False, "mensaje": "No se envió ninguna imagen"}), 400
+                
+            archivo_imagen = request.files['evidencia']
+
+            # 3. Leer el entorno para separar las fotos de prueba de las de producción
+            entorno = os.environ.get('FLASK_ENV', 'development')
+            carpeta_base = "tectrack_prod" if entorno == "production" else "tectrack_local"
+            
+            # Creamos una subcarpeta para mantener organizado cada vehículo
+            ruta_carpeta = f"{carpeta_base}/vehiculo_{vehiculo_id}"
+
+            # 4. Subir directamente a Cloudinary desde la memoria
+            respuesta_nube = cloudinary.uploader.upload(
+                archivo_imagen,
+                folder=ruta_carpeta,
+                transformation=[
+                    {'width': 1000, 'crop': 'limit'}, # Evita fotos gigantescas (max 1000px)
+                    {'quality': 'auto'},             # Cloudinary decide la mejor compresión sin que se vea borroso
+                    {'fetch_format': 'auto'}         # Convierte a WebP (ultra ligero) para la página web
+                ]
+            )
+            
+            # 5. Extraer la URL segura que nos genera Cloudinary
+            url_segura = respuesta_nube.get('secure_url')
+
+            # 6. Guardar el registro en la base de datos
+            # Asegúrate de usar la función que genera tu timestamp, ej. timestamp_actual()
+            nueva_evidencia = Evidencia(
+                alerta_id=alerta_id,
+                vehiculo_id=vehiculo_id,
+                descripcion=descripcion,
+                url_imagen=url_segura, 
+                timestamp=timestamp_actual() 
+            )
+            db.session.add(nueva_evidencia)
+            db.session.commit()
+
+            return jsonify({
+                "success": True, 
+                "mensaje": "Evidencia subida a la nube exitosamente", 
+                "url": url_segura
+            }), 201
+
+        except Exception as e:
+            print(f"❌ Error al subir imagen a Cloudinary: {e}")
+            db.session.rollback()
+            return jsonify({"success": False, "mensaje": "Error interno del servidor"}), 500

@@ -217,10 +217,34 @@
             </div>
         </div>
     </section>
-
-
 </section>
+<div id="modalEvidenciaFotografica" class="modal-evidencia-overlay">
+    <div class="modal-evidencia-contenedor">
+        
+        <!-- Botón estricto de cierre (La única forma de salir) -->
+        <button class="btn-cerrar-modal" onclick="cerrarModalEvidencia()">
+            &times;
+        </button>
 
+        <!-- Contenedor de la foto con scroll oculto para el zoom -->
+        <div class="modal-visor-imagen">
+            <img 
+                id="imagenZoomModal" 
+                src="" 
+                alt="Evidencia ampliada" 
+                class="imagen-base" 
+                title="Haz clic para hacer zoom"
+            >
+        </div>
+
+        <div class="modal-evidencia-footer">
+            <p id="textoDescripcionModal"></p>
+            <a id="btnDescargarEvidencia" href="#" download class="btn btn-primary btn-sm">
+                Descargar Imagen
+            </a>
+        </div>
+    </div>
+</div>
 <!-- aquí todo tu contenido del detalle -->
  
 <script>
