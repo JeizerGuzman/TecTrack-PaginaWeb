@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TrackSecurity{% endblock %}</title>
 
+    <!-- Icon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/logo-tracksecurity.svg') }}">
+
     <script>
         (function () {
             if (localStorage.getItem('ts_sidebar_collapsed') === '1') {
