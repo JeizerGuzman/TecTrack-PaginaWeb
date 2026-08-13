@@ -682,6 +682,9 @@ class Alerta(db.Model):
         db.ForeignKey('vehiculos.id'),
         nullable=False
     )
+    
+    # 🌟 NUEVA COLUMNA: Aquí guardaremos los milisegundos (ticket) del ESP32
+    folio = db.Column(db.Integer, nullable=True)
 
     tipo = db.Column(db.String(50), nullable=False)
     # panico / puerta_abierta / vibracion / sin_senal / gps_perdido

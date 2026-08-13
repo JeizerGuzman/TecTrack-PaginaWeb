@@ -46,7 +46,6 @@ def registrar_evidencia_routes(app):
             
         return jsonify({"success": True, "evidencias": resultado}), 200
     
-    
     # ========================================================
     # 3. SUBIR NUEVA EVIDENCIA (SIMULADOR / ESP32-CAM)
     # ========================================================
@@ -54,56 +53,79 @@ def registrar_evidencia_routes(app):
     def subir_evidencia():
         try:
             # 1. Recibir datos del formulario (Multipart)
-            alerta_id = request.form.get('alerta_id')
-            vehiculo_id = request.form.get('vehiculo_id')
+            # 🌟 AHORA ESPERAMOS SERIE Y FOLIO EN LUGAR DE IDs FIJOS
+            serie = request.form.get('serie')
+            folio = request.form.get('folio')
             descripcion = request.form.get('descripcion', 'Evidencia fotográfica')
             
-            # 2. Validar que la imagen venga en la petición
+            # 2. Validar imagen y datos mínimos
             if 'evidencia' not in request.files:
                 return jsonify({"success": False, "mensaje": "No se envió ninguna imagen"}), 400
+            if not serie or not folio:
+                return jsonify({"success": False, "mensaje": "Faltan datos de identificación (serie o folio)"}), 400
                 
             archivo_imagen = request.files['evidencia']
+            
+            # 🌟 3. BUSCAR EL VEHÍCULO A PARTIR DE LA SERIE
+            from models import Dispositivo, Vehiculo, Alerta # Asegura las importaciones
+            
+            dispositivo = Dispositivo.query.filter_by(serie=serie).first()
+            if not dispositivo:
+                return jsonify({"success": False, "mensaje": "Dispositivo no encontrado"}), 404
+                
+            vehiculo = Vehiculo.query.filter_by(dispositivo_id=dispositivo.id).first()
+            if not vehiculo:
+                return jsonify({"success": False, "mensaje": "Vehículo no asignado a este dispositivo"}), 404
 
-            # 3. Leer el entorno para separar las fotos de prueba de las de producción
+            # 🌟 4. EL FILTRO INTELIGENTE DE 1 HORA
+            ahora = timestamp_actual()
+            limite_tiempo = ahora - 3600 # 3600 segundos = 1 Hora
+            
+            alerta_asociada = Alerta.query.filter(
+                Alerta.vehiculo_id == vehiculo.id,
+                Alerta.folio == int(folio),
+                Alerta.timestamp >= limite_tiempo
+            ).order_by(Alerta.timestamp.desc()).first()
+
+            # Si encontramos la alerta en el rango de tiempo, usamos su ID. Si no, queda huérfana (None)
+            alerta_id = alerta_asociada.id if alerta_asociada else None
+
+            # 5. Configurar entorno y subir a Cloudinary
             entorno = os.environ.get('FLASK_ENV', 'development')
             carpeta_base = "tectrack_prod" if entorno == "production" else "tectrack_local"
-            
-            # Creamos una subcarpeta para mantener organizado cada vehículo
-            ruta_carpeta = f"{carpeta_base}/vehiculo_{vehiculo_id}"
+            ruta_carpeta = f"{carpeta_base}/vehiculo_{vehiculo.id}"
 
-            # 4. Subir directamente a Cloudinary desde la memoria
             respuesta_nube = cloudinary.uploader.upload(
                 archivo_imagen,
                 folder=ruta_carpeta,
                 transformation=[
-                    {'width': 1000, 'crop': 'limit'}, # Evita fotos gigantescas (max 1000px)
-                    {'quality': 'auto'},             # Cloudinary decide la mejor compresión sin que se vea borroso
-                    {'fetch_format': 'auto'}         # Convierte a WebP (ultra ligero) para la página web
+                    {'width': 1000, 'crop': 'limit'},
+                    {'quality': 'auto'},             
+                    {'fetch_format': 'auto'}         
                 ]
             )
             
-            # 5. Extraer la URL segura que nos genera Cloudinary
             url_segura = respuesta_nube.get('secure_url')
 
             # 6. Guardar el registro en la base de datos
-            # Asegúrate de usar la función que genera tu timestamp, ej. timestamp_actual()
             nueva_evidencia = Evidencia(
-                alerta_id=alerta_id,
-                vehiculo_id=vehiculo_id,
+                alerta_id=alerta_id, # 🌟 Se vinculará mágicamente a la alerta correcta
+                vehiculo_id=vehiculo.id,
                 descripcion=descripcion,
                 url_imagen=url_segura, 
-                timestamp=timestamp_actual() 
+                timestamp=ahora 
             )
             db.session.add(nueva_evidencia)
             db.session.commit()
 
             return jsonify({
                 "success": True, 
-                "mensaje": "Evidencia subida a la nube exitosamente", 
-                "url": url_segura
+                "mensaje": "Evidencia procesada con Filtro de Tiempo exitosamente", 
+                "url": url_segura,
+                "alerta_vinculada": alerta_id is not None
             }), 201
 
         except Exception as e:
-            print(f"❌ Error al subir imagen a Cloudinary: {e}")
+            print(f"❌ Error al procesar evidencia: {e}")
             db.session.rollback()
             return jsonify({"success": False, "mensaje": "Error interno del servidor"}), 500
