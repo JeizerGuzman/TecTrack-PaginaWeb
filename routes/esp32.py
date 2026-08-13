@@ -198,6 +198,9 @@ def registrar_esp32_routes(app):
         identificador_vehiculo = data.get(
             "vehiculo"
         )
+        
+        # 🌟 NUEVO: Atrapamos el folio (milisegundos) que manda el ESP32
+        folio = data.get("folio")
 
 
         # ====================================================
@@ -1040,7 +1043,10 @@ def registrar_esp32_routes(app):
                         ultima_alerta_mismo_tipo.ultima_actualizacion = (
                             ahora
                         )
-
+                        
+                        # 🌟 NUEVO: Le asignamos el folio reciente
+                        ultima_alerta_mismo_tipo.folio = folio
+                        
 
                         alerta_reutilizada = True
 
@@ -1083,6 +1089,9 @@ def registrar_esp32_routes(app):
                     if alerta_nueva is not None:
                         alerta_nueva.condicion_activa = True
                         alerta_nueva.ultima_actualizacion = ahora
+
+                        # 🌟 NUEVO: Le asignamos el folio de creación
+                        alerta_nueva.folio = folio
 
                         alerta_creada = True
                         tipos_alerta_creados.append(tipo_alerta)
