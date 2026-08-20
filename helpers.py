@@ -903,9 +903,21 @@ def crear_alerta(
         
         # 1. Seguro: Si Firebase está apagado, lo encendemos
         if not firebase_admin._apps:
-            directorio_actual = os.path.dirname(os.path.abspath(__file__))
-            ruta_credenciales = os.path.join(directorio_actual, "firebase-adminsdk.json")
-            cred = credentials.Certificate(ruta_credenciales)
+            import json
+            import os
+            
+            firebase_json_str = os.getenv("FIREBASE_JSON")
+            
+            if firebase_json_str:
+                # Si estamos en producción, leemos el JSON de las variables de entorno
+                credenciales_dict = json.loads(firebase_json_str)
+                cred = credentials.Certificate(credenciales_dict)
+            else:
+                # Respaldo local por si prefieres usar el archivo físico en tu PC
+                directorio_actual = os.path.dirname(os.path.abspath(__file__))
+                ruta_credenciales = os.path.join(directorio_actual, "firebase-adminsdk.json")
+                cred = credentials.Certificate(ruta_credenciales)
+                
             firebase_admin.initialize_app(cred)
 
         # 2. 🌟 BUSCAR TODOS LOS TOKENS EN LA BASE DE DATOS

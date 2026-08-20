@@ -276,7 +276,8 @@
             }
         });
     </script>
-
+    <!-- Script global para que la voz de alertas suene en cualquier pantalla -->
+    <script src="{{ url_for('static', filename='js/alertas_globales.js') }}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

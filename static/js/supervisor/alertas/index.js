@@ -232,6 +232,17 @@ function renderAlertas(alertas) {
                     </a>
 
                     ${
+                        alerta.evidencia_url
+                            ? `<button 
+                                  class="btn btn-outline btn-sm" 
+                                  style="border-color: #3b82f6; color: #3b82f6;"
+                                  onclick="abrirModalEvidenciaAlerta('${alerta.evidencia_url}', '${alerta.vehiculo_id}', '${alerta.chofer_telefono || ''}')">
+                                  Ver evidencia
+                               </button>`
+                            : ``
+                    }
+
+                    ${
                         atendida
                             ? `<span class="estado-atendida">Atendida</span>`
                             : `<button 
@@ -441,4 +452,83 @@ function setText(id, value) {
 
 window.addEventListener("beforeunload", () => {
     if (alertasTimer) clearInterval(alertasTimer);
+});
+
+// ============================================================
+// LÓGICA DEL MODAL DE EVIDENCIAS EN ALERTAS (ZOOM Y WHATSAPP)
+// ============================================================
+let alertaModalEscala = 1;
+let alertaModalTranslateX = 0;
+let alertaModalTranslateY = 0;
+let alertaModalIsDragging = false;
+let alertaModalStartX = 0;
+let alertaModalStartY = 0;
+
+window.abrirModalEvidenciaAlerta = function(url, vehiculoId, telefono) {
+    const modal = document.getElementById('modalEvidenciaAlertaFotografica');
+    const img = document.getElementById('imagenEvidenciaAlerta');
+    const btnVehiculo = document.getElementById('btnIrVehiculoAlerta');
+    const btnWhatsapp = document.getElementById('btnWhatsappAlerta');
+
+    // Resetear zoom
+    alertaModalEscala = 1;
+    alertaModalTranslateX = 0;
+    alertaModalTranslateY = 0;
+    if(img) img.style.transform = `translate(0px, 0px) scale(1)`;
+
+    if(img) img.src = url;
+    if(btnVehiculo) btnVehiculo.href = `/supervisor/vehiculos/${vehiculoId}`;
+
+    if (btnWhatsapp) {
+        if (telefono && telefono !== "null") {
+            const telLimpio = String(telefono).replace(/\D/g, '');
+            const numeroWa = telLimpio.length === 10 ? `52${telLimpio}` : telLimpio;
+            btnWhatsapp.href = `https://wa.me/${numeroWa}?text=Hola,%20te%20contacto%20por%20una%20alerta%20generada%20en%20tu%20unidad.`;
+            btnWhatsapp.style.display = 'inline-flex';
+        } else {
+            btnWhatsapp.style.display = 'none';
+        }
+    }
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; 
+};
+
+window.cerrarModalEvidenciaAlerta = function() {
+    const modal = document.getElementById('modalEvidenciaAlertaFotografica');
+    if(modal) modal.style.display = 'none';
+    document.body.style.overflow = ''; 
+};
+
+// Eventos de Zoom y Paneo
+document.addEventListener("DOMContentLoaded", () => {
+    const img = document.getElementById('imagenEvidenciaAlerta');
+    const visor = document.getElementById('visorImagenAlerta');
+
+    if (img && visor) {
+        visor.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const factorZoom = 0.15;
+            alertaModalEscala += (e.deltaY < 0) ? factorZoom : -factorZoom;
+            alertaModalEscala = Math.max(0.5, Math.min(alertaModalEscala, 8));
+            img.style.transform = `translate(${alertaModalTranslateX}px, ${alertaModalTranslateY}px) scale(${alertaModalEscala})`;
+        });
+
+        img.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            alertaModalIsDragging = true;
+            alertaModalStartX = e.clientX - alertaModalTranslateX;
+            alertaModalStartY = e.clientY - alertaModalTranslateY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!alertaModalIsDragging) return;
+            alertaModalTranslateX = e.clientX - alertaModalStartX;
+            alertaModalTranslateY = e.clientY - alertaModalStartY;
+            img.style.transform = `translate(${alertaModalTranslateX}px, ${alertaModalTranslateY}px) scale(${alertaModalEscala})`;
+        });
+
+        window.addEventListener('mouseup', () => { alertaModalIsDragging = false; });
+        visor.addEventListener('mouseleave', () => { alertaModalIsDragging = false; });
+    }
 });

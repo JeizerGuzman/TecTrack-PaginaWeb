@@ -144,42 +144,62 @@ function renderVehiculo(v, els) {
     if (els.dispositivo) els.dispositivo.textContent = v.dispositivo_serie || "Sin vincular";
 
     if (els.infoGeneral) {
+        let textoTelefono = "Sin registrar";
+        let btnWhatsApp = "";
+
+        if (v.chofer_telefono) {
+            // Limpiamos el número (dejamos solo dígitos)
+            const telLimpio = String(v.chofer_telefono).replace(/\D/g, '');
+            textoTelefono = escapeHtml(v.chofer_telefono);
+            
+            // Asumiendo que el número es de México. Si tiene 10 dígitos, le agregamos el 52.
+            const numeroWa = telLimpio.length === 10 ? `52${telLimpio}` : telLimpio;
+
+            // Creamos el botón de WhatsApp
+            btnWhatsApp = `
+                <a href="https://wa.me/${numeroWa}" target="_blank" class="btn btn-outline btn-sm" style="display:inline-flex; align-items:center; gap:6px; border-color:#25D366; color:#25D366; background: rgba(37, 211, 102, 0.1);">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                    WhatsApp
+                </a>
+            `;
+        }
+
+        // 1. Inyectamos el botón de WhatsApp en la parte superior (línea verde)
+        const contenedorWa = document.getElementById('contenedorWhatsApp');
+        if (contenedorWa) {
+            contenedorWa.innerHTML = btnWhatsApp;
+        }
+
+        // 2. Inyectamos la cuadrícula de información incluyendo el teléfono (X roja)
         els.infoGeneral.innerHTML = `
             <div class="detalle-item">
                 <span>Nombre</span>
                 <strong>${escapeHtml(v.nombre || "Sin registrar")}</strong>
             </div>
-
             <div class="detalle-item">
                 <span>Identificador</span>
                 <strong>${escapeHtml(v.identificador || "Sin registrar")}</strong>
             </div>
-
             <div class="detalle-item">
                 <span>Placa</span>
                 <strong>${escapeHtml(v.placa || "Sin registrar")}</strong>
             </div>
-
             <div class="detalle-item">
                 <span>Marca</span>
                 <strong>${escapeHtml(v.marca || "Sin registrar")}</strong>
             </div>
-
             <div class="detalle-item">
                 <span>Modelo</span>
                 <strong>${escapeHtml(v.modelo || "Sin registrar")}</strong>
             </div>
-
             <div class="detalle-item">
                 <span>Año</span>
                 <strong>${v.anio || "—"}</strong>
             </div>
-
             <div class="detalle-item">
                 <span>Latitud</span>
                 <strong>${v.lat ?? "—"}</strong>
             </div>
-
             <div class="detalle-item">
                 <span>Longitud</span>
                 <strong>${v.lng ?? "—"}</strong>
@@ -187,6 +207,10 @@ function renderVehiculo(v, els) {
             <div class="detalle-item">
                 <span>Chofer</span>
                 <strong>${escapeHtml(v.chofer_nombre || "Sin asignar")}</strong>
+            </div>
+            <div class="detalle-item">
+                <span>Teléfono</span>
+                <strong>${textoTelefono}</strong>
             </div>
         `;
     }

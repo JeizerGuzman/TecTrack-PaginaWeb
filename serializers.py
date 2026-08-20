@@ -11,7 +11,7 @@
 
 import time
 from config import db
-from models import Empresa, Usuario, Vehiculo, Dispositivo, UbicacionActual
+from models import Empresa, Usuario, Vehiculo, Dispositivo, UbicacionActual, Evidencia
 from helpers import obtener_segundos_sin_senal
 
 # ============================================================
@@ -245,6 +245,8 @@ def serializar_vehiculo(vehiculo):
         "chofer": chofer.nombre if chofer else None,
         "chofer_id": vehiculo.chofer_id,
         "chofer_nombre": obtener_nombre_chofer(vehiculo.chofer_id),
+        
+        "chofer_telefono": chofer.telefono if chofer else None,
 
         # Dispositivo vinculado.
         "dispositivo_id": vehiculo.dispositivo_id,
@@ -352,6 +354,14 @@ def serializar_alerta(alerta):
         if getattr(alerta, "atendida_por", None)
         else None
     )
+    
+    # Buscamos el teléfono del chofer y la evidencia (si existe)
+    chofer_telefono = None
+    if vehiculo and vehiculo.chofer_id:
+        chofer = db.session.get(Usuario, vehiculo.chofer_id)
+        chofer_telefono = chofer.telefono if chofer else None
+        
+    evidencia = Evidencia.query.filter_by(alerta_id=alerta.id).first()
 
     return {
         "id": alerta.id,
@@ -367,6 +377,10 @@ def serializar_alerta(alerta):
         "lat": getattr(alerta, "lat", None),
         "lng": getattr(alerta, "lng", None),
         "timestamp": alerta.timestamp,
+        
+        # NUEVOS CAMPOS PARA EL MODAL
+        "chofer_telefono": chofer_telefono,
+        "evidencia_url": evidencia.url_imagen if evidencia else None
     }
 
 
