@@ -35,8 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function inicializarMapa() {
         mapa = L.map('mapa-recorrido').setView([16.75, -93.11], 10); // Chiapas por defecto
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '© OpenStreetMap, © CartoDB' // Estilo de mapa más limpio, parecido al de la imagen
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(mapa);
         capaAlertas.addTo(mapa);
     }
